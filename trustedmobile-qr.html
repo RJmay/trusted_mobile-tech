@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrustedMobile Tech – QR Code Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --brand:#0096c7;--brand-light:#00b4d8;
+  --brand-grad:linear-gradient(135deg,#00b4d8,#0096c7);
+  --green:#10b981;--bg:#f1f5f9;--card:#fff;--border:#e2e8f0;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);min-height:100vh;padding:30px 20px;}
+
+.header{max-width:900px;margin:0 auto 30px;background:#fff;border-radius:16px;padding:22px 32px;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);display:flex;align-items:center;gap:16px;}
+.logo-icon{width:48px;height:48px;background:var(--brand-grad);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.header h1{font-size:22px;font-weight:700;color:#1e293b;}
+.header p{font-size:13px;color:#64748b;margin-top:2px;}
+
+.main{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+
+.card{background:#fff;border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid var(--border);}
+.card-title{font-size:17px;font-weight:700;color:#1e293b;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.card-sub{font-size:13px;color:#64748b;margin-bottom:24px;line-height:1.5;}
+
+.form-group{margin-bottom:18px;}
+label{display:block;font-size:13px;font-weight:600;color:#334155;margin-bottom:7px;}
+input[type=text],input[type=url],select{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;
+  font-size:14px;color:#1e293b;transition:border-color .2s;background:#fff;
+}
+input:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,150,199,.1);}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;
+  border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-primary{background:var(--brand-grad);color:#fff;box-shadow:0 3px 10px rgba(0,150,199,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(0,150,199,.4);}
+.btn-ghost{background:#f1f5f9;color:#475569;border:1.5px solid var(--border);margin-top:10px;}
+.btn-ghost:hover{background:#e2e8f0;}
+.btn-green{background:linear-gradient(135deg,#10b981,#059669);color:#fff;margin-top:10px;}
+.btn-green:hover{opacity:.9;}
+
+/* QR OUTPUT */
+.qr-output{text-align:center;}
+.qr-placeholder{
+  width:100%;aspect-ratio:1;max-width:280px;margin:0 auto 20px;
+  border:2px dashed var(--border);border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  color:#94a3b8;background:#f8fafc;
+}
+.qr-placeholder .ph-icon{font-size:52px;opacity:.5;}
+.qr-placeholder p{font-size:13px;}
+#qrBox{display:none;margin:0 auto 20px;text-align:center;}
+#qrBox canvas,#qrBox img{border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.qr-url-display{
+  background:#f8fafc;border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;font-size:12px;color:#64748b;word-break:break-all;
+  margin-bottom:16px;text-align:left;display:none;
+}
+.qr-url-display strong{color:#0096c7;display:block;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* PRESETS */
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.preset-btn{
+  padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;
+  background:#fff;font-size:12px;font-weight:600;color:#475569;cursor:pointer;
+  transition:all .2s;text-align:left;
+}
+.preset-btn:hover{border-color:var(--brand);color:var(--brand);background:#f0fbff;}
+.preset-icon{font-size:16px;display:block;margin-bottom:4px;}
+
+/* SIZE OPTIONS */
+.size-opts{display:flex;gap:8px;margin-bottom:18px;}
+.size-opt{
+  flex:1;padding:9px;border:1.5px solid var(--border);border-radius:8px;
+  text-align:center;cursor:pointer;transition:all .2s;font-size:13px;font-weight:600;color:#64748b;
+}
+.size-opt:hover,.size-opt.active{border-color:var(--brand);color:var(--brand);background:#f0fbff;}
+
+/* PRINT PANEL */
+.print-preview{
+  background:#fff;border:2px solid #e0e0e0;border-radius:16px;padding:30px;
+  text-align:center;margin-top:20px;display:none;
+}
+.print-preview .biz-name{font-size:20px;font-weight:800;color:#1e293b;margin-bottom:4px;}
+.print-preview .biz-sub{font-size:13px;color:#64748b;margin-bottom:16px;}
+.print-preview #previewQr{margin:0 auto 16px;}
+.print-preview .scan-text{font-size:14px;font-weight:600;color:#1e293b;margin-bottom:4px;}
+.print-preview .scan-sub{font-size:12px;color:#64748b;}
+
+/* INFO BOX */
+.info-box{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #bfdbfe;
+  border-radius:10px;padding:16px;margin-top:20px;}
+.info-box h4{font-size:13px;font-weight:700;color:#1e40af;margin-bottom:8px;}
+.info-box ol{padding-left:18px;}
+.info-box li{font-size:13px;color:#1e40af;margin-bottom:5px;line-height:1.5;}
+.info-box li strong{color:#1e3a8a;}
+
+@media(max-width:640px){.main{grid-template-columns:1fr;}.preset-grid{grid-template-columns:1fr;}}
+@media print{
+  body{background:#fff;padding:0;}
+  .header,.card:first-child,.info-box{display:none!important;}
+  .main{grid-template-columns:1fr;max-width:100%;}
+  .card{box-shadow:none;border:none;padding:0;}
+  .print-preview{border:none;padding:10px;display:block!important;}
+  .btn,.qr-url-display,.size-opts,.card-title,.card-sub,.qr-placeholder{display:none!important;}
+  #qrBox{display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-icon">🔧</div>
+  <div>
+    <h1>TrustedMobile Tech — QR Code Generator</h1>
+    <p>Generate a scannable QR code that links customers directly to your quote system</p>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- LEFT: CONTROLS -->
+  <div class="card">
+    <div class="card-title">🔗 Quote System URL</div>
+    <div class="card-sub">Enter the web address where your quote system is hosted. Once you host the file, paste the URL here.</div>
+
+    <!-- Quick Presets -->
+    <div class="form-group">
+      <label>Quick Presets</label>
+      <div class="preset-grid">
+        <button class="preset-btn" onclick="setPreset('netlify')"><span class="preset-icon">🌐</span>Netlify / Vercel</button>
+        <button class="preset-btn" onclick="setPreset('github')"><span class="preset-icon">🐙</span>GitHub Pages</button>
+        <button class="preset-btn" onclick="setPreset('custom')"><span class="preset-icon">🔧</span>Custom Domain</button>
+        <button class="preset-btn" onclick="setPreset('local')"><span class="preset-icon">💻</span>Local Testing</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Your Quote System URL *</label>
+      <input type="url" id="urlInput" placeholder="https://yoursite.com/quote"
+        value="https://yourbusiness.com/quote" oninput="onUrlChange()">
+    </div>
+
+    <div class="form-group">
+      <label>Business Name (for print label)</label>
+      <input type="text" id="bizName" value="TrustedMobile Tech" oninput="updatePreview()">
+    </div>
+
+    <div class="form-group">
+      <label>Tagline</label>
+      <input type="text" id="tagline" value="Scan to get an instant repair quote" oninput="updatePreview()">
+    </div>
+
+    <div class="form-group">
+      <label>QR Code Size</label>
+      <div class="size-opts">
+        <div class="size-opt" onclick="setSize(150)" data-s="150">Small<br><span style="font-size:10px;font-weight:400">150px</span></div>
+        <div class="size-opt active" onclick="setSize(220)" data-s="220">Medium<br><span style="font-size:10px;font-weight:400">220px</span></div>
+        <div class="size-opt" onclick="setSize(300)" data-s="300">Large<br><span style="font-size:10px;font-weight:400">300px</span></div>
+        <div class="size-opt" onclick="setSize(400)" data-s="400">Print<br><span style="font-size:10px;font-weight:400">400px</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Error Correction (higher = more resilient)</label>
+      <select id="errCorr" onchange="generateQR()">
+        <option value="L">Low (L) — 7% recovery</option>
+        <option value="M" selected>Medium (M) — 15% recovery</option>
+        <option value="Q">Quartile (Q) — 25% recovery</option>
+        <option value="H">High (H) — 30% recovery — best for print</option>
+      </select>
+    </div>
+
+    <button class="btn btn-primary" onclick="generateQR()">⚡ Generate QR Code</button>
+
+    <div class="info-box" style="margin-top:20px;">
+      <h4>📌 How to host your quote file</h4>
+      <ol>
+        <li><strong>Netlify (free, easiest):</strong> Go to netlify.com → drag &amp; drop your HTML file → get an instant URL</li>
+        <li><strong>GitHub Pages (free):</strong> Upload to a GitHub repo → enable Pages in Settings</li>
+        <li><strong>Your own domain:</strong> Upload via FTP/cPanel to your web hosting</li>
+        <li>Once hosted, paste the URL above and generate your QR</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- RIGHT: QR OUTPUT -->
+  <div class="card qr-output">
+    <div class="card-title">📱 Your QR Code</div>
+    <div class="card-sub">Customers scan this with their phone camera to open your quote form instantly.</div>
+
+    <div class="qr-placeholder" id="qrPlaceholder">
+      <div class="ph-icon">📱</div>
+      <p>Your QR code will<br>appear here</p>
+    </div>
+
+    <div id="qrBox"></div>
+
+    <div class="qr-url-display" id="urlDisplay">
+      <strong>Encoded URL</strong>
+      <span id="urlDisplayText"></span>
+    </div>
+
+    <button class="btn btn-green" onclick="downloadQR()" id="dlBtn" style="display:none;">⬇️ Download QR Code (PNG)</button>
+    <button class="btn btn-ghost" onclick="window.print()" id="printBtn" style="display:none;">🖨️ Print QR Code</button>
+
+    <!-- Print preview panel -->
+    <div class="print-preview" id="printPreview">
+      <div class="biz-name" id="pvBizName">TrustedMobile Tech</div>
+      <div class="biz-sub">📍 Maroochydore, Sunshine Coast</div>
+      <div id="previewQr"></div>
+      <div class="scan-text" id="pvTagline">Scan to get an instant repair quote</div>
+      <div class="scan-sub">iPhone · MacBook · iPad repairs</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let qrInstance = null;
+let currentSize = 220;
+let previewQR   = null;
+
+function setPreset(type) {
+  const map = {
+    netlify: 'https://your-site.netlify.app/quote.html',
+    github:  'https://yourusername.github.io/trustedmobile/trustedmobile-quote.html',
+    custom:  'https://trustedmobiletech.com.au/quote',
+    local:   'http://localhost/trustedmobile-quote.html',
+  };
+  document.getElementById('urlInput').value = map[type] || '';
+  onUrlChange();
+}
+
+function onUrlChange() { /* live update could go here */ }
+
+function setSize(s) {
+  currentSize = s;
+  document.querySelectorAll('.size-opt').forEach(el => el.classList.toggle('active', +el.dataset.s === s));
+  if (qrInstance) generateQR();
+}
+
+function getErrLevel() {
+  const v = document.getElementById('errCorr').value;
+  return { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H }[v];
+}
+
+function generateQR() {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) { alert('Please enter a URL first.'); return; }
+
+  const box = document.getElementById('qrBox');
+  box.innerHTML = '';
+  document.getElementById('qrPlaceholder').style.display = 'none';
+
+  qrInstance = new QRCode(box, {
+    text:           url,
+    width:          currentSize,
+    height:         currentSize,
+    colorDark:      '#0f172a',
+    colorLight:     '#ffffff',
+    correctLevel:   getErrLevel(),
+  });
+
+  box.style.display = 'block';
+  document.getElementById('dlBtn').style.display   = 'flex';
+  document.getElementById('printBtn').style.display = 'flex';
+  document.getElementById('urlDisplay').style.display = 'block';
+  document.getElementById('urlDisplayText').textContent = url;
+
+  updatePreview(url);
+}
+
+function updatePreview(url) {
+  document.getElementById('pvBizName').textContent  = document.getElementById('bizName').value || 'TrustedMobile Tech';
+  document.getElementById('pvTagline').textContent  = document.getElementById('tagline').value || 'Scan to get an instant repair quote';
+
+  const pvBox = document.getElementById('previewQr');
+  pvBox.innerHTML = '';
+  const u = url || document.getElementById('urlInput').value.trim();
+  if (!u) return;
+
+  document.getElementById('printPreview').style.display = 'block';
+  previewQR = new QRCode(pvBox, {
+    text:  u, width: 200, height: 200,
+    colorDark: '#0f172a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H,
+  });
+}
+
+function downloadQR() {
+  setTimeout(() => {
+    const canvas = document.querySelector('#qrBox canvas');
+    if (!canvas) { alert('Generate a QR code first.'); return; }
+
+    // Add padding + branding
+    const pad = 24;
+    const out = document.createElement('canvas');
+    out.width  = canvas.width  + pad*2;
+    out.height = canvas.height + pad*2 + 50;
+    const ctx = out.getContext('2d');
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, out.width, out.height);
+
+    ctx.drawImage(canvas, pad, pad);
+
+    ctx.fillStyle = '#0f172a';
+    ctx.font = 'bold 16px -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(document.getElementById('bizName').value || 'TrustedMobile Tech', out.width/2, canvas.height + pad + 22);
+
+    ctx.fillStyle = '#64748b';
+    ctx.font = '13px -apple-system, sans-serif';
+    ctx.fillText(document.getElementById('tagline').value || 'Scan to get an instant repair quote', out.width/2, canvas.height + pad + 42);
+
+    const a = document.createElement('a');
+    a.download = 'trustedmobile-qr.png';
+    a.href = out.toDataURL('image/png');
+    a.click();
+  }, 100);
+}
+
+// Generate a default QR on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    generateQR();
+  }, 500);
+});
+</script>
+</body>
+</html>

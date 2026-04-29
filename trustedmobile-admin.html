@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrustedMobile Tech – Admin</title>
+<style>
+/* ── RESET & ROOT ───────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --brand:#0096c7;--brand-light:#00b4d8;--brand-grad:linear-gradient(135deg,#00b4d8,#0096c7);
+  --sidebar:#1e293b;--sidebar-hover:#334155;--sidebar-active:#0096c7;
+  --bg:#f1f5f9;--card:#fff;
+  --text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;--purple:#8b5cf6;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
+}
+
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
+
+/* ── PIN SCREEN ─────────────────────────────────────── */
+#pinScreen{
+  position:fixed;inset:0;background:var(--sidebar);z-index:9999;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+}
+.pin-logo{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+.pin-logo-icon{width:52px;height:52px;background:var(--brand-grad);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.pin-logo h1{color:#fff;font-size:26px;font-weight:700;letter-spacing:-0.5px;}
+.pin-logo p{color:#94a3b8;font-size:12px;letter-spacing:2px;margin-top:2px;}
+.pin-card{background:#0f172a;border:1px solid #334155;border-radius:20px;padding:40px;width:360px;text-align:center;}
+.pin-title{color:#fff;font-size:20px;font-weight:600;margin-bottom:6px;}
+.pin-sub{color:#94a3b8;font-size:14px;margin-bottom:28px;}
+.pin-dots{display:flex;gap:14px;justify-content:center;margin-bottom:28px;}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #334155;background:transparent;transition:all .2s;}
+.pin-dot.filled{background:var(--brand);border-color:var(--brand);}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.pin-key{
+  background:#1e293b;border:1px solid #334155;border-radius:10px;
+  color:#fff;font-size:20px;font-weight:600;padding:16px;cursor:pointer;
+  transition:all .15s;user-select:none;
+}
+.pin-key:hover{background:#334155;}
+.pin-key:active{transform:scale(.95);}
+.pin-key.wide{grid-column:span 2;}
+.pin-key.clear{color:#ef4444;}
+.pin-error{color:#ef4444;font-size:14px;margin-top:8px;min-height:20px;}
+.pin-hint{color:#475569;font-size:12px;margin-top:16px;}
+
+/* ── SIDEBAR ────────────────────────────────────────── */
+.sidebar{
+  width:240px;background:var(--sidebar);min-height:100vh;
+  display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;
+}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;gap:12px;}
+.sidebar-logo-icon{width:38px;height:38px;background:var(--brand-grad);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sidebar-logo-text h2{color:#fff;font-size:15px;font-weight:700;line-height:1.2;}
+.sidebar-logo-text p{color:#94a3b8;font-size:10px;letter-spacing:1.5px;}
+.sidebar-nav{flex:1;padding:16px 10px;display:flex;flex-direction:column;gap:3px;}
+.nav-section{color:#64748b;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:12px 10px 6px;text-transform:uppercase;}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:11px 14px;
+  border-radius:8px;cursor:pointer;transition:all .2s;color:#94a3b8;font-size:14px;font-weight:500;
+  border:none;background:none;width:100%;text-align:left;
+}
+.nav-item:hover{background:var(--sidebar-hover);color:#fff;}
+.nav-item.active{background:var(--brand);color:#fff;box-shadow:0 4px 12px rgba(0,150,199,.35);}
+.nav-item .nav-icon{font-size:18px;width:20px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:#ef4444;color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.sidebar-footer{padding:16px;border-top:1px solid #334155;}
+.sidebar-user{display:flex;align-items:center;gap:10px;}
+.user-avatar{width:34px;height:34px;background:var(--brand-grad);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;}
+.user-info p{color:#fff;font-size:13px;font-weight:600;}
+.user-info span{color:#64748b;font-size:11px;}
+.lock-btn{margin-left:auto;background:none;border:none;cursor:pointer;color:#64748b;font-size:18px;padding:4px;transition:color .2s;}
+.lock-btn:hover{color:#fff;}
+
+/* ── MAIN ───────────────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;min-height:100vh;overflow:hidden;}
+.topbar{
+  background:#fff;border-bottom:1px solid var(--border);padding:0 32px;
+  height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.topbar-title{font-size:20px;font-weight:700;color:var(--text);}
+.topbar-right{display:flex;align-items:center;gap:16px;}
+.topbar-time{color:var(--muted);font-size:14px;}
+.refresh-btn{
+  background:var(--brand-grad);color:#fff;border:none;border-radius:8px;
+  padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:6px;
+}
+.refresh-btn:hover{opacity:.9;}
+.content{flex:1;padding:28px 32px;overflow-y:auto;}
+
+/* ── VIEWS ──────────────────────────────────────────── */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ── STAT CARDS ─────────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.stat-card{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:2px 0 0 2px;}
+.stat-card.blue::before{background:var(--brand);}
+.stat-card.green::before{background:var(--green);}
+.stat-card.amber::before{background:var(--amber);}
+.stat-card.red::before{background:var(--red);}
+.stat-icon{font-size:32px;margin-bottom:12px;}
+.stat-value{font-size:32px;font-weight:800;color:var(--text);line-height:1;}
+.stat-label{color:var(--muted);font-size:13px;margin-top:4px;font-weight:500;}
+.stat-trend{font-size:12px;margin-top:8px;font-weight:600;}
+.stat-trend.up{color:var(--green);}
+.stat-trend.warn{color:var(--amber);}
+.stat-trend.down{color:var(--red);}
+
+/* ── SECTION HEADER ─────────────────────────────────── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-size:17px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
+.section-actions{display:flex;gap:10px;}
+
+/* ── CARDS & TABLES ─────────────────────────────────── */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);}
+.card-body{padding:24px;}
+table{width:100%;border-collapse:collapse;}
+th{padding:11px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);background:#f8fafc;border-bottom:1px solid var(--border);}
+th:first-child{border-radius:8px 0 0 0;}
+th:last-child{border-radius:0 8px 0 0;}
+td{padding:13px 16px;font-size:14px;border-bottom:1px solid var(--border);color:var(--text);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f8fafc;}
+.tbl-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);}
+
+/* ── BADGES ─────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.badge-green{background:#d1fae5;color:#065f46;}.badge-green::before{background:#10b981;}
+.badge-amber{background:#fef3c7;color:#92400e;}.badge-amber::before{background:#f59e0b;}
+.badge-red{background:#fee2e2;color:#991b1b;}.badge-red::before{background:#ef4444;}
+.badge-blue{background:#dbeafe;color:#1e40af;}.badge-blue::before{background:#3b82f6;}
+.badge-purple{background:#ede9fe;color:#5b21b6;}.badge-purple::before{background:#8b5cf6;}
+.badge-gray{background:#f1f5f9;color:#475569;}.badge-gray::before{background:#94a3b8;}
+
+/* ── STOCK BAR ──────────────────────────────────────── */
+.stock-bar-wrap{display:flex;align-items:center;gap:10px;}
+.stock-bar{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;min-width:80px;}
+.stock-bar-fill{height:100%;border-radius:4px;transition:width .3s;}
+.stock-bar-fill.ok{background:var(--green);}
+.stock-bar-fill.low{background:var(--amber);}
+.stock-bar-fill.critical{background:var(--red);}
+.stock-num{font-weight:700;font-size:15px;min-width:28px;text-align:right;}
+
+/* ── EDITABLE FIELDS ────────────────────────────────── */
+.editable{
+  border:1px solid transparent;border-radius:6px;padding:5px 9px;font-size:14px;
+  font-family:inherit;background:transparent;color:var(--text);width:80px;text-align:center;
+  cursor:pointer;transition:all .2s;
+}
+.editable:hover{background:#f1f5f9;border-color:var(--border);}
+.editable:focus{outline:none;background:#fff;border-color:var(--brand);box-shadow:0 0 0 3px rgba(0,150,199,.12);}
+
+/* ── BUTTONS ─────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
+.btn-primary{background:var(--brand-grad);color:#fff;box-shadow:0 2px 8px rgba(0,150,199,.25);}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+.btn-green{background:linear-gradient(135deg,#10b981,#059669);color:#fff;}
+.btn-green:hover{opacity:.9;}
+.btn-amber{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;}
+.btn-amber:hover{opacity:.9;}
+.btn-red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;}
+.btn-red:hover{opacity:.9;}
+.btn-ghost{background:#f1f5f9;color:var(--text);border:1px solid var(--border);}
+.btn-ghost:hover{background:#e2e8f0;}
+.btn-sm{padding:6px 12px;font-size:12px;}
+
+/* ── FILTER BAR ─────────────────────────────────────── */
+.filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+.filter-input{padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:#fff;min-width:200px;}
+.filter-input:focus{outline:none;border-color:var(--brand);}
+.filter-select{padding:9px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:#fff;cursor:pointer;}
+
+/* ── ALERT BANNER ───────────────────────────────────── */
+.alert-banner{
+  background:linear-gradient(135deg,#fef3c7,#fef9e7);
+  border:1px solid #f59e0b;border-radius:var(--radius);
+  padding:16px 20px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;
+}
+.alert-banner.critical{background:linear-gradient(135deg,#fee2e2,#fff5f5);border-color:#ef4444;}
+.alert-banner.hidden{display:none;}
+.alert-icon{font-size:20px;flex-shrink:0;}
+.alert-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:4px;}
+.alert-text p{font-size:13px;color:var(--muted);}
+
+/* ── ORDER CARD ─────────────────────────────────────── */
+.order-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:12px;box-shadow:var(--shadow);}
+.order-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.order-id{font-size:16px;font-weight:700;color:var(--text);}
+.order-date{font-size:13px;color:var(--muted);margin-top:2px;}
+.order-items{border-top:1px solid var(--border);padding-top:12px;}
+.order-item{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;}
+.order-item:not(:last-child){border-bottom:1px dashed var(--border);}
+.order-total{display:flex;justify-content:space-between;padding-top:10px;margin-top:10px;border-top:2px solid var(--border);font-weight:700;font-size:15px;}
+.order-actions{display:flex;gap:8px;margin-top:14px;}
+
+/* ── SETTINGS ───────────────────────────────────────── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.settings-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.settings-title{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.setting-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:14px;font-weight:500;}
+.setting-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.setting-input{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;width:120px;text-align:center;}
+.setting-input:focus{outline:none;border-color:var(--brand);}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle input{display:none;}
+.toggle-slider{
+  position:absolute;inset:0;background:#cbd5e1;border-radius:12px;cursor:pointer;transition:.2s;
+}
+.toggle-slider::before{
+  content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;
+  background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.toggle input:checked+.toggle-slider{background:var(--green);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(20px);}
+
+/* ── TOAST ──────────────────────────────────────────── */
+.toast-container{position:fixed;top:20px;right:20px;z-index:8888;display:flex;flex-direction:column;gap:8px;}
+.toast{
+  background:#1e293b;color:#fff;padding:14px 18px;border-radius:10px;
+  font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.3);
+  display:flex;align-items:center;gap:10px;min-width:260px;max-width:360px;
+  animation:slideInRight .3s ease-out;
+}
+.toast.success{border-left:4px solid var(--green);}
+.toast.warn{border-left:4px solid var(--amber);}
+.toast.error{border-left:4px solid var(--red);}
+.toast.info{border-left:4px solid var(--brand);}
+@keyframes slideInRight{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes slideOutRight{from{opacity:1;}to{transform:translateX(110%);opacity:0;}}
+.toast.removing{animation:slideOutRight .3s ease-in forwards;}
+
+/* ── EMPTY STATE ────────────────────────────────────── */
+.empty-state{text-align:center;padding:60px 20px;}
+.empty-state .empty-icon{font-size:56px;margin-bottom:16px;opacity:.5;}
+.empty-state h3{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.empty-state p{font-size:14px;color:var(--muted);}
+
+/* ── MODAL ──────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:7777;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.active{display:flex;}
+.modal{background:#fff;border-radius:16px;padding:32px;max-width:500px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal-title{font-size:20px;font-weight:700;margin-bottom:8px;}
+.modal-sub{color:var(--muted);font-size:14px;margin-bottom:24px;}
+.modal-form .form-row{margin-bottom:16px;}
+.modal-form label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text);}
+.modal-form input,.modal-form select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;}
+.modal-form input:focus,.modal-form select:focus{outline:none;border-color:var(--brand);}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;}
+
+/* ── OVERVIEW GRID ──────────────────────────────────── */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.activity-list{display:flex;flex-direction:column;gap:0;}
+.activity-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.activity-item:last-child{border-bottom:none;}
+.activity-dot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.activity-body{flex:1;}
+.activity-body strong{font-size:14px;font-weight:600;display:block;}
+.activity-body span{font-size:12px;color:var(--muted);}
+.activity-meta{font-size:12px;color:var(--muted);white-space:nowrap;}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media(max-width:900px){
+  .sidebar{width:60px;overflow:hidden;}
+  .sidebar-logo-text,.nav-item span,.nav-badge,.sidebar-footer .user-info,.sidebar-logo p{display:none;}
+  .nav-item{justify-content:center;padding:12px;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .overview-grid{grid-template-columns:1fr;}
+  .settings-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- PIN SCREEN -->
+<div id="pinScreen">
+  <div class="pin-logo">
+    <div class="pin-logo-icon">🔧</div>
+    <div>
+      <h1>TrustedMobile Tech</h1>
+      <p>ADMIN PORTAL</p>
+    </div>
+  </div>
+  <div class="pin-card">
+    <div class="pin-title">Enter Admin PIN</div>
+    <div class="pin-sub">Contact your manager if you've forgotten your PIN</div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="d0"></div>
+      <div class="pin-dot" id="d1"></div>
+      <div class="pin-dot" id="d2"></div>
+      <div class="pin-dot" id="d3"></div>
+    </div>
+    <div class="pin-grid">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key clear" onclick="pinClear()">✕</button>
+      <button class="pin-key" onclick="pinKey('0')">0</button>
+      <button class="pin-key" onclick="pinBack()">⌫</button>
+    </div>
+    <div class="pin-error" id="pinError"></div>
+    <div class="pin-hint">Default PIN: 1234</div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🔧</div>
+    <div class="sidebar-logo-text">
+      <h2>TrustedMobile</h2>
+      <p>ADMIN</p>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <button class="nav-item active" onclick="showView('overview')" id="nav-overview">
+      <span class="nav-icon">📊</span><span>Dashboard</span>
+    </button>
+    <button class="nav-item" onclick="showView('inventory')" id="nav-inventory">
+      <span class="nav-icon">📦</span><span>Inventory</span>
+      <span class="nav-badge hidden" id="lowBadge">0</span>
+    </button>
+    <button class="nav-item" onclick="showView('orders')" id="nav-orders">
+      <span class="nav-icon">🛒</span><span>Purchase Orders</span>
+      <span class="nav-badge hidden" id="orderBadge">0</span>
+    </button>
+    <button class="nav-item" onclick="showView('payments')" id="nav-payments">
+      <span class="nav-icon">💳</span><span>Payment Log</span>
+    </button>
+    <div class="nav-section">System</div>
+    <button class="nav-item" onclick="showView('settings')" id="nav-settings">
+      <span class="nav-icon">⚙️</span><span>Settings</span>
+    </button>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="user-avatar">TM</div>
+      <div class="user-info">
+        <p>Admin</p>
+        <span>Developer</span>
+      </div>
+      <button class="lock-btn" onclick="lockScreen()" title="Lock">🔒</button>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-right">
+      <span class="topbar-time" id="topbarTime"></span>
+      <button class="refresh-btn" onclick="refreshAll()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ OVERVIEW ══════════════════════════════════════ -->
+    <div class="view active" id="view-overview">
+      <div class="stat-grid" id="overviewStats"></div>
+      <div id="criticalAlerts"></div>
+      <div class="overview-grid">
+        <div>
+          <div class="section-header">
+            <div class="section-title">⚠️ Low Stock Parts</div>
+            <button class="btn btn-ghost btn-sm" onclick="showView('inventory')">View All →</button>
+          </div>
+          <div class="tbl-wrap"><table id="lowStockTable">
+            <thead><tr><th>Part</th><th>Stock</th><th>Min</th><th>Status</th></tr></thead>
+            <tbody id="lowStockBody"></tbody>
+          </table></div>
+        </div>
+        <div>
+          <div class="section-header">
+            <div class="section-title">📋 Recent Activity</div>
+          </div>
+          <div class="card"><div class="card-body activity-list" id="activityList"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ INVENTORY ══════════════════════════════════════ -->
+    <div class="view" id="view-inventory">
+      <div class="filter-bar">
+        <input class="filter-input" id="invSearch" placeholder="🔍  Search parts…" oninput="renderInventory()">
+        <select class="filter-select" id="invCategory" onchange="renderInventory()">
+          <option value="">All Categories</option>
+        </select>
+        <select class="filter-select" id="invStatus" onchange="renderInventory()">
+          <option value="">All Status</option>
+          <option value="ok">OK</option>
+          <option value="low">Low Stock</option>
+          <option value="critical">Critical</option>
+        </select>
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <button class="btn btn-amber" onclick="openAddPartModal()">＋ Add Part</button>
+          <button class="btn btn-primary" onclick="autoOrderAll()">⚡ Auto-Order Low Stock</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table id="inventoryTable">
+          <thead>
+            <tr>
+              <th>Part Name</th>
+              <th>Category</th>
+              <th>Current Stock</th>
+              <th>Min Stock</th>
+              <th>Reorder Qty</th>
+              <th>Unit Cost</th>
+              <th>Supplier</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ PURCHASE ORDERS ════════════════════════════════ -->
+    <div class="view" id="view-orders">
+      <div class="filter-bar">
+        <select class="filter-select" id="orderStatus" onchange="renderOrders()">
+          <option value="">All Orders</option>
+          <option value="pending">Pending</option>
+          <option value="sent">Sent to Supplier</option>
+          <option value="received">Received</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="exportOrders()">📄 Export CSV</button>
+        <button class="btn btn-primary" onclick="openManualOrderModal()" style="margin-left:auto;">＋ Create Manual Order</button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- ══ PAYMENT LOG ════════════════════════════════════ -->
+    <div class="view" id="view-payments">
+      <div class="filter-bar">
+        <input class="filter-input" id="paySearch" placeholder="🔍  Search by customer or quote…" oninput="renderPayments()">
+        <div style="margin-left:auto;">
+          <button class="btn btn-ghost btn-sm" onclick="exportPayments()">📄 Export CSV</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Quote #</th>
+              <th>Customer</th>
+              <th>Device</th>
+              <th>Repairs</th>
+              <th>Service</th>
+              <th>Total</th>
+              <th>Paid At</th>
+              <th>Stock Deducted</th>
+            </tr>
+          </thead>
+          <tbody id="paymentBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS ═══════════════════════════════════════ -->
+    <div class="view" id="view-settings">
+      <div class="settings-grid">
+        <div class="settings-card">
+          <div class="settings-title">🔐 Admin PIN</div>
+          <div class="setting-row">
+            <div><div class="setting-label">Current PIN</div><div class="setting-sub">4-digit admin access code</div></div>
+            <input type="password" class="setting-input" id="pinDisplay" maxlength="4" placeholder="••••" oninput="validatePinInput(this)">
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Confirm New PIN</div></div>
+            <input type="password" class="setting-input" id="pinConfirm" maxlength="4" placeholder="••••">
+          </div>
+          <button class="btn btn-primary" style="margin-top:12px;width:100%;" onclick="savePin()">Save PIN</button>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-title">⚡ Auto-Order Settings</div>
+          <div class="setting-row">
+            <div><div class="setting-label">Auto-Order Enabled</div><div class="setting-sub">Automatically generate POs when stock drops below minimum</div></div>
+            <label class="toggle"><input type="checkbox" id="autoOrderEnabled" onchange="saveSetting('autoOrderEnabled',this.checked)"><div class="toggle-slider"></div></label>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Default Reorder Multiplier</div><div class="setting-sub">Order qty = min stock × multiplier</div></div>
+            <input type="number" class="setting-input" id="reorderMultiplier" min="1" max="10" oninput="saveSetting('reorderMultiplier',this.value)">
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Email Alerts</div><div class="setting-sub">Send email when PO is auto-generated</div></div>
+            <label class="toggle"><input type="checkbox" id="emailAlerts" onchange="saveSetting('emailAlerts',this.checked)"><div class="toggle-slider"></div></label>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Alert Email</div></div>
+            <input type="email" class="setting-input" id="alertEmail" placeholder="admin@..." style="width:180px;" oninput="saveSetting('alertEmail',this.value)">
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-title">🏪 Store Information</div>
+          <div class="setting-row">
+            <div><div class="setting-label">Business Name</div></div>
+            <input type="text" class="setting-input" id="bizName" style="width:180px;" oninput="saveSetting('bizName',this.value)">
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Phone</div></div>
+            <input type="text" class="setting-input" id="bizPhone" style="width:180px;" oninput="saveSetting('bizPhone',this.value)">
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Address</div></div>
+            <input type="text" class="setting-input" id="bizAddress" style="width:180px;" oninput="saveSetting('bizAddress',this.value)">
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-title">🗑️ Data Management</div>
+          <div class="setting-row">
+            <div><div class="setting-label">Reset Inventory to Defaults</div><div class="setting-sub">Restores all stock to initial values</div></div>
+            <button class="btn btn-ghost btn-sm" onclick="resetInventory()">Reset</button>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Clear All Purchase Orders</div><div class="setting-sub">Permanently deletes order history</div></div>
+            <button class="btn btn-red btn-sm" onclick="clearOrders()">Clear</button>
+          </div>
+          <div class="setting-row">
+            <div><div class="setting-label">Clear Payment Log</div><div class="setting-sub">Removes all payment records</div></div>
+            <button class="btn btn-red btn-sm" onclick="clearPayments()">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ADD PART MODAL -->
+<div class="modal-overlay" id="addPartModal">
+  <div class="modal">
+    <div class="modal-title">Add New Part</div>
+    <div class="modal-sub">Add a new part to the inventory catalog</div>
+    <div class="modal-form">
+      <div class="form-row"><label>Part Name *</label><input type="text" id="mp_name" placeholder="e.g. Battery (iPhone 16)"></div>
+      <div class="form-row"><label>Category *</label>
+        <select id="mp_category">
+          <option>Screen</option><option>Battery</option><option>Camera</option>
+          <option>Charging</option><option>Audio</option><option>Body</option>
+          <option>Buttons</option><option>Biometrics</option><option>Hardware</option>
+          <option>Connectivity</option><option>Board</option><option>Chemicals</option><option>Consumables</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Initial Stock *</label><input type="number" id="mp_stock" min="0" placeholder="10"></div>
+      <div class="form-row"><label>Minimum Stock *</label><input type="number" id="mp_minStock" min="1" placeholder="3"></div>
+      <div class="form-row"><label>Reorder Quantity</label><input type="number" id="mp_reorderQty" min="1" placeholder="10"></div>
+      <div class="form-row"><label>Unit Cost ($) *</label><input type="number" id="mp_cost" min="0" step="0.01" placeholder="25.00"></div>
+      <div class="form-row"><label>Supplier</label><input type="text" id="mp_supplier" placeholder="e.g. PhoneParts AU"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('addPartModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNewPart()">Add Part</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANUAL ORDER MODAL -->
+<div class="modal-overlay" id="manualOrderModal">
+  <div class="modal">
+    <div class="modal-title">Create Manual Order</div>
+    <div class="modal-sub">Generate a purchase order for a specific part</div>
+    <div class="modal-form">
+      <div class="form-row"><label>Part *</label>
+        <select id="mo_part"></select>
+      </div>
+      <div class="form-row"><label>Quantity *</label><input type="number" id="mo_qty" min="1" placeholder="10"></div>
+      <div class="form-row"><label>Supplier</label><input type="text" id="mo_supplier" placeholder="PhoneParts AU"></div>
+      <div class="form-row"><label>Notes</label><input type="text" id="mo_notes" placeholder="Optional notes…"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('manualOrderModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveManualOrder()">Create Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADJUST STOCK MODAL -->
+<div class="modal-overlay" id="adjustModal">
+  <div class="modal">
+    <div class="modal-title">Adjust Stock</div>
+    <div class="modal-sub" id="adjustSub"></div>
+    <div class="modal-form">
+      <div class="form-row"><label>Adjustment Type</label>
+        <select id="adj_type">
+          <option value="add">Add Stock (Received delivery)</option>
+          <option value="remove">Remove Stock (Manual deduction)</option>
+          <option value="set">Set Exact Amount</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Quantity *</label><input type="number" id="adj_qty" min="0" placeholder="0"></div>
+      <div class="form-row"><label>Note (Optional)</label><input type="text" id="adj_note" placeholder="e.g. Stock received from supplier"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('adjustModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAdjustment()">Apply</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  DEFAULT PARTS CATALOG
+// ═══════════════════════════════════════════════════
+const DEFAULT_PARTS = [
+  { id:'screen_c',     name:'Screen Replacement (C Quality)',   category:'Screen',       stock:10, minStock:3, reorderQty:10, unitCost:45,  supplier:'PhoneParts AU' },
+  { id:'screen_aplus', name:'Screen Replacement (A+ Quality)',  category:'Screen',       stock:8,  minStock:3, reorderQty:8,  unitCost:75,  supplier:'PhoneParts AU' },
+  { id:'screen_splus', name:'Screen Replacement (S+ Quality)',  category:'Screen',       stock:5,  minStock:2, reorderQty:5,  unitCost:120, supplier:'PhoneParts AU' },
+  { id:'battery',      name:'Battery',                          category:'Battery',      stock:15, minStock:5, reorderQty:20, unitCost:25,  supplier:'BatteryWorld AU' },
+  { id:'camera',       name:'Camera Module',                    category:'Camera',       stock:8,  minStock:3, reorderQty:8,  unitCost:55,  supplier:'PhoneParts AU' },
+  { id:'charging_port',name:'Charging Port / USB-C',            category:'Charging',     stock:12, minStock:4, reorderQty:15, unitCost:20,  supplier:'PhoneParts AU' },
+  { id:'speaker',      name:'Bottom Speaker',                   category:'Audio',        stock:10, minStock:3, reorderQty:10, unitCost:18,  supplier:'PhoneParts AU' },
+  { id:'back_glass',   name:'Back Glass Panel',                 category:'Body',         stock:7,  minStock:3, reorderQty:10, unitCost:35,  supplier:'GlassParts AU' },
+  { id:'power_btn',    name:'Power Button Flex Cable',          category:'Buttons',      stock:9,  minStock:3, reorderQty:10, unitCost:12,  supplier:'PhoneParts AU' },
+  { id:'volume_btn',   name:'Volume Button Flex Cable',         category:'Buttons',      stock:9,  minStock:3, reorderQty:10, unitCost:12,  supplier:'PhoneParts AU' },
+  { id:'home_btn',     name:'Home Button Assembly',             category:'Buttons',      stock:6,  minStock:2, reorderQty:8,  unitCost:20,  supplier:'PhoneParts AU' },
+  { id:'touch_id',     name:'Touch ID Sensor',                  category:'Biometrics',   stock:4,  minStock:2, reorderQty:5,  unitCost:30,  supplier:'PhoneParts AU' },
+  { id:'microphone',   name:'Microphone',                       category:'Audio',        stock:8,  minStock:3, reorderQty:10, unitCost:15,  supplier:'PhoneParts AU' },
+  { id:'earpiece',     name:'Earpiece Speaker',                 category:'Audio',        stock:8,  minStock:3, reorderQty:10, unitCost:18,  supplier:'PhoneParts AU' },
+  { id:'vibration',    name:'Taptic Engine / Vibration Motor',  category:'Hardware',     stock:6,  minStock:2, reorderQty:8,  unitCost:22,  supplier:'PhoneParts AU' },
+  { id:'sim_tray',     name:'SIM Card Tray',                    category:'Hardware',     stock:15, minStock:5, reorderQty:20, unitCost:8,   supplier:'PhoneParts AU' },
+  { id:'wifi_antenna', name:'WiFi / Bluetooth Antenna',         category:'Connectivity', stock:5,  minStock:2, reorderQty:8,  unitCost:28,  supplier:'PhoneParts AU' },
+  { id:'logic_board',  name:'Logic Board',                      category:'Board',        stock:2,  minStock:1, reorderQty:2,  unitCost:180, supplier:'Board Repair Specialists' },
+  { id:'water_kit',    name:'Water Damage Treatment Kit',       category:'Chemicals',    stock:8,  minStock:3, reorderQty:10, unitCost:15,  supplier:'RepairChem AU' },
+  { id:'adhesive',     name:'Screen Adhesive / Tape',           category:'Consumables',  stock:20, minStock:8, reorderQty:30, unitCost:3,   supplier:'PhoneParts AU' },
+];
+
+const REPAIR_PART_MAP = {
+  'Battery Replacement':              'battery',
+  'Camera Repair':                    'camera',
+  'Charging Port':                    'charging_port',
+  'Water Damage':                     'water_kit',
+  'Speaker Repair':                   'speaker',
+  'Back Glass':                       'back_glass',
+  'Power Button':                     'power_btn',
+  'Volume Button':                    'volume_btn',
+  'Home Button':                      'home_btn',
+  'Touch ID Repair':                  'touch_id',
+  'Microphone Repair':                'microphone',
+  'Earpiece Speaker':                 'earpiece',
+  'Vibration Motor':                  'vibration',
+  'SIM Card Tray':                    'sim_tray',
+  'WiFi/Bluetooth':                   'wifi_antenna',
+  'Logic Board Repair':               'logic_board',
+  'Screen Replacement (C Quality)':   'screen_c',
+  'Screen Replacement (A+ Quality)':  'screen_aplus',
+  'Screen Replacement (S+ Quality)':  'screen_splus',
+};
+
+// ═══════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════
+let parts    = [];
+let orders   = [];
+let payments = [];
+let settings = {};
+let adjustingPartId = null;
+let currentView = 'overview';
+
+// ═══════════════════════════════════════════════════
+//  PIN
+// ═══════════════════════════════════════════════════
+let pinEntry = '';
+function pinKey(k) {
+  if (pinEntry.length >= 4) return;
+  pinEntry += k;
+  updatePinDots();
+  if (pinEntry.length === 4) setTimeout(checkPin, 150);
+}
+function pinBack() { pinEntry = pinEntry.slice(0,-1); updatePinDots(); }
+function pinClear() { pinEntry = ''; updatePinDots(); document.getElementById('pinError').textContent = ''; }
+function updatePinDots() {
+  for (let i=0;i<4;i++) document.getElementById('d'+i).classList.toggle('filled', i < pinEntry.length);
+}
+function checkPin() {
+  const correct = getSetting('adminPin','1234');
+  if (pinEntry === correct) {
+    document.getElementById('pinScreen').style.display = 'none';
+    initApp();
+  } else {
+    document.getElementById('pinError').textContent = 'Incorrect PIN. Try again.';
+    pinEntry = ''; updatePinDots();
+    [0,1,2,3].forEach(i=>{ const d=document.getElementById('d'+i); d.style.background='#ef4444'; setTimeout(()=>d.style.background='',600); });
+  }
+}
+function lockScreen() {
+  pinEntry=''; updatePinDots();
+  document.getElementById('pinError').textContent='';
+  document.getElementById('pinScreen').style.display='flex';
+}
+
+// ═══════════════════════════════════════════════════
+//  STORAGE HELPERS
+// ═══════════════════════════════════════════════════
+function load(key,def) { try { const v=localStorage.getItem(key); return v?JSON.parse(v):def; } catch{ return def; } }
+function save(key,val) { try { localStorage.setItem(key,JSON.stringify(val)); } catch{} }
+function getSetting(key,def) { return settings[key]!==undefined?settings[key]:def; }
+
+// ═══════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════
+function initApp() {
+  parts    = load('tmt_inventory', JSON.parse(JSON.stringify(DEFAULT_PARTS)));
+  orders   = load('tmt_orders', []);
+  payments = load('tmt_payments', []);
+  settings = load('tmt_settings', {});
+  loadSettings();
+  populateCategoryFilter();
+  refreshAll();
+  startClock();
+  checkForNewPayments();
+  setInterval(checkForNewPayments, 5000);
+}
+
+function refreshAll() {
+  parts    = load('tmt_inventory', parts);
+  orders   = load('tmt_orders', orders);
+  payments = load('tmt_payments', payments);
+  renderCurrentView();
+  updateBadges();
+}
+
+function renderCurrentView() {
+  if (currentView==='overview')   renderOverview();
+  if (currentView==='inventory')  renderInventory();
+  if (currentView==='orders')     renderOrders();
+  if (currentView==='payments')   renderPayments();
+}
+
+function updateBadges() {
+  const lowParts = parts.filter(p=>getStatus(p)!=='ok');
+  const pendingOrders = orders.filter(o=>o.status==='pending');
+  const lb=document.getElementById('lowBadge');
+  const ob=document.getElementById('orderBadge');
+  lb.textContent=lowParts.length; lb.classList.toggle('hidden',lowParts.length===0);
+  ob.textContent=pendingOrders.length; ob.classList.toggle('hidden',pendingOrders.length===0);
+}
+
+function loadSettings() {
+  document.getElementById('autoOrderEnabled').checked = getSetting('autoOrderEnabled',true);
+  document.getElementById('reorderMultiplier').value  = getSetting('reorderMultiplier',2);
+  document.getElementById('emailAlerts').checked      = getSetting('emailAlerts',false);
+  document.getElementById('alertEmail').value         = getSetting('alertEmail','');
+  document.getElementById('bizName').value            = getSetting('bizName','TrustedMobile Tech');
+  document.getElementById('bizPhone').value           = getSetting('bizPhone','');
+  document.getElementById('bizAddress').value         = getSetting('bizAddress','Maroochydore QLD 4558');
+  document.getElementById('pinDisplay').value         = '';
+  document.getElementById('pinConfirm').value         = '';
+}
+
+function saveSetting(key,val) { settings[key]=val; save('tmt_settings',settings); }
+function savePin() {
+  const a=document.getElementById('pinDisplay').value;
+  const b=document.getElementById('pinConfirm').value;
+  if (!a||a.length!==4||!/^\d{4}$/.test(a)) { toast('PIN must be exactly 4 digits','error'); return; }
+  if (a!==b) { toast('PINs do not match','error'); return; }
+  settings.adminPin=a; save('tmt_settings',settings);
+  document.getElementById('pinDisplay').value='';
+  document.getElementById('pinConfirm').value='';
+  toast('PIN updated successfully ✓','success');
+}
+function validatePinInput(el) { el.value=el.value.replace(/\D/g,'').slice(0,4); }
+
+// ═══════════════════════════════════════════════════
+//  VIEWS
+// ═══════════════════════════════════════════════════
+const VIEW_TITLES = { overview:'Dashboard', inventory:'Inventory', orders:'Purchase Orders', payments:'Payment Log', settings:'Settings' };
+function showView(v) {
+  currentView=v;
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.getElementById('nav-'+v).classList.add('active');
+  document.getElementById('topbarTitle').textContent=VIEW_TITLES[v];
+  renderCurrentView();
+}
+
+// ═══════════════════════════════════════════════════
+//  STOCK STATUS
+// ═══════════════════════════════════════════════════
+function getStatus(p) {
+  if (p.stock===0)             return 'critical';
+  if (p.stock<=p.minStock)     return 'critical';
+  if (p.stock<=p.minStock*1.5) return 'low';
+  return 'ok';
+}
+function statusBadge(p) {
+  const s=getStatus(p);
+  if (s==='ok')       return '<span class="badge badge-green">✓ In Stock</span>';
+  if (s==='low')      return '<span class="badge badge-amber">⚠ Low Stock</span>';
+  return '<span class="badge badge-red">✕ Critical</span>';
+}
+function stockBar(p) {
+  const pct=Math.min(100,Math.round((p.stock/Math.max(p.minStock*2,1))*100));
+  const cls=getStatus(p);
+  return `<div class="stock-bar-wrap">
+    <div class="stock-bar"><div class="stock-bar-fill ${cls}" style="width:${pct}%"></div></div>
+    <span class="stock-num" style="color:${cls==='ok'?'var(--green)':cls==='low'?'var(--amber)':'var(--red)'}">${p.stock}</span>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════
+//  OVERVIEW
+// ═══════════════════════════════════════════════════
+function renderOverview() {
+  const low      = parts.filter(p=>getStatus(p)!=='ok').length;
+  const critical = parts.filter(p=>getStatus(p)==='critical').length;
+  const pendingPOs = orders.filter(o=>o.status==='pending').length;
+  const totalRev = payments.reduce((s,p)=>s+p.total,0);
+
+  document.getElementById('overviewStats').innerHTML = `
+    <div class="stat-card blue"><div class="stat-icon">📦</div><div class="stat-value">${parts.length}</div><div class="stat-label">Total Part Types</div></div>
+    <div class="stat-card red"><div class="stat-icon">⚠️</div><div class="stat-value">${low}</div><div class="stat-label">Low / Critical Parts</div><div class="stat-trend ${low>0?'down':'up'}">${low>0?low+' need restocking':'All stock healthy'}</div></div>
+    <div class="stat-card amber"><div class="stat-icon">🛒</div><div class="stat-value">${pendingPOs}</div><div class="stat-label">Pending Orders</div><div class="stat-trend ${pendingPOs>0?'warn':''}">${pendingPOs>0?'Awaiting dispatch':'No pending orders'}</div></div>
+    <div class="stat-card green"><div class="stat-icon">💰</div><div class="stat-value">$${totalRev.toFixed(0)}</div><div class="stat-label">Total Revenue Logged</div><div class="stat-trend up">${payments.length} paid jobs</div></div>
+  `;
+
+  // Critical alerts
+  const crits = parts.filter(p=>getStatus(p)==='critical');
+  const alertsEl = document.getElementById('criticalAlerts');
+  alertsEl.innerHTML = crits.length ? `
+    <div class="alert-banner critical">
+      <span class="alert-icon">🚨</span>
+      <div class="alert-text">
+        <strong>${crits.length} part${crits.length>1?'s':''} are critically low or out of stock!</strong>
+        <p>${crits.map(p=>p.name).join(' · ')}</p>
+      </div>
+      <button class="btn btn-red btn-sm" onclick="autoOrderAll()" style="flex-shrink:0;">Order Now</button>
+    </div>` : '';
+
+  // Low stock table
+  const lowParts = parts.filter(p=>getStatus(p)!=='ok').slice(0,8);
+  document.getElementById('lowStockBody').innerHTML = lowParts.length ? lowParts.map(p=>`
+    <tr>
+      <td><strong>${p.name}</strong></td>
+      <td>${stockBar(p)}</td>
+      <td><span style="color:var(--muted)">${p.minStock}</span></td>
+      <td>${statusBadge(p)}</td>
+    </tr>`).join('') :
+    '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px;">✅ All parts are adequately stocked</td></tr>';
+
+  // Activity
+  const allActivity = [
+    ...payments.map(p=>({ time:p.paidAt, text:`Payment: ${p.quoteNumber} — ${p.customer} — $${p.total}`, type:'payment', dot:'var(--green)' })),
+    ...orders.map(o=>({ time:o.createdAt, text:`Order ${o.id}: ${o.items.length} part${o.items.length>1?'s':''} — ${o.status}`, type:'order', dot:o.status==='received'?'var(--green)':o.status==='sent'?'var(--brand)':'var(--amber)' })),
+  ].sort((a,b)=>new Date(b.time)-new Date(a.time)).slice(0,8);
+
+  document.getElementById('activityList').innerHTML = allActivity.length ? allActivity.map(a=>`
+    <div class="activity-item">
+      <div class="activity-dot" style="background:${a.dot}"></div>
+      <div class="activity-body"><strong>${a.text}</strong><span>${fmtTime(a.time)}</span></div>
+    </div>`).join('') :
+    '<div class="activity-item"><div class="activity-body"><span style="color:var(--muted)">No activity yet</span></div></div>';
+}
+
+// ═══════════════════════════════════════════════════
+//  INVENTORY
+// ═══════════════════════════════════════════════════
+function populateCategoryFilter() {
+  const cats = [...new Set(DEFAULT_PARTS.map(p=>p.category))].sort();
+  document.getElementById('invCategory').innerHTML =
+    '<option value="">All Categories</option>'+cats.map(c=>`<option>${c}</option>`).join('');
+}
+
+function renderInventory() {
+  const q   = (document.getElementById('invSearch').value||'').toLowerCase();
+  const cat = document.getElementById('invCategory').value;
+  const st  = document.getElementById('invStatus').value;
+
+  const filtered = parts.filter(p=>{
+    if (q && !p.name.toLowerCase().includes(q) && !p.category.toLowerCase().includes(q) && !p.supplier.toLowerCase().includes(q)) return false;
+    if (cat && p.category!==cat) return false;
+    if (st && getStatus(p)!==st) return false;
+    return true;
+  });
+
+  document.getElementById('inventoryBody').innerHTML = filtered.length ? filtered.map(p=>`
+    <tr>
+      <td><strong>${p.name}</strong><br><span style="font-size:12px;color:var(--muted)">${p.id}</span></td>
+      <td><span class="badge badge-gray">${p.category}</span></td>
+      <td>${stockBar(p)}</td>
+      <td><input class="editable" type="number" value="${p.minStock}" min="0" onchange="updatePart('${p.id}','minStock',+this.value)" title="Click to edit min stock"></td>
+      <td><input class="editable" type="number" value="${p.reorderQty}" min="1" onchange="updatePart('${p.id}','reorderQty',+this.value)" title="Click to edit reorder qty"></td>
+      <td>$<input class="editable" type="number" value="${p.unitCost}" min="0" step="0.01" onchange="updatePart('${p.id}','unitCost',+this.value)" style="width:65px;"></td>
+      <td style="font-size:13px;color:var(--muted)">${p.supplier}</td>
+      <td>${statusBadge(p)}</td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="openAdjustModal('${p.id}')">± Adjust</button>
+          ${getStatus(p)!=='ok'?`<button class="btn btn-amber btn-sm" onclick="singleAutoOrder('${p.id}')">⚡ Order</button>`:''}
+        </div>
+      </td>
+    </tr>`).join('') :
+    '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);">No parts match your filters</td></tr>';
+}
+
+function updatePart(id, field, val) {
+  const p = parts.find(x=>x.id===id);
+  if (!p) return;
+  p[field] = val;
+  save('tmt_inventory', parts);
+  updateBadges();
+  addActivity(`Updated ${p.name} → ${field}: ${val}`);
+  toast(`Saved: ${p.name} ${field} = ${val}`, 'success');
+}
+
+// ═══════════════════════════════════════════════════
+//  ADJUST STOCK MODAL
+// ═══════════════════════════════════════════════════
+function openAdjustModal(id) {
+  const p = parts.find(x=>x.id===id);
+  adjustingPartId = id;
+  document.getElementById('adjustSub').textContent = p.name + ' — Current stock: ' + p.stock;
+  document.getElementById('adj_qty').value = '';
+  document.getElementById('adj_note').value = '';
+  document.getElementById('adjustModal').classList.add('active');
+}
+function saveAdjustment() {
+  const p = parts.find(x=>x.id===adjustingPartId);
+  const type = document.getElementById('adj_type').value;
+  const qty  = parseInt(document.getElementById('adj_qty').value)||0;
+  const note = document.getElementById('adj_note').value||'Manual adjustment';
+  const prev = p.stock;
+  if (type==='add')    p.stock = Math.max(0, p.stock+qty);
+  if (type==='remove') p.stock = Math.max(0, p.stock-qty);
+  if (type==='set')    p.stock = Math.max(0, qty);
+  save('tmt_inventory', parts);
+  addActivity(`Stock adjusted: ${p.name} ${prev} → ${p.stock} (${note})`);
+  toast(`${p.name}: stock ${prev} → ${p.stock}`, 'success');
+  closeModal('adjustModal');
+  renderCurrentView(); updateBadges();
+}
+
+// ═══════════════════════════════════════════════════
+//  ADD PART MODAL
+// ═══════════════════════════════════════════════════
+function openAddPartModal() {
+  ['mp_name','mp_stock','mp_minStock','mp_reorderQty','mp_cost','mp_supplier'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('addPartModal').classList.add('active');
+}
+function saveNewPart() {
+  const name     = document.getElementById('mp_name').value.trim();
+  const category = document.getElementById('mp_category').value;
+  const stock    = parseInt(document.getElementById('mp_stock').value)||0;
+  const minStock = parseInt(document.getElementById('mp_minStock').value)||1;
+  const reorderQty = parseInt(document.getElementById('mp_reorderQty').value)||10;
+  const unitCost   = parseFloat(document.getElementById('mp_cost').value)||0;
+  const supplier   = document.getElementById('mp_supplier').value.trim()||'Unknown';
+  if (!name) { toast('Part name is required','error'); return; }
+  const id = 'part_'+Date.now();
+  parts.push({ id, name, category, stock, minStock, reorderQty, unitCost, supplier });
+  save('tmt_inventory', parts);
+  addActivity(`New part added: ${name}`);
+  toast(`Added: ${name}`,'success');
+  closeModal('addPartModal');
+  renderInventory(); updateBadges();
+}
+
+// ═══════════════════════════════════════════════════
+//  AUTO ORDERING
+// ═══════════════════════════════════════════════════
+function checkAndAutoOrder(partIds) {
+  if (!getSetting('autoOrderEnabled',true)) return;
+  const mult = getSetting('reorderMultiplier',2);
+  const needOrder = parts.filter(p=> partIds.includes(p.id) && getStatus(p)!=='ok');
+  if (!needOrder.length) return;
+  generatePO(needOrder, mult, 'auto');
+}
+
+function autoOrderAll() {
+  const mult = getSetting('reorderMultiplier',2);
+  const needOrder = parts.filter(p=>getStatus(p)!=='ok');
+  if (!needOrder.length) { toast('All parts are adequately stocked ✓','info'); return; }
+  generatePO(needOrder, mult, 'manual');
+}
+
+function singleAutoOrder(id) {
+  const mult = getSetting('reorderMultiplier',2);
+  const p = parts.find(x=>x.id===id);
+  generatePO([p], mult, 'manual');
+}
+
+function generatePO(partsToOrder, mult, trigger) {
+  const poId = 'PO-'+new Date().getFullYear()+'-'+String(orders.length+1).padStart(4,'0');
+  const items = partsToOrder.map(p=>({
+    partId:   p.id,
+    partName: p.name,
+    qty:      Math.max(p.reorderQty, Math.ceil(p.minStock * mult)),
+    unitCost: p.unitCost,
+    supplier: p.supplier,
+  }));
+  const total = items.reduce((s,i)=>s+i.qty*i.unitCost,0);
+  const po = {
+    id:        poId,
+    items,
+    total,
+    status:    'pending',
+    trigger,
+    createdAt: new Date().toISOString(),
+    notes:     trigger==='auto'?'Auto-generated after payment':'Manually created',
+  };
+  orders.unshift(po);
+  save('tmt_orders', orders);
+  addActivity(`Purchase Order ${poId} created — ${items.length} line item(s) — $${total.toFixed(2)}`);
+  toast(`📦 PO ${poId} created for ${items.length} part type(s)`, 'success');
+  updateBadges();
+  if (currentView==='orders') renderOrders();
+}
+
+// ═══════════════════════════════════════════════════
+//  PURCHASE ORDERS
+// ═══════════════════════════════════════════════════
+function renderOrders() {
+  const statusFilter = document.getElementById('orderStatus').value;
+  const filtered = orders.filter(o=>!statusFilter||o.status===statusFilter);
+  const el = document.getElementById('ordersList');
+  if (!filtered.length) {
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">🛒</div><h3>No purchase orders yet</h3><p>Purchase orders will appear here when stock drops below minimum levels after a payment.</p></div>';
+    return;
+  }
+  el.innerHTML = filtered.map(o=>{
+    const statusMap = { pending:'badge-amber', sent:'badge-blue', received:'badge-green' };
+    const labelMap  = { pending:'⏳ Pending', sent:'📤 Sent to Supplier', received:'✅ Received' };
+    const total = o.total||o.items.reduce((s,i)=>s+i.qty*i.unitCost,0);
+    return `<div class="order-card">
+      <div class="order-header">
+        <div>
+          <div class="order-id">${o.id}</div>
+          <div class="order-date">${fmtTime(o.createdAt)} · ${o.trigger==='auto'?'⚡ Auto-generated':'📝 Manual'}</div>
+          ${o.notes?`<div style="font-size:13px;color:var(--muted);margin-top:4px;">${o.notes}</div>`:''}
+        </div>
+        <span class="badge ${statusMap[o.status]}">${labelMap[o.status]}</span>
+      </div>
+      <div class="order-items">
+        ${o.items.map(i=>`
+          <div class="order-item">
+            <span>${i.partName}</span>
+            <span style="color:var(--muted)">${i.supplier}</span>
+            <span>Qty: <strong>${i.qty}</strong></span>
+            <span>$${(i.qty*i.unitCost).toFixed(2)}</span>
+          </div>`).join('')}
+        <div class="order-total"><span>Total</span><span>$${total.toFixed(2)}</span></div>
+      </div>
+      <div class="order-actions">
+        ${o.status==='pending'?`<button class="btn btn-primary btn-sm" onclick="updateOrderStatus('${o.id}','sent')">📤 Mark Sent to Supplier</button>`:''}
+        ${o.status==='sent'?`<button class="btn btn-green btn-sm" onclick="receiveOrder('${o.id}')">✅ Mark as Received</button>`:''}
+        ${o.status==='received'?`<span style="color:var(--green);font-size:13px;font-weight:600;">✅ Stock received &amp; updated</span>`:''}
+        <button class="btn btn-ghost btn-sm" onclick="deleteOrder('${o.id}')">🗑 Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateOrderStatus(id, status) {
+  const o = orders.find(x=>x.id===id);
+  if (!o) return;
+  o.status = status;
+  save('tmt_orders', orders);
+  addActivity(`Order ${id} → ${status}`);
+  toast(`Order ${id} marked as ${status}`, 'info');
+  renderOrders(); updateBadges();
+}
+
+function receiveOrder(id) {
+  const o = orders.find(x=>x.id===id);
+  if (!o) return;
+  // Add stock for each line item
+  o.items.forEach(item=>{
+    const p = parts.find(x=>x.id===item.partId);
+    if (p) { p.stock += item.qty; addActivity(`Received ${item.qty}× ${item.partName}`); }
+  });
+  o.status = 'received';
+  o.receivedAt = new Date().toISOString();
+  save('tmt_inventory', parts);
+  save('tmt_orders', orders);
+  toast(`✅ Stock updated for ${o.items.length} part(s)`, 'success');
+  renderOrders(); renderCurrentView(); updateBadges();
+}
+
+function deleteOrder(id) {
+  if (!confirm('Delete this purchase order?')) return;
+  orders = orders.filter(x=>x.id!==id);
+  save('tmt_orders', orders);
+  renderOrders(); updateBadges();
+}
+
+// ═══════════════════════════════════════════════════
+//  MANUAL ORDER MODAL
+// ═══════════════════════════════════════════════════
+function openManualOrderModal() {
+  document.getElementById('mo_part').innerHTML = parts.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  document.getElementById('mo_qty').value='';
+  document.getElementById('mo_supplier').value='';
+  document.getElementById('mo_notes').value='';
+  document.getElementById('manualOrderModal').classList.add('active');
+}
+function saveManualOrder() {
+  const partId   = document.getElementById('mo_part').value;
+  const qty      = parseInt(document.getElementById('mo_qty').value)||0;
+  const supplier = document.getElementById('mo_supplier').value||'Unknown';
+  const notes    = document.getElementById('mo_notes').value||'';
+  if (!qty) { toast('Quantity is required','error'); return; }
+  const p = parts.find(x=>x.id===partId);
+  const po = {
+    id: 'PO-'+new Date().getFullYear()+'-'+String(orders.length+1).padStart(4,'0'),
+    items: [{ partId, partName:p.name, qty, unitCost:p.unitCost, supplier }],
+    total: qty*p.unitCost,
+    status: 'pending',
+    trigger: 'manual',
+    createdAt: new Date().toISOString(),
+    notes,
+  };
+  orders.unshift(po);
+  save('tmt_orders', orders);
+  addActivity(`Manual PO created: ${p.name} × ${qty}`);
+  toast(`Order created for ${p.name}`, 'success');
+  closeModal('manualOrderModal');
+  renderOrders(); updateBadges();
+}
+
+// ═══════════════════════════════════════════════════
+//  PAYMENT LOG
+// ═══════════════════════════════════════════════════
+function renderPayments() {
+  const q = (document.getElementById('paySearch').value||'').toLowerCase();
+  const filtered = payments.filter(p=>{
+    if (!q) return true;
+    return (p.quoteNumber||'').toLowerCase().includes(q)||(p.customer||'').toLowerCase().includes(q)||(p.device||'').toLowerCase().includes(q);
+  });
+  const body = document.getElementById('paymentBody');
+  if (!filtered.length) {
+    body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No payments logged yet. Mark jobs as paid in the Quote System.</td></tr>';
+    return;
+  }
+  body.innerHTML = filtered.map(p=>`
+    <tr>
+      <td><strong>${p.quoteNumber||'—'}</strong></td>
+      <td>${p.customer||'—'}</td>
+      <td style="font-size:13px">${p.device||'—'}</td>
+      <td style="font-size:12px;color:var(--muted)">${(p.repairs||[]).map(r=>r.name).join(', ')}</td>
+      <td>${p.serviceType==='mobile'?'🚗 Mobile':'🏪 Store'}</td>
+      <td style="font-weight:700;color:var(--green)">$${p.total||0}</td>
+      <td style="font-size:12px;color:var(--muted)">${fmtTime(p.paidAt)}</td>
+      <td><span class="badge badge-green">✓ Deducted</span></td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+//  CHECK FOR NEW PAYMENTS (from quote system)
+// ═══════════════════════════════════════════════════
+function checkForNewPayments() {
+  const pending = load('tmt_pending_payment', null);
+  if (!pending) return;
+  // Deduct stock
+  const affectedPartIds = [];
+  (pending.repairs||[]).forEach(r=>{
+    const repairName = r.name;
+    const partId = REPAIR_PART_MAP[repairName];
+    if (!partId) return;
+    const part = parts.find(p=>p.id===partId);
+    if (!part) return;
+    part.stock = Math.max(0, part.stock-1);
+    affectedPartIds.push(partId);
+  });
+  // Also deduct adhesive for screen jobs
+  const hasScreen = (pending.repairs||[]).some(r=>r.name.includes('Screen'));
+  if (hasScreen) {
+    const adhesive = parts.find(p=>p.id==='adhesive');
+    if (adhesive) { adhesive.stock=Math.max(0,adhesive.stock-1); affectedPartIds.push('adhesive'); }
+  }
+  save('tmt_inventory', parts);
+  // Log payment
+  payments.unshift({ ...pending, paidAt: pending.paidAt||new Date().toISOString() });
+  save('tmt_payments', payments);
+  // Clear the pending flag
+  localStorage.removeItem('tmt_pending_payment');
+  addActivity(`Payment received: ${pending.quoteNumber} — ${pending.customer} — $${pending.total}`);
+  toast(`💳 Payment logged: ${pending.quoteNumber}`, 'success');
+  // Auto-order if needed
+  if (getSetting('autoOrderEnabled',true)) {
+    const mult = getSetting('reorderMultiplier',2);
+    const needOrder = parts.filter(p=>affectedPartIds.includes(p.id)&&getStatus(p)!=='ok');
+    if (needOrder.length) {
+      generatePO(needOrder, mult, 'auto');
+      toast(`⚡ Auto-order triggered for ${needOrder.length} low-stock part(s)`, 'warn');
+    }
+  }
+  updateBadges(); renderCurrentView();
+}
+
+// ═══════════════════════════════════════════════════
+//  ACTIVITY LOG
+// ═══════════════════════════════════════════════════
+function addActivity(text) {
+  const log = load('tmt_activity_log', []);
+  log.unshift({ text, time:new Date().toISOString() });
+  save('tmt_activity_log', log.slice(0,50));
+}
+
+// ═══════════════════════════════════════════════════
+//  EXPORTS
+// ═══════════════════════════════════════════════════
+function exportOrders() {
+  const rows = [['PO #','Status','Created','Items','Total']];
+  orders.forEach(o=>rows.push([o.id,o.status,o.createdAt,o.items.length,'$'+o.total.toFixed(2)]));
+  downloadCSV(rows,'purchase_orders.csv');
+}
+function exportPayments() {
+  const rows = [['Quote #','Customer','Device','Total','Paid At']];
+  payments.forEach(p=>rows.push([p.quoteNumber,p.customer,p.device,'$'+p.total,p.paidAt]));
+  downloadCSV(rows,'payment_log.csv');
+}
+function downloadCSV(rows, filename) {
+  const csv = rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=filename; a.click();
+}
+
+// ═══════════════════════════════════════════════════
+//  SETTINGS ACTIONS
+// ═══════════════════════════════════════════════════
+function resetInventory() {
+  if (!confirm('Reset all inventory to default stock levels?')) return;
+  parts = JSON.parse(JSON.stringify(DEFAULT_PARTS));
+  save('tmt_inventory', parts);
+  toast('Inventory reset to defaults','success');
+  renderCurrentView(); updateBadges();
+}
+function clearOrders() {
+  if (!confirm('Clear all purchase orders? This cannot be undone.')) return;
+  orders=[]; save('tmt_orders',orders);
+  toast('Purchase orders cleared','info');
+  renderOrders(); updateBadges();
+}
+function clearPayments() {
+  if (!confirm('Clear all payment records?')) return;
+  payments=[]; save('tmt_payments',payments);
+  toast('Payment log cleared','info');
+  renderPayments();
+}
+
+// ═══════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════
+function fmtTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  const now = new Date();
+  const diff = (now-d)/1000;
+  if (diff<60)   return 'Just now';
+  if (diff<3600) return Math.floor(diff/60)+'m ago';
+  if (diff<86400) return Math.floor(diff/3600)+'h ago';
+  return d.toLocaleDateString('en-AU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+}
+
+function startClock() {
+  function tick() {
+    const now=new Date();
+    document.getElementById('topbarTime').textContent=now.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+  tick(); setInterval(tick,1000);
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function toast(msg, type='info') {
+  const c=document.getElementById('toastContainer');
+  const t=document.createElement('div');
+  const icons={success:'✅',warn:'⚠️',error:'❌',info:'ℹ️'};
+  t.className=`toast ${type}`;
+  t.innerHTML=`<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(()=>{ t.classList.add('removing'); setTimeout(()=>t.remove(),300); },4000);
+}
+
+// Close modals on backdrop click
+['addPartModal','manualOrderModal','adjustModal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){ if(e.target===this) closeModal(id); });
+});
+</script>
+</body>
+</html>
