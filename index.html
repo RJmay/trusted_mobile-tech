@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustedMobile Tech – iPhone, MacBook & iPad Repairs</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"
+    rel="stylesheet">
+  <script>
+    window.initGoogleMaps = function () { if (typeof initAutocomplete === 'function') initAutocomplete(); };
+  </script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgXAmCYsFlvDyCL-s6KoYEHcDiUbIvE7g&libraries=places&callback=initGoogleMaps"
+    async defer></script>
+  <style>
+    :root {
+      --brand: #0096c7;
+      --brand2: #00b4d8;
+      --grad: linear-gradient(135deg, #00b4d8, #0096c7);
+      --dark: #0f172a;
+      --text: #1e293b;
+      --muted: #64748b;
+      --light: #f8fafc;
+      --border: #e2e8f0;
+      --green: #10b981;
+      --green2: #059669;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --r: 14px;
+      --shadow: 0 2px 12px rgba(0, 0, 0, .07);
+      --font: 'DM Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--light);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ═══ HEADER ═══ */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, .92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: box-shadow .3s;
+    }
+
+    .header.scrolled {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .logo-box {
+      width: 46px;
+      height: 46px;
+      background: var(--grad);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-box svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .logo-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -.5px;
+    }
+
+    .logo-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: 2.5px;
+      margin-top: -2px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-link {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s;
+      border: none;
+      background: none;
+      font-family: var(--font);
+    }
+
+    .nav-link:hover {
+      color: var(--brand);
+      background: rgba(0, 150, 199, .06);
+    }
+
+    .nav-link.active {
+      color: var(--brand);
+      background: rgba(0, 150, 199, .1);
+    }
+
+    .nav-cta {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--grad);
+      border: none;
+      cursor: pointer;
+      font-family: var(--font);
+      box-shadow: 0 2px 10px rgba(0, 150, 199, .3);
+      transition: all .2s;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 150, 199, .4);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 26px;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    /* ═══ SECTIONS ═══ */
+    .section {
+      display: none;
+      animation: fadeUp .4s ease-out;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ═══ HOME ═══ */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 150, 199, .08);
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: 30px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(0, 150, 199, .15);
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 20px;
+      letter-spacing: -1.5px;
+    }
+
+    .hero h1 .hl {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .25s;
+      border: none;
+      font-family: var(--font);
+    }
+
+    .hero-btn.primary {
+      background: var(--grad);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(0, 150, 199, .35);
+    }
+
+    .hero-btn.primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0, 150, 199, .4);
+    }
+
+    .hero-btn.secondary {
+      background: #fff;
+      color: var(--dark);
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-btn.secondary:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    /* ═══ DEVICE CARDS (Home) ═══ */
+    .devices-section {
+      padding: 0 0 80px;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-head h2 {
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -.5px;
+      margin-bottom: 10px;
+    }
+
+    .section-head p {
+      font-size: 17px;
+      color: var(--muted);
+    }
+
+    .device-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .device-card {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .35s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .device-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .35s;
+    }
+
+    .device-card.iphone {
+      border-bottom: 4px solid var(--brand);
+    }
+
+    .device-card.iphone::before {
+      background: linear-gradient(135deg, rgba(0, 180, 216, .04), rgba(0, 150, 199, .07));
+    }
+
+    .device-card.macbook {
+      border-bottom: 4px solid #6366f1;
+    }
+
+    .device-card.macbook::before {
+      background: linear-gradient(135deg, rgba(99, 102, 241, .04), rgba(79, 70, 229, .07));
+    }
+
+    .device-card.ipad {
+      border-bottom: 4px solid var(--green);
+    }
+
+    .device-card.ipad::before {
+      background: linear-gradient(135deg, rgba(16, 185, 129, .04), rgba(5, 150, 105, .07));
+    }
+
+    .device-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .12);
+    }
+
+    .device-card:hover::before {
+      opacity: 1;
+    }
+
+    .dc-icon {
+      font-size: 72px;
+      margin-bottom: 20px;
+      display: block;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .1));
+    }
+
+    .dc-name {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .dc-desc {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .dc-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .iphone .dc-badge {
+      background: var(--grad);
+    }
+
+    .macbook .dc-badge {
+      background: linear-gradient(135deg, #818cf8, #6366f1);
+    }
+
+    .ipad .dc-badge {
+      background: linear-gradient(135deg, #34d399, var(--green));
+    }
+
+    /* ═══ WHY US ═══ */
+    .why-section {
+      padding: 80px 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .why-card {
+      text-align: center;
+      padding: 32px 20px;
+    }
+
+    .why-icon {
+      font-size: 44px;
+      margin-bottom: 16px;
+    }
+
+    .why-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .why-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ═══ QUOTE FLOW ═══ */
+    .quote-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 24px 60px;
+    }
+
+    .progress-bar {
+      background: #fff;
+      padding: 26px 30px;
+      border-radius: var(--r);
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      position: relative;
+    }
+
+    .step-circle {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #94a3b8;
+      transition: all .3s;
+      z-index: 2;
+    }
+
+    .step.active .step-circle {
+      background: var(--grad);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0, 150, 199, .35);
+    }
+
+    .step.completed .step-circle {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .step.active .step-label {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .step-connector {
+      position: absolute;
+      top: 23px;
+      left: 50%;
+      width: 100%;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+
+    .step.completed .step-connector {
+      background: var(--green);
+    }
+
+    .step:last-child .step-connector {
+      display: none;
+    }
+
+    .qcontainer {
+      background: #fff;
+      border-radius: var(--r);
+      padding: 48px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .qtitle {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 12px;
+      letter-spacing: -.5px;
+    }
+
+    .qtitle .hl {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .qsub {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .bc-item {
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .bc-item:hover {
+      opacity: .7;
+    }
+
+    .bc-item.iphone {
+      color: var(--brand);
+    }
+
+    .bc-item.macbook {
+      color: #6366f1;
+    }
+
+    .bc-item.ipad {
+      color: var(--green);
+    }
+
+    .bc-item.home {
+      color: var(--muted);
+    }
+
+    .bc-sep {
+      color: #cbd5e1;
+      font-size: 16px;
+    }
+
+    .bc-current {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    /* Search */
+    .search-box {
+      max-width: 580px;
+      margin: 0 auto 36px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 16px 52px 16px 20px;
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      font-size: 16px;
+      font-family: var(--font);
+      transition: all .3s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(0, 150, 199, .08);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--brand);
+      font-size: 20px;
+    }
+
+    .search-results-header {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Category grid (inside quote) */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .cat-card {
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .3s;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .1);
+    }
+
+    .cat-card.iphone:hover {
+      border-color: var(--brand);
+    }
+
+    .cat-card.macbook:hover {
+      border-color: #6366f1;
+    }
+
+    .cat-card.ipad:hover {
+      border-color: var(--green);
+    }
+
+    .cat-icon {
+      font-size: 60px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .cat-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .cat-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .cat-badge {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .iphone .cat-badge {
+      background: var(--grad);
+    }
+
+    .macbook .cat-badge {
+      background: linear-gradient(135deg, #818cf8, #6366f1);
+    }
+
+    .ipad .cat-badge {
+      background: linear-gradient(135deg, #34d399, var(--green));
+    }
+
+    /* Model / Repair cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 22px;
+      margin-top: 24px;
+    }
+
+    .card {
+      border: 2px solid var(--border);
+      border-radius: var(--r);
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .3s;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad);
+      transform: scaleX(0);
+      transition: transform .3s;
+    }
+
+    .card:hover {
+      border-color: var(--brand);
+      transform: translateY(-6px);
+      box-shadow: 0 10px 28px rgba(0, 150, 199, .15);
+    }
+
+    .card:hover::before,
+    .card.selected::before {
+      transform: scaleX(1);
+    }
+
+    .card.selected {
+      border-color: var(--brand);
+      background: linear-gradient(135deg, #e6f7fb, #f0fbff);
+      border-width: 3px;
+    }
+
+    .model-img {
+      width: 100%;
+      height: 140px;
+      object-fit: contain;
+      margin-bottom: 14px;
+    }
+
+    .model-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--dark);
+    }
+
+    .series-count {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      background: #f1f5f9;
+      border-radius: 20px;
+      padding: 3px 10px;
+      display: inline-block;
+    }
+
+    .repair-icon {
+      font-size: 50px;
+      margin-bottom: 14px;
+    }
+
+    .repair-name {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .repair-price {
+      font-size: 26px;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .repair-time {
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .price-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .checkbox {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 28px;
+      height: 28px;
+      border: 3px solid var(--brand);
+      border-radius: 6px;
+      background: #fff;
+      display: none;
+      transition: all .3s;
+    }
+
+    .repair-card .checkbox {
+      display: block;
+    }
+
+    .repair-card.selected .checkbox {
+      background: var(--grad);
+      box-shadow: 0 2px 8px rgba(0, 150, 199, .3);
+    }
+
+    .repair-card.selected .checkbox::after {
+      content: '✓';
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    /* Buttons */
+    .btn {
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .25s;
+      width: 100%;
+      margin-top: 28px;
+      box-shadow: 0 4px 14px rgba(0, 150, 199, .25);
+      font-family: var(--font);
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 150, 199, .35);
+    }
+
+    .btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .back-btn {
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px rgba(0, 150, 199, .25);
+      transition: all .25s;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Summary */
+    .summary-box {
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      padding: 28px;
+      border-radius: var(--r);
+      margin-top: 28px;
+      border: 2px solid var(--brand);
+      box-shadow: 0 2px 10px rgba(0, 150, 199, .08);
+    }
+
+    .summary-title {
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+    }
+
+    .summary-row:last-child {
+      border: none;
+      font-weight: 800;
+      font-size: 20px;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 8px;
+      padding-top: 16px;
+      border-top: 2px solid var(--brand);
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 15px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: var(--font);
+      transition: all .3s;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(0, 150, 199, .08);
+    }
+
+    .form-textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    /* Location */
+    .location-section {
+      background: linear-gradient(135deg, #f0fbff, #e6f7fb);
+      border: 2px solid var(--brand);
+      border-radius: var(--r);
+      padding: 28px;
+      margin: 28px 0;
+    }
+
+    .location-section-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .location-section-sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    .service-type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .service-type-card {
+      border: 3px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 16px;
+      cursor: pointer;
+      transition: all .3s;
+      background: #fff;
+      text-align: center;
+    }
+
+    .service-type-card:hover {
+      border-color: var(--brand);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0, 150, 199, .12);
+    }
+
+    .service-type-card.selected {
+      border-color: var(--brand);
+      box-shadow: 0 4px 14px rgba(0, 150, 199, .18);
+    }
+
+    .service-type-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .service-type-name {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .service-type-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .service-type-badge {
+      display: inline-block;
+      background: var(--grad);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    .service-type-badge.green {
+      background: linear-gradient(135deg, var(--green), var(--green2));
+    }
+
+    .store-details {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: none;
+      gap: 10px;
+      flex-direction: column;
+    }
+
+    .store-details.visible {
+      display: flex;
+    }
+
+    .store-detail-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+    }
+
+    .store-detail-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    #pickupAddressBlock {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .address-wrapper {
+      position: relative;
+    }
+
+    .address-input {
+      width: 100%;
+      padding: 14px 48px 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: var(--font);
+      transition: all .3s;
+    }
+
+    .address-input:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(0, 150, 199, .08);
+    }
+
+    .address-input.valid {
+      border-color: var(--green);
+    }
+
+    .address-input.invalid {
+      border-color: var(--red);
+    }
+
+    .address-icon {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    .address-error {
+      color: var(--red);
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+      background: #fff5f5;
+      border-radius: 6px;
+      padding: 8px 12px;
+      border-left: 3px solid var(--red);
+    }
+
+    .address-ok {
+      color: var(--green);
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+      background: #f0fdf4;
+      border-radius: 6px;
+      padding: 8px 12px;
+      border-left: 3px solid var(--green);
+    }
+
+    .zone-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .zone-pill {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .zone-pill.sc {
+      background: #e6f7fb;
+      color: var(--brand);
+      border: 1px solid var(--brand);
+    }
+
+    .zone-pill.bne {
+      background: #fef3c7;
+      color: #d97706;
+      border: 1px solid #d97706;
+    }
+
+    /* Success page */
+    .success-box {
+      text-align: center;
+      padding: 20px 20px 50px;
+    }
+
+    .success-icon {
+      width: 110px;
+      height: 110px;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      margin: 0 auto 28px;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, .3);
+      animation: pop .5s ease-out;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(0)
+      }
+
+      50% {
+        transform: scale(1.1)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .success-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+
+    .success-subtitle {
+      font-size: 22px;
+      color: var(--brand);
+      margin-bottom: 28px;
+      font-weight: 700;
+    }
+
+    .thankyou-banner {
+      background: var(--grad);
+      color: #fff;
+      border-radius: var(--r);
+      padding: 28px 36px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 6px 22px rgba(0, 150, 199, .25);
+    }
+
+    .thankyou-banner-icon {
+      font-size: 46px;
+      flex-shrink: 0;
+    }
+
+    .thankyou-banner h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .thankyou-banner p {
+      font-size: 14px;
+      opacity: .9;
+    }
+
+    .quote-number {
+      background: linear-gradient(135deg, #e6f7fb, #f0fbff);
+      padding: 12px 22px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-bottom: 18px;
+      border: 2px solid var(--brand);
+    }
+
+    .quote-number strong {
+      color: var(--brand);
+      font-size: 17px;
+    }
+
+    .next-steps {
+      margin: 28px 0;
+      text-align: left;
+    }
+
+    .next-steps-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 38px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--brand), var(--border));
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -30px;
+      top: 3px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--grad);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 150, 199, .25);
+    }
+
+    .timeline-content strong {
+      font-size: 15px;
+      color: var(--dark);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .timeline-content span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, #e6f7fb, #f0fbff);
+      padding: 22px;
+      border-radius: 12px;
+      border-left: 5px solid var(--brand);
+      margin: 28px 0;
+      text-align: left;
+    }
+
+    .info-box strong {
+      display: block;
+      color: var(--brand);
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .info-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .info-box li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+      font-size: 14px;
+    }
+
+    .info-box li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .print-btn {
+      background: #fff;
+      color: var(--brand);
+      border: 2px solid var(--brand);
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font);
+    }
+
+    .print-btn:hover {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    /* ═══ REVIEWS ═══ */
+    .reviews-section {
+      padding: 60px 0 80px;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .review-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      transition: transform .3s;
+    }
+
+    .review-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .review-stars {
+      color: #fbbf24;
+      font-size: 18px;
+      margin-bottom: 14px;
+      letter-spacing: 2px;
+    }
+
+    .review-text {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 18px;
+      font-style: italic;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .review-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .review-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--dark);
+    }
+
+    .review-date {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .reviews-summary {
+      text-align: center;
+      margin-top: 50px;
+      padding: 36px;
+      background: #fff;
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .reviews-big-num {
+      font-size: 64px;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ═══ CONTACT ═══ */
+    .contact-section {
+      padding: 60px 0 80px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      margin-top: 40px;
+    }
+
+    .contact-info-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 36px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-item:last-child {
+      border-bottom: none;
+    }
+
+    .contact-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      background: rgba(0, 150, 199, .08);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-label {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .contact-form-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 36px;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-form-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .contact-form-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .contact-hours {
+      background: linear-gradient(135deg, #e6f7fb, #f0fbff);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 24px;
+    }
+
+    .contact-hours h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .contact-hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* ═══ FOOTER ═══ */
+    .footer {
+      background: var(--dark);
+      color: #94a3b8;
+      padding: 50px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer h3 {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .footer p,
+    .footer a {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #94a3b8;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--brand2);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1e293b;
+      padding-top: 20px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    /* ═══ MODAL ═══ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px;
+      max-width: 620px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #f1f5f9;
+      border: none;
+      font-size: 26px;
+      color: var(--muted);
+      cursor: pointer;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all .2s;
+    }
+
+    .modal-close:hover {
+      background: var(--border);
+      color: var(--dark);
+    }
+
+    .modal-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+
+    .quality-options {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .quality-option {
+      border: 3px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 26px;
+      cursor: pointer;
+      transition: all .3s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+    }
+
+    .quality-option:hover {
+      border-color: var(--brand);
+      background: #f8fbff;
+      transform: translateX(4px);
+    }
+
+    .quality-option.selected {
+      border-color: var(--brand);
+      background: linear-gradient(135deg, #e6f7fb, #f0fbff);
+      box-shadow: 0 3px 12px rgba(0, 150, 199, .15);
+    }
+
+    .quality-info {
+      flex: 1;
+    }
+
+    .quality-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .quality-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .quality-price {
+      font-size: 28px;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .modal-btn {
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 24px;
+      box-shadow: 0 3px 12px rgba(0, 150, 199, .25);
+      font-family: var(--font);
+      transition: all .2s;
+    }
+
+    .modal-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .modal-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media(max-width:900px) {
+      .header {
+        padding: 0 16px;
+      }
+
+      .nav {
+        display: none;
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        padding: 16px;
+        border-bottom: 2px solid var(--border);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, .1);
+        z-index: 99;
+      }
+
+      .nav.open {
+        display: flex;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .device-cards,
+      .cat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .qcontainer {
+        padding: 24px;
+      }
+
+      .two-col,
+      .service-type-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quality-option {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .thankyou-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .header,
+      .nav,
+      .progress-bar,
+      .back-btn,
+      .btn,
+      .print-btn,
+      .footer {
+        display: none !important;
+      }
+
+      .qcontainer {
+        box-shadow: none;
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="logo" onclick="showSection('home')">
+      <div class="logo-box"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 50 Q50 30 70 50 Q50 70 30 50" fill="#fff" opacity=".3" />
+          <ellipse cx="35" cy="45" rx="3" ry="3" fill="#fff" />
+          <path d="M50 50 Q60 45 75 48" stroke="#fff" stroke-width="3" fill="none" />
+          <circle cx="55" cy="35" r="2" fill="#fff" />
+        </svg></div>
+      <div>
+        <div class="logo-name">TRUSTEDMOBILE</div>
+        <div class="logo-tag">TECH</div>
+      </div>
+    </div>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
+    <nav class="nav" id="mainNav">
+      <button class="nav-link active" data-section="home" onclick="showSection('home')">Home</button>
+      <button class="nav-link" data-section="quote" onclick="showSection('quote')">Get a Quote</button>
+      <button class="nav-link" data-section="reviews" onclick="showSection('reviews')">Reviews</button>
+      <button class="nav-link" data-section="contact" onclick="showSection('contact')">Contact Us</button>
+      <button class="nav-cta" onclick="showSection('quote')">Get Quote →</button>
+    </nav>
+  </header>
+
+  <!-- ═══════ HOME ═══════ -->
+  <section class="section active" id="sec-home">
+    <div class="wrap">
+      <div class="hero">
+        <div class="hero-badge">⚡ Sunshine Coast & Brisbane's Trusted Repair Experts</div>
+        <h1>Expert <span class="hl">Device Repairs</span><br>Done Right, Done Fast</h1>
+        <p>iPhone, MacBook &amp; iPad repairs with same-day turnaround, 90-day warranty, and no-fix-no-fee guarantee.
+          Drop off or we come to you.</p>
+        <div class="hero-btns">
+          <button class="hero-btn primary" onclick="showSection('quote')">Get an Instant Quote →</button>
+          <button class="hero-btn secondary" onclick="showSection('contact')">📞 Contact Us</button>
+        </div>
+      </div>
+    </div>
+    <div class="wrap devices-section">
+      <div class="section-head">
+        <h2>What Do You Need Repaired?</h2>
+        <p>Select your device to get started with a free, instant quote</p>
+      </div>
+      <div class="device-cards">
+        <div class="device-card iphone" onclick="startQuote('iPhone')">
+          <span class="dc-icon">📱</span>
+          <div class="dc-name">iPhone</div>
+          <div class="dc-desc">Screen, battery, camera, charging &amp; more — iPhone 11 through 17 series</div>
+          <span class="dc-badge">8 model lines</span>
+        </div>
+        <div class="device-card macbook" onclick="startQuote('MacBook')">
+          <span class="dc-icon">💻</span>
+          <div class="dc-name">MacBook</div>
+          <div class="dc-desc">Keyboard, battery, screen, trackpad — MacBook Air &amp; Pro repairs</div>
+          <span class="dc-badge">4 model lines</span>
+        </div>
+        <div class="device-card ipad" onclick="startQuote('iPad')">
+          <span class="dc-icon">📲</span>
+          <div class="dc-name">iPad</div>
+          <div class="dc-desc">Screen, charging, battery — iPad, mini, Air &amp; Pro all generations</div>
+          <span class="dc-badge">4 model lines</span>
+        </div>
+      </div>
+    </div>
+    <div class="why-section">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Why Choose TrustedMobile Tech?</h2>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">⚡</div>
+            <div class="why-title">Same-Day Repairs</div>
+            <div class="why-text">Most repairs completed in 1-2 hours while you wait or go about your day.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🛡️</div>
+            <div class="why-title">90-Day Warranty</div>
+            <div class="why-text">Every repair backed by our comprehensive parts &amp; labour guarantee.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">💰</div>
+            <div class="why-title">No Fix, No Fee</div>
+            <div class="why-text">If we can't fix it, you don't pay. Simple as that, no hidden charges.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🚗</div>
+            <div class="why-title">Mobile Service</div>
+            <div class="why-text">We come to you across the Sunshine Coast &amp; Brisbane metro area.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ QUOTE ═══════ -->
+  <section class="section" id="sec-quote">
+    <div class="quote-wrap">
+      <div class="progress-bar">
+        <div class="steps">
+          <div class="step active" id="step1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Device</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step" id="step2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Repairs</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step" id="step3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Details</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step" id="step4">
+            <div class="step-circle">4</div>
+            <div class="step-label">Complete</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QP1: Device Selection -->
+      <div class="qcontainer" id="page1">
+        <div class="breadcrumb" id="breadcrumb" style="display:none"></div>
+        <div id="level0">
+          <h2 class="qtitle">What <span class="hl">device</span> do you have?</h2>
+          <p class="qsub">Select your device type to get an instant repair quote</p>
+          <div class="search-box"><input type="text" class="search-input" id="modelSearch"
+              placeholder="Search any model (e.g. iPhone 15 Pro, MacBook Air M2…)" oninput="searchAllDevices()"><span
+              class="search-icon">🔍</span></div>
+          <div id="searchResultsBox" class="hidden">
+            <div class="search-results-header" id="searchResultsHeader"></div>
+            <div class="grid" id="searchGrid"></div>
+          </div>
+          <div class="cat-grid" id="catGrid"></div>
+        </div>
+        <div id="level1" class="hidden">
+          <h2 class="qtitle" id="l1Title"></h2>
+          <p class="qsub" id="l1Sub"></p>
+          <div class="grid" id="seriesGrid"></div>
+        </div>
+        <div id="level2" class="hidden">
+          <h2 class="qtitle" id="l2Title"></h2>
+          <p class="qsub" id="l2Sub"></p>
+          <div class="grid" id="modelGrid"></div>
+        </div>
+      </div>
+
+      <!-- QP2: Repairs -->
+      <div class="qcontainer hidden" id="page2">
+        <button class="back-btn" onclick="goToPage(1)">←</button>
+        <h2 class="qtitle">What needs to be <span class="hl">repaired</span>?</h2>
+        <p class="qsub">Select all the services you need</p>
+        <div class="grid" id="repairsGrid"></div>
+        <div id="repairsSummary" class="summary-box hidden">
+          <div class="summary-title"><span>📋</span> Selected Services</div>
+          <div id="repairsList"></div>
+        </div>
+        <button class="btn" id="continueBtn" onclick="goToPage(3)" disabled>Continue to Your Details →</button>
+      </div>
+
+      <!-- QP3: Info -->
+      <div class="qcontainer hidden" id="page3">
+        <button class="back-btn" onclick="goToPage(2)">←</button>
+        <h2 class="qtitle">Almost <span class="hl">done!</span></h2>
+        <p class="qsub">Enter your details to receive your quote</p>
+        <div class="summary-box" id="finalSummary"></div>
+        <div class="location-section">
+          <div class="location-section-title">📍 Service Option</div>
+          <div class="location-section-sub">We service <strong>Sunshine Coast</strong> &amp; <strong>Brisbane</strong>.
+          </div>
+          <div class="service-type-grid">
+            <div class="service-type-card" id="stCard" onclick="selectServiceType('store')">
+              <div class="service-type-icon">🏪</div>
+              <div class="service-type-name">Drop Off at Store</div>
+              <div class="service-type-desc">Visit our Sunshine Coast store — same-day available.</div><span
+                class="service-type-badge green">Same-day</span>
+            </div>
+            <div class="service-type-card" id="muCard" onclick="selectServiceType('mobile')">
+              <div class="service-type-icon">🚗</div>
+              <div class="service-type-name">Mobile Pickup</div>
+              <div class="service-type-desc">We come to you — SC &amp; Brisbane suburbs.</div><span
+                class="service-type-badge">We come to you</span>
+            </div>
+          </div>
+          <div class="store-details" id="storeDetails">
+            <div class="store-detail-row">
+              <div class="store-detail-icon">🗺️</div>
+              <div>Shop 12, 123 Ocean St, Maroochydore QLD 4558</div>
+            </div>
+            <div class="store-detail-row">
+              <div class="store-detail-icon">🕐</div>
+              <div>Mon–Fri 9am–5:30pm | Sat 9am–3pm | Sun Closed</div>
+            </div>
+          </div>
+          <div id="pickupAddressBlock">
+            <div class="form-label" style="margin-bottom:8px">Pickup Address *</div>
+            <div class="zone-pills"><span class="zone-pill sc">📍 Sunshine Coast</span><span class="zone-pill bne">📍
+                Brisbane</span></div>
+            <div class="address-wrapper" style="margin-top:10px"><input type="text" id="pickupAddress"
+                class="address-input" placeholder="Start typing your address…" autocomplete="off"><span
+                class="address-icon" id="addressIcon">📍</span></div>
+            <div class="address-error" id="addressError">⚠️ Sorry, we only service <strong>Sunshine Coast</strong> &amp;
+              <strong>Brisbane</strong>.</div>
+            <div class="address-ok" id="addressOk">✅ Your address is within our service area!</div>
+          </div>
+        </div>
+        <form onsubmit="submitForm(event)" style="max-width:680px;margin:0 auto;">
+          <div class="two-col">
+            <div class="form-group"><label class="form-label">Full Name *</label><input type="text" class="form-input"
+                id="name" required placeholder="John Smith"></div>
+            <div class="form-group"><label class="form-label">Phone *</label><input type="tel" class="form-input"
+                id="phone" required placeholder="04XX XXX XXX"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input"
+              id="email" required placeholder="john@example.com"></div>
+          <div class="two-col">
+            <div class="form-group"><label class="form-label">Preferred Date *</label><input type="date"
+                class="form-input" id="date" required></div>
+            <div class="form-group"><label class="form-label">Preferred Time *</label><select class="form-select"
+                id="time" required>
+                <option value="">Select a time</option>
+                <option>9:00 AM</option>
+                <option>10:00 AM</option>
+                <option>11:00 AM</option>
+                <option>12:00 PM</option>
+                <option>1:00 PM</option>
+                <option>2:00 PM</option>
+                <option>3:00 PM</option>
+                <option>4:00 PM</option>
+                <option>5:00 PM</option>
+              </select></div>
+          </div>
+          <div class="form-group"><label class="form-label">Notes (Optional)</label><textarea class="form-textarea"
+              id="notes" placeholder="Tell us more about the issue…"></textarea></div>
+          <button type="submit" class="btn">Get My Quote →</button>
+        </form>
+      </div>
+
+      <!-- QP4: Thank You -->
+      <div class="qcontainer hidden" id="page4">
+        <div class="success-box">
+          <div class="success-icon">✓</div>
+          <h2 class="success-title">Thank You!</h2>
+          <h3 class="success-subtitle">Your Quote is Confirmed</h3>
+          <div class="quote-number"><strong>Quote #</strong><span id="quoteNumber"></span></div>
+          <div class="thankyou-banner">
+            <div class="thankyou-banner-icon">🎉</div>
+            <div>
+              <h3>We've received your quote, <span id="bannerName"></span>!</h3>
+              <p>Confirmation email heading to <span id="bannerEmail"></span>. We'll call shortly.</p>
+            </div>
+          </div>
+          <div class="summary-box" style="text-align:left;margin-bottom:28px;">
+            <div class="summary-title"><span>📄</span> Quote Details</div>
+            <div class="summary-row"><span><strong>Customer:</strong></span><span id="customerName"></span></div>
+            <div class="summary-row"><span><strong>Device:</strong></span><span id="quoteDevice"></span></div>
+            <div class="summary-row"><span><strong>Appointment:</strong></span><span id="quoteDateTime"></span></div>
+            <div class="summary-row"><span><strong>Service:</strong></span><span id="quoteLocation"></span></div>
+            <div id="quoteRepairsList"></div>
+          </div>
+          <div class="next-steps">
+            <div class="next-steps-title">🗓️ What Happens Next?</div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot">1</div>
+                <div class="timeline-content"><strong>Confirmation Email Sent</strong><span>Full quote details arrive
+                    within 5 minutes.</span></div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">2</div>
+                <div class="timeline-content"><strong>We'll Call to Confirm</strong><span>We'll ring <span
+                      id="confirmPhone"></span> to lock in your time.</span></div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">3</div>
+                <div class="timeline-content"><strong id="step3title">Drop Off Your Device</strong><span
+                    id="step3desc">Bring your device and photo ID to our store.</span></div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">4</div>
+                <div class="timeline-content"><strong>Repair &amp; Return</strong><span>Most repairs same-day. Payment
+                    on completion.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="info-box"><strong>Our Promise</strong>
+            <ul>
+              <li>90-day warranty on parts &amp; labour</li>
+              <li>Free diagnostic included</li>
+              <li>Genuine &amp; premium parts</li>
+              <li>No fix, no fee</li>
+            </ul>
+          </div>
+          <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px;">
+            <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+            <button class="btn" id="payBtn"
+              style="width:auto;margin-top:0;background:linear-gradient(135deg,#10b981,#059669);"
+              onclick="markAsPaid()">💳 Mark as Paid</button>
+            <button class="btn" style="width:auto;margin-top:0;" onclick="resetQuote()">New Quote</button>
+          </div>
+          <div id="paidBanner"
+            style="display:none;background:#d1fae5;border:2px solid #10b981;border-radius:12px;padding:16px 22px;margin-top:18px;text-align:center;">
+            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ REVIEWS ═══════ -->
+  <section class="section" id="sec-reviews">
+    <div class="wrap reviews-section">
+      <div class="section-head">
+        <h2>What Our Customers Say</h2>
+        <p>Real reviews from real customers on the Sunshine Coast &amp; Brisbane</p>
+      </div>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Had my iPhone 15 Pro screen replaced in under an hour. Looks brand new and the price
+            was way cheaper than Apple. Highly recommend!"</div>
+          <div class="review-author">
+            <div class="review-avatar" style="background:var(--grad)">JM</div>
+            <div>
+              <div class="review-name">Jake Mitchell</div>
+              <div class="review-date">Maroochydore · 2 weeks ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"They came to my house in Caloundra to pick up my MacBook. Battery replaced same day
+            and delivered back to me. Incredible service!"</div>
+          <div class="review-author">
+            <div class="review-avatar" style="background:linear-gradient(135deg,#818cf8,#6366f1)">SC</div>
+            <div>
+              <div class="review-name">Sarah Chen</div>
+              <div class="review-date">Caloundra · 1 month ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Fixed my daughter's iPad that Apple said was unrepairable. Water damage completely
+            resolved. These guys know what they're doing."</div>
+          <div class="review-author">
+            <div class="review-avatar" style="background:linear-gradient(135deg,#34d399,#10b981)">DW</div>
+            <div>
+              <div class="review-name">David Wilson</div>
+              <div class="review-date">Mooloolaba · 3 weeks ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Dropped my iPhone 14 in the pool. Brought it in expecting the worst — they had it
+            working perfectly within 2 hours. Absolute legends!"</div>
+          <div class="review-author">
+            <div class="review-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">BH</div>
+            <div>
+              <div class="review-name">Bella Hartley</div>
+              <div class="review-date">Noosa · 1 week ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★☆</div>
+          <div class="review-text">"Great service for my MacBook Pro keyboard repair. Only reason for 4 stars is the
+            part took an extra day, but they kept me informed the whole time."</div>
+          <div class="review-author">
+            <div class="review-avatar" style="background:var(--grad)">TK</div>
+            <div>
+              <div class="review-name">Tom Kowalski</div>
+              <div class="review-date">Brisbane CBD · 2 months ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">"Third time using TrustedMobile for different family devices. Consistent quality,
+            fair prices, and genuinely friendly team. Our go-to repair shop."</div>
+          <div class="review-author">
+            <div class="review-avatar" style="background:linear-gradient(135deg,#f472b6,#ec4899)">LP</div>
+            <div>
+              <div class="review-name">Lisa Patel</div>
+              <div class="review-date">Buderim · 1 month ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reviews-summary">
+        <div class="reviews-big-num">4.9</div>
+        <div style="color:#fbbf24;font-size:26px;letter-spacing:4px;margin:8px 0;">★★★★★</div>
+        <div style="font-size:16px;color:var(--muted);">Based on 200+ verified customer reviews</div>
+        <button class="hero-btn primary" style="margin-top:24px;" onclick="showSection('quote')">Get Your Quote Now
+          →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ CONTACT ═══════ -->
+  <section class="section" id="sec-contact">
+    <div class="wrap contact-section">
+      <div class="section-head">
+        <h2>Get in Touch</h2>
+        <p>We'd love to hear from you — drop by, call, or send us a message</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info-card">
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-label">Store Location</div>
+              <div class="contact-value">Shop 12, 123 Ocean St<br>Maroochydore QLD 4558</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-label">Phone</div>
+              <div class="contact-value">(07) 5XXX XXXX</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">info@trustedmobiletech.com.au</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🚗</div>
+            <div>
+              <div class="contact-label">Service Area</div>
+              <div class="contact-value">Sunshine Coast &amp; Brisbane Metro<br>Mobile pickup available</div>
+            </div>
+          </div>
+          <div class="contact-hours">
+            <h4>🕐 Trading Hours</h4>
+            <div class="contact-hours-row"><span>Monday – Friday</span><span
+                style="font-weight:700;color:var(--dark)">9:00am – 5:30pm</span></div>
+            <div class="contact-hours-row"><span>Saturday</span><span style="font-weight:700;color:var(--dark)">9:00am –
+                3:00pm</span></div>
+            <div class="contact-hours-row"><span>Sunday</span><span
+                style="font-weight:700;color:var(--red)">Closed</span></div>
+          </div>
+        </div>
+        <div class="contact-form-card">
+          <div class="contact-form-title">Send Us a Message</div>
+          <div class="contact-form-sub">We'll get back to you within a few hours during business hours.</div>
+          <form onsubmit="event.preventDefault();alert('Message sent! We will be in touch soon.');this.reset();">
+            <div class="form-group"><label class="form-label">Name *</label><input type="text" class="form-input"
+                required placeholder="Your name"></div>
+            <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input"
+                required placeholder="your@email.com"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input"
+                placeholder="04XX XXX XXX"></div>
+            <div class="form-group"><label class="form-label">Message *</label><textarea class="form-textarea" required
+                placeholder="How can we help?"></textarea></div>
+            <button type="submit" class="btn">Send Message →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h3>TrustedMobile Tech</h3>
+          <p>Expert iPhone, MacBook &amp; iPad repairs on the Sunshine Coast and Brisbane. Same-day service, 90-day
+            warranty, and genuine parts.</p>
+        </div>
+        <div>
+          <h3>Quick Links</h3>
+          <p><a onclick="showSection('home')" style="display:block;cursor:pointer;">Home</a><a
+              onclick="showSection('quote')" style="display:block;cursor:pointer;">Get a Quote</a><a
+              onclick="showSection('reviews')" style="display:block;cursor:pointer;">Reviews</a><a
+              onclick="showSection('contact')" style="display:block;cursor:pointer;">Contact Us</a></p>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <p>Shop 12, 123 Ocean St<br>Maroochydore QLD 4558<br><br>(07) 5XXX XXXX<br>info@trustedmobiletech.com.au</p>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2025 TrustedMobile Tech. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- QUALITY MODAL -->
+  <div class="modal-overlay" id="qualityModal">
+    <div class="modal"><button class="modal-close" onclick="closeModal()">×</button>
+      <h2 class="modal-title">Choose Screen Quality</h2>
+      <p class="modal-subtitle">Select quality level for your screen</p>
+      <div class="quality-options" id="qualityOptions"></div><button class="modal-btn" id="selectQualityBtn"
+        onclick="confirmQuality()" disabled>Add to Quote</button>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════
+    //  DEVICE TREE
+    // ═══════════════════════════════════════════════════
+    const T = {
+      iPhone: {
+        label: 'iPhone', icon: '📱', cls: 'iphone', desc: 'All iPhone models', series: {
+          'iPhone SE': { img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop', models: [{ name: 'iPhone SE (2nd gen)', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop' }, { name: 'iPhone SE (3rd gen)', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop' }] },
+          'iPhone 11': { img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop', models: [{ name: 'iPhone 11', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop' }, { name: 'iPhone 11 Pro', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop' }, { name: 'iPhone 11 Pro Max', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop' }] },
+          'iPhone 12': { img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=200&h=150&fit=crop', models: [{ name: 'iPhone 12', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=200&h=150&fit=crop' }, { name: 'iPhone 12 Mini', img: 'https://images.unsplash.com/photo-1603891220243-38c7e3f9a3f3?w=200&h=150&fit=crop' }, { name: 'iPhone 12 Pro', img: 'https://images.unsplash.com/photo-1603891219057-f6c5a01fa6b8?w=200&h=150&fit=crop' }, { name: 'iPhone 12 Pro Max', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=200&h=150&fit=crop' }] },
+          'iPhone 13': { img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=200&h=150&fit=crop', models: [{ name: 'iPhone 13', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=200&h=150&fit=crop' }, { name: 'iPhone 13 Mini', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=200&h=150&fit=crop' }, { name: 'iPhone 13 Pro', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop' }, { name: 'iPhone 13 Pro Max', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=200&h=150&fit=crop' }] },
+          'iPhone 14': { img: 'https://images.unsplash.com/photo-1663499482297-c4f3f6a8db11?w=200&h=150&fit=crop', models: [{ name: 'iPhone 14', img: 'https://images.unsplash.com/photo-1663499482297-c4f3f6a8db11?w=200&h=150&fit=crop' }, { name: 'iPhone 14 Plus', img: 'https://images.unsplash.com/photo-1663499482508-6e0c2ebbc57d?w=200&h=150&fit=crop' }, { name: 'iPhone 14 Pro', img: 'https://images.unsplash.com/photo-1663499482523-1c0d3e4b97ec?w=200&h=150&fit=crop' }, { name: 'iPhone 14 Pro Max', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=200&h=150&fit=crop' }] },
+          'iPhone 15': { img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop', models: [{ name: 'iPhone 15', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop' }, { name: 'iPhone 15 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=200&h=150&fit=crop' }, { name: 'iPhone 15 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=200&h=150&fit=crop' }, { name: 'iPhone 15 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop' }] },
+          'iPhone 16': { img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop', models: [{ name: 'iPhone 16', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop' }, { name: 'iPhone 16 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=200&h=150&fit=crop' }, { name: 'iPhone 16 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=200&h=150&fit=crop' }, { name: 'iPhone 16 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop' }] },
+          'iPhone 17': { img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop', models: [{ name: 'iPhone 17', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop' }, { name: 'iPhone 17 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=200&h=150&fit=crop' }, { name: 'iPhone 17 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=200&h=150&fit=crop' }, { name: 'iPhone 17 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop' }] },
+        }
+      },
+      MacBook: {
+        label: 'MacBook', icon: '💻', cls: 'macbook', desc: 'Air & Pro repairs', series: {
+          'MacBook Air': { img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop', models: [{ name: 'MacBook Air (M1, 2020)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop' }, { name: 'MacBook Air (M2, 2022)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop' }, { name: 'MacBook Air (M3, 2024)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop' }] },
+          'MacBook Pro 13"': { img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=200&h=150&fit=crop', models: [{ name: 'MacBook Pro 13" (M1, 2020)', img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 13" (M2, 2022)', img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=200&h=150&fit=crop' }] },
+          'MacBook Pro 14"': { img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop', models: [{ name: 'MacBook Pro 14" (M1 Pro/Max, 2021)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 14" (M2 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 14" (M3 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop' }] },
+          'MacBook Pro 16"': { img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop', models: [{ name: 'MacBook Pro 16" (M1 Pro/Max, 2021)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 16" (M2 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 16" (M3 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop' }] },
+        }
+      },
+      iPad: {
+        label: 'iPad', icon: '📲', cls: 'ipad', desc: 'All iPad models', series: {
+          'iPad': { img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop', models: [{ name: 'iPad (9th gen, 2021)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }, { name: 'iPad (10th gen, 2022)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }] },
+          'iPad mini': { img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop', models: [{ name: 'iPad mini (6th gen, 2021)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }, { name: 'iPad mini (7th gen, 2024)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }] },
+          'iPad Air': { img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop', models: [{ name: 'iPad Air (4th gen, 2020)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }, { name: 'iPad Air (5th gen, 2022)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }, { name: 'iPad Air 11" M2 (2024)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }, { name: 'iPad Air 13" M2 (2024)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }] },
+          'iPad Pro': { img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop', models: [{ name: 'iPad Pro 11" (M1, 2021)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 11" (M2, 2022)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 11" (M4, 2024)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 12.9" (M1, 2021)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 12.9" (M2, 2022)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 13" (M4, 2024)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }] },
+        }
+      }
+    };
+    const SP = { 'iPhone 11': [150, 200, 235], 'iPhone 11 Pro': [175, 210, 250], 'iPhone 11 Pro Max': [175, 250, 310], 'iPhone SE (2nd gen)': [100, 130, 160], 'iPhone SE (3rd gen)': [100, 130, 160], 'iPhone 12 Mini': [160, 200, 240], 'iPhone 12': [170, 210, 250], 'iPhone 12 Pro': [180, 220, 260], 'iPhone 12 Pro Max': [200, 240, 290], 'iPhone 13 Mini': [170, 210, 250], 'iPhone 13': [180, 220, 260], 'iPhone 13 Pro': [190, 230, 270], 'iPhone 13 Pro Max': [210, 250, 310], 'iPhone 14': [190, 230, 270], 'iPhone 14 Plus': [200, 240, 290], 'iPhone 14 Pro': [220, 260, 320], 'iPhone 14 Pro Max': [240, 290, 360], 'iPhone 15': [200, 240, 290], 'iPhone 15 Plus': [210, 250, 310], 'iPhone 15 Pro': [230, 270, 340], 'iPhone 15 Pro Max': [250, 300, 370], 'iPhone 16': [220, 260, 330], 'iPhone 16 Plus': [300, 350, 420], 'iPhone 16 Pro': [300, 370, 430], 'iPhone 16 Pro Max': [300, 390, 460], 'iPhone 17': [390, 450, 500], 'iPhone 17 Plus': [320, 400, 520], 'iPhone 17 Pro': [380, 420, 530], 'iPhone 17 Pro Max': [420, 580, 700], 'MacBook Air (M1, 2020)': [350, 450, 550], 'MacBook Air (M2, 2022)': [380, 490, 590], 'MacBook Air (M3, 2024)': [420, 530, 640], 'MacBook Pro 13" (M1, 2020)': [400, 500, 610], 'MacBook Pro 13" (M2, 2022)': [440, 540, 650], 'MacBook Pro 14" (M1 Pro/Max, 2021)': [500, 620, 750], 'MacBook Pro 14" (M2 Pro/Max, 2023)': [540, 660, 800], 'MacBook Pro 14" (M3 Pro/Max, 2023)': [580, 700, 850], 'MacBook Pro 16" (M1 Pro/Max, 2021)': [600, 740, 890], 'MacBook Pro 16" (M2 Pro/Max, 2023)': [640, 780, 940], 'MacBook Pro 16" (M3 Pro/Max, 2023)': [680, 820, 980], 'iPad (9th gen, 2021)': [180, 230, 280], 'iPad (10th gen, 2022)': [220, 270, 330], 'iPad mini (6th gen, 2021)': [250, 310, 380], 'iPad mini (7th gen, 2024)': [280, 350, 420], 'iPad Air (4th gen, 2020)': [280, 350, 420], 'iPad Air (5th gen, 2022)': [310, 380, 460], 'iPad Air 11" M2 (2024)': [340, 420, 500], 'iPad Air 13" M2 (2024)': [400, 490, 590], 'iPad Pro 11" (M1, 2021)': [380, 470, 570], 'iPad Pro 11" (M2, 2022)': [410, 500, 610], 'iPad Pro 11" (M4, 2024)': [460, 560, 680], 'iPad Pro 12.9" (M1, 2021)': [490, 600, 730], 'iPad Pro 12.9" (M2, 2022)': [520, 640, 780], 'iPad Pro 13" (M4, 2024)': [580, 710, 860] };
+    const QD = { 'C': 'Good quality – Budget-friendly', 'A+': 'Premium – Enhanced clarity', 'S+': 'Superior – Original-like performance' };
+    const IR = [{ n: 'Battery Replacement', i: '🔋', p: 89, t: '1-2h' }, { n: 'Camera Repair', i: '📷', p: 129, t: '1-2h' }, { n: 'Charging Port', i: '🔌', p: 79, t: '1-2h' }, { n: 'Water Damage', i: '💧', p: 199, t: '1-2h' }, { n: 'Speaker Repair', i: '🔊', p: 99, t: '1-2h' }, { n: 'Back Glass', i: '🔲', p: 119, t: '1-2h' }, { n: 'Power Button', i: '⚡', p: 69, t: '1-2h' }, { n: 'Volume Button', i: '🔉', p: 69, t: '1-2h' }, { n: 'Home Button', i: '⏺️', p: 89, t: '1-2h' }, { n: 'Touch ID Repair', i: '👆', p: 99, t: '1-2h' }, { n: 'Microphone Repair', i: '🎤', p: 79, t: '1-2h' }, { n: 'Earpiece Speaker', i: '🎧', p: 89, t: '1-2h' }, { n: 'Vibration Motor', i: '📳', p: 59, t: '1-2h' }, { n: 'SIM Card Tray', i: '💳', p: 49, t: '1-2h' }, { n: 'WiFi/Bluetooth', i: '📶', p: 129, t: '1-2h' }, { n: 'Logic Board Repair', i: '💻', p: 299, t: '2-4h' }, { n: 'Data Recovery', i: '💾', p: 249, t: '1-3h' }, { n: 'Software Issues', i: '⚙️', p: 79, t: '1-2h' }, { n: 'Full Diagnostic', i: '🔍', p: 39, t: '1h' }];
+    const MR = [{ n: 'Battery Replacement', i: '🔋', p: 189, t: '1-2h' }, { n: 'Keyboard Repair', i: '⌨️', p: 149, t: '2-4h' }, { n: 'Trackpad Repair', i: '🖱️', p: 129, t: '1-2h' }, { n: 'Charging Port', i: '🔌', p: 149, t: '1-2h' }, { n: 'Speaker Repair', i: '🔊', p: 129, t: '1-2h' }, { n: 'Camera Repair', i: '📷', p: 149, t: '1-2h' }, { n: 'Water Damage', i: '💧', p: 249, t: '2-4h' }, { n: 'WiFi/Bluetooth', i: '📶', p: 149, t: '2-3h' }, { n: 'Logic Board', i: '💻', p: 399, t: '3-5h' }, { n: 'SSD Upgrade', i: '💽', p: 199, t: '1-2h' }, { n: 'Data Recovery', i: '💾', p: 299, t: '1-3h' }, { n: 'Software Issues', i: '⚙️', p: 99, t: '1-2h' }, { n: 'Full Diagnostic', i: '🔍', p: 49, t: '1h' }];
+    const PR = [{ n: 'Battery Replacement', i: '🔋', p: 129, t: '1-2h' }, { n: 'Camera Repair', i: '📷', p: 129, t: '1-2h' }, { n: 'Charging Port', i: '🔌', p: 99, t: '1-2h' }, { n: 'Water Damage', i: '💧', p: 199, t: '2-4h' }, { n: 'Speaker Repair', i: '🔊', p: 99, t: '1-2h' }, { n: 'Back Glass', i: '🔲', p: 149, t: '1-2h' }, { n: 'Home Button', i: '⏺️', p: 89, t: '1-2h' }, { n: 'Touch ID Repair', i: '👆', p: 99, t: '1-2h' }, { n: 'WiFi/Bluetooth', i: '📶', p: 129, t: '2-3h' }, { n: 'Logic Board', i: '💻', p: 349, t: '2-4h' }, { n: 'Data Recovery', i: '💾', p: 249, t: '1-3h' }, { n: 'Software Issues', i: '⚙️', p: 79, t: '1-2h' }, { n: 'Full Diagnostic', i: '🔍', p: 39, t: '1h' }];
+    function repairs() { return selCat === 'MacBook' ? MR : selCat === 'iPad' ? PR : IR; }
+    const BOUNDS = { sw: { lat: -27.85, lng: 152.65 }, ne: { lat: -26.10, lng: 153.35 } };
+    const SCP = Array.from({ length: 26 }, (_, i) => (4550 + i).toString());
+    const BNEP = Array.from({ length: 180 }, (_, i) => (4000 + i).toString());
+
+    // STATE
+    let selModel = null, selRepairs = [], selQuality = null, selCat = null, selSeries = null, browseLevel = 0;
+    let serviceType = null, pickupAddress = '', addressValid = false, autocomplete = null, currentPage = 1;
+
+    // NAV
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById('sec-' + id).classList.add('active');
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.section === id));
+      document.querySelector('.nav').classList.remove('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (id === 'quote') { renderCategories(); goToPage(1); }
+    }
+    function startQuote(cat) { showSection('quote'); setTimeout(() => selectCategory(cat), 50); }
+    window.addEventListener('scroll', () => document.getElementById('header').classList.toggle('scrolled', window.scrollY > 10));
+
+    // BROWSE
+    function renderCategories() {
+      browseLevel = 0; selCat = null; selSeries = null; showLevel(0); renderBC();
+      document.getElementById('catGrid').innerHTML = Object.entries(T).map(([k, c]) => {
+        return '<div class="cat-card ' + c.cls + '" data-cat="' + k + '" onclick="selectCategory(this.dataset.cat)"><span class="cat-icon">' + c.icon + '</span><div class="cat-name">' + c.label + '</div><div class="cat-sub">' + c.desc + '</div><span class="cat-badge">' + Object.keys(c.series).length + ' lines</span></div>';
+      }).join('');
+    }
+    function selectCategory(k) {
+      selCat = k; browseLevel = 1; const c = T[k]; showLevel(1); renderBC();
+      document.getElementById('l1Title').innerHTML = 'Choose your <span class="hl">' + c.label + '</span>';
+      document.getElementById('l1Sub').textContent = 'Select the series, then your exact model';
+      document.getElementById('seriesGrid').innerHTML = Object.entries(c.series).map(([sn, s]) =>
+        '<div class="card" onclick="selectSeries(this)" data-s="' + encodeURIComponent(sn) + '"><img src="' + s.img + '" class="model-img" loading="lazy"><div class="model-name">' + sn + '</div><div class="series-count">' + s.models.length + ' model' + (s.models.length > 1 ? 's' : '') + '</div></div>').join('');
+    }
+    function selectSeries(el) {
+      const sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2; const s = T[selCat].series[sn]; showLevel(2); renderBC();
+      document.getElementById('l2Title').innerHTML = 'Select your <span class="hl">' + sn + '</span>';
+      document.getElementById('l2Sub').textContent = 'Pick your exact model';
+      document.getElementById('modelGrid').innerHTML = s.models.map(m =>
+        '<div class="card" onclick="selectModel(this)" data-n="' + encodeURIComponent(m.name) + '"><img src="' + m.img + '" class="model-img" loading="lazy"><div class="model-name">' + m.name + '</div></div>').join('');
+    }
+    function selectModel(el) { selModel = typeof el === 'string' ? el : decodeURIComponent(el.dataset.n); goToPage(2); }
+    function showLevel(n) { [0, 1, 2].forEach(i => { const e = document.getElementById('level' + i); if (e) e.classList.toggle('hidden', i !== n); }); const sr = document.getElementById('searchResultsBox'); if (sr) sr.classList.add('hidden'); document.getElementById('modelSearch').value = ''; }
+    function renderBC() {
+      const bc = document.getElementById('breadcrumb'); if (!bc) return;
+      if (browseLevel === 0) { bc.style.display = 'none'; return; } bc.style.display = 'flex';
+      const c = T[selCat]; let h = '<span class="bc-item home" onclick="renderCategories()">🏠 Devices</span>';
+      if (browseLevel === 1) h += '<span class="bc-sep">›</span><span class="bc-current">' + c.icon + ' ' + c.label + '</span>';
+      else h += '<span class="bc-sep">›</span><span class="bc-item ' + c.cls + '" data-cat="' + selCat + '" onclick="selectCategory(this.dataset.cat)">' + c.icon + ' ' + c.label + '</span><span class="bc-sep">›</span><span class="bc-current">' + selSeries + '</span>';
+      bc.innerHTML = h;
+    }
+    function searchAllDevices() {
+      const q = document.getElementById('modelSearch').value.toLowerCase().trim(); const sb = document.getElementById('searchResultsBox');
+      if (!q) { sb.classList.add('hidden'); return; } const res = [];
+      Object.entries(T).forEach(([ck, cat]) => Object.entries(cat.series).forEach(([sn, s]) => s.models.forEach(m => { if (m.name.toLowerCase().includes(q)) res.push({ ...m, ck, icon: cat.icon, label: cat.label }); })));
+      document.getElementById('searchResultsHeader').textContent = res.length ? res.length + ' result' + (res.length > 1 ? 's' : '') : 'No results';
+      document.getElementById('searchGrid').innerHTML = res.map(m => '<div class="card" onclick="selectModel(this)" data-n="' + encodeURIComponent(m.name) + '"><img src="' + m.img + '" class="model-img" loading="lazy"><div class="model-name">' + m.name + '</div><div class="series-count">' + m.icon + ' ' + m.label + '</div></div>').join('');
+      sb.classList.remove('hidden');
+    }
+
+    // REPAIRS
+    function renderRepairs() {
+      let h = ''; if (SP[selModel]) { h += '<div class="card repair-card" onclick="openQualityModal()"><div class="repair-icon">' + (selCat === 'MacBook' ? '🖥️' : selCat === 'iPad' ? '📲' : '📱') + '</div><div class="repair-name">Screen Replacement</div><div class="repair-price">From $' + SP[selModel][0] + '</div><div class="repair-time">⏱️ 1-2h</div><div class="price-badge">Starting Price</div></div>'; }
+      repairs().forEach(r => { h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + r.p + '" data-rt="' + r.t + '" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)"><div class="checkbox"></div><div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">$' + r.p + '</div><div class="repair-time">⏱️ ' + r.t + '</div></div>'; });
+      document.getElementById('repairsGrid').innerHTML = h; updateCards();
+    }
+    function openQualityModal() {
+      const p = SP[selModel], q = ['C', 'A+', 'S+'];
+      document.getElementById('qualityOptions').innerHTML = q.map((x, i) => '<div class="quality-option" data-q="' + x + '" data-p="' + p[i] + '" onclick="pickQuality(this.dataset.q,+this.dataset.p,event)"><div class="quality-info"><div class="quality-name">' + x + ' Quality</div><div class="quality-desc">' + QD[x] + '</div></div><div class="quality-price">$' + p[i] + '</div></div>').join('');
+      document.getElementById('qualityModal').classList.add('active'); selQuality = null; document.getElementById('selectQualityBtn').disabled = true;
+    }
+    function closeModal() { document.getElementById('qualityModal').classList.remove('active'); }
+    function pickQuality(q, p, e) { selQuality = { q, p }; document.querySelectorAll('.quality-option').forEach(o => o.classList.remove('selected')); e.currentTarget.classList.add('selected'); document.getElementById('selectQualityBtn').disabled = false; }
+    function confirmQuality() { if (!selQuality) return; selRepairs = selRepairs.filter(r => !r.name.includes('Screen')); selRepairs.push({ name: 'Screen Replacement (' + selQuality.q + ')', price: selQuality.p, time: '1-2h' }); closeModal(); updateCards(); updateSummary(); }
+    function toggleRepair(n, p, t) { const i = selRepairs.findIndex(r => r.name === n); if (i > -1) selRepairs.splice(i, 1); else selRepairs.push({ name: n, price: p, time: t }); updateCards(); updateSummary(); }
+    function updateCards() { document.querySelectorAll('.repair-card').forEach(c => { const cn = c.querySelector('.repair-name')?.textContent; if (!cn) return; c.classList.toggle('selected', selRepairs.some(r => cn === 'Screen Replacement' ? r.name.includes('Screen') : r.name === cn)); }); }
+    function updateSummary() {
+      const b = document.getElementById('repairsSummary'), l = document.getElementById('repairsList'), btn = document.getElementById('continueBtn');
+      if (!selRepairs.length) { b.classList.add('hidden'); btn.disabled = true; return; } b.classList.remove('hidden'); btn.disabled = false;
+      const tot = selRepairs.reduce((s, r) => s + r.price, 0);
+      l.innerHTML = selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span>Total</span><span>$' + tot + '</span></div>';
+    }
+    function showFinalSummary() {
+      const tot = selRepairs.reduce((s, r) => s + r.price, 0);
+      document.getElementById('finalSummary').innerHTML = '<div class="summary-title"><span>📋</span> Summary</div><div class="summary-row"><span><strong>Device:</strong></span><span>' + selModel + '</span></div>' + selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span>Total</span><span>$' + tot + '</span></div>';
+    }
+
+    // LOCATION
+    function selectServiceType(type) {
+      serviceType = type; document.getElementById('stCard').classList.toggle('selected', type === 'store'); document.getElementById('muCard').classList.toggle('selected', type === 'mobile');
+      if (type === 'store') { document.getElementById('storeDetails').classList.add('visible'); document.getElementById('pickupAddressBlock').style.display = 'none'; addressValid = true; }
+      else { document.getElementById('storeDetails').classList.remove('visible'); document.getElementById('pickupAddressBlock').style.display = 'block'; addressValid = false; if (typeof google !== 'undefined' && !autocomplete) initAutocomplete(); setTimeout(() => { if (typeof google !== 'undefined' && !autocomplete) initAutocomplete(); }, 500); }
+    }
+    function initAutocomplete() { const inp = document.getElementById('pickupAddress'); if (!inp || typeof google === 'undefined') return; autocomplete = new google.maps.places.Autocomplete(inp, { bounds: new google.maps.LatLngBounds(new google.maps.LatLng(BOUNDS.sw.lat, BOUNDS.sw.lng), new google.maps.LatLng(BOUNDS.ne.lat, BOUNDS.ne.lng)), componentRestrictions: { country: 'au' }, types: ['address'], fields: ['address_components', 'geometry', 'formatted_address'] }); autocomplete.addListener('place_changed', onPlaceChanged); }
+    function onPlaceChanged() { const pl = autocomplete.getPlace(); if (!pl.geometry) return; const lat = pl.geometry.location.lat(), lng = pl.geometry.location.lng(); const inB = lat >= BOUNDS.sw.lat && lat <= BOUNDS.ne.lat && lng >= BOUNDS.sw.lng && lng <= BOUNDS.ne.lng; let pc = ''; (pl.address_components || []).forEach(c => { if (c.types.includes('postal_code')) pc = c.long_name; }); const ok = inB && (SCP.includes(pc) || BNEP.includes(pc)); const inp = document.getElementById('pickupAddress'), err = document.getElementById('addressError'), okEl = document.getElementById('addressOk'), ico = document.getElementById('addressIcon'); if (ok) { pickupAddress = pl.formatted_address; addressValid = true; inp.classList.add('valid'); inp.classList.remove('invalid'); err.style.display = 'none'; okEl.style.display = 'block'; ico.textContent = '✅'; } else { pickupAddress = ''; addressValid = false; inp.classList.add('invalid'); inp.classList.remove('valid'); err.style.display = 'block'; okEl.style.display = 'none'; ico.textContent = '❌'; inp.value = ''; } }
+
+    // PAGES
+    function goToPage(pg) {
+      currentPage = pg; for (let i = 1; i <= 4; i++) { document.getElementById('page' + i).classList.add('hidden'); const s = document.getElementById('step' + i); s.classList.remove('active', 'completed'); }
+      document.getElementById('page' + pg).classList.remove('hidden'); document.getElementById('step' + pg).classList.add('active');
+      for (let i = 1; i < pg; i++)document.getElementById('step' + i).classList.add('completed');
+      if (pg === 2) { selRepairs = []; renderRepairs(); }
+      if (pg === 3) { showFinalSummary(); if (!serviceType) selectServiceType('store'); }
+      if (pg === 4) showQuoteDetails();
+      if (pg === 1) renderBC();
+      document.querySelector('.quote-wrap').scrollIntoView({ behavior: 'smooth' });
+    }
+    function setMinDate() { const inp = document.getElementById('date'); const tm = new Date(); tm.setDate(tm.getDate() + 1); inp.min = tm.toISOString().split('T')[0]; }
+    function generateQN() { const d = new Date(); return 'QT' + d.getFullYear().toString().slice(-2) + (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0') + '-' + (Math.floor(Math.random() * 9000) + 1000); }
+
+    function showQuoteDetails() {
+      document.getElementById('quoteNumber').textContent = generateQN();
+      document.getElementById('bannerName').textContent = document.getElementById('name').value;
+      document.getElementById('bannerEmail').textContent = document.getElementById('email').value;
+      document.getElementById('customerName').textContent = document.getElementById('name').value;
+      document.getElementById('quoteDevice').textContent = selModel;
+      document.getElementById('confirmPhone').textContent = document.getElementById('phone').value;
+      const d = new Date(document.getElementById('date').value);
+      document.getElementById('quoteDateTime').textContent = d.toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + document.getElementById('time').value;
+      const loc = document.getElementById('quoteLocation');
+      if (serviceType === 'store') { loc.textContent = '🏪 Drop Off – Maroochydore'; document.getElementById('step3title').textContent = 'Drop Off Your Device'; document.getElementById('step3desc').textContent = 'Bring your device and photo ID to our store.'; }
+      else { loc.textContent = '🚗 Pickup – ' + pickupAddress; document.getElementById('step3title').textContent = 'We Come to You'; document.getElementById('step3desc').textContent = 'Technician arrives at ' + pickupAddress; }
+      const tot = selRepairs.reduce((s, r) => s + r.price, 0);
+      document.getElementById('quoteRepairsList').innerHTML = selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span><strong>Total</strong></span><span><strong>$' + tot + '</strong></span></div>';
+    }
+
+    function submitForm(e) {
+      e.preventDefault();
+      if (serviceType === 'mobile' && !addressValid) { const ls = document.querySelector('.location-section'); ls.style.borderColor = '#ef4444'; document.getElementById('addressError').style.display = 'block'; document.getElementById('pickupAddress').focus(); ls.scrollIntoView({ behavior: 'smooth' }); setTimeout(() => ls.style.borderColor = '', 3000); return; }
+      const qd = { quoteNumber: generateQN(), timestamp: new Date().toISOString(), model: selModel, repairs: selRepairs, serviceType, pickupAddress: serviceType === 'mobile' ? pickupAddress : 'Store', customer: { name: document.getElementById('name').value, email: document.getElementById('email').value, phone: document.getElementById('phone').value }, appointment: { date: document.getElementById('date').value, time: document.getElementById('time').value }, notes: document.getElementById('notes').value, total: selRepairs.reduce((s, r) => s + r.price, 0) };
+      try { localStorage.setItem('lastQuote', JSON.stringify(qd)); } catch (e) { }
+      goToPage(4);
+    }
+
+    function markAsPaid() {
+      const btn = document.getElementById('payBtn'); if (btn.disabled) return; btn.disabled = true; btn.textContent = '✅ Paid'; btn.style.opacity = '.7';
+      const qd = { quoteNumber: document.getElementById('quoteNumber').textContent, customer: document.getElementById('name').value, email: document.getElementById('email').value, phone: document.getElementById('phone').value, device: selModel, repairs: selRepairs, serviceType, pickupAddress: serviceType === 'mobile' ? pickupAddress : 'Store', total: selRepairs.reduce((s, r) => s + r.price, 0), paidAt: new Date().toISOString() };
+      try { localStorage.setItem('tmt_pending_payment', JSON.stringify(qd)); } catch (e) { }
+      document.getElementById('paidBanner').style.display = 'block';
+    }
+
+    function resetQuote() {
+      selModel = null; selRepairs = []; selQuality = null; serviceType = null; selCat = null; selSeries = null; browseLevel = 0; pickupAddress = ''; addressValid = false; autocomplete = null;
+      ['name', 'email', 'phone', 'date', 'time', 'notes', 'pickupAddress', 'modelSearch'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      ['stCard', 'muCard'].forEach(id => document.getElementById(id)?.classList.remove('selected'));
+      document.getElementById('storeDetails').classList.remove('visible');
+      document.getElementById('pickupAddressBlock').style.display = 'none';
+      document.getElementById('addressError').style.display = 'none';
+      document.getElementById('addressOk').style.display = 'none';
+      document.getElementById('paidBanner').style.display = 'none';
+      const pb = document.getElementById('payBtn'); if (pb) { pb.disabled = false; pb.textContent = '💳 Mark as Paid'; pb.style.opacity = '1'; }
+      renderCategories(); goToPage(1);
+    }
+
+    document.getElementById('qualityModal').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
+    setMinDate(); renderCategories();
+  </script>
+</body>
+
+</html>
