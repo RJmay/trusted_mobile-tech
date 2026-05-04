@@ -276,6 +276,7 @@ tr:hover td{background:#f8fafc;}
   .settings-grid{grid-template-columns:1fr;}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -713,7 +714,14 @@ function lockScreen() {
 }
 
 // ═══════════════════════════════════════════════════
-//  STORAGE HELPERS
+//  SUPABASE
+// ═══════════════════════════════════════════════════
+const SUPABASE_URL='https://vgtctlzhksdffdctkylw.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZndGN0bHpoa3NkZmZkY3RreWx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4Nzc5MTAsImV4cCI6MjA5MzQ1MzkxMH0.FMkQdlIAUNvqV33t9pb5GpE8Sbx84yiPd2-7NGMolQE';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+// ═══════════════════════════════════════════════════
+//  STORAGE HELPERS (Supabase + localStorage fallback)
 // ═══════════════════════════════════════════════════
 function load(key,def) { try { const v=localStorage.getItem(key); return v?JSON.parse(v):def; } catch{ return def; } }
 function save(key,val) { try { localStorage.setItem(key,JSON.stringify(val)); } catch{} }
@@ -722,23 +730,53 @@ function getSetting(key,def) { return settings[key]!==undefined?settings[key]:de
 // ═══════════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════════
-function initApp() {
-  parts    = load('tmt_inventory', JSON.parse(JSON.stringify(DEFAULT_PARTS)));
-  orders   = load('tmt_orders', []);
-  payments = load('tmt_payments', []);
+async function initApp() {
   settings = load('tmt_settings', {});
   loadSettings();
   populateCategoryFilter();
-  refreshAll();
   startClock();
-  checkForNewPayments();
-  setInterval(checkForNewPayments, 5000);
+
+  // Load from Supabase
+  await refreshAll();
+
+  // Realtime subscription for new quotes
+  db.channel('quotes-channel')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'quotes'},payload=>{
+      console.log('New quote received:',payload.new);
+      toast('📱 New quote from '+payload.new.customer_name+' — $'+payload.new.total,'success');
+      refreshAll();
+    })
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'quotes'},payload=>{
+      if(payload.new.status==='paid'){
+        toast('💳 Payment: '+payload.new.quote_number+' — $'+payload.new.total,'success');
+      }
+      refreshAll();
+    })
+    .on('postgres_changes',{event:'*',schema:'public',table:'inventory'},()=>refreshAll())
+    .on('postgres_changes',{event:'*',schema:'public',table:'purchase_orders'},()=>refreshAll())
+    .subscribe();
 }
 
-function refreshAll() {
-  parts    = load('tmt_inventory', parts);
-  orders   = load('tmt_orders', orders);
-  payments = load('tmt_payments', payments);
+async function refreshAll() {
+  try {
+    // Load inventory
+    const {data:invData}=await db.from('inventory').select('*');
+    if(invData) parts=invData.map(p=>({id:p.id,name:p.name,category:p.category,stock:p.stock,minStock:p.min_stock,reorderQty:p.reorder_qty,unitCost:p.unit_cost,supplier:p.supplier}));
+
+    // Load purchase orders
+    const {data:poData}=await db.from('purchase_orders').select('*').order('created_at',{ascending:false});
+    if(poData) orders=poData.map(o=>({id:o.po_number,dbId:o.id,items:o.items||[],total:o.total||0,status:o.status,trigger:o.trigger_type,createdAt:o.created_at,notes:o.notes,receivedAt:o.received_at}));
+
+    // Load payments (paid quotes)
+    const {data:payData}=await db.from('quotes').select('*').order('created_at',{ascending:false});
+    if(payData) payments=payData.map(q=>({quoteNumber:q.quote_number,customer:q.customer_name,email:q.customer_email,phone:q.customer_phone,device:q.device,repairs:q.repairs||[],serviceType:q.service_type,total:q.total,paidAt:q.paid_at,createdAt:q.created_at,status:q.status,dbId:q.id}));
+  } catch(e) {
+    console.error('Supabase load error:',e);
+    // Fallback to localStorage
+    parts = load('tmt_inventory', JSON.parse(JSON.stringify(DEFAULT_PARTS)));
+    orders = load('tmt_orders', []);
+    payments = load('tmt_payments', []);
+  }
   renderCurrentView();
   updateBadges();
 }
@@ -864,9 +902,9 @@ function renderOverview() {
 
   // Activity
   const allActivity = [
-    ...payments.map(p=>({ time:p.paidAt, text:`Payment: ${p.quoteNumber} — ${p.customer} — $${p.total}`, type:'payment', dot:'var(--green)' })),
-    ...orders.map(o=>({ time:o.createdAt, text:`Order ${o.id}: ${o.items.length} part${o.items.length>1?'s':''} — ${o.status}`, type:'order', dot:o.status==='received'?'var(--green)':o.status==='sent'?'var(--brand)':'var(--amber)' })),
-  ].sort((a,b)=>new Date(b.time)-new Date(a.time)).slice(0,8);
+    ...payments.filter(p=>p.status==='paid').map(p=>({ time:p.paidAt||p.createdAt, text:'Payment: '+(p.quoteNumber||'—')+' — '+(p.customer||'—')+' — $'+(p.total||0), type:'payment', dot:'var(--green)' })),
+    ...orders.map(o=>({ time:o.createdAt, text:'Order '+(o.id||'—')+': '+(o.items||[]).length+' part'+((o.items||[]).length>1?'s':'')+' — '+(o.status||'pending'), type:'order', dot:o.status==='received'?'var(--green)':o.status==='sent'?'var(--brand)':'var(--amber)' })),
+  ].sort((a,b)=>new Date(b.time||0)-new Date(a.time||0)).slice(0,8);
 
   document.getElementById('activityList').innerHTML = allActivity.length ? allActivity.map(a=>`
     <div class="activity-item">
@@ -921,10 +959,15 @@ function updatePart(id, field, val) {
   const p = parts.find(x=>x.id===id);
   if (!p) return;
   p[field] = val;
-  save('tmt_inventory', parts);
+  const colMap={minStock:'min_stock',reorderQty:'reorder_qty',unitCost:'unit_cost',stock:'stock',name:'name',category:'category',supplier:'supplier'};
+  const dbField=colMap[field]||field;
+  const upd={};upd[dbField]=val;upd.updated_at=new Date().toISOString();
+  db.from('inventory').update(upd).eq('id',id).then(({error})=>{
+    if(error)console.error('Update error:',error);
+  });
+  db.from('activity_log').insert({message:'Updated '+p.name+' → '+field+': '+val,type:'info'}).then(()=>{});
   updateBadges();
-  addActivity(`Updated ${p.name} → ${field}: ${val}`);
-  toast(`Saved: ${p.name} ${field} = ${val}`, 'success');
+  toast('Saved: '+p.name+' '+field+' = '+val, 'success');
 }
 
 // ═══════════════════════════════════════════════════
@@ -947,9 +990,11 @@ function saveAdjustment() {
   if (type==='add')    p.stock = Math.max(0, p.stock+qty);
   if (type==='remove') p.stock = Math.max(0, p.stock-qty);
   if (type==='set')    p.stock = Math.max(0, qty);
-  save('tmt_inventory', parts);
-  addActivity(`Stock adjusted: ${p.name} ${prev} → ${p.stock} (${note})`);
-  toast(`${p.name}: stock ${prev} → ${p.stock}`, 'success');
+  db.from('inventory').update({stock:p.stock,updated_at:new Date().toISOString()}).eq('id',adjustingPartId).then(({error})=>{
+    if(error)console.error('Adjust error:',error);
+  });
+  db.from('activity_log').insert({message:'Stock adjusted: '+p.name+' '+prev+' → '+p.stock+' ('+note+')',type:'stock'}).then(()=>{});
+  toast(p.name+': stock '+prev+' → '+p.stock, 'success');
   closeModal('adjustModal');
   renderCurrentView(); updateBadges();
 }
@@ -971,10 +1016,11 @@ function saveNewPart() {
   const supplier   = document.getElementById('mp_supplier').value.trim()||'Unknown';
   if (!name) { toast('Part name is required','error'); return; }
   const id = 'part_'+Date.now();
-  parts.push({ id, name, category, stock, minStock, reorderQty, unitCost, supplier });
-  save('tmt_inventory', parts);
-  addActivity(`New part added: ${name}`);
-  toast(`Added: ${name}`,'success');
+  const newPart={id,name,category,stock,min_stock:minStock,reorder_qty:reorderQty,unit_cost:unitCost,supplier};
+  parts.push({id,name,category,stock,minStock,reorderQty,unitCost,supplier});
+  db.from('inventory').insert(newPart).then(({error})=>{if(error)console.error('Insert error:',error);});
+  db.from('activity_log').insert({message:'New part added: '+name,type:'info'}).then(()=>{});
+  toast('Added: '+name,'success');
   closeModal('addPartModal');
   renderInventory(); updateBadges();
 }
@@ -1023,9 +1069,9 @@ function generatePO(partsToOrder, mult, trigger) {
     notes:     trigger==='auto'?'Auto-generated after payment':'Manually created',
   };
   orders.unshift(po);
-  save('tmt_orders', orders);
-  addActivity(`Purchase Order ${poId} created — ${items.length} line item(s) — $${total.toFixed(2)}`);
-  toast(`📦 PO ${poId} created for ${items.length} part type(s)`, 'success');
+  db.from('purchase_orders').insert({po_number:poId,status:'pending',trigger_type:trigger,items,total,notes:trigger==='auto'?'Auto-generated after payment':'Manually created'}).then(({error})=>{if(error)console.error('PO error:',error);});
+  db.from('activity_log').insert({message:'PO '+poId+' created — '+items.length+' item(s) — $'+total.toFixed(2),type:'order'}).then(()=>{});
+  toast('📦 PO '+poId+' created for '+items.length+' part type(s)', 'success');
   updateBadges();
   if (currentView==='orders') renderOrders();
 }
@@ -1078,32 +1124,33 @@ function updateOrderStatus(id, status) {
   const o = orders.find(x=>x.id===id);
   if (!o) return;
   o.status = status;
-  save('tmt_orders', orders);
-  addActivity(`Order ${id} → ${status}`);
-  toast(`Order ${id} marked as ${status}`, 'info');
+  db.from('purchase_orders').update({status}).eq('po_number',id).then(({error})=>{if(error)console.error(error);});
+  db.from('activity_log').insert({message:'Order '+id+' → '+status,type:'order'}).then(()=>{});
+  toast('Order '+id+' marked as '+status, 'info');
   renderOrders(); updateBadges();
 }
 
-function receiveOrder(id) {
+async function receiveOrder(id) {
   const o = orders.find(x=>x.id===id);
   if (!o) return;
-  // Add stock for each line item
-  o.items.forEach(item=>{
+  for(const item of o.items){
     const p = parts.find(x=>x.id===item.partId);
-    if (p) { p.stock += item.qty; addActivity(`Received ${item.qty}× ${item.partName}`); }
-  });
+    if(p){
+      p.stock += item.qty;
+      await db.from('inventory').update({stock:p.stock,updated_at:new Date().toISOString()}).eq('id',item.partId);
+      await db.from('activity_log').insert({message:'Received '+item.qty+'× '+item.partName,type:'stock'});
+    }
+  }
   o.status = 'received';
-  o.receivedAt = new Date().toISOString();
-  save('tmt_inventory', parts);
-  save('tmt_orders', orders);
-  toast(`✅ Stock updated for ${o.items.length} part(s)`, 'success');
+  await db.from('purchase_orders').update({status:'received',received_at:new Date().toISOString()}).eq('po_number',id);
+  toast('✅ Stock updated for '+o.items.length+' part(s)', 'success');
   renderOrders(); renderCurrentView(); updateBadges();
 }
 
 function deleteOrder(id) {
   if (!confirm('Delete this purchase order?')) return;
   orders = orders.filter(x=>x.id!==id);
-  save('tmt_orders', orders);
+  db.from('purchase_orders').delete().eq('po_number',id).then(()=>{});
   renderOrders(); updateBadges();
 }
 
@@ -1134,9 +1181,9 @@ function saveManualOrder() {
     notes,
   };
   orders.unshift(po);
-  save('tmt_orders', orders);
-  addActivity(`Manual PO created: ${p.name} × ${qty}`);
-  toast(`Order created for ${p.name}`, 'success');
+  db.from('purchase_orders').insert({po_number:po.id,status:'pending',trigger_type:'manual',items:po.items,total:po.total,notes}).then(({error})=>{if(error)console.error(error);});
+  db.from('activity_log').insert({message:'Manual PO: '+p.name+' × '+qty,type:'order'}).then(()=>{});
+  toast('Order created for '+p.name, 'success');
   closeModal('manualOrderModal');
   renderOrders(); updateBadges();
 }
@@ -1152,7 +1199,7 @@ function renderPayments() {
   });
   const body = document.getElementById('paymentBody');
   if (!filtered.length) {
-    body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No payments logged yet. Mark jobs as paid in the Quote System.</td></tr>';
+    body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No quotes found in database.</td></tr>';
     return;
   }
   body.innerHTML = filtered.map(p=>`
@@ -1171,53 +1218,18 @@ function renderPayments() {
 // ═══════════════════════════════════════════════════
 //  CHECK FOR NEW PAYMENTS (from quote system)
 // ═══════════════════════════════════════════════════
+// Realtime handles new payments via Supabase subscription (see initApp)
+// This function is kept as a manual fallback
 function checkForNewPayments() {
-  const pending = load('tmt_pending_payment', null);
-  if (!pending) return;
-  // Deduct stock
-  const affectedPartIds = [];
-  (pending.repairs||[]).forEach(r=>{
-    const repairName = r.name;
-    const partId = REPAIR_PART_MAP[repairName];
-    if (!partId) return;
-    const part = parts.find(p=>p.id===partId);
-    if (!part) return;
-    part.stock = Math.max(0, part.stock-1);
-    affectedPartIds.push(partId);
-  });
-  // Also deduct adhesive for screen jobs
-  const hasScreen = (pending.repairs||[]).some(r=>r.name.includes('Screen'));
-  if (hasScreen) {
-    const adhesive = parts.find(p=>p.id==='adhesive');
-    if (adhesive) { adhesive.stock=Math.max(0,adhesive.stock-1); affectedPartIds.push('adhesive'); }
-  }
-  save('tmt_inventory', parts);
-  // Log payment
-  payments.unshift({ ...pending, paidAt: pending.paidAt||new Date().toISOString() });
-  save('tmt_payments', payments);
-  // Clear the pending flag
-  localStorage.removeItem('tmt_pending_payment');
-  addActivity(`Payment received: ${pending.quoteNumber} — ${pending.customer} — $${pending.total}`);
-  toast(`💳 Payment logged: ${pending.quoteNumber}`, 'success');
-  // Auto-order if needed
-  if (getSetting('autoOrderEnabled',true)) {
-    const mult = getSetting('reorderMultiplier',2);
-    const needOrder = parts.filter(p=>affectedPartIds.includes(p.id)&&getStatus(p)!=='ok');
-    if (needOrder.length) {
-      generatePO(needOrder, mult, 'auto');
-      toast(`⚡ Auto-order triggered for ${needOrder.length} low-stock part(s)`, 'warn');
-    }
-  }
-  updateBadges(); renderCurrentView();
+  // No longer polling localStorage — Supabase realtime handles this
+  console.log('Realtime subscription active — no polling needed');
 }
 
 // ═══════════════════════════════════════════════════
 //  ACTIVITY LOG
 // ═══════════════════════════════════════════════════
 function addActivity(text) {
-  const log = load('tmt_activity_log', []);
-  log.unshift({ text, time:new Date().toISOString() });
-  save('tmt_activity_log', log.slice(0,50));
+  db.from('activity_log').insert({message:text,type:'info'}).then(()=>{});
 }
 
 // ═══════════════════════════════════════════════════
@@ -1243,22 +1255,26 @@ function downloadCSV(rows, filename) {
 // ═══════════════════════════════════════════════════
 //  SETTINGS ACTIONS
 // ═══════════════════════════════════════════════════
-function resetInventory() {
+async function resetInventory() {
   if (!confirm('Reset all inventory to default stock levels?')) return;
+  for(const p of DEFAULT_PARTS){
+    await db.from('inventory').upsert({id:p.id,name:p.name,category:p.category,stock:p.stock,min_stock:p.minStock,reorder_qty:p.reorderQty,unit_cost:p.unitCost,supplier:p.supplier,updated_at:new Date().toISOString()});
+  }
   parts = JSON.parse(JSON.stringify(DEFAULT_PARTS));
-  save('tmt_inventory', parts);
   toast('Inventory reset to defaults','success');
   renderCurrentView(); updateBadges();
 }
-function clearOrders() {
+async function clearOrders() {
   if (!confirm('Clear all purchase orders? This cannot be undone.')) return;
-  orders=[]; save('tmt_orders',orders);
+  await db.from('purchase_orders').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  orders=[];
   toast('Purchase orders cleared','info');
   renderOrders(); updateBadges();
 }
-function clearPayments() {
-  if (!confirm('Clear all payment records?')) return;
-  payments=[]; save('tmt_payments',payments);
+async function clearPayments() {
+  if (!confirm('Clear all quote records? This cannot be undone.')) return;
+  await db.from('quotes').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  payments=[];
   toast('Payment log cleared','info');
   renderPayments();
 }
