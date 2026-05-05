@@ -2576,53 +2576,61 @@
     function initAutocomplete() {
       const container = document.getElementById('pickupAddressContainer');
       if (!container || typeof google === 'undefined') return;
-      // Clear any existing autocomplete
-      container.innerHTML = '';
+      container.innerHTML = '<input type="text" id="pickupAddress" class="address-input" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:var(--font);">';
+      const inp = document.getElementById('pickupAddress');
       try {
-        const placeAuto = new google.maps.places.PlaceAutocompleteElement({
-          componentRestrictions: { country: 'au' },
-          locationBias: new google.maps.Circle({ center: { lat: -27.0, lng: 153.0 }, radius: 80000 }),
-        });
-        container.appendChild(placeAuto);
-        autocomplete = placeAuto;
-        placeAuto.addEventListener('gmp-placeselect', async (e) => {
-          const place = e.place;
-          try {
+        // Try new PlaceAutocompleteElement first
+        if (google.maps.places.PlaceAutocompleteElement) {
+          container.innerHTML = '';
+          const placeAuto = new google.maps.places.PlaceAutocompleteElement({
+            componentRestrictions: { country: 'au' },
+          });
+          container.appendChild(placeAuto);
+          autocomplete = placeAuto;
+          placeAuto.addEventListener('gmp-placeselect', async (e) => {
+            const place = e.place;
             await place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] });
-            const loc = place.location;
-            if (!loc) return;
-            const lat = loc.lat();
-            const lng = loc.lng();
-            const inB = lat >= BOUNDS.sw.lat && lat <= BOUNDS.ne.lat && lng >= BOUNDS.sw.lng && lng <= BOUNDS.ne.lng;
-            let pc = '';
-            (place.addressComponents || []).forEach(c => {
-              if (c.types.includes('postal_code')) pc = c.longText || c.shortText || '';
-            });
-            const ok = inB && (SCP.includes(pc) || BNEP.includes(pc));
-            const err = document.getElementById('addressError');
-            const okEl = document.getElementById('addressOk');
-            const wrap = document.getElementById('pickupAddressContainer');
-            if (ok) {
-              pickupAddress = place.formattedAddress || '';
-              addressValid = true;
-              wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid');
-              err.style.display = 'none'; okEl.style.display = 'block';
-            } else {
-              pickupAddress = ''; addressValid = false;
-              wrap.classList.add('pac-invalid'); wrap.classList.remove('pac-valid');
-              err.style.display = 'block'; okEl.style.display = 'none';
-            }
-          } catch (ex) { console.error('Place fetch error:', ex); }
+            handlePlaceResult(place.location?.lat(), place.location?.lng(), place.addressComponents || [], place.formattedAddress || '');
+          });
+          console.log('Using PlaceAutocompleteElement (new API)');
+          return;
+        }
+      } catch (ex) { console.warn('PlaceAutocompleteElement unavailable:', ex); }
+      try {
+        // Fallback to legacy Autocomplete
+        const bounds = new google.maps.LatLngBounds(
+          new google.maps.LatLng(BOUNDS.sw.lat, BOUNDS.sw.lng),
+          new google.maps.LatLng(BOUNDS.ne.lat, BOUNDS.ne.lng)
+        );
+        autocomplete = new google.maps.places.Autocomplete(inp, {
+          bounds: bounds,
+          componentRestrictions: { country: 'au' },
+          types: ['address'],
+          fields: ['address_components', 'geometry', 'formatted_address']
         });
-        console.log('PlaceAutocompleteElement initialized');
-      } catch (ex) {
-        console.warn('PlaceAutocompleteElement failed, using fallback input');
-        container.innerHTML = '<input type="text" class="address-input" id="pickupAddressFallback" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;">';
-        const fb = document.getElementById('pickupAddressFallback');
-        fb.addEventListener('input', () => { pickupAddress = fb.value; addressValid = fb.value.length > 10; });
+        autocomplete.addListener('place_changed', function () {
+          const pl = autocomplete.getPlace();
+          if (!pl.geometry) return;
+          const comps = (pl.address_components || []).map(c => ({ types: c.types, longText: c.long_name, shortText: c.short_name }));
+          handlePlaceResult(pl.geometry.location.lat(), pl.geometry.location.lng(), comps, pl.formatted_address || '');
+        });
+        console.log('Using legacy Autocomplete');
+      } catch (ex2) {
+        console.warn('Legacy Autocomplete also failed:', ex2);
+        inp.addEventListener('input', () => { pickupAddress = inp.value; addressValid = inp.value.length > 10; });
       }
     }
-    function onPlaceChanged() {/* Handled by gmp-placeselect event above */ }
+    function handlePlaceResult(lat, lng, comps, formatted) {
+      const inB = lat >= BOUNDS.sw.lat && lat <= BOUNDS.ne.lat && lng >= BOUNDS.sw.lng && lng <= BOUNDS.ne.lng;
+      let pc = '';
+      comps.forEach(c => { if (c.types.includes('postal_code')) pc = c.longText || c.long_name || c.shortText || ''; });
+      const ok = inB && (SCP.includes(pc) || BNEP.includes(pc));
+      const err = document.getElementById('addressError'), okEl = document.getElementById('addressOk');
+      const wrap = document.getElementById('pickupAddressContainer');
+      if (ok) { pickupAddress = formatted; addressValid = true; wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid'); err.style.display = 'none'; okEl.style.display = 'block'; }
+      else { pickupAddress = ''; addressValid = false; wrap.classList.add('pac-invalid'); wrap.classList.remove('pac-valid'); err.style.display = 'block'; okEl.style.display = 'none'; }
+    }
+    function onPlaceChanged() { }
 
     // PAGES
     function goToPage(pg) {
