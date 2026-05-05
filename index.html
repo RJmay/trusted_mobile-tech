@@ -1817,6 +1817,550 @@
       cursor: not-allowed;
     }
 
+    /* ═══ ENHANCED DEVICE CARDS — Flagship Colors & Effects ═══ */
+
+    /* Series card base */
+    .series-card {
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .4s cubic-bezier(.23, 1, .32, 1);
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .series-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .12);
+    }
+
+    .series-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--card-color, var(--brand));
+      transition: height .4s;
+    }
+
+    .series-card:hover::before {
+      height: 6px;
+    }
+
+    .series-card:hover {
+      border-color: var(--card-color, var(--brand));
+    }
+
+    .series-tagline {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-style: italic;
+      opacity: 0;
+      transition: opacity .3s;
+      max-height: 0;
+      overflow: hidden;
+      transition: all .3s;
+    }
+
+    .series-card:hover .series-tagline {
+      opacity: 1;
+      max-height: 40px;
+      margin-top: 8px;
+    }
+
+    /* Model card with flagship color */
+    .model-card {
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .35s cubic-bezier(.23, 1, .32, 1);
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .model-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .1);
+      border-color: var(--card-color, var(--brand));
+    }
+
+    .model-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--card-color, var(--brand));
+      transform: scaleX(0);
+      transition: transform .3s;
+    }
+
+    .model-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    .model-color-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 2px solid rgba(0, 0, 0, .1);
+      margin-right: 6px;
+      vertical-align: middle;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
+    }
+
+    .model-color-name {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .model-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: var(--card-color, var(--brand));
+    }
+
+    /* ═══ HOVER EFFECTS PER GENERATION ═══ */
+
+    /* Night Mode — iPhone 11 */
+    .series-card[data-effect="nightmode"]::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 30% 40%, rgba(255, 255, 150, .08) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(255, 255, 200, .06) 0%, transparent 30%),
+        radial-gradient(circle at 50% 20%, rgba(255, 255, 180, .04) 0%, transparent 25%);
+      opacity: 0;
+      transition: opacity .5s;
+    }
+
+    .series-card[data-effect="nightmode"]:hover::after {
+      opacity: 1;
+    }
+
+    .series-card[data-effect="nightmode"]:hover {
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+    }
+
+    .series-card[data-effect="nightmode"]:hover .model-name {
+      color: #ffd700;
+    }
+
+    .series-card[data-effect="nightmode"]:hover .series-tagline {
+      color: #aaa;
+    }
+
+    .series-card[data-effect="nightmode"]:hover .series-count {
+      background: #2a2a4a;
+      color: #ccc;
+    }
+
+    /* 5G Electric — iPhone 12 */
+    .series-card[data-effect="fiveg"] {
+      overflow: hidden;
+    }
+
+    .series-card[data-effect="fiveg"]::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      pointer-events: none;
+      background: conic-gradient(from 0deg, transparent 0%, rgba(0, 180, 255, .3) 10%, transparent 20%, transparent 50%, rgba(0, 180, 255, .2) 60%, transparent 70%);
+      opacity: 0;
+      transition: opacity .4s;
+      animation: fiveg-spin 3s linear infinite paused;
+      border-radius: 18px;
+    }
+
+    .series-card[data-effect="fiveg"]:hover::after {
+      opacity: 1;
+      animation-play-state: running;
+    }
+
+    @keyframes fiveg-spin {
+      from {
+        transform: rotate(0deg)
+      }
+
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* Cinematic — iPhone 13 */
+    .series-card[data-effect="cinematic"]::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(155, 181, 206, .08) 0%, transparent 40%, transparent 60%, rgba(155, 181, 206, .06) 100%);
+      opacity: 0;
+      transition: opacity .5s;
+    }
+
+    .series-card[data-effect="cinematic"]:hover::after {
+      opacity: 1;
+    }
+
+    .series-card[data-effect="cinematic"]:hover {
+      box-shadow: 0 20px 60px rgba(155, 181, 206, .25), 0 0 40px rgba(155, 181, 206, .08);
+    }
+
+    /* Dynamic Island — iPhone 14 */
+    .series-card[data-effect="dynamicisland"]::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0px;
+      height: 0px;
+      background: #000;
+      border-radius: 20px;
+      pointer-events: none;
+      transition: all .5s cubic-bezier(.23, 1, .32, 1);
+      z-index: 3;
+    }
+
+    .series-card[data-effect="dynamicisland"]:hover::after {
+      width: 90px;
+      height: 28px;
+      top: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .3);
+    }
+
+    /* Titanium Shimmer — iPhone 15 */
+    .series-card[data-effect="titanium"]::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(105deg, transparent 40%, rgba(193, 185, 174, .4) 45%, rgba(193, 185, 174, .1) 50%, transparent 55%);
+      opacity: 0;
+      transition: opacity .3s;
+      animation: titanium-shimmer 2s ease-in-out infinite paused;
+    }
+
+    .series-card[data-effect="titanium"]:hover::after {
+      opacity: 1;
+      animation-play-state: running;
+    }
+
+    @keyframes titanium-shimmer {
+      0% {
+        transform: translateX(-100%)
+      }
+
+      100% {
+        transform: translateX(100%)
+      }
+    }
+
+    /* Camera Control — iPhone 16 */
+    .series-card[data-effect="camera"]::after {
+      content: '';
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      width: 0px;
+      height: 0px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(191, 164, 143, .6) 0%, transparent 70%);
+      pointer-events: none;
+      transition: all .4s;
+    }
+
+    .series-card[data-effect="camera"]:hover::after {
+      width: 60px;
+      height: 60px;
+      box-shadow: 0 0 20px rgba(191, 164, 143, .3);
+    }
+
+    /* Cosmic Pulse — iPhone 17 */
+    .series-card[data-effect="cosmic"]::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(232, 101, 26, .15) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .4s;
+      animation: cosmic-pulse 2s ease-in-out infinite paused;
+    }
+
+    .series-card[data-effect="cosmic"]:hover::after {
+      opacity: 1;
+      animation-play-state: running;
+    }
+
+    @keyframes cosmic-pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: .6
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 1
+      }
+    }
+
+    .series-card[data-effect="cosmic"]:hover {
+      box-shadow: 0 20px 50px rgba(232, 101, 26, .2), 0 0 30px rgba(232, 101, 26, .08);
+    }
+
+    /* Air Float — MacBook Air */
+    .series-card[data-effect="air"]::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 60%, rgba(126, 181, 214, .1) 100%);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+
+    .series-card[data-effect="air"]:hover::after {
+      opacity: 1;
+    }
+
+    .series-card[data-effect="air"]:hover {
+      transform: translateY(-14px);
+      box-shadow: 0 24px 55px rgba(126, 181, 214, .2);
+    }
+
+    /* Pro Depth — MacBook Pro / iPad Pro */
+    .series-card[data-effect="pro"]::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(29, 29, 31, .05) 0%, transparent 50%, rgba(29, 29, 31, .03) 100%);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+
+    .series-card[data-effect="pro"]:hover::after {
+      opacity: 1;
+    }
+
+    .series-card[data-effect="pro"]:hover {
+      box-shadow: 0 20px 50px rgba(29, 29, 31, .15);
+    }
+
+    /* ═══ FEATURE PANEL ═══ */
+    .feature-panel {
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin: 20px 0 28px;
+      animation: panelSlideIn .3s ease-out;
+      position: relative;
+    }
+
+    @keyframes panelSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .feature-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .feature-panel-icon {
+      font-size: 42px;
+      flex-shrink: 0;
+    }
+
+    .feature-panel-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .feature-panel-tagline {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .feature-panel-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #e2e8f0;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+      color: var(--muted);
+    }
+
+    .feature-panel-close:hover {
+      background: #cbd5e1;
+      color: var(--dark);
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .feature-item::before {
+      content: '✦';
+      color: var(--panel-color, var(--brand));
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* Model feature panel (more detailed) */
+    .model-feature-panel {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin: 20px 0;
+      animation: panelSlideIn .3s ease-out;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .model-feature-img {
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+
+    .model-feature-body h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .model-feature-body .color-label {
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .model-feature-body .specs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .model-feature-body .spec {
+      font-size: 14px;
+      color: var(--text);
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .model-feature-body .spec::before {
+      content: '◆';
+      font-size: 8px;
+      color: var(--panel-color, var(--brand));
+    }
+
+    .unique-repair-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(0, 150, 199, .08), rgba(0, 150, 199, .15));
+      color: var(--brand);
+      border: 1.5px solid rgba(0, 150, 199, .2);
+    }
+
+    .unique-repair-badge::before {
+      content: '🔧';
+    }
+
+    @media(max-width:900px) {
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .model-feature-panel {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .model-feature-img {
+        margin: 0 auto;
+      }
+    }
+
     .hidden {
       display: none !important;
     }
@@ -2060,11 +2604,13 @@
         <div id="level1" class="hidden">
           <h2 class="qtitle" id="l1Title"></h2>
           <p class="qsub" id="l1Sub"></p>
+          <div id="seriesFeaturePanel"></div>
           <div class="grid" id="seriesGrid"></div>
         </div>
         <div id="level2" class="hidden">
           <h2 class="qtitle" id="l2Title"></h2>
           <p class="qsub" id="l2Sub"></p>
+          <div id="modelFeaturePanel"></div>
           <div class="grid" id="modelGrid"></div>
         </div>
       </div>
@@ -2444,36 +2990,228 @@
     // ═══════════════════════════════════════════════════
     //  DEVICE TREE
     // ═══════════════════════════════════════════════════
-    const T = {
+    const DEVICE_DATA = {
+
+      // ─── iPHONE ──────────────────────────────────────
       iPhone: {
-        label: 'iPhone', icon: '📱', cls: 'iphone', desc: 'All iPhone models', series: {
-          'iPhone SE': { img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop', models: [{ name: 'iPhone SE (2nd gen)', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop' }, { name: 'iPhone SE (3rd gen)', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop' }] },
-          'iPhone 11': { img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop', models: [{ name: 'iPhone 11', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop' }, { name: 'iPhone 11 Pro', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop' }, { name: 'iPhone 11 Pro Max', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=200&h=150&fit=crop' }] },
-          'iPhone 12': { img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=200&h=150&fit=crop', models: [{ name: 'iPhone 12', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=200&h=150&fit=crop' }, { name: 'iPhone 12 Mini', img: 'https://images.unsplash.com/photo-1603891220243-38c7e3f9a3f3?w=200&h=150&fit=crop' }, { name: 'iPhone 12 Pro', img: 'https://images.unsplash.com/photo-1603891219057-f6c5a01fa6b8?w=200&h=150&fit=crop' }, { name: 'iPhone 12 Pro Max', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=200&h=150&fit=crop' }] },
-          'iPhone 13': { img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=200&h=150&fit=crop', models: [{ name: 'iPhone 13', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=200&h=150&fit=crop' }, { name: 'iPhone 13 Mini', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=200&h=150&fit=crop' }, { name: 'iPhone 13 Pro', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=200&h=150&fit=crop' }, { name: 'iPhone 13 Pro Max', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=200&h=150&fit=crop' }] },
-          'iPhone 14': { img: 'https://images.unsplash.com/photo-1663499482297-c4f3f6a8db11?w=200&h=150&fit=crop', models: [{ name: 'iPhone 14', img: 'https://images.unsplash.com/photo-1663499482297-c4f3f6a8db11?w=200&h=150&fit=crop' }, { name: 'iPhone 14 Plus', img: 'https://images.unsplash.com/photo-1663499482508-6e0c2ebbc57d?w=200&h=150&fit=crop' }, { name: 'iPhone 14 Pro', img: 'https://images.unsplash.com/photo-1663499482523-1c0d3e4b97ec?w=200&h=150&fit=crop' }, { name: 'iPhone 14 Pro Max', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=200&h=150&fit=crop' }] },
-          'iPhone 15': { img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop', models: [{ name: 'iPhone 15', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop' }, { name: 'iPhone 15 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=200&h=150&fit=crop' }, { name: 'iPhone 15 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=200&h=150&fit=crop' }, { name: 'iPhone 15 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop' }] },
-          'iPhone 16': { img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop', models: [{ name: 'iPhone 16', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop' }, { name: 'iPhone 16 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=200&h=150&fit=crop' }, { name: 'iPhone 16 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=200&h=150&fit=crop' }, { name: 'iPhone 16 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop' }] },
-          'iPhone 17': { img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop', models: [{ name: 'iPhone 17', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=200&h=150&fit=crop' }, { name: 'iPhone 17 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=200&h=150&fit=crop' }, { name: 'iPhone 17 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=200&h=150&fit=crop' }, { name: 'iPhone 17 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=200&h=150&fit=crop' }] },
+        label: 'iPhone', icon: '📱', cls: 'iphone', desc: 'All iPhone models',
+        series: {
+
+          'iPhone SE': {
+            color: '#BF0013', // PRODUCT RED
+            effect: 'none',
+            tagline: 'Classic design, modern power',
+            features: ['Touch ID Home Button', 'A-Series Chip', '4.7" Retina Display', 'Budget-friendly entry point'],
+            models: [
+              { name: 'iPhone SE (2nd gen)', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=300&h=220&fit=crop', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['A13 Bionic Chip', 'Touch ID', 'Lightning Port'], uniqueRepair: null },
+              { name: 'iPhone SE (3rd gen)', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=300&h=220&fit=crop', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['A15 Bionic Chip', '5G Support', 'Ceramic Shield'], uniqueRepair: null },
+            ]
+          },
+
+          'iPhone 11': {
+            color: '#4E5851', // Midnight Green
+            effect: 'nightmode',
+            tagline: 'Night Mode. Ultra-wide camera.',
+            features: ['First Ultra Wide Camera', 'Night Mode Photography', 'Spatial Audio', 'Liquid Retina HD Display'],
+            models: [
+              { name: 'iPhone 11', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=300&h=220&fit=crop', color: '#A660D0', colorName: 'Purple', features: ['Dual Camera System', 'A13 Bionic', 'Liquid Retina Display'], uniqueRepair: null },
+              { name: 'iPhone 11 Pro', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=300&h=220&fit=crop', color: '#4E5851', colorName: 'Midnight Green', features: ['Triple Camera System', 'Super Retina XDR', 'Surgical Stainless Steel'], uniqueRepair: 'Stainless Steel Frame Repair' },
+              { name: 'iPhone 11 Pro Max', img: 'https://images.unsplash.com/photo-1574755393849-623942496936?w=300&h=220&fit=crop', color: '#4E5851', colorName: 'Midnight Green', features: ['6.5" Super Retina XDR', 'Triple Camera', 'Longest Battery Life'], uniqueRepair: 'Stainless Steel Frame Repair' },
+            ]
+          },
+
+          'iPhone 12': {
+            color: '#2D4E5C', // Pacific Blue
+            effect: 'fiveg',
+            tagline: '5G speed. A14 Bionic. Ceramic Shield.',
+            features: ['First 5G iPhone', 'Ceramic Shield Front Cover', 'MagSafe Charging', 'Flat-Edge Design Returns'],
+            models: [
+              { name: 'iPhone 12', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=300&h=220&fit=crop', color: '#023B63', colorName: 'Blue', features: ['6.1" Super Retina XDR', 'Ceramic Shield', 'MagSafe'], uniqueRepair: 'MagSafe Alignment Repair' },
+              { name: 'iPhone 12 Mini', img: 'https://images.unsplash.com/photo-1603891220243-38c7e3f9a3f3?w=300&h=220&fit=crop', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['5.4" Compact Design', 'Smallest 5G Phone', 'A14 Bionic'], uniqueRepair: null },
+              { name: 'iPhone 12 Pro', img: 'https://images.unsplash.com/photo-1603891219057-f6c5a01fa6b8?w=300&h=220&fit=crop', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['LiDAR Scanner', 'Dolby Vision Recording', 'Stainless Steel'], uniqueRepair: 'LiDAR Scanner Repair' },
+              { name: 'iPhone 12 Pro Max', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=300&h=220&fit=crop', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['6.7" Display', 'Sensor-Shift OIS', 'Best Camera System'], uniqueRepair: 'LiDAR Scanner Repair' },
+            ]
+          },
+
+          'iPhone 13': {
+            color: '#9BB5CE', // Sierra Blue
+            effect: 'cinematic',
+            tagline: 'Cinematic Mode. ProMotion 120Hz.',
+            features: ['Cinematic Mode Video', 'ProMotion 120Hz (Pro)', 'Smaller Notch', 'Diagonal Dual Camera'],
+            models: [
+              { name: 'iPhone 13', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=300&h=220&fit=crop', color: '#F9E7DA', colorName: 'Pink', features: ['Diagonal Dual Camera', 'Cinematic Mode', 'A15 Bionic'], uniqueRepair: null },
+              { name: 'iPhone 13 Mini', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=300&h=220&fit=crop', color: '#394C6B', colorName: 'Blue', features: ['5.4" Compact', 'Cinematic Mode', 'Longest Mini Battery'], uniqueRepair: null },
+              { name: 'iPhone 13 Pro', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=300&h=220&fit=crop', color: '#9BB5CE', colorName: 'Sierra Blue', features: ['ProMotion 120Hz', 'Macro Photography', 'Cinematic Mode'], uniqueRepair: 'ProMotion Display Repair' },
+              { name: 'iPhone 13 Pro Max', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=300&h=220&fit=crop', color: '#505F4E', colorName: 'Alpine Green', features: ['6.7" ProMotion', 'Best iPhone Battery', 'Pro Camera System'], uniqueRepair: 'ProMotion Display Repair' },
+            ]
+          },
+
+          'iPhone 14': {
+            color: '#594F63', // Deep Purple
+            effect: 'dynamicisland',
+            tagline: 'Dynamic Island. 48MP camera. Always-On.',
+            features: ['Dynamic Island (Pro)', '48MP Main Camera (Pro)', 'Crash Detection', 'Emergency SOS via Satellite'],
+            models: [
+              { name: 'iPhone 14', img: 'https://images.unsplash.com/photo-1663499482297-c4f3f6a8db11?w=300&h=220&fit=crop', color: '#E5DDEA', colorName: 'Purple', features: ['Crash Detection', 'Emergency SOS Satellite', 'Action Mode Video'], uniqueRepair: 'Satellite Antenna Repair' },
+              { name: 'iPhone 14 Plus', img: 'https://images.unsplash.com/photo-1663499482508-6e0c2ebbc57d?w=300&h=220&fit=crop', color: '#F5DF4D', colorName: 'Yellow', features: ['6.7" Display', 'Longest Battery', 'Crash Detection'], uniqueRepair: 'Satellite Antenna Repair' },
+              { name: 'iPhone 14 Pro', img: 'https://images.unsplash.com/photo-1663499482523-1c0d3e4b97ec?w=300&h=220&fit=crop', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On Display', 'ProMotion'], uniqueRepair: 'Dynamic Island Sensor Repair' },
+              { name: 'iPhone 14 Pro Max', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=300&h=220&fit=crop', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On', 'Best Battery'], uniqueRepair: 'Dynamic Island Sensor Repair' },
+            ]
+          },
+
+          'iPhone 15': {
+            color: '#3B4856', // Blue Titanium
+            effect: 'titanium',
+            tagline: 'Titanium. USB-C. Action Button.',
+            features: ['First Titanium Frame (Pro)', 'USB-C Replaces Lightning', 'Dynamic Island on All', 'Action Button (Pro)'],
+            models: [
+              { name: 'iPhone 15', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=300&h=220&fit=crop', color: '#C2D4C1', colorName: 'Green', features: ['Dynamic Island', 'USB-C', '48MP Camera', 'A16 Bionic'], uniqueRepair: 'USB-C Port Repair' },
+              { name: 'iPhone 15 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=300&h=220&fit=crop', color: '#F4CE6A', colorName: 'Yellow', features: ['6.7" Display', 'USB-C', 'Longest Battery', 'Dynamic Island'], uniqueRepair: 'USB-C Port Repair' },
+              { name: 'iPhone 15 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=300&h=220&fit=crop', color: '#3B4856', colorName: 'Blue Titanium', features: ['Grade 5 Titanium Frame', 'Action Button', 'A17 Pro Chip', 'USB-C 3.0'], uniqueRepair: 'Titanium Frame Repair' },
+              { name: 'iPhone 15 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=300&h=220&fit=crop', color: '#C1B9AE', colorName: 'Natural Titanium', features: ['Titanium Frame', '5x Optical Zoom', 'Action Button', 'Thinnest Bezels'], uniqueRepair: 'Titanium Frame Repair' },
+            ]
+          },
+
+          'iPhone 16': {
+            color: '#BFA48F', // Desert Titanium
+            effect: 'camera',
+            tagline: 'Camera Control. A18 Pro. Biggest screens ever.',
+            features: ['Camera Control Button', 'Action Button on All', 'A18 Pro (Pro)', '4K 120fps Dolby Vision'],
+            models: [
+              { name: 'iPhone 16', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=300&h=220&fit=crop', color: '#4B50A7', colorName: 'Ultramarine', features: ['Camera Control', 'Action Button', 'A18 Chip', 'Vertical Camera'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=300&h=220&fit=crop', color: '#5BA8A0', colorName: 'Teal', features: ['6.7" Display', 'Camera Control', 'Action Button', 'A18 Chip'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=300&h=220&fit=crop', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.3" Display', 'A18 Pro', '4K 120fps', 'Camera Control'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=300&h=220&fit=crop', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.9" Largest Ever', 'A18 Pro', '5x Zoom', '4K 120fps Dolby Vision'], uniqueRepair: 'Camera Control Button Repair' },
+            ]
+          },
+
+          'iPhone 17': {
+            color: '#E8651A', // Cosmic Orange
+            effect: 'cosmic',
+            tagline: 'Cosmic Orange. New design. Aluminum Pro.',
+            features: ['All-New Design Language', 'Aluminum Frame Returns (Pro)', 'Cosmic Orange (Pro Hero)', 'Apple Intelligence'],
+            models: [
+              { name: 'iPhone 17', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=300&h=220&fit=crop', color: '#2D2D2D', colorName: 'Black', features: ['New Design', 'A19 Chip', 'Apple Intelligence', 'USB-C 3.0'], uniqueRepair: null },
+              { name: 'iPhone 17 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=300&h=220&fit=crop', color: '#F5F5F0', colorName: 'White', features: ['6.7" Display', 'A19 Chip', 'New Design', 'Apple Intelligence'], uniqueRepair: null },
+              { name: 'iPhone 17 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=300&h=220&fit=crop', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Aluminum Frame', 'A19 Pro', 'New Design', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
+              { name: 'iPhone 17 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=300&h=220&fit=crop', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Largest Display', 'A19 Pro', '5x Zoom', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
+            ]
+          },
         }
       },
+
+      // ─── MacBook ─────────────────────────────────────
       MacBook: {
-        label: 'MacBook', icon: '💻', cls: 'macbook', desc: 'Air & Pro repairs', series: {
-          'MacBook Air': { img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop', models: [{ name: 'MacBook Air (M1, 2020)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop' }, { name: 'MacBook Air (M2, 2022)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop' }, { name: 'MacBook Air (M3, 2024)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200&h=150&fit=crop' }] },
-          'MacBook Pro 13"': { img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=200&h=150&fit=crop', models: [{ name: 'MacBook Pro 13" (M1, 2020)', img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 13" (M2, 2022)', img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=200&h=150&fit=crop' }] },
-          'MacBook Pro 14"': { img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop', models: [{ name: 'MacBook Pro 14" (M1 Pro/Max, 2021)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 14" (M2 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 14" (M3 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=200&h=150&fit=crop' }] },
-          'MacBook Pro 16"': { img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop', models: [{ name: 'MacBook Pro 16" (M1 Pro/Max, 2021)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 16" (M2 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop' }, { name: 'MacBook Pro 16" (M3 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200&h=150&fit=crop' }] },
+        label: 'MacBook', icon: '💻', cls: 'macbook', desc: 'Air & Pro repairs',
+        series: {
+
+          'MacBook Air': {
+            color: '#7EB5D6', // Sky Blue (M4 hero)
+            effect: 'air',
+            tagline: 'Impossibly thin. All-day battery.',
+            features: ['Fanless Design', 'All-Day Battery Life', 'Liquid Retina Display', 'MagSafe Charging'],
+            models: [
+              { name: 'MacBook Air (M1, 2020)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=220&fit=crop', color: '#C9B99A', colorName: 'Gold', features: ['First Apple Silicon Mac', 'Fanless', '18hr Battery', 'M1 Chip'], uniqueRepair: null },
+              { name: 'MacBook Air (M2, 2022)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=220&fit=crop', color: '#1A1B2E', colorName: 'Midnight', features: ['Complete Redesign', 'Flat Body', 'MagSafe Return', 'Notch Display'], uniqueRepair: null },
+              { name: 'MacBook Air (M3, 2024)', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=220&fit=crop', color: '#1A1B2E', colorName: 'Midnight', features: ['Dual External Display', 'Wi-Fi 6E', 'M3 Chip', '60% Faster Than M1'], uniqueRepair: null },
+            ]
+          },
+
+          'MacBook Pro 13"': {
+            color: '#6B6B6F', // Space Gray
+            effect: 'pro',
+            tagline: 'Pro power. Compact size.',
+            features: ['Active Cooling Fan', 'Touch Bar', 'Thunderbolt Ports', 'Pro Performance'],
+            models: [
+              { name: 'MacBook Pro 13" (M1, 2020)', img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['M1 Chip', '20hr Battery', 'Touch Bar', 'Active Cooling'], uniqueRepair: 'Touch Bar Repair' },
+              { name: 'MacBook Pro 13" (M2, 2022)', img: 'https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['M2 Chip', 'Last Touch Bar Model', 'ProRes Support', '20hr Battery'], uniqueRepair: 'Touch Bar Repair' },
+            ]
+          },
+
+          'MacBook Pro 14"': {
+            color: '#1D1D1F', // Space Black
+            effect: 'pro',
+            tagline: 'M-Series Pro/Max. Liquid Retina XDR.',
+            features: ['Liquid Retina XDR Display', 'HDMI & SD Card Slots', 'MagSafe', 'Pro/Max Chips'],
+            models: [
+              { name: 'MacBook Pro 14" (M1 Pro/Max, 2021)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['Notch Display', 'HDMI Return', 'SD Card Return', 'MagSafe'], uniqueRepair: null },
+              { name: 'MacBook Pro 14" (M2 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['Wi-Fi 6E', 'HDMI 2.1', 'Faster Charging', 'M2 Pro/Max'], uniqueRepair: null },
+              { name: 'MacBook Pro 14" (M3 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=220&fit=crop', color: '#1D1D1F', colorName: 'Space Black', features: ['First Space Black', 'Hardware Ray Tracing', 'M3 Pro/Max', 'Dynamic Caching'], uniqueRepair: null },
+            ]
+          },
+
+          'MacBook Pro 16"': {
+            color: '#1D1D1F', // Space Black
+            effect: 'pro',
+            tagline: 'Maximum performance. Maximum display.',
+            features: ['16" Liquid Retina XDR', 'Pro/Max Chips', '22hr Battery', '6-Speaker Sound'],
+            models: [
+              { name: 'MacBook Pro 16" (M1 Pro/Max, 2021)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['16" XDR Display', 'M1 Pro/Max', '21hr Battery', 'MagSafe'], uniqueRepair: null },
+              { name: 'MacBook Pro 16" (M2 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['Wi-Fi 6E', '8K HDMI', 'M2 Pro/Max', '22hr Battery'], uniqueRepair: null },
+              { name: 'MacBook Pro 16" (M3 Pro/Max, 2023)', img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=300&h=220&fit=crop', color: '#1D1D1F', colorName: 'Space Black', features: ['Space Black', 'Ray Tracing', 'M3 Pro/Max', 'Thunderbolt 4'], uniqueRepair: null },
+            ]
+          },
         }
       },
+
+      // ─── iPad ────────────────────────────────────────
       iPad: {
-        label: 'iPad', icon: '📲', cls: 'ipad', desc: 'All iPad models', series: {
-          'iPad': { img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop', models: [{ name: 'iPad (9th gen, 2021)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }, { name: 'iPad (10th gen, 2022)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }] },
-          'iPad mini': { img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop', models: [{ name: 'iPad mini (6th gen, 2021)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }, { name: 'iPad mini (7th gen, 2024)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=200&h=150&fit=crop' }] },
-          'iPad Air': { img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop', models: [{ name: 'iPad Air (4th gen, 2020)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }, { name: 'iPad Air (5th gen, 2022)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }, { name: 'iPad Air 11" M2 (2024)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }, { name: 'iPad Air 13" M2 (2024)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=200&h=150&fit=crop' }] },
-          'iPad Pro': { img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop', models: [{ name: 'iPad Pro 11" (M1, 2021)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 11" (M2, 2022)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 11" (M4, 2024)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 12.9" (M1, 2021)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 12.9" (M2, 2022)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }, { name: 'iPad Pro 13" (M4, 2024)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=200&h=150&fit=crop' }] },
+        label: 'iPad', icon: '📲', cls: 'ipad', desc: 'All iPad models',
+        series: {
+
+          'iPad': {
+            color: '#F5DF4D', // Yellow
+            effect: 'none',
+            tagline: 'The essential iPad.',
+            features: ['Large Retina Display', 'Apple Pencil Support', 'All-Day Battery', 'Versatile & Affordable'],
+            models: [
+              { name: 'iPad (9th gen, 2021)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['10.2" Display', 'Lightning', 'Touch ID Home Button', 'A13 Bionic'], uniqueRepair: null },
+              { name: 'iPad (10th gen, 2022)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&h=220&fit=crop', color: '#F5DF4D', colorName: 'Yellow', features: ['Complete Redesign', 'USB-C', 'Landscape Camera', 'A14 Bionic'], uniqueRepair: null },
+            ]
+          },
+
+          'iPad mini': {
+            color: '#C8BFE7', // Purple
+            effect: 'none',
+            tagline: 'Small size. Massive capability.',
+            features: ['8.3" Liquid Retina', 'Apple Pencil 2', 'USB-C', 'Portable Powerhouse'],
+            models: [
+              { name: 'iPad mini (6th gen, 2021)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&h=220&fit=crop', color: '#C8BFE7', colorName: 'Purple', features: ['All-New Design', 'USB-C', 'Touch ID Top', 'A15 Bionic'], uniqueRepair: null },
+              { name: 'iPad mini (7th gen, 2024)', img: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&h=220&fit=crop', color: '#6CACE4', colorName: 'Blue', features: ['A17 Pro Chip', 'Apple Intelligence', 'Wi-Fi 6E', 'Apple Pencil Pro'], uniqueRepair: null },
+            ]
+          },
+
+          'iPad Air': {
+            color: '#B8A9C9', // Purple
+            effect: 'none',
+            tagline: 'Powerful. Colorful. Wonderful.',
+            features: ['M-Series Chip', 'Apple Pencil Pro', 'Center Stage Camera', 'Two Sizes Available'],
+            models: [
+              { name: 'iPad Air (4th gen, 2020)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=300&h=220&fit=crop', color: '#6CACE4', colorName: 'Sky Blue', features: ['First Touch ID in Power Button', 'USB-C', 'A14 Bionic', '10.9" Display'], uniqueRepair: null },
+              { name: 'iPad Air (5th gen, 2022)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=300&h=220&fit=crop', color: '#B8A9C9', colorName: 'Purple', features: ['M1 Chip', 'Center Stage', '5G Option', 'Apple Pencil 2'], uniqueRepair: null },
+              { name: 'iPad Air 11" M2 (2024)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=300&h=220&fit=crop', color: '#B8A9C9', colorName: 'Purple', features: ['M2 Chip', 'Landscape Camera', 'Apple Pencil Pro', 'Wi-Fi 6E'], uniqueRepair: null },
+              { name: 'iPad Air 13" M2 (2024)', img: 'https://images.unsplash.com/photo-1589739900266-43b2843f4c12?w=300&h=220&fit=crop', color: '#6CACE4', colorName: 'Blue', features: ['Largest Air Ever', 'M2 Chip', 'Apple Pencil Pro', '13" Display'], uniqueRepair: null },
+            ]
+          },
+
+          'iPad Pro': {
+            color: '#1D1D1F', // Space Black
+            effect: 'pro',
+            tagline: 'The ultimate iPad. Tandem OLED.',
+            features: ['M4 Chip', 'Tandem OLED Display', 'Thinnest Apple Product', 'Nano-Texture Option'],
+            models: [
+              { name: 'iPad Pro 11" (M1, 2021)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['M1 Chip', 'Thunderbolt', '5G Option', 'LiDAR Scanner'], uniqueRepair: 'LiDAR Scanner Repair' },
+              { name: 'iPad Pro 11" (M2, 2022)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['Apple Pencil Hover', 'Wi-Fi 6E', 'ProRes Video', 'M2 Chip'], uniqueRepair: null },
+              { name: 'iPad Pro 11" (M4, 2024)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=300&h=220&fit=crop', color: '#1D1D1F', colorName: 'Space Black', features: ['Tandem OLED', 'M4 Chip', 'Thinnest Ever', 'Nano-Texture Option'], uniqueRepair: 'OLED Display Repair' },
+              { name: 'iPad Pro 12.9" (M1, 2021)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['Liquid Retina XDR', 'M1 Chip', 'Mini-LED Backlight', 'Thunderbolt'], uniqueRepair: 'Mini-LED Backlight Repair' },
+              { name: 'iPad Pro 12.9" (M2, 2022)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=300&h=220&fit=crop', color: '#6B6B6F', colorName: 'Space Gray', features: ['Mini-LED XDR', 'Apple Pencil Hover', 'ProRes', 'M2 Chip'], uniqueRepair: 'Mini-LED Backlight Repair' },
+              { name: 'iPad Pro 13" (M4, 2024)', img: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=300&h=220&fit=crop', color: '#1D1D1F', colorName: 'Space Black', features: ['13" Tandem OLED', 'M4 Chip', 'Thinnest Pro', 'Nano-Texture'], uniqueRepair: 'OLED Display Repair' },
+            ]
+          },
         }
       }
     };
+    const T = DEVICE_DATA;
     const SP = { 'iPhone 11': [150, 200, 235], 'iPhone 11 Pro': [175, 210, 250], 'iPhone 11 Pro Max': [175, 250, 310], 'iPhone SE (2nd gen)': [100, 130, 160], 'iPhone SE (3rd gen)': [100, 130, 160], 'iPhone 12 Mini': [160, 200, 240], 'iPhone 12': [170, 210, 250], 'iPhone 12 Pro': [180, 220, 260], 'iPhone 12 Pro Max': [200, 240, 290], 'iPhone 13 Mini': [170, 210, 250], 'iPhone 13': [180, 220, 260], 'iPhone 13 Pro': [190, 230, 270], 'iPhone 13 Pro Max': [210, 250, 310], 'iPhone 14': [190, 230, 270], 'iPhone 14 Plus': [200, 240, 290], 'iPhone 14 Pro': [220, 260, 320], 'iPhone 14 Pro Max': [240, 290, 360], 'iPhone 15': [200, 240, 290], 'iPhone 15 Plus': [210, 250, 310], 'iPhone 15 Pro': [230, 270, 340], 'iPhone 15 Pro Max': [250, 300, 370], 'iPhone 16': [220, 260, 330], 'iPhone 16 Plus': [300, 350, 420], 'iPhone 16 Pro': [300, 370, 430], 'iPhone 16 Pro Max': [300, 390, 460], 'iPhone 17': [390, 450, 500], 'iPhone 17 Plus': [320, 400, 520], 'iPhone 17 Pro': [380, 420, 530], 'iPhone 17 Pro Max': [420, 580, 700], 'MacBook Air (M1, 2020)': [350, 450, 550], 'MacBook Air (M2, 2022)': [380, 490, 590], 'MacBook Air (M3, 2024)': [420, 530, 640], 'MacBook Pro 13" (M1, 2020)': [400, 500, 610], 'MacBook Pro 13" (M2, 2022)': [440, 540, 650], 'MacBook Pro 14" (M1 Pro/Max, 2021)': [500, 620, 750], 'MacBook Pro 14" (M2 Pro/Max, 2023)': [540, 660, 800], 'MacBook Pro 14" (M3 Pro/Max, 2023)': [580, 700, 850], 'MacBook Pro 16" (M1 Pro/Max, 2021)': [600, 740, 890], 'MacBook Pro 16" (M2 Pro/Max, 2023)': [640, 780, 940], 'MacBook Pro 16" (M3 Pro/Max, 2023)': [680, 820, 980], 'iPad (9th gen, 2021)': [180, 230, 280], 'iPad (10th gen, 2022)': [220, 270, 330], 'iPad mini (6th gen, 2021)': [250, 310, 380], 'iPad mini (7th gen, 2024)': [280, 350, 420], 'iPad Air (4th gen, 2020)': [280, 350, 420], 'iPad Air (5th gen, 2022)': [310, 380, 460], 'iPad Air 11" M2 (2024)': [340, 420, 500], 'iPad Air 13" M2 (2024)': [400, 490, 590], 'iPad Pro 11" (M1, 2021)': [380, 470, 570], 'iPad Pro 11" (M2, 2022)': [410, 500, 610], 'iPad Pro 11" (M4, 2024)': [460, 560, 680], 'iPad Pro 12.9" (M1, 2021)': [490, 600, 730], 'iPad Pro 12.9" (M2, 2022)': [520, 640, 780], 'iPad Pro 13" (M4, 2024)': [580, 710, 860] };
     const QD = { 'C': 'Good quality – Budget-friendly', 'A+': 'Premium – Enhanced clarity', 'S+': 'Superior – Original-like performance' };
     const IR = [{ n: 'Battery Replacement', i: '🔋', p: 89, t: '1-2h' }, { n: 'Camera Repair', i: '📷', p: 129, t: '1-2h' }, { n: 'Charging Port', i: '🔌', p: 79, t: '1-2h' }, { n: 'Water Damage', i: '💧', p: 199, t: '1-2h' }, { n: 'Speaker Repair', i: '🔊', p: 99, t: '1-2h' }, { n: 'Back Glass', i: '🔲', p: 119, t: '1-2h' }, { n: 'Power Button', i: '⚡', p: 69, t: '1-2h' }, { n: 'Volume Button', i: '🔉', p: 69, t: '1-2h' }, { n: 'Home Button', i: '⏺️', p: 89, t: '1-2h' }, { n: 'Touch ID Repair', i: '👆', p: 99, t: '1-2h' }, { n: 'Microphone Repair', i: '🎤', p: 79, t: '1-2h' }, { n: 'Earpiece Speaker', i: '🎧', p: 89, t: '1-2h' }, { n: 'Vibration Motor', i: '📳', p: 59, t: '1-2h' }, { n: 'SIM Card Tray', i: '💳', p: 49, t: '1-2h' }, { n: 'WiFi/Bluetooth', i: '📶', p: 129, t: '1-2h' }, { n: 'Logic Board Repair', i: '💻', p: 299, t: '2-4h' }, { n: 'Data Recovery', i: '💾', p: 249, t: '1-3h' }, { n: 'Software Issues', i: '⚙️', p: 79, t: '1-2h' }, { n: 'Full Diagnostic', i: '🔍', p: 39, t: '1h' }];
@@ -2509,19 +3247,88 @@
     }
     function selectCategory(k) {
       selCat = k; browseLevel = 1; const c = T[k]; showLevel(1); renderBC();
+      document.getElementById('seriesFeaturePanel').innerHTML = '';
       document.getElementById('l1Title').innerHTML = 'Choose your <span class="hl">' + c.label + '</span>';
-      document.getElementById('l1Sub').textContent = 'Select the series, then your exact model';
-      document.getElementById('seriesGrid').innerHTML = Object.entries(c.series).map(([sn, s]) =>
-        '<div class="card" onclick="selectSeries(this)" data-s="' + encodeURIComponent(sn) + '"><img src="' + s.img + '" class="model-img" loading="lazy"><div class="model-name">' + sn + '</div><div class="series-count">' + s.models.length + ' model' + (s.models.length > 1 ? 's' : '') + '</div></div>').join('');
+      document.getElementById('l1Sub').textContent = 'Select the series, then pick your exact model';
+      document.getElementById('seriesGrid').innerHTML = Object.entries(c.series).map(([sn, s]) => {
+        const clr = s.color || '#0096c7';
+        const eff = s.effect || 'none';
+        return '<div class="series-card" style="--card-color:' + clr + '" data-effect="' + eff + '" data-s="' + encodeURIComponent(sn) + '" onclick="selectSeries(this)">'
+          + '<img src="' + (s.models[0]?.img || '') + '" class="model-img" loading="lazy">'
+          + '<div class="model-name">' + sn + '</div>'
+          + '<div class="series-count">' + s.models.length + ' model' + (s.models.length > 1 ? 's' : '') + '</div>'
+          + '<div class="series-tagline">' + (s.tagline || '') + '</div>'
+          + '</div>';
+      }).join('');
     }
     function selectSeries(el) {
-      const sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2; const s = T[selCat].series[sn]; showLevel(2); renderBC();
+      const sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2;
+      const cat = T[selCat]; const s = cat.series[sn]; showLevel(2); renderBC();
+      document.getElementById('modelFeaturePanel').innerHTML = '';
+      // Show series feature panel
+      var fp = '<div class="feature-panel" style="--panel-color:' + (s.color || '#0096c7') + '">'
+        + '<button class="feature-panel-close" onclick="this.parentElement.remove()">✕</button>'
+        + '<div class="feature-panel-header">'
+        + '<div class="feature-panel-icon">' + cat.icon + '</div>'
+        + '<div><div class="feature-panel-title">' + sn + '</div>'
+        + '<div class="feature-panel-tagline">' + (s.tagline || '') + '</div></div></div>'
+        + '<div class="feature-list">' + (s.features || []).map(function (f) { return '<div class="feature-item">' + f + '</div>'; }).join('') + '</div>'
+        + '</div>';
+      document.getElementById('modelFeaturePanel').innerHTML = fp;
       document.getElementById('l2Title').innerHTML = 'Select your <span class="hl">' + sn + '</span>';
-      document.getElementById('l2Sub').textContent = 'Pick your exact model';
-      document.getElementById('modelGrid').innerHTML = s.models.map(m =>
-        '<div class="card" onclick="selectModel(this)" data-n="' + encodeURIComponent(m.name) + '"><img src="' + m.img + '" class="model-img" loading="lazy"><div class="model-name">' + m.name + '</div></div>').join('');
+      document.getElementById('l2Sub').textContent = 'Pick your exact model for an accurate quote';
+      document.getElementById('modelGrid').innerHTML = s.models.map(function (m) {
+        var clr = m.color || s.color || '#0096c7';
+        var cn = m.colorName || '';
+        return '<div class="model-card" style="--card-color:' + clr + '" data-n="' + encodeURIComponent(m.name) + '" onclick="showModelDetail(this,event)">'
+          + '<img src="' + m.img + '" class="model-img" loading="lazy">'
+          + '<div class="model-name">' + m.name + '</div>'
+          + '<div class="model-color-name"><span class="model-color-dot" style="background:' + clr + '"></span>' + cn + '</div>'
+          + (m.uniqueRepair ? '<div class="model-badge">Specialist Repair Available</div>' : '')
+          + '</div>';
+      }).join('');
     }
-    function selectModel(el) { selModel = typeof el === 'string' ? el : decodeURIComponent(el.dataset.n); goToPage(2); }
+
+    function showModelDetail(el, e) {
+      var mn = decodeURIComponent(el.dataset.n);
+      var s = T[selCat].series[selSeries];
+      var m = s.models.find(function (x) { return x.name === mn; });
+      if (!m) return;
+      // Check if click should select or show detail
+      // If detail panel already showing for this model, select it
+      var existing = document.getElementById('activeModelDetail');
+      if (existing && existing.dataset.model === mn) { selectModel(el); return; }
+      // Show detail panel
+      var clr = m.color || s.color || '#0096c7';
+      var dp = '<div class="model-feature-panel" id="activeModelDetail" data-model="' + mn + '" style="--panel-color:' + clr + '">'
+        + '<img src="' + m.img + '" class="model-feature-img">'
+        + '<div class="model-feature-body">'
+        + '<h3>' + m.name + '</h3>'
+        + '<div class="color-label"><span class="model-color-dot" style="background:' + clr + '"></span> ' + (m.colorName || '') + ' — Flagship Colour</div>'
+        + '<div class="specs">' + (m.features || []).map(function (f) { return '<div class="spec">' + f + '</div>'; }).join('') + '</div>'
+        + (m.uniqueRepair ? '<div class="unique-repair-badge">' + m.uniqueRepair + ' — Exclusive Service</div>' : '')
+        + '<button class="btn" style="margin-top:18px;width:auto;padding:14px 32px;" data-mn="' + encodeURIComponent(mn) + '" onclick="selectModelByName(this.dataset.mn)">Get Quote for ' + mn + ' →</button>'
+        + '</div></div>';
+      document.getElementById('modelFeaturePanel').innerHTML = dp;
+      document.getElementById('modelFeaturePanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function selectModel(el) {
+      selModel = typeof el === 'string' ? el : decodeURIComponent(el.dataset.n);
+      // Auto-detect category and series if coming from search
+      if (!selCat || !selSeries) {
+        Object.entries(T).forEach(function (entry) {
+          var catKey = entry[0], cat = entry[1];
+          Object.entries(cat.series).forEach(function (sEntry) {
+            var sName = sEntry[0], s = sEntry[1];
+            s.models.forEach(function (m) {
+              if (m.name === selModel) { selCat = catKey; selSeries = sName; }
+            });
+          });
+        });
+      }
+      goToPage(2);
+    }
+    function selectModelByName(encoded) { selModel = decodeURIComponent(encoded); goToPage(2); }
     function showLevel(n) { [0, 1, 2].forEach(i => { const e = document.getElementById('level' + i); if (e) e.classList.toggle('hidden', i !== n); }); const sr = document.getElementById('searchResultsBox'); if (sr) sr.classList.add('hidden'); document.getElementById('modelSearch').value = ''; }
     function renderBC() {
       const bc = document.getElementById('breadcrumb'); if (!bc) return;
@@ -2544,6 +3351,24 @@
     function renderRepairs() {
       let h = ''; if (SP[selModel]) { h += '<div class="card repair-card" onclick="openQualityModal()"><div class="repair-icon">' + (selCat === 'MacBook' ? '🖥️' : selCat === 'iPad' ? '📲' : '📱') + '</div><div class="repair-name">Screen Replacement</div><div class="repair-price">From $' + SP[selModel][0] + '</div><div class="repair-time">⏱️ 1-2h</div><div class="price-badge">Starting Price</div></div>'; }
       repairs().forEach(r => { h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + r.p + '" data-rt="' + r.t + '" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)"><div class="checkbox"></div><div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">$' + r.p + '</div><div class="repair-time">⏱️ ' + r.t + '</div></div>'; });
+      // Add unique model-specific repair if available
+      if (selCat && selSeries && selModel) {
+        var series = T[selCat]?.series?.[selSeries];
+        if (series) {
+          var modelData = series.models.find(function (m) { return m.name === selModel; });
+          if (modelData && modelData.uniqueRepair) {
+            var ur = modelData.uniqueRepair;
+            h += '<div class="card repair-card" data-rn="' + encodeURIComponent(ur) + '" data-rp="149" data-rt="1-3h" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)">'
+              + '<div class="checkbox"></div>'
+              + '<div class="repair-icon">🔬</div>'
+              + '<div class="repair-name">' + ur + '</div>'
+              + '<div class="repair-price">$149</div>'
+              + '<div class="repair-time">⏱️ 1-3h</div>'
+              + '<div class="price-badge" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">Specialist Service</div>'
+              + '</div>';
+          }
+        }
+      }
       document.getElementById('repairsGrid').innerHTML = h; updateCards();
     }
     function openQualityModal() {
