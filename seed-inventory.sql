@@ -1,0 +1,22 @@
+INSERT INTO inventory (id, name, category, stock, min_stock, reorder_qty, unit_cost, supplier) VALUES
+('screen_c', 'Screen C Quality', 'Screen', 10, 3, 10, 45, 'PhoneParts AU'),
+('screen_aplus', 'Screen A+ Quality', 'Screen', 8, 3, 8, 75, 'PhoneParts AU'),
+('screen_splus', 'Screen S+ Quality', 'Screen', 5, 2, 5, 120, 'PhoneParts AU'),
+('battery', 'Battery', 'Battery', 15, 5, 20, 25, 'BatteryWorld AU'),
+('camera', 'Camera Module', 'Camera', 8, 3, 8, 55, 'PhoneParts AU'),
+('charging_port', 'Charging Port USB-C', 'Charging', 12, 4, 15, 20, 'PhoneParts AU'),
+('speaker', 'Bottom Speaker', 'Audio', 10, 3, 10, 18, 'PhoneParts AU'),
+('back_glass', 'Back Glass Panel', 'Body', 7, 3, 10, 35, 'GlassParts AU'),
+('power_btn', 'Power Button Flex Cable', 'Buttons', 9, 3, 10, 12, 'PhoneParts AU'),
+('volume_btn', 'Volume Button Flex Cable', 'Buttons', 9, 3, 10, 12, 'PhoneParts AU'),
+('home_btn', 'Home Button Assembly', 'Buttons', 6, 2, 8, 20, 'PhoneParts AU'),
+('touch_id', 'Touch ID Sensor', 'Biometrics', 4, 2, 5, 30, 'PhoneParts AU'),
+('microphone', 'Microphone', 'Audio', 8, 3, 10, 15, 'PhoneParts AU'),
+('earpiece', 'Earpiece Speaker', 'Audio', 8, 3, 10, 18, 'PhoneParts AU'),
+('vibration', 'Vibration Motor', 'Hardware', 6, 2, 8, 22, 'PhoneParts AU'),
+('sim_tray', 'SIM Card Tray', 'Hardware', 15, 5, 20, 8, 'PhoneParts AU'),
+('wifi_antenna', 'WiFi Bluetooth Antenna', 'Connectivity', 5, 2, 8, 28, 'PhoneParts AU'),
+('logic_board', 'Logic Board', 'Board', 2, 1, 2, 180, 'Board Repair Specialists'),
+('water_kit', 'Water Damage Kit', 'Chemicals', 8, 3, 10, 15, 'RepairChem AU'),
+('adhesive', 'Screen Adhesive Tape', 'Consumables', 20, 8, 30, 3, 'PhoneParts AU')
+ON CONFLICT (id) DO NOTHING;
