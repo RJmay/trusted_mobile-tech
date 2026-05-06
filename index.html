@@ -2555,69 +2555,100 @@
       overflow: hidden;
     }
 
+    /* Spotlight — z-index 2 (in front of bg, behind cards) */
     .qcontainer[data-gen="dynamicisland"]::before {
       content: '';
       position: absolute;
       top: -20%;
       left: 50%;
-      width: 200px;
-      height: 120%;
+      width: 260px;
+      height: 130%;
       pointer-events: none;
-      z-index: 0;
+      z-index: 2;
       background: linear-gradient(180deg,
-          rgba(255, 255, 255, .08) 0%,
-          rgba(200, 190, 220, .06) 10%,
-          rgba(150, 140, 180, .03) 30%,
+          rgba(255, 255, 255, .16) 0%,
+          rgba(220, 210, 240, .12) 8%,
+          rgba(180, 170, 210, .07) 25%,
+          rgba(140, 130, 180, .03) 45%,
           transparent 70%);
-      clip-path: polygon(40% 0%, 60% 0%, 90% 100%, 10% 100%);
+      clip-path: polygon(42% 0%, 58% 0%, 88% 100%, 12% 100%);
       transform: translateX(-50%);
       animation: spotlight-sweep 8s ease-in-out infinite;
     }
 
+    /* Beacon — from bottom center, shooting upward */
     .qcontainer[data-gen="dynamicisland"]::after {
       content: '';
       position: absolute;
-      bottom: 40%;
+      bottom: 0;
       left: 50%;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(89, 79, 99, .8);
-      box-shadow: 0 0 20px rgba(89, 79, 99, .6), 0 0 40px rgba(89, 79, 99, .3), 0 0 80px rgba(89, 79, 99, .15),
-        0 0 4px #fff;
+      width: 4px;
+      height: 0;
+      background: linear-gradient(0deg, rgba(89, 79, 99, .9) 0%, rgba(140, 130, 180, .4) 40%, transparent 100%);
+      box-shadow: 0 0 12px rgba(89, 79, 99, .6), 0 0 30px rgba(89, 79, 99, .3), 0 0 60px rgba(89, 79, 99, .15);
       pointer-events: none;
-      z-index: 0;
+      z-index: 2;
       transform: translateX(-50%);
-      animation: beacon-pulse 2s ease-in-out infinite;
+      animation: beacon-up 3s ease-in-out infinite;
     }
 
     @keyframes spotlight-sweep {
 
       0%,
       100% {
-        transform: translateX(-50%) rotate(-5deg);
-        opacity: .5
+        transform: translateX(-50%) rotate(-6deg);
+        opacity: .6
       }
 
       50% {
-        transform: translateX(-50%) rotate(5deg);
+        transform: translateX(-50%) rotate(6deg);
         opacity: 1
       }
     }
 
-    @keyframes beacon-pulse {
-
-      0%,
-      100% {
-        transform: translateX(-50%) scale(1);
-        opacity: .5
+    @keyframes beacon-up {
+      0% {
+        height: 0;
+        opacity: 0;
+        box-shadow: 0 0 8px rgba(89, 79, 99, .4), 0 0 20px rgba(89, 79, 99, .2)
       }
 
       50% {
-        transform: translateX(-50%) scale(1.5);
+        height: 50%;
         opacity: 1;
-        box-shadow: 0 0 30px rgba(89, 79, 99, .8), 0 0 60px rgba(89, 79, 99, .4), 0 0 120px rgba(89, 79, 99, .2), 0 0 6px #fff
+        box-shadow: 0 0 20px rgba(89, 79, 99, .8), 0 0 50px rgba(89, 79, 99, .4), 0 0 100px rgba(89, 79, 99, .2), 0 0 6px rgba(255, 255, 255, .3)
       }
+
+      100% {
+        height: 0;
+        opacity: 0;
+        box-shadow: 0 0 8px rgba(89, 79, 99, .4), 0 0 20px rgba(89, 79, 99, .2)
+      }
+    }
+
+    /* Model cards stay in front of spotlight */
+    .qcontainer[data-gen="dynamicisland"] .grid {
+      z-index: 3 !important;
+    }
+
+    .qcontainer[data-gen="dynamicisland"] .feature-panel {
+      z-index: 3 !important;
+    }
+
+    .qcontainer[data-gen="dynamicisland"] .qtitle {
+      z-index: 3 !important;
+    }
+
+    .qcontainer[data-gen="dynamicisland"] .qsub {
+      z-index: 3 !important;
+    }
+
+    .qcontainer[data-gen="dynamicisland"] .breadcrumb {
+      z-index: 3 !important;
+    }
+
+    .qcontainer[data-gen="dynamicisland"] .back-btn {
+      z-index: 3 !important;
     }
 
     .qcontainer[data-gen="titanium"] {
