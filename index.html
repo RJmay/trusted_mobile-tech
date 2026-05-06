@@ -2373,120 +2373,361 @@
     }
 
 
-    /* ═══ ENVIRONMENTAL EFFECTS — Full Screen ═══ */
+    /* ═══ FULL-SCREEN ENVIRONMENTAL EFFECTS ═══ */
     #envOverlay {
-      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 50;
+      transition: opacity .8s ease;
     }
 
     #envOverlay.active {
-      opacity: 1;
+      opacity: 1 !important;
     }
 
     #envOverlay.eff-nightmode {
-      background: radial-gradient(ellipse at 30% 40%, rgba(255, 255, 150, .04) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(200, 200, 255, .03) 0%, transparent 40%), radial-gradient(ellipse at 50% 80%, rgba(100, 100, 200, .02) 0%, transparent 60%);
-      animation: env-stars 4s ease-in-out infinite;
-    }
-
-    @keyframes env-stars {
-
-      0%,
-      100% {
-        opacity: .7
-      }
-
-      50% {
-        opacity: 1
-      }
+      background: radial-gradient(ellipse 120% 80% at 50% 5%, rgba(180, 200, 255, .14) 0%, rgba(100, 120, 200, .06) 30%, transparent 70%);
     }
 
     #envOverlay.eff-fiveg {
-      background:
-        linear-gradient(90deg, transparent 49.5%, rgba(0, 180, 255, .04) 50%, transparent 50.5%),
-        linear-gradient(0deg, transparent 49.5%, rgba(0, 180, 255, .03) 50%, transparent 50.5%);
-      background-size: 40px 40px;
-      animation: env-grid 2s linear infinite;
+      background: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(0, 200, 255, .04) 60px, rgba(0, 200, 255, .04) 61px), repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(0, 200, 255, .03) 60px, rgba(0, 200, 255, .03) 61px), linear-gradient(45deg, transparent 40%, rgba(0, 180, 255, .06) 50%, transparent 60%);
+      background-size: 100% 100%, 100% 100%, 200% 200%;
+      animation: eff-data 4s linear infinite;
     }
 
-    @keyframes env-grid {
+    @keyframes eff-data {
       0% {
-        background-position: 0 0
+        background-position: 0 0, 0 0, -100% -100%
       }
 
       100% {
-        background-position: 40px 40px
+        background-position: 60px 60px, 60px 60px, 100% 100%
       }
     }
 
     #envOverlay.eff-cinematic {
-      background: radial-gradient(ellipse at 20% 50%, rgba(155, 181, 206, .06) 0%, transparent 50%), radial-gradient(ellipse at 80% 50%, rgba(155, 181, 206, .04) 0%, transparent 40%);
-      animation: env-bokeh 3s ease-in-out infinite;
+      background: radial-gradient(circle 80px at 15% 25%, rgba(255, 200, 100, .1) 0%, transparent 100%), radial-gradient(circle 60px at 80% 20%, rgba(200, 150, 255, .08) 0%, transparent 100%), radial-gradient(circle 100px at 60% 75%, rgba(155, 181, 206, .09) 0%, transparent 100%), radial-gradient(circle 50px at 25% 70%, rgba(255, 180, 120, .07) 0%, transparent 100%);
+      animation: eff-bokeh 6s ease-in-out infinite alternate;
     }
 
-    @keyframes env-bokeh {
-
-      0%,
-      100% {
-        opacity: .5
+    @keyframes eff-bokeh {
+      0% {
+        transform: translateX(0);
+        opacity: .8
       }
 
-      50% {
+      100% {
+        transform: translateX(-20px);
         opacity: 1
       }
     }
 
     #envOverlay.eff-dynamicisland {
-      background: linear-gradient(180deg, rgba(89, 79, 99, .08) 0%, transparent 30%);
+      background: conic-gradient(from 175deg at 50% -5%, transparent 0deg, rgba(255, 255, 255, .08) 178deg, rgba(255, 255, 255, .12) 180deg, rgba(255, 255, 255, .08) 182deg, transparent 360deg), radial-gradient(ellipse 30% 60% at 50% 100%, rgba(89, 79, 99, .1) 0%, transparent 80%);
+      animation: eff-spot 5s ease-in-out infinite;
+    }
+
+    @keyframes eff-spot {
+
+      0%,
+      100% {
+        opacity: .6;
+        transform: rotate(-2deg)
+      }
+
+      50% {
+        opacity: 1;
+        transform: rotate(2deg)
+      }
     }
 
     #envOverlay.eff-titanium {
-      background: linear-gradient(135deg, transparent 30%, rgba(193, 185, 174, .06) 50%, transparent 70%);
-      animation: env-shimmer 3s ease-in-out infinite;
+      background: radial-gradient(circle at 50% 50%, rgba(193, 185, 174, .1) 0%, rgba(193, 185, 174, .04) 20%, transparent 50%), linear-gradient(135deg, transparent 30%, rgba(193, 185, 174, .06) 45%, rgba(220, 215, 205, .08) 50%, rgba(193, 185, 174, .06) 55%, transparent 70%);
+      background-size: 100% 100%, 300% 300%;
+      animation: eff-ti 4s ease-in-out infinite;
     }
 
-    @keyframes env-shimmer {
+    @keyframes eff-ti {
       0% {
-        background-position: -200% 0
+        background-position: 0 0, 0% 0%
+      }
+
+      50% {
+        background-position: 0 0, 100% 100%
       }
 
       100% {
-        background-position: 200% 0
+        background-position: 0 0, 0% 0%
       }
     }
 
     #envOverlay.eff-camera {
-      background: radial-gradient(circle at 50% 50%, rgba(191, 164, 143, .04) 0%, transparent 50%);
+      background: radial-gradient(circle at 50% 50%, transparent 15%, rgba(191, 164, 143, .05) 16%, transparent 17%), radial-gradient(circle at 50% 50%, transparent 25%, rgba(191, 164, 143, .04) 26%, transparent 27%), radial-gradient(circle at 50% 50%, transparent 35%, rgba(191, 164, 143, .03) 36%, transparent 37%), radial-gradient(circle at 50% 50%, rgba(191, 164, 143, .08) 0%, transparent 8%);
+      animation: eff-ap 3s ease-in-out infinite;
     }
 
-    #envOverlay.eff-cosmic {
-      background: radial-gradient(circle at 50% 50%, rgba(232, 101, 26, .06) 0%, transparent 60%);
-      animation: env-cosmic 2.5s ease-in-out infinite;
-    }
-
-    @keyframes env-cosmic {
+    @keyframes eff-ap {
 
       0%,
       100% {
         transform: scale(1);
-        opacity: .5
+        opacity: .6
       }
 
       50% {
-        transform: scale(1.02);
+        transform: scale(1.05);
+        opacity: 1
+      }
+    }
+
+    #envOverlay.eff-cosmic {
+      background: radial-gradient(ellipse 80% 60% at 40% 40%, rgba(232, 101, 26, .12) 0%, transparent 50%), radial-gradient(ellipse 60% 80% at 70% 60%, rgba(255, 140, 50, .08) 0%, transparent 40%);
+      animation: eff-neb 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes eff-neb {
+      0% {
+        transform: scale(1);
+        opacity: .7
+      }
+
+      100% {
+        transform: scale(1.03);
         opacity: 1
       }
     }
 
     #envOverlay.eff-air {
-      background: linear-gradient(180deg, transparent 50%, rgba(126, 181, 214, .04) 100%);
+      background: linear-gradient(180deg, transparent 40%, rgba(126, 181, 214, .06) 100%);
     }
 
     #envOverlay.eff-pro {
-      background: linear-gradient(180deg, rgba(29, 29, 31, .04) 0%, transparent 50%);
+      background: linear-gradient(180deg, rgba(29, 29, 31, .06) 0%, transparent 40%, rgba(29, 29, 31, .04) 100%);
     }
 
-    /* ═══ INK SPREADING ANIMATION — Model Cards ═══ */
-    .model-card {
+    /* ═══ GEN PAGE THEMES ═══ */
+    .qcontainer[data-gen="nightmode"] {
+      background: var(--card-bg) !important;
+      box-shadow: inset 0 0 200px rgba(100, 120, 200, .04), 15px 25px 0 -12px rgba(200, 210, 255, .015), -20px 40px 0 -14px rgba(180, 200, 255, .01), 30px 60px 0 -16px rgba(200, 220, 255, .012), -40px 15px 0 -13px rgba(190, 200, 255, .014), 50px 80px 0 -15px rgba(210, 220, 255, .01), -10px 70px 0 -14px rgba(200, 200, 255, .013) !important;
+    }
+
+    .qcontainer[data-gen="fiveg"] {
+      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(0, 50, 80, .15) 50%, var(--card-bg) 100%) !important;
+      border-color: rgba(0, 180, 255, .15) !important;
+    }
+
+    .qcontainer[data-gen="cinematic"] {
+      background: var(--card-bg) !important;
+      box-shadow: 0 0 120px rgba(155, 181, 206, .08), 0 0 60px rgba(255, 200, 100, .04), inset 0 0 80px rgba(155, 181, 206, .03) !important;
+    }
+
+    .qcontainer[data-gen="dynamicisland"] {
+      background: linear-gradient(180deg, rgba(89, 79, 99, .08) 0%, var(--card-bg) 20%, var(--card-bg) 80%, rgba(89, 79, 99, .06) 100%) !important;
+    }
+
+    .qcontainer[data-gen="titanium"] {
+      background: linear-gradient(135deg, rgba(193, 185, 174, .06) 0%, transparent 25%), linear-gradient(315deg, rgba(193, 185, 174, .04) 0%, transparent 20%), linear-gradient(45deg, rgba(220, 215, 205, .03) 0%, transparent 30%), var(--card-bg) !important;
+      border-color: rgba(193, 185, 174, .12) !important;
+    }
+
+    .qcontainer[data-gen="camera"] {
+      background: radial-gradient(circle at 50% 30%, rgba(191, 164, 143, .06) 0%, transparent 40%), var(--card-bg) !important;
+    }
+
+    .qcontainer[data-gen="cosmic"] {
+      background: radial-gradient(ellipse at 50% 50%, rgba(232, 101, 26, .06) 0%, transparent 50%), var(--card-bg) !important;
+      box-shadow: 0 0 100px rgba(232, 101, 26, .06) !important;
+    }
+
+    /* ═══ SERIES CARD ENHANCED HOVER ═══ */
+    .series-card {
+      position: relative;
       overflow: hidden;
+      z-index: 1;
+    }
+
+    .series-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .5s;
+      z-index: 0;
+    }
+
+    .series-card:hover::after {
+      opacity: 1;
+    }
+
+    .series-card[data-effect="nightmode"]:hover {
+      background: linear-gradient(180deg, #080a14, #0c0e1a) !important;
+    }
+
+    .series-card[data-effect="nightmode"]::after {
+      background: radial-gradient(ellipse at 50% 20%, rgba(180, 200, 255, .15) 0%, transparent 60%);
+    }
+
+    .series-card[data-effect="nightmode"]:hover .model-name {
+      color: #c8d8ff !important;
+    }
+
+    .series-card[data-effect="fiveg"]::after {
+      background: linear-gradient(90deg, rgba(0, 200, 255, .08) 1px, transparent 1px) 0 0/30px 30px, linear-gradient(0deg, rgba(0, 200, 255, .06) 1px, transparent 1px) 0 0/30px 30px;
+      animation: cer-s 3s linear infinite paused;
+    }
+
+    .series-card[data-effect="fiveg"]:hover::after {
+      animation-play-state: running;
+    }
+
+    .series-card[data-effect="fiveg"]:hover {
+      border-color: rgba(0, 200, 255, .4) !important;
+      box-shadow: 0 0 30px rgba(0, 200, 255, .12), 0 20px 50px rgba(0, 0, 0, .3) !important;
+    }
+
+    @keyframes cer-s {
+      0% {
+        background-position: 0 0, 0 0
+      }
+
+      100% {
+        background-position: 30px 30px, 30px 30px
+      }
+    }
+
+    .series-card[data-effect="cinematic"]::after {
+      background: radial-gradient(circle at 30% 40%, rgba(255, 200, 100, .1) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(180, 150, 255, .08) 0%, transparent 40%);
+    }
+
+    .series-card[data-effect="cinematic"]:hover {
+      box-shadow: 0 0 50px rgba(155, 181, 206, .12), 0 20px 50px rgba(0, 0, 0, .3) !important;
+    }
+
+    .series-card[data-effect="dynamicisland"]::after {
+      background: linear-gradient(180deg, rgba(89, 79, 99, .2) 0%, transparent 40%);
+    }
+
+    .series-card[data-effect="dynamicisland"]:hover {
+      box-shadow: 0 -8px 40px rgba(89, 79, 99, .15), 0 20px 50px rgba(0, 0, 0, .3) !important;
+    }
+
+    .series-card[data-effect="titanium"]::after {
+      background: radial-gradient(circle at 50% 50%, rgba(193, 185, 174, .12) 0%, transparent 40%), linear-gradient(135deg, transparent 20%, rgba(220, 215, 205, .08) 40%, rgba(193, 185, 174, .12) 50%, rgba(220, 215, 205, .08) 60%, transparent 80%);
+      background-size: 100% 100%, 200% 200%;
+      animation: ti-s 3s ease-in-out infinite paused;
+    }
+
+    .series-card[data-effect="titanium"]:hover::after {
+      animation-play-state: running;
+    }
+
+    .series-card[data-effect="titanium"]:hover {
+      border-color: rgba(193, 185, 174, .3) !important;
+      box-shadow: 0 0 40px rgba(193, 185, 174, .1), 0 20px 50px rgba(0, 0, 0, .3) !important;
+    }
+
+    @keyframes ti-s {
+      0% {
+        background-position: 0 0, -100% -100%
+      }
+
+      100% {
+        background-position: 0 0, 200% 200%
+      }
+    }
+
+    .series-card[data-effect="camera"]::after {
+      background: radial-gradient(circle 40px at 70% 30%, rgba(191, 164, 143, .15) 0%, transparent 100%), radial-gradient(circle 20px at 72% 28%, rgba(255, 255, 255, .08) 0%, transparent 100%);
+      animation: lf 4s ease-in-out infinite paused;
+    }
+
+    .series-card[data-effect="camera"]:hover::after {
+      animation-play-state: running;
+    }
+
+    @keyframes lf {
+
+      0%,
+      100% {
+        opacity: .5;
+        transform: translate(0, 0)
+      }
+
+      50% {
+        opacity: 1;
+        transform: translate(-5px, 5px)
+      }
+    }
+
+    .series-card[data-effect="cosmic"]::after {
+      background: radial-gradient(circle at 50% 50%, rgba(232, 101, 26, .18) 0%, rgba(255, 140, 50, .06) 30%, transparent 60%);
+      animation: cp 3s ease-in-out infinite paused;
+    }
+
+    .series-card[data-effect="cosmic"]:hover::after {
+      animation-play-state: running;
+    }
+
+    .series-card[data-effect="cosmic"]:hover {
+      border-color: rgba(232, 101, 26, .4) !important;
+      box-shadow: 0 0 40px rgba(232, 101, 26, .12), 0 20px 50px rgba(0, 0, 0, .3) !important;
+    }
+
+    @keyframes cp {
+
+      0%,
+      100% {
+        transform: scale(.95);
+        opacity: .6
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 1
+      }
+    }
+
+    .series-card[data-effect="air"]::after {
+      background: linear-gradient(180deg, transparent 50%, rgba(126, 181, 214, .08) 100%);
+    }
+
+    .series-card[data-effect="air"]:hover {
+      transform: translateY(-16px) !important;
+      box-shadow: 0 28px 60px rgba(126, 181, 214, .12) !important;
+    }
+
+    .series-card[data-effect="pro"]::after {
+      background: linear-gradient(180deg, rgba(29, 29, 31, .06) 0%, transparent 50%, rgba(29, 29, 31, .04) 100%);
+    }
+
+    /* ═══ MODEL CARD — Angular corners + ink ═══ */
+    .model-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .model-card .corner-tl {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60px;
+      height: 60px;
+      background: var(--card-color, var(--brand));
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+      opacity: .18;
+      z-index: 0;
+    }
+
+    .model-card .corner-br {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: var(--card-color, var(--brand));
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+      opacity: .18;
+      z-index: 0;
     }
 
     .model-card::before {
@@ -2498,16 +2739,17 @@
       height: 0;
       background: var(--card-color, var(--brand));
       border-radius: 50%;
-      opacity: .06;
+      opacity: 0;
       transform: translate(-50%, -50%);
-      transition: width .8s cubic-bezier(.23, 1, .32, 1), height .8s cubic-bezier(.23, 1, .32, 1);
+      transition: width 20s cubic-bezier(.05, .8, .3, 1), height 20s cubic-bezier(.05, .8, .3, 1), opacity 1.5s;
       z-index: 0;
       pointer-events: none;
     }
 
     .model-card:hover::before {
-      width: 400px;
-      height: 400px;
+      width: 2000px;
+      height: 2000px;
+      opacity: .04;
     }
 
     .model-card>* {
@@ -2515,53 +2757,27 @@
       z-index: 1;
     }
 
-    /* ═══ CORNER COLOR IMPRINT — Model Cards ═══ */
-    .model-card .corner-tl,
-    .model-card .corner-br {
-      position: absolute;
-      width: 0;
-      height: 0;
-      opacity: 0;
-      transition: all .6s cubic-bezier(.23, 1, .32, 1);
-      z-index: 0;
+    /* ═══ DESIGN PHILOSOPHY ═══ */
+    .design-philosophy {
+      margin-top: 20px;
+      padding: 18px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      line-height: 1.8;
+      color: #94a3b8;
+      font-style: italic;
+      letter-spacing: .2px;
     }
 
-    .model-card .corner-tl {
-      top: 0;
-      left: 0;
-      border-radius: 0 0 100% 0;
-    }
-
-    .model-card .corner-br {
-      bottom: 0;
-      right: 0;
-      border-radius: 100% 0 0 0;
-    }
-
-    .model-card:hover .corner-tl,
-    .model-card:hover .corner-br {
-      width: 80px;
-      height: 80px;
-      opacity: .15;
-      background: var(--card-color, var(--brand));
-    }
-
-    /* Dark theme night mode card override */
-    .series-card[data-effect="nightmode"]:hover {
-      background: linear-gradient(180deg, #0a0b14 0%, #0d0f1a 100%);
-    }
-
-    .series-card[data-effect="nightmode"]:hover .model-name {
-      color: #ffd700;
-    }
-
-    .series-card[data-effect="nightmode"]:hover .series-tagline {
-      color: #777;
-    }
-
-    .series-card[data-effect="nightmode"]:hover .series-count {
-      background: rgba(255, 255, 255, .06);
-      color: #999;
+    .design-philosophy::before {
+      content: open-quote;
+      font-size: 36px;
+      color: var(--panel-color, var(--brand));
+      opacity: .4;
+      line-height: 0;
+      vertical-align: -12px;
+      margin-right: 4px;
+      font-family: Georgia, serif;
     }
 
     .hidden {
@@ -3477,24 +3693,28 @@
           + '</div>';
       }).join('');
     }
+    var PHILOSOPHY = { 'iPhone SE': 'The SE delivers modern performance in a classic, compact form.', 'iPhone 11': 'Night Mode photography brought professional low-light to everyone. The ultra-wide camera transformed how we capture the world.', 'iPhone 12': 'A return to iconic flat-edge design with aerospace-grade aluminum. First 5G iPhone with Ceramic Shield, the toughest glass ever on a smartphone.', 'iPhone 13': 'Designed for storytellers. Cinematic Mode brought depth-of-field video, while ProMotion 120Hz made every interaction feel impossibly fluid.', 'iPhone 14': 'Dynamic Island reimagined phone interaction, turning the camera cutout into a living interface. Satellite SOS proved a phone can save your life.', 'iPhone 15': 'Grade 5 titanium, the same alloy used in spacecraft. The lightest Pro ever, with a customisable Action Button and the most powerful mobile chip ever made.', 'iPhone 16': 'Camera Control gives you a dedicated button that changes how you capture. With Apple Intelligence built in, iPhone 16 Pro thinks alongside you.', 'iPhone 17': 'A bold new design language signals the next era of iPhone. Cosmic Orange makes an unmistakable statement while refined aluminum brings lighter weight than ever.', 'MacBook Air': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge.', 'MacBook Pro 13in': 'Professional power in the most portable Pro form. The Touch Bar brought context-sensitive controls to your fingertips.', 'MacBook Pro 14in': 'Built for boundary-pushers. Liquid Retina XDR brings reference-grade colour accuracy to a laptop for the first time.', 'MacBook Pro 16in': 'Maximum canvas, maximum power. The 16-inch display gives creators room to work while M-series chips handle anything.', 'iPad': 'The essential iPad. Versatile, affordable, and powerful enough for everything from notes to Netflix to creative work.', 'iPad mini': 'Small enough for anywhere, powerful enough for everything. The mini proves screen size has nothing to do with capability.', 'iPad Air': 'The sweet spot. Colourful, powerful, and ready for anything with M-series performance and Apple Pencil Pro.', 'iPad Pro': 'The ultimate iPad. Tandem OLED delivers the most stunning display Apple has ever made, in the thinnest product ever created.' };
     function selectSeries(el) {
-      const sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2;
-      const cat = T[selCat]; const s = cat.series[sn]; showLevel(2); renderBC();
+      var sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2;
+      var cat = T[selCat]; var s = cat.series[sn]; showLevel(2); renderBC();
       document.getElementById('modelFeaturePanel').innerHTML = '';
-      // Show series feature panel
-      var fp = '<div class="feature-panel" style="--panel-color:' + (s.color || '#0096c7') + '">'
-        + '<button class="feature-panel-close" onclick="this.parentElement.remove()">✕</button>'
+      var qc = document.querySelector('#page1');
+      if (qc) qc.setAttribute('data-gen', s.effect || '');
+      var phil = PHILOSOPHY[sn] || '';
+      var fp = '<div class="feature-panel" style="--panel-color:' + (s.color || '#00d4ff') + '">'
+        + '<button class="feature-panel-close" onclick="this.parentElement.remove()">x</button>'
         + '<div class="feature-panel-header">'
         + '<div class="feature-panel-icon">' + cat.icon + '</div>'
         + '<div><div class="feature-panel-title">' + sn + '</div>'
         + '<div class="feature-panel-tagline">' + (s.tagline || '') + '</div></div></div>'
         + '<div class="feature-list">' + (s.features || []).map(function (f) { return '<div class="feature-item">' + f + '</div>'; }).join('') + '</div>'
+        + (phil ? '<div class="design-philosophy">' + phil + '</div>' : '')
         + '</div>';
       document.getElementById('modelFeaturePanel').innerHTML = fp;
       document.getElementById('l2Title').innerHTML = 'Select your <span class="hl">' + sn + '</span>';
       document.getElementById('l2Sub').textContent = 'Pick your exact model for an accurate quote';
       document.getElementById('modelGrid').innerHTML = s.models.map(function (m) {
-        var clr = m.color || s.color || '#0096c7';
+        var clr = m.color || s.color || '#00d4ff';
         var cn = m.colorName || '';
         return '<div class="model-card" style="--card-color:' + clr + '" data-n="' + encodeURIComponent(m.name) + '" onclick="showModelDetail(this,event)">'
           + '<div class="corner-tl" style="background:' + clr + '"></div>'
@@ -3547,7 +3767,7 @@
       goToPage(2);
     }
     function selectModelByName(encoded) { selModel = decodeURIComponent(encoded); goToPage(2); }
-    function showLevel(n) { [0, 1, 2].forEach(i => { const e = document.getElementById('level' + i); if (e) e.classList.toggle('hidden', i !== n); }); const sr = document.getElementById('searchResultsBox'); if (sr) sr.classList.add('hidden'); document.getElementById('modelSearch').value = ''; }
+    function showLevel(n) { var pg = document.getElementById('page1'); if (pg && n < 2) pg.removeAttribute('data-gen');[0, 1, 2].forEach(i => { const e = document.getElementById('level' + i); if (e) e.classList.toggle('hidden', i !== n); }); const sr = document.getElementById('searchResultsBox'); if (sr) sr.classList.add('hidden'); document.getElementById('modelSearch').value = ''; }
     function renderBC() {
       const bc = document.getElementById('breadcrumb'); if (!bc) return;
       if (browseLevel === 0) { bc.style.display = 'none'; return; } bc.style.display = 'flex';
@@ -3819,25 +4039,25 @@
 
     document.getElementById('qualityModal').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
 
-    // Environmental Effects — full screen overlays on series card hover
-    document.addEventListener('mouseover', function (e) {
-      var card = e.target.closest('.series-card[data-effect]');
-      var ov = document.getElementById('envOverlay');
-      if (!ov) return;
-      if (card) {
-        var eff = card.dataset.effect;
-        if (eff && eff !== 'none') {
-          ov.className = 'active eff-' + eff;
-        }
-      }
-    });
-    document.addEventListener('mouseout', function (e) {
-      var card = e.target.closest('.series-card[data-effect]');
-      if (card) {
+    // Environmental Effects
+    (function () {
+      document.addEventListener('mouseover', function (e) {
+        var card = e.target;
+        while (card && !card.classList?.contains('series-card')) card = card.parentElement;
+        if (!card || !card.dataset.effect) return;
         var ov = document.getElementById('envOverlay');
-        if (ov) ov.className = '';
-      }
-    });
+        if (!ov) return;
+        var eff = card.dataset.effect;
+        if (eff && eff !== 'none') { ov.className = 'eff-' + eff + ' active'; ov.style.opacity = '1'; }
+      });
+      document.addEventListener('mouseout', function (e) {
+        var card = e.target;
+        while (card && !card.classList?.contains('series-card')) card = card.parentElement;
+        if (!card || !card.dataset.effect) return;
+        var ov = document.getElementById('envOverlay');
+        if (ov) { ov.style.opacity = '0'; setTimeout(function () { if (ov.style.opacity === '0') ov.className = ''; }, 800); }
+      });
+    })();
     setMinDate(); renderCategories();
   </script>
 
