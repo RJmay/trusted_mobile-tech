@@ -2564,7 +2564,7 @@
       width: 260px;
       height: 130%;
       pointer-events: none;
-      z-index: 2;
+      z-index: 10;
       background: linear-gradient(180deg,
           rgba(255, 255, 255, .16) 0%,
           rgba(220, 210, 240, .12) 8%,
@@ -2587,7 +2587,7 @@
       background: linear-gradient(0deg, rgba(89, 79, 99, .9) 0%, rgba(140, 130, 180, .4) 40%, transparent 100%);
       box-shadow: 0 0 12px rgba(89, 79, 99, .6), 0 0 30px rgba(89, 79, 99, .3), 0 0 60px rgba(89, 79, 99, .15);
       pointer-events: none;
-      z-index: 2;
+      z-index: 10;
       transform: translateX(-50%);
       animation: beacon-up 3s ease-in-out infinite;
     }
@@ -2628,27 +2628,7 @@
 
     /* Model cards stay in front of spotlight */
     .qcontainer[data-gen="dynamicisland"] .grid {
-      z-index: 3 !important;
-    }
-
-    .qcontainer[data-gen="dynamicisland"] .feature-panel {
-      z-index: 3 !important;
-    }
-
-    .qcontainer[data-gen="dynamicisland"] .qtitle {
-      z-index: 3 !important;
-    }
-
-    .qcontainer[data-gen="dynamicisland"] .qsub {
-      z-index: 3 !important;
-    }
-
-    .qcontainer[data-gen="dynamicisland"] .breadcrumb {
-      z-index: 3 !important;
-    }
-
-    .qcontainer[data-gen="dynamicisland"] .back-btn {
-      z-index: 3 !important;
+      z-index: 11 !important;
     }
 
     .qcontainer[data-gen="titanium"] {
