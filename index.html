@@ -543,6 +543,8 @@
       color: var(--dark);
       margin-bottom: 12px;
       letter-spacing: -.5px;
+      position: relative;
+      z-index: 1;
     }
 
     .qtitle .hl {
@@ -555,11 +557,15 @@
       font-size: 17px;
       color: var(--muted);
       margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
     }
 
     /* Breadcrumb */
     .breadcrumb {
       display: flex;
+      position: relative;
+      z-index: 1;
       align-items: center;
       gap: 8px;
       margin-bottom: 22px;
@@ -609,6 +615,8 @@
     /* Search */
     .search-box {
       max-width: 580px;
+      position: relative;
+      z-index: 1;
       margin: 0 auto 36px;
       position: relative;
     }
@@ -731,6 +739,8 @@
       grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
       gap: 22px;
       margin-top: 24px;
+      position: relative;
+      z-index: 1;
     }
 
     .card {
@@ -900,6 +910,8 @@
     }
 
     .back-btn {
+      position: relative;
+      z-index: 1;
       background: var(--grad);
       color: #fff;
       border: none;
@@ -2186,6 +2198,8 @@
 
     /* ═══ FEATURE PANEL ═══ */
     .feature-panel {
+      position: relative;
+      z-index: 1;
       background: linear-gradient(135deg, var(--card-bg), var(--surface));
       border: 2px solid var(--border);
       border-radius: 16px;
@@ -2385,7 +2399,7 @@
     }
 
     #envOverlay.eff-nightmode {
-      background: radial-gradient(ellipse 120% 80% at 50% 5%, rgba(180, 200, 255, .14) 0%, rgba(100, 120, 200, .06) 30%, transparent 70%);
+      background: radial-gradient(ellipse 160% 120% at 5% 5%, rgba(180, 200, 255, .22) 0%, rgba(140, 160, 230, .1) 25%, rgba(100, 120, 200, .04) 50%, transparent 80%);
     }
 
     #envOverlay.eff-fiveg {
@@ -2517,16 +2531,187 @@
 
     .qcontainer[data-gen="cinematic"] {
       background: var(--card-bg) !important;
-      box-shadow: 0 0 120px rgba(155, 181, 206, .08), 0 0 60px rgba(255, 200, 100, .04), inset 0 0 80px rgba(155, 181, 206, .03) !important;
+      box-shadow: 0 0 80px rgba(155, 181, 206, .12), 0 0 40px rgba(255, 200, 100, .06) !important;
+      border: 1px solid transparent !important;
+      border-image: linear-gradient(135deg, rgba(255, 200, 100, .3), rgba(155, 181, 206, .25), rgba(200, 150, 255, .2), rgba(255, 180, 120, .25)) 1 !important;
+      animation: cinema-border-glow 4s ease-in-out infinite;
+    }
+
+    @keyframes cinema-border-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 80px rgba(155, 181, 206, .12), 0 0 40px rgba(255, 200, 100, .06)
+      }
+
+      50% {
+        box-shadow: 0 0 100px rgba(155, 181, 206, .18), 0 0 50px rgba(255, 200, 100, .1)
+      }
     }
 
     .qcontainer[data-gen="dynamicisland"] {
-      background: linear-gradient(180deg, rgba(89, 79, 99, .08) 0%, var(--card-bg) 20%, var(--card-bg) 80%, rgba(89, 79, 99, .06) 100%) !important;
+      background: var(--card-bg) !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qcontainer[data-gen="dynamicisland"]::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      width: 200px;
+      height: 120%;
+      pointer-events: none;
+      z-index: 0;
+      background: linear-gradient(180deg,
+          rgba(255, 255, 255, .08) 0%,
+          rgba(200, 190, 220, .06) 10%,
+          rgba(150, 140, 180, .03) 30%,
+          transparent 70%);
+      clip-path: polygon(40% 0%, 60% 0%, 90% 100%, 10% 100%);
+      transform: translateX(-50%);
+      animation: spotlight-sweep 8s ease-in-out infinite;
+    }
+
+    .qcontainer[data-gen="dynamicisland"]::after {
+      content: '';
+      position: absolute;
+      bottom: 40%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(89, 79, 99, .8);
+      box-shadow: 0 0 20px rgba(89, 79, 99, .6), 0 0 40px rgba(89, 79, 99, .3), 0 0 80px rgba(89, 79, 99, .15),
+        0 0 4px #fff;
+      pointer-events: none;
+      z-index: 0;
+      transform: translateX(-50%);
+      animation: beacon-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes spotlight-sweep {
+
+      0%,
+      100% {
+        transform: translateX(-50%) rotate(-5deg);
+        opacity: .5
+      }
+
+      50% {
+        transform: translateX(-50%) rotate(5deg);
+        opacity: 1
+      }
+    }
+
+    @keyframes beacon-pulse {
+
+      0%,
+      100% {
+        transform: translateX(-50%) scale(1);
+        opacity: .5
+      }
+
+      50% {
+        transform: translateX(-50%) scale(1.5);
+        opacity: 1;
+        box-shadow: 0 0 30px rgba(89, 79, 99, .8), 0 0 60px rgba(89, 79, 99, .4), 0 0 120px rgba(89, 79, 99, .2), 0 0 6px #fff
+      }
     }
 
     .qcontainer[data-gen="titanium"] {
-      background: linear-gradient(135deg, rgba(193, 185, 174, .06) 0%, transparent 25%), linear-gradient(315deg, rgba(193, 185, 174, .04) 0%, transparent 20%), linear-gradient(45deg, rgba(220, 215, 205, .03) 0%, transparent 30%), var(--card-bg) !important;
-      border-color: rgba(193, 185, 174, .12) !important;
+      background: var(--card-bg) !important;
+      border-color: rgba(193, 185, 174, .15) !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qcontainer[data-gen="titanium"]::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle 3px at 20% 15%, rgba(193, 185, 174, .5) 0%, transparent 100%),
+        radial-gradient(circle 2px at 35% 8%, rgba(220, 215, 205, .6) 0%, transparent 100%),
+        radial-gradient(circle 4px at 50% 20%, rgba(193, 185, 174, .4) 0%, transparent 100%),
+        radial-gradient(circle 2px at 65% 12%, rgba(220, 215, 205, .5) 0%, transparent 100%),
+        radial-gradient(circle 3px at 80% 18%, rgba(193, 185, 174, .45) 0%, transparent 100%),
+        radial-gradient(circle 2px at 15% 85%, rgba(220, 215, 205, .4) 0%, transparent 100%),
+        radial-gradient(circle 3px at 30% 90%, rgba(193, 185, 174, .5) 0%, transparent 100%),
+        radial-gradient(circle 2px at 45% 82%, rgba(220, 215, 205, .55) 0%, transparent 100%),
+        radial-gradient(circle 4px at 60% 88%, rgba(193, 185, 174, .35) 0%, transparent 100%),
+        radial-gradient(circle 2px at 75% 84%, rgba(220, 215, 205, .5) 0%, transparent 100%),
+        radial-gradient(circle 3px at 90% 92%, rgba(193, 185, 174, .4) 0%, transparent 100%),
+        radial-gradient(circle 2px at 10% 50%, rgba(220, 215, 205, .45) 0%, transparent 100%),
+        radial-gradient(circle 3px at 88% 45%, rgba(193, 185, 174, .5) 0%, transparent 100%),
+        radial-gradient(circle 2px at 25% 55%, rgba(220, 215, 205, .35) 0%, transparent 100%),
+        radial-gradient(circle 3px at 72% 52%, rgba(193, 185, 174, .4) 0%, transparent 100%);
+      animation: ti-particles 8s ease-in-out infinite;
+    }
+
+    .qcontainer[data-gen="titanium"]::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(193, 185, 174, .15) 0%, rgba(193, 185, 174, .06) 30%, transparent 60%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+      animation: ti-burst 6s ease-out infinite;
+    }
+
+    @keyframes ti-particles {
+      0% {
+        transform: scale(1);
+        opacity: .6
+      }
+
+      25% {
+        transform: scale(1.02);
+        opacity: .9
+      }
+
+      50% {
+        transform: scale(1.04);
+        opacity: 1
+      }
+
+      75% {
+        transform: scale(1.02);
+        opacity: .8
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: .6
+      }
+    }
+
+    @keyframes ti-burst {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: .3
+      }
+
+      40% {
+        width: 600px;
+        height: 600px;
+        opacity: .12
+      }
+
+      100% {
+        width: 900px;
+        height: 900px;
+        opacity: 0
+      }
     }
 
     .qcontainer[data-gen="camera"] {
@@ -2714,7 +2899,7 @@
       height: 60px;
       background: var(--card-color, var(--brand));
       clip-path: polygon(0 0, 100% 0, 0 100%);
-      opacity: .18;
+      opacity: 1;
       z-index: 0;
     }
 
@@ -2726,7 +2911,7 @@
       height: 60px;
       background: var(--card-color, var(--brand));
       clip-path: polygon(100% 0, 100% 100%, 0 100%);
-      opacity: .18;
+      opacity: 1;
       z-index: 0;
     }
 
@@ -3459,7 +3644,7 @@
             features: ['First 5G iPhone', 'Ceramic Shield Front Cover', 'MagSafe Charging', 'Flat-Edge Design Returns'],
             models: [
               { name: 'iPhone 12', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=300&h=220&fit=crop', color: '#023B63', colorName: 'Blue', features: ['6.1" Super Retina XDR', 'Ceramic Shield', 'MagSafe'], uniqueRepair: 'MagSafe Alignment Repair' },
-              { name: 'iPhone 12 Mini', img: 'https://images.unsplash.com/photo-1603891220243-38c7e3f9a3f3?w=300&h=220&fit=crop', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['5.4" Compact Design', 'Smallest 5G Phone', 'A14 Bionic'], uniqueRepair: null },
+              { name: 'iPhone 12 Mini', img: 'https://images.unsplash.com/photo-1603891220243-38c7e3f9a3f3?w=300&h=220&fit=crop', color: '#CC0000', colorName: '(PRODUCT)RED', features: ['5.4" Compact Design', 'Smallest 5G Phone', 'A14 Bionic'], uniqueRepair: null },
               { name: 'iPhone 12 Pro', img: 'https://images.unsplash.com/photo-1603891219057-f6c5a01fa6b8?w=300&h=220&fit=crop', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['LiDAR Scanner', 'Dolby Vision Recording', 'Stainless Steel'], uniqueRepair: 'LiDAR Scanner Repair' },
               { name: 'iPhone 12 Pro Max', img: 'https://images.unsplash.com/photo-1605787020600-b9ebd5df1d07?w=300&h=220&fit=crop', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['6.7" Display', 'Sensor-Shift OIS', 'Best Camera System'], uniqueRepair: 'LiDAR Scanner Repair' },
             ]
@@ -3471,7 +3656,7 @@
             tagline: 'Cinematic Mode. ProMotion 120Hz.',
             features: ['Cinematic Mode Video', 'ProMotion 120Hz (Pro)', 'Smaller Notch', 'Diagonal Dual Camera'],
             models: [
-              { name: 'iPhone 13', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=300&h=220&fit=crop', color: '#F9E7DA', colorName: 'Pink', features: ['Diagonal Dual Camera', 'Cinematic Mode', 'A15 Bionic'], uniqueRepair: null },
+              { name: 'iPhone 13', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=300&h=220&fit=crop', color: '#F4C2C2', colorName: 'Pink', features: ['Diagonal Dual Camera', 'Cinematic Mode', 'A15 Bionic'], uniqueRepair: null },
               { name: 'iPhone 13 Mini', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=300&h=220&fit=crop', color: '#394C6B', colorName: 'Blue', features: ['5.4" Compact', 'Cinematic Mode', 'Longest Mini Battery'], uniqueRepair: null },
               { name: 'iPhone 13 Pro', img: 'https://images.unsplash.com/photo-1632661674410-ae9a0acc97d9?w=300&h=220&fit=crop', color: '#9BB5CE', colorName: 'Sierra Blue', features: ['ProMotion 120Hz', 'Macro Photography', 'Cinematic Mode'], uniqueRepair: 'ProMotion Display Repair' },
               { name: 'iPhone 13 Pro Max', img: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=300&h=220&fit=crop', color: '#505F4E', colorName: 'Alpine Green', features: ['6.7" ProMotion', 'Best iPhone Battery', 'Pro Camera System'], uniqueRepair: 'ProMotion Display Repair' },
@@ -3484,7 +3669,7 @@
             tagline: 'Dynamic Island. 48MP camera. Always-On.',
             features: ['Dynamic Island (Pro)', '48MP Main Camera (Pro)', 'Crash Detection', 'Emergency SOS via Satellite'],
             models: [
-              { name: 'iPhone 14', img: 'https://images.unsplash.com/photo-1663499482297-c4f3f6a8db11?w=300&h=220&fit=crop', color: '#E5DDEA', colorName: 'Purple', features: ['Crash Detection', 'Emergency SOS Satellite', 'Action Mode Video'], uniqueRepair: 'Satellite Antenna Repair' },
+              { name: 'iPhone 14', img: 'https://images.unsplash.com/photo-1663499482297-c4f3f6a8db11?w=300&h=220&fit=crop', color: '#C8A2C8', colorName: 'Purple', features: ['Crash Detection', 'Emergency SOS Satellite', 'Action Mode Video'], uniqueRepair: 'Satellite Antenna Repair' },
               { name: 'iPhone 14 Plus', img: 'https://images.unsplash.com/photo-1663499482508-6e0c2ebbc57d?w=300&h=220&fit=crop', color: '#F5DF4D', colorName: 'Yellow', features: ['6.7" Display', 'Longest Battery', 'Crash Detection'], uniqueRepair: 'Satellite Antenna Repair' },
               { name: 'iPhone 14 Pro', img: 'https://images.unsplash.com/photo-1663499482523-1c0d3e4b97ec?w=300&h=220&fit=crop', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On Display', 'ProMotion'], uniqueRepair: 'Dynamic Island Sensor Repair' },
               { name: 'iPhone 14 Pro Max', img: 'https://images.unsplash.com/photo-1632633173522-c8fadf72d665?w=300&h=220&fit=crop', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On', 'Best Battery'], uniqueRepair: 'Dynamic Island Sensor Repair' },
@@ -3497,7 +3682,7 @@
             tagline: 'Titanium. USB-C. Action Button.',
             features: ['First Titanium Frame (Pro)', 'USB-C Replaces Lightning', 'Dynamic Island on All', 'Action Button (Pro)'],
             models: [
-              { name: 'iPhone 15', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=300&h=220&fit=crop', color: '#C2D4C1', colorName: 'Green', features: ['Dynamic Island', 'USB-C', '48MP Camera', 'A16 Bionic'], uniqueRepair: 'USB-C Port Repair' },
+              { name: 'iPhone 15', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=300&h=220&fit=crop', color: '#8DB48E', colorName: 'Green', features: ['Dynamic Island', 'USB-C', '48MP Camera', 'A16 Bionic'], uniqueRepair: 'USB-C Port Repair' },
               { name: 'iPhone 15 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=300&h=220&fit=crop', color: '#F4CE6A', colorName: 'Yellow', features: ['6.7" Display', 'USB-C', 'Longest Battery', 'Dynamic Island'], uniqueRepair: 'USB-C Port Repair' },
               { name: 'iPhone 15 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=300&h=220&fit=crop', color: '#3B4856', colorName: 'Blue Titanium', features: ['Grade 5 Titanium Frame', 'Action Button', 'A17 Pro Chip', 'USB-C 3.0'], uniqueRepair: 'Titanium Frame Repair' },
               { name: 'iPhone 15 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=300&h=220&fit=crop', color: '#C1B9AE', colorName: 'Natural Titanium', features: ['Titanium Frame', '5x Optical Zoom', 'Action Button', 'Thinnest Bezels'], uniqueRepair: 'Titanium Frame Repair' },
@@ -3510,7 +3695,7 @@
             tagline: 'Camera Control. A18 Pro. Biggest screens ever.',
             features: ['Camera Control Button', 'Action Button on All', 'A18 Pro (Pro)', '4K 120fps Dolby Vision'],
             models: [
-              { name: 'iPhone 16', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=300&h=220&fit=crop', color: '#4B50A7', colorName: 'Ultramarine', features: ['Camera Control', 'Action Button', 'A18 Chip', 'Vertical Camera'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16', img: 'https://images.unsplash.com/photo-1695048133535-7b2c6921bf17?w=300&h=220&fit=crop', color: '#3F45A5', colorName: 'Ultramarine', features: ['Camera Control', 'Action Button', 'A18 Chip', 'Vertical Camera'], uniqueRepair: 'Camera Control Button Repair' },
               { name: 'iPhone 16 Plus', img: 'https://images.unsplash.com/photo-1695048064507-db84db6904b1?w=300&h=220&fit=crop', color: '#5BA8A0', colorName: 'Teal', features: ['6.7" Display', 'Camera Control', 'Action Button', 'A18 Chip'], uniqueRepair: 'Camera Control Button Repair' },
               { name: 'iPhone 16 Pro', img: 'https://images.unsplash.com/photo-1678911820864-e2c567c655d7?w=300&h=220&fit=crop', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.3" Display', 'A18 Pro', '4K 120fps', 'Camera Control'], uniqueRepair: 'Camera Control Button Repair' },
               { name: 'iPhone 16 Pro Max', img: 'https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=300&h=220&fit=crop', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.9" Largest Ever', 'A18 Pro', '5x Zoom', '4K 120fps Dolby Vision'], uniqueRepair: 'Camera Control Button Repair' },
