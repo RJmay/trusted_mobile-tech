@@ -2536,168 +2536,6 @@
 
 
 
-    /* ═══ SERIES CARD ENHANCED HOVER ═══ */
-    .series-card {
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    .series-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .5s;
-      z-index: 0;
-    }
-
-    .series-card:hover::after {
-      opacity: 1;
-    }
-
-    .series-card[data-effect="nightmode"]:hover {
-      background: linear-gradient(180deg, #080a14, #0c0e1a) !important;
-    }
-
-    .series-card[data-effect="nightmode"]::after {
-      background: radial-gradient(ellipse at 50% 20%, rgba(180, 200, 255, .15) 0%, transparent 60%);
-    }
-
-    .series-card[data-effect="nightmode"]:hover .model-name {
-      color: #c8d8ff !important;
-    }
-
-    .series-card[data-effect="fiveg"]::after {
-      background: linear-gradient(90deg, rgba(0, 200, 255, .08) 1px, transparent 1px) 0 0/30px 30px, linear-gradient(0deg, rgba(0, 200, 255, .06) 1px, transparent 1px) 0 0/30px 30px;
-      animation: cer-s 3s linear infinite paused;
-    }
-
-    .series-card[data-effect="fiveg"]:hover::after {
-      animation-play-state: running;
-    }
-
-    .series-card[data-effect="fiveg"]:hover {
-      border-color: rgba(0, 200, 255, .4) !important;
-      box-shadow: 0 0 30px rgba(0, 200, 255, .12), 0 20px 50px rgba(0, 0, 0, .3) !important;
-    }
-
-    @keyframes cer-s {
-      0% {
-        background-position: 0 0, 0 0
-      }
-
-      100% {
-        background-position: 30px 30px, 30px 30px
-      }
-    }
-
-    .series-card[data-effect="cinematic"]::after {
-      background: radial-gradient(circle at 30% 40%, rgba(255, 200, 100, .1) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(180, 150, 255, .08) 0%, transparent 40%);
-    }
-
-    .series-card[data-effect="cinematic"]:hover {
-      box-shadow: 0 0 50px rgba(155, 181, 206, .12), 0 20px 50px rgba(0, 0, 0, .3) !important;
-    }
-
-    .series-card[data-effect="dynamicisland"]::after {
-      background: linear-gradient(180deg, rgba(89, 79, 99, .2) 0%, transparent 40%);
-    }
-
-    .series-card[data-effect="dynamicisland"]:hover {
-      box-shadow: 0 -8px 40px rgba(89, 79, 99, .15), 0 20px 50px rgba(0, 0, 0, .3) !important;
-    }
-
-    .series-card[data-effect="titanium"]::after {
-      background: radial-gradient(circle at 50% 50%, rgba(193, 185, 174, .12) 0%, transparent 40%), linear-gradient(135deg, transparent 20%, rgba(220, 215, 205, .08) 40%, rgba(193, 185, 174, .12) 50%, rgba(220, 215, 205, .08) 60%, transparent 80%);
-      background-size: 100% 100%, 200% 200%;
-      animation: ti-s 3s ease-in-out infinite paused;
-    }
-
-    .series-card[data-effect="titanium"]:hover::after {
-      animation-play-state: running;
-    }
-
-    .series-card[data-effect="titanium"]:hover {
-      border-color: rgba(193, 185, 174, .3) !important;
-      box-shadow: 0 0 40px rgba(193, 185, 174, .1), 0 20px 50px rgba(0, 0, 0, .3) !important;
-    }
-
-    @keyframes ti-s {
-      0% {
-        background-position: 0 0, -100% -100%
-      }
-
-      100% {
-        background-position: 0 0, 200% 200%
-      }
-    }
-
-    .series-card[data-effect="camera"]::after {
-      background: radial-gradient(circle 40px at 70% 30%, rgba(191, 164, 143, .15) 0%, transparent 100%), radial-gradient(circle 20px at 72% 28%, rgba(255, 255, 255, .08) 0%, transparent 100%);
-      animation: lf 4s ease-in-out infinite paused;
-    }
-
-    .series-card[data-effect="camera"]:hover::after {
-      animation-play-state: running;
-    }
-
-    @keyframes lf {
-
-      0%,
-      100% {
-        opacity: .5;
-        transform: translate(0, 0)
-      }
-
-      50% {
-        opacity: 1;
-        transform: translate(-5px, 5px)
-      }
-    }
-
-    .series-card[data-effect="cosmic"]::after {
-      background: radial-gradient(circle at 50% 50%, rgba(232, 101, 26, .18) 0%, rgba(255, 140, 50, .06) 30%, transparent 60%);
-      animation: cp 3s ease-in-out infinite paused;
-    }
-
-    .series-card[data-effect="cosmic"]:hover::after {
-      animation-play-state: running;
-    }
-
-    .series-card[data-effect="cosmic"]:hover {
-      border-color: rgba(232, 101, 26, .4) !important;
-      box-shadow: 0 0 40px rgba(232, 101, 26, .12), 0 20px 50px rgba(0, 0, 0, .3) !important;
-    }
-
-    @keyframes cp {
-
-      0%,
-      100% {
-        transform: scale(.95);
-        opacity: .6
-      }
-
-      50% {
-        transform: scale(1.05);
-        opacity: 1
-      }
-    }
-
-    .series-card[data-effect="air"]::after {
-      background: linear-gradient(180deg, transparent 50%, rgba(126, 181, 214, .08) 100%);
-    }
-
-    .series-card[data-effect="air"]:hover {
-      transform: translateY(-16px) !important;
-      box-shadow: 0 28px 60px rgba(126, 181, 214, .12) !important;
-    }
-
-    .series-card[data-effect="pro"]::after {
-      background: linear-gradient(180deg, rgba(29, 29, 31, .06) 0%, transparent 50%, rgba(29, 29, 31, .04) 100%);
-    }
-
     /* ═══ MODEL CARD — Angular corners + ink ═══ */
     .model-card {
       position: relative;
@@ -2926,7 +2764,7 @@
       </div>
       <div class="device-cards">
         <div class="device-card iphone" onclick="startQuote('iPhone')">
-          <span class="dc-icon" style="font-size:0;"><img src="Images/series-iphone-16.png"
+          <span class="dc-icon" style="font-size:0;"><img src="images/series-iphone-16.png"
               style="height:72px;object-fit:contain;"></span>
           <div class="dc-name">iPhone</div>
           <div class="dc-desc">Screen, battery, camera, charging &amp; more — iPhone 11 through 17 series</div>
@@ -3429,111 +3267,111 @@
         series: {
 
           'iPhone SE': {
-            img: 'Images/series-iphone-se.png',
+            img: 'images/series-iphone-se.png',
             color: '#BF0013', // PRODUCT RED
             effect: 'none',
             tagline: 'Classic design, modern power',
             features: ['Touch ID Home Button', 'A-Series Chip', '4.7" Retina Display', 'Budget-friendly entry point'],
             models: [
-              { name: 'iPhone SE (2nd gen)', img: 'Images/iphone-se-2.png', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['A13 Bionic Chip', 'Touch ID', 'Lightning Port'], uniqueRepair: null },
-              { name: 'iPhone SE (3rd gen)', img: 'Images/iphone-se-3.png', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['A15 Bionic Chip', '5G Support', 'Ceramic Shield'], uniqueRepair: null },
+              { name: 'iPhone SE (2nd gen)', img: 'images/iphone-se-2.png', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['A13 Bionic Chip', 'Touch ID', 'Lightning Port'], uniqueRepair: null },
+              { name: 'iPhone SE (3rd gen)', img: 'images/iphone-se-3.png', color: '#BF0013', colorName: '(PRODUCT)RED', features: ['A15 Bionic Chip', '5G Support', 'Ceramic Shield'], uniqueRepair: null },
             ]
           },
 
           'iPhone 11': {
-            img: 'Images/series-iphone-11.png',
+            img: 'images/series-iphone-11.png',
             color: '#4E5851', // Midnight Green
             effect: 'nightmode',
             tagline: 'Night Mode. Ultra-wide camera.',
             features: ['First Ultra Wide Camera', 'Night Mode Photography', 'Spatial Audio', 'Liquid Retina HD Display'],
             models: [
-              { name: 'iPhone 11', img: 'Images/iphone-11.png', color: '#A660D0', colorName: 'Purple', features: ['Dual Camera System', 'A13 Bionic', 'Liquid Retina Display'], uniqueRepair: null },
-              { name: 'iPhone 11 Pro', img: 'Images/iphone-11-pro.png', color: '#4E5851', colorName: 'Midnight Green', features: ['Triple Camera System', 'Super Retina XDR', 'Surgical Stainless Steel'], uniqueRepair: 'Stainless Steel Frame Repair' },
-              { name: 'iPhone 11 Pro Max', img: 'Images/iphone-11-pro-max.png', color: '#4E5851', colorName: 'Midnight Green', features: ['6.5" Super Retina XDR', 'Triple Camera', 'Longest Battery Life'], uniqueRepair: 'Stainless Steel Frame Repair' },
+              { name: 'iPhone 11', img: 'images/iphone-11.png', color: '#A660D0', colorName: 'Purple', features: ['Dual Camera System', 'A13 Bionic', 'Liquid Retina Display'], uniqueRepair: null },
+              { name: 'iPhone 11 Pro', img: 'images/iphone-11-pro.png', color: '#4E5851', colorName: 'Midnight Green', features: ['Triple Camera System', 'Super Retina XDR', 'Surgical Stainless Steel'], uniqueRepair: 'Stainless Steel Frame Repair' },
+              { name: 'iPhone 11 Pro Max', img: 'images/iphone-11-pro-max.png', color: '#4E5851', colorName: 'Midnight Green', features: ['6.5" Super Retina XDR', 'Triple Camera', 'Longest Battery Life'], uniqueRepair: 'Stainless Steel Frame Repair' },
             ]
           },
 
           'iPhone 12': {
-            img: 'Images/series-iphone-12.png',
+            img: 'images/series-iphone-12.png',
             color: '#2D4E5C', // Pacific Blue
             effect: 'fiveg',
             tagline: '5G speed. A14 Bionic. Ceramic Shield.',
             features: ['First 5G iPhone', 'Ceramic Shield Front Cover', 'MagSafe Charging', 'Flat-Edge Design Returns'],
             models: [
-              { name: 'iPhone 12', img: 'Images/iphone-12.png', color: '#023B63', colorName: 'Blue', features: ['6.1" Super Retina XDR', 'Ceramic Shield', 'MagSafe'], uniqueRepair: 'MagSafe Alignment Repair' },
-              { name: 'iPhone 12 Mini', img: 'Images/iphone-12-mini.png', color: '#CC0000', colorName: '(PRODUCT)RED', features: ['5.4" Compact Design', 'Smallest 5G Phone', 'A14 Bionic'], uniqueRepair: null },
-              { name: 'iPhone 12 Pro', img: 'Images/iphone-12-pro.png', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['LiDAR Scanner', 'Dolby Vision Recording', 'Stainless Steel'], uniqueRepair: 'LiDAR Scanner Repair' },
-              { name: 'iPhone 12 Pro Max', img: 'Images/iphone-12-pro-max.png', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['6.7" Display', 'Sensor-Shift OIS', 'Best Camera System'], uniqueRepair: 'LiDAR Scanner Repair' },
+              { name: 'iPhone 12', img: 'images/iphone-12.png', color: '#023B63', colorName: 'Blue', features: ['6.1" Super Retina XDR', 'Ceramic Shield', 'MagSafe'], uniqueRepair: 'MagSafe Alignment Repair' },
+              { name: 'iPhone 12 Mini', img: 'images/iphone-12-mini.png', color: '#CC0000', colorName: '(PRODUCT)RED', features: ['5.4" Compact Design', 'Smallest 5G Phone', 'A14 Bionic'], uniqueRepair: null },
+              { name: 'iPhone 12 Pro', img: 'images/iphone-12-pro.png', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['LiDAR Scanner', 'Dolby Vision Recording', 'Stainless Steel'], uniqueRepair: 'LiDAR Scanner Repair' },
+              { name: 'iPhone 12 Pro Max', img: 'images/iphone-12-pro-max.png', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['6.7" Display', 'Sensor-Shift OIS', 'Best Camera System'], uniqueRepair: 'LiDAR Scanner Repair' },
             ]
           },
 
           'iPhone 13': {
-            img: 'Images/series-iphone-13.png',
+            img: 'images/series-iphone-13.png',
             color: '#9BB5CE', // Sierra Blue
             effect: 'cinematic',
             tagline: 'Cinematic Mode. ProMotion 120Hz.',
             features: ['Cinematic Mode Video', 'ProMotion 120Hz (Pro)', 'Smaller Notch', 'Diagonal Dual Camera'],
             models: [
-              { name: 'iPhone 13', img: 'Images/iphone-13.png', color: '#F4C2C2', colorName: 'Pink', features: ['Diagonal Dual Camera', 'Cinematic Mode', 'A15 Bionic'], uniqueRepair: null },
-              { name: 'iPhone 13 Mini', img: 'Images/iphone-13-mini.png', color: '#394C6B', colorName: 'Blue', features: ['5.4" Compact', 'Cinematic Mode', 'Longest Mini Battery'], uniqueRepair: null },
-              { name: 'iPhone 13 Pro', img: 'Images/iphone-13-pro.png', color: '#9BB5CE', colorName: 'Sierra Blue', features: ['ProMotion 120Hz', 'Macro Photography', 'Cinematic Mode'], uniqueRepair: 'ProMotion Display Repair' },
-              { name: 'iPhone 13 Pro Max', img: 'Images/iphone-13-pro-max.png', color: '#505F4E', colorName: 'Alpine Green', features: ['6.7" ProMotion', 'Best iPhone Battery', 'Pro Camera System'], uniqueRepair: 'ProMotion Display Repair' },
+              { name: 'iPhone 13', img: 'images/iphone-13.png', color: '#F4C2C2', colorName: 'Pink', features: ['Diagonal Dual Camera', 'Cinematic Mode', 'A15 Bionic'], uniqueRepair: null },
+              { name: 'iPhone 13 Mini', img: 'images/iphone-13-mini.png', color: '#394C6B', colorName: 'Blue', features: ['5.4" Compact', 'Cinematic Mode', 'Longest Mini Battery'], uniqueRepair: null },
+              { name: 'iPhone 13 Pro', img: 'images/iphone-13-pro.png', color: '#9BB5CE', colorName: 'Sierra Blue', features: ['ProMotion 120Hz', 'Macro Photography', 'Cinematic Mode'], uniqueRepair: 'ProMotion Display Repair' },
+              { name: 'iPhone 13 Pro Max', img: 'images/iphone-13-pro-max.png', color: '#505F4E', colorName: 'Alpine Green', features: ['6.7" ProMotion', 'Best iPhone Battery', 'Pro Camera System'], uniqueRepair: 'ProMotion Display Repair' },
             ]
           },
 
           'iPhone 14': {
-            img: 'Images/series-iphone-14.png',
+            img: 'images/series-iphone-14.png',
             color: '#594F63', // Deep Purple
             effect: 'dynamicisland',
             tagline: 'Dynamic Island. 48MP camera. Always-On.',
             features: ['Dynamic Island (Pro)', '48MP Main Camera (Pro)', 'Crash Detection', 'Emergency SOS via Satellite'],
             models: [
-              { name: 'iPhone 14', img: 'Images/iphone-14.png', color: '#C8A2C8', colorName: 'Purple', features: ['Crash Detection', 'Emergency SOS Satellite', 'Action Mode Video'], uniqueRepair: 'Satellite Antenna Repair' },
-              { name: 'iPhone 14 Plus', img: 'Images/iphone-14-plus.png', color: '#F5DF4D', colorName: 'Yellow', features: ['6.7" Display', 'Longest Battery', 'Crash Detection'], uniqueRepair: 'Satellite Antenna Repair' },
-              { name: 'iPhone 14 Pro', img: 'Images/iphone-14-pro.png', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On Display', 'ProMotion'], uniqueRepair: 'Dynamic Island Sensor Repair' },
-              { name: 'iPhone 14 Pro Max', img: 'Images/iphone-14-pro-max.png', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On', 'Best Battery'], uniqueRepair: 'Dynamic Island Sensor Repair' },
+              { name: 'iPhone 14', img: 'images/iphone-14.png', color: '#C8A2C8', colorName: 'Purple', features: ['Crash Detection', 'Emergency SOS Satellite', 'Action Mode Video'], uniqueRepair: 'Satellite Antenna Repair' },
+              { name: 'iPhone 14 Plus', img: 'images/iphone-14-plus.png', color: '#F5DF4D', colorName: 'Yellow', features: ['6.7" Display', 'Longest Battery', 'Crash Detection'], uniqueRepair: 'Satellite Antenna Repair' },
+              { name: 'iPhone 14 Pro', img: 'images/iphone-14-pro.png', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On Display', 'ProMotion'], uniqueRepair: 'Dynamic Island Sensor Repair' },
+              { name: 'iPhone 14 Pro Max', img: 'images/iphone-14-pro-max.png', color: '#594F63', colorName: 'Deep Purple', features: ['Dynamic Island', '48MP Camera', 'Always-On', 'Best Battery'], uniqueRepair: 'Dynamic Island Sensor Repair' },
             ]
           },
 
           'iPhone 15': {
-            img: 'Images/series-iphone-15.png',
+            img: 'images/series-iphone-15.png',
             color: '#3B4856', // Blue Titanium
             effect: 'titanium',
             tagline: 'Titanium. USB-C. Action Button.',
             features: ['First Titanium Frame (Pro)', 'USB-C Replaces Lightning', 'Dynamic Island on All', 'Action Button (Pro)'],
             models: [
-              { name: 'iPhone 15', img: 'Images/iphone-15.png', color: '#8DB48E', colorName: 'Green', features: ['Dynamic Island', 'USB-C', '48MP Camera', 'A16 Bionic'], uniqueRepair: 'USB-C Port Repair' },
-              { name: 'iPhone 15 Plus', img: 'Images/iphone-15-plus.png', color: '#F4CE6A', colorName: 'Yellow', features: ['6.7" Display', 'USB-C', 'Longest Battery', 'Dynamic Island'], uniqueRepair: 'USB-C Port Repair' },
-              { name: 'iPhone 15 Pro', img: 'Images/iphone-15-pro.png', color: '#3B4856', colorName: 'Blue Titanium', features: ['Grade 5 Titanium Frame', 'Action Button', 'A17 Pro Chip', 'USB-C 3.0'], uniqueRepair: 'Titanium Frame Repair' },
-              { name: 'iPhone 15 Pro Max', img: 'Images/iphone-15-pro-max.png', color: '#C1B9AE', colorName: 'Natural Titanium', features: ['Titanium Frame', '5x Optical Zoom', 'Action Button', 'Thinnest Bezels'], uniqueRepair: 'Titanium Frame Repair' },
+              { name: 'iPhone 15', img: 'images/iphone-15.png', color: '#8DB48E', colorName: 'Green', features: ['Dynamic Island', 'USB-C', '48MP Camera', 'A16 Bionic'], uniqueRepair: 'USB-C Port Repair' },
+              { name: 'iPhone 15 Plus', img: 'images/iphone-15-plus.png', color: '#F4CE6A', colorName: 'Yellow', features: ['6.7" Display', 'USB-C', 'Longest Battery', 'Dynamic Island'], uniqueRepair: 'USB-C Port Repair' },
+              { name: 'iPhone 15 Pro', img: 'images/iphone-15-pro.png', color: '#3B4856', colorName: 'Blue Titanium', features: ['Grade 5 Titanium Frame', 'Action Button', 'A17 Pro Chip', 'USB-C 3.0'], uniqueRepair: 'Titanium Frame Repair' },
+              { name: 'iPhone 15 Pro Max', img: 'images/iphone-15-pro-max.png', color: '#C1B9AE', colorName: 'Natural Titanium', features: ['Titanium Frame', '5x Optical Zoom', 'Action Button', 'Thinnest Bezels'], uniqueRepair: 'Titanium Frame Repair' },
             ]
           },
 
           'iPhone 16': {
-            img: 'Images/series-iphone-16.png',
+            img: 'images/series-iphone-16.png',
             color: '#BFA48F', // Desert Titanium
             effect: 'camera',
             tagline: 'Camera Control. A18 Pro. Biggest screens ever.',
             features: ['Camera Control Button', 'Action Button on All', 'A18 Pro (Pro)', '4K 120fps Dolby Vision'],
             models: [
-              { name: 'iPhone 16', img: 'Images/iphone-16.png', color: '#3F45A5', colorName: 'Ultramarine', features: ['Camera Control', 'Action Button', 'A18 Chip', 'Vertical Camera'], uniqueRepair: 'Camera Control Button Repair' },
-              { name: 'iPhone 16 Plus', img: 'Images/iphone-16-plus.png', color: '#5BA8A0', colorName: 'Teal', features: ['6.7" Display', 'Camera Control', 'Action Button', 'A18 Chip'], uniqueRepair: 'Camera Control Button Repair' },
-              { name: 'iPhone 16 Pro', img: 'Images/iphone-16-pro.png', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.3" Display', 'A18 Pro', '4K 120fps', 'Camera Control'], uniqueRepair: 'Camera Control Button Repair' },
-              { name: 'iPhone 16 Pro Max', img: 'Images/iphone-16-pro-max.png', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.9" Largest Ever', 'A18 Pro', '5x Zoom', '4K 120fps Dolby Vision'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16', img: 'images/iphone-16.png', color: '#3F45A5', colorName: 'Ultramarine', features: ['Camera Control', 'Action Button', 'A18 Chip', 'Vertical Camera'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16 Plus', img: 'images/iphone-16-plus.png', color: '#5BA8A0', colorName: 'Teal', features: ['6.7" Display', 'Camera Control', 'Action Button', 'A18 Chip'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16 Pro', img: 'images/iphone-16-pro.png', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.3" Display', 'A18 Pro', '4K 120fps', 'Camera Control'], uniqueRepair: 'Camera Control Button Repair' },
+              { name: 'iPhone 16 Pro Max', img: 'images/iphone-16-pro-max.png', color: '#BFA48F', colorName: 'Desert Titanium', features: ['6.9" Largest Ever', 'A18 Pro', '5x Zoom', '4K 120fps Dolby Vision'], uniqueRepair: 'Camera Control Button Repair' },
             ]
           },
 
           'iPhone 17': {
-            img: 'Images/series-iphone-17.png',
+            img: 'images/series-iphone-17.png',
             color: '#E8651A', // Cosmic Orange
             effect: 'cosmic',
             tagline: 'Cosmic Orange. New design. Aluminum Pro.',
             features: ['All-New Design Language', 'Aluminum Frame Returns (Pro)', 'Cosmic Orange (Pro Hero)', 'Apple Intelligence'],
             models: [
-              { name: 'iPhone 17', img: 'Images/iphone-17.png', color: '#2D2D2D', colorName: 'Black', features: ['New Design', 'A19 Chip', 'Apple Intelligence', 'USB-C 3.0'], uniqueRepair: null },
-              { name: 'iPhone 17 Plus', img: 'Images/iphone-17-plus.png', color: '#F5F5F0', colorName: 'White', features: ['6.7" Display', 'A19 Chip', 'New Design', 'Apple Intelligence'], uniqueRepair: null },
-              { name: 'iPhone 17 Pro', img: 'Images/iphone-17-pro.png', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Aluminum Frame', 'A19 Pro', 'New Design', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
-              { name: 'iPhone 17 Pro Max', img: 'Images/iphone-17-pro-max.png', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Largest Display', 'A19 Pro', '5x Zoom', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
+              { name: 'iPhone 17', img: 'images/iphone-17.png', color: '#2D2D2D', colorName: 'Black', features: ['New Design', 'A19 Chip', 'Apple Intelligence', 'USB-C 3.0'], uniqueRepair: null },
+              { name: 'iPhone 17 Plus', img: 'images/iphone-17-plus.png', color: '#F5F5F0', colorName: 'White', features: ['6.7" Display', 'A19 Chip', 'New Design', 'Apple Intelligence'], uniqueRepair: null },
+              { name: 'iPhone 17 Pro', img: 'images/iphone-17-pro.png', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Aluminum Frame', 'A19 Pro', 'New Design', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
+              { name: 'iPhone 17 Pro Max', img: 'images/iphone-17-pro-max.png', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Largest Display', 'A19 Pro', '5x Zoom', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
             ]
           },
         }
@@ -4046,25 +3884,7 @@
 
     document.getElementById('qualityModal').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
 
-    // Environmental Effects
-    (function () {
-      document.addEventListener('mouseover', function (e) {
-        var card = e.target;
-        while (card && !card.classList?.contains('series-card')) card = card.parentElement;
-        if (!card || !card.dataset.effect) return;
-        var ov = document.getElementById('envOverlay');
-        if (!ov) return;
-        var eff = card.dataset.effect;
-        if (eff && eff !== 'none') { ov.className = 'eff-' + eff + ' active'; ov.style.opacity = '1'; }
-      });
-      document.addEventListener('mouseout', function (e) {
-        var card = e.target;
-        while (card && !card.classList?.contains('series-card')) card = card.parentElement;
-        if (!card || !card.dataset.effect) return;
-        var ov = document.getElementById('envOverlay');
-        if (ov) { ov.style.opacity = '0'; setTimeout(function () { if (ov.style.opacity === '0') ov.className = ''; }, 800); }
-      });
-    })();
+
     setMinDate(); renderCategories();
   </script>
 
