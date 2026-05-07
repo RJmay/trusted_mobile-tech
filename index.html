@@ -2519,220 +2519,19 @@
     }
 
     /* ═══ GEN PAGE THEMES ═══ */
-    .qcontainer[data-gen="nightmode"] {
-      background: var(--card-bg) !important;
-      box-shadow: inset 0 0 200px rgba(100, 120, 200, .04), 15px 25px 0 -12px rgba(200, 210, 255, .015), -20px 40px 0 -14px rgba(180, 200, 255, .01), 30px 60px 0 -16px rgba(200, 220, 255, .012), -40px 15px 0 -13px rgba(190, 200, 255, .014), 50px 80px 0 -15px rgba(210, 220, 255, .01), -10px 70px 0 -14px rgba(200, 200, 255, .013) !important;
+
+
+
+
+
+    100% {
+      width: 900px;
+      height: 900px;
+      opacity: 0
+    }
     }
 
-    .qcontainer[data-gen="fiveg"] {
-      background: linear-gradient(135deg, var(--card-bg) 0%, rgba(0, 50, 80, .15) 50%, var(--card-bg) 100%) !important;
-      border-color: rgba(0, 180, 255, .15) !important;
-    }
 
-    .qcontainer[data-gen="cinematic"] {
-      background: var(--card-bg) !important;
-      box-shadow: 0 0 80px rgba(155, 181, 206, .12), 0 0 40px rgba(255, 200, 100, .06) !important;
-      border: 1px solid transparent !important;
-      border-image: linear-gradient(135deg, rgba(255, 200, 100, .3), rgba(155, 181, 206, .25), rgba(200, 150, 255, .2), rgba(255, 180, 120, .25)) 1 !important;
-      animation: cinema-border-glow 4s ease-in-out infinite;
-    }
-
-    @keyframes cinema-border-glow {
-
-      0%,
-      100% {
-        box-shadow: 0 0 80px rgba(155, 181, 206, .12), 0 0 40px rgba(255, 200, 100, .06)
-      }
-
-      50% {
-        box-shadow: 0 0 100px rgba(155, 181, 206, .18), 0 0 50px rgba(255, 200, 100, .1)
-      }
-    }
-
-    .qcontainer[data-gen="dynamicisland"] {
-      background: var(--card-bg) !important;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Spotlight — z-index 2 (in front of bg, behind cards) */
-    .qcontainer[data-gen="dynamicisland"]::before {
-      content: '';
-      position: absolute;
-      top: -20%;
-      left: 50%;
-      width: 260px;
-      height: 130%;
-      pointer-events: none;
-      z-index: 10;
-      background: linear-gradient(180deg,
-          rgba(255, 255, 255, .16) 0%,
-          rgba(220, 210, 240, .12) 8%,
-          rgba(180, 170, 210, .07) 25%,
-          rgba(140, 130, 180, .03) 45%,
-          transparent 70%);
-      clip-path: polygon(42% 0%, 58% 0%, 88% 100%, 12% 100%);
-      transform: translateX(-50%);
-      animation: spotlight-sweep 8s ease-in-out infinite;
-    }
-
-    /* Beacon — from bottom center, shooting upward */
-    .qcontainer[data-gen="dynamicisland"]::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 4px;
-      height: 0;
-      background: linear-gradient(0deg, rgba(89, 79, 99, .9) 0%, rgba(140, 130, 180, .4) 40%, transparent 100%);
-      box-shadow: 0 0 12px rgba(89, 79, 99, .6), 0 0 30px rgba(89, 79, 99, .3), 0 0 60px rgba(89, 79, 99, .15);
-      pointer-events: none;
-      z-index: 10;
-      transform: translateX(-50%);
-      animation: beacon-up 3s ease-in-out infinite;
-    }
-
-    @keyframes spotlight-sweep {
-
-      0%,
-      100% {
-        transform: translateX(-50%) rotate(-6deg);
-        opacity: .6
-      }
-
-      50% {
-        transform: translateX(-50%) rotate(6deg);
-        opacity: 1
-      }
-    }
-
-    @keyframes beacon-up {
-      0% {
-        height: 0;
-        opacity: 0;
-        box-shadow: 0 0 8px rgba(89, 79, 99, .4), 0 0 20px rgba(89, 79, 99, .2)
-      }
-
-      50% {
-        height: 50%;
-        opacity: 1;
-        box-shadow: 0 0 20px rgba(89, 79, 99, .8), 0 0 50px rgba(89, 79, 99, .4), 0 0 100px rgba(89, 79, 99, .2), 0 0 6px rgba(255, 255, 255, .3)
-      }
-
-      100% {
-        height: 0;
-        opacity: 0;
-        box-shadow: 0 0 8px rgba(89, 79, 99, .4), 0 0 20px rgba(89, 79, 99, .2)
-      }
-    }
-
-    /* Model cards stay in front of spotlight */
-    .qcontainer[data-gen="dynamicisland"] .grid {
-      z-index: 11 !important;
-    }
-
-    .qcontainer[data-gen="titanium"] {
-      background: var(--card-bg) !important;
-      border-color: rgba(193, 185, 174, .15) !important;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .qcontainer[data-gen="titanium"]::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background:
-        radial-gradient(circle 3px at 20% 15%, rgba(193, 185, 174, .5) 0%, transparent 100%),
-        radial-gradient(circle 2px at 35% 8%, rgba(220, 215, 205, .6) 0%, transparent 100%),
-        radial-gradient(circle 4px at 50% 20%, rgba(193, 185, 174, .4) 0%, transparent 100%),
-        radial-gradient(circle 2px at 65% 12%, rgba(220, 215, 205, .5) 0%, transparent 100%),
-        radial-gradient(circle 3px at 80% 18%, rgba(193, 185, 174, .45) 0%, transparent 100%),
-        radial-gradient(circle 2px at 15% 85%, rgba(220, 215, 205, .4) 0%, transparent 100%),
-        radial-gradient(circle 3px at 30% 90%, rgba(193, 185, 174, .5) 0%, transparent 100%),
-        radial-gradient(circle 2px at 45% 82%, rgba(220, 215, 205, .55) 0%, transparent 100%),
-        radial-gradient(circle 4px at 60% 88%, rgba(193, 185, 174, .35) 0%, transparent 100%),
-        radial-gradient(circle 2px at 75% 84%, rgba(220, 215, 205, .5) 0%, transparent 100%),
-        radial-gradient(circle 3px at 90% 92%, rgba(193, 185, 174, .4) 0%, transparent 100%),
-        radial-gradient(circle 2px at 10% 50%, rgba(220, 215, 205, .45) 0%, transparent 100%),
-        radial-gradient(circle 3px at 88% 45%, rgba(193, 185, 174, .5) 0%, transparent 100%),
-        radial-gradient(circle 2px at 25% 55%, rgba(220, 215, 205, .35) 0%, transparent 100%),
-        radial-gradient(circle 3px at 72% 52%, rgba(193, 185, 174, .4) 0%, transparent 100%);
-      animation: ti-particles 8s ease-in-out infinite;
-    }
-
-    .qcontainer[data-gen="titanium"]::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: radial-gradient(circle, rgba(193, 185, 174, .15) 0%, rgba(193, 185, 174, .06) 30%, transparent 60%);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 0;
-      animation: ti-burst 6s ease-out infinite;
-    }
-
-    @keyframes ti-particles {
-      0% {
-        transform: scale(1);
-        opacity: .6
-      }
-
-      25% {
-        transform: scale(1.02);
-        opacity: .9
-      }
-
-      50% {
-        transform: scale(1.04);
-        opacity: 1
-      }
-
-      75% {
-        transform: scale(1.02);
-        opacity: .8
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: .6
-      }
-    }
-
-    @keyframes ti-burst {
-      0% {
-        width: 0;
-        height: 0;
-        opacity: .3
-      }
-
-      40% {
-        width: 600px;
-        height: 600px;
-        opacity: .12
-      }
-
-      100% {
-        width: 900px;
-        height: 900px;
-        opacity: 0
-      }
-    }
-
-    .qcontainer[data-gen="camera"] {
-      background: radial-gradient(circle at 50% 30%, rgba(191, 164, 143, .06) 0%, transparent 40%), var(--card-bg) !important;
-    }
-
-    .qcontainer[data-gen="cosmic"] {
-      background: radial-gradient(ellipse at 50% 50%, rgba(232, 101, 26, .06) 0%, transparent 50%), var(--card-bg) !important;
-      box-shadow: 0 0 100px rgba(232, 101, 26, .06) !important;
-    }
 
     /* ═══ SERIES CARD ENHANCED HOVER ═══ */
     .series-card {
@@ -3895,7 +3694,7 @@
       var cat = T[selCat]; var s = cat.series[sn]; showLevel(2); renderBC();
       document.getElementById('modelFeaturePanel').innerHTML = '';
       var qc = document.querySelector('#page1');
-      if (qc) qc.setAttribute('data-gen', s.effect || '');
+      // gen themes removed
       var phil = PHILOSOPHY[sn] || '';
       var fp = '<div class="feature-panel" style="--panel-color:' + (s.color || '#00d4ff') + '">'
         + '<button class="feature-panel-close" onclick="this.parentElement.remove()">x</button>'
@@ -3963,7 +3762,7 @@
       goToPage(2);
     }
     function selectModelByName(encoded) { selModel = decodeURIComponent(encoded); goToPage(2); }
-    function showLevel(n) { var pg = document.getElementById('page1'); if (pg && n < 2) pg.removeAttribute('data-gen');[0, 1, 2].forEach(i => { const e = document.getElementById('level' + i); if (e) e.classList.toggle('hidden', i !== n); }); const sr = document.getElementById('searchResultsBox'); if (sr) sr.classList.add('hidden'); document.getElementById('modelSearch').value = ''; }
+    function showLevel(n) { [0, 1, 2].forEach(i => { const e = document.getElementById('level' + i); if (e) e.classList.toggle('hidden', i !== n); }); const sr = document.getElementById('searchResultsBox'); if (sr) sr.classList.add('hidden'); document.getElementById('modelSearch').value = ''; }
     function renderBC() {
       const bc = document.getElementById('breadcrumb'); if (!bc) return;
       if (browseLevel === 0) { bc.style.display = 'none'; return; } bc.style.display = 'flex';
