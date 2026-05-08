@@ -2075,8 +2075,8 @@
 
     /* ═══ DESIGN PHILOSOPHY ═══ */
     .design-philosophy {
-      margin-top: 20px;
-      padding: 18px 24px;
+      margin-top: 18px;
+      padding: 16px 20px;
       border-top: 1px solid var(--border);
       font-size: 14px;
       line-height: 1.8;
@@ -3031,7 +3031,7 @@
       // gen themes removed
       var phil = PHILOSOPHY[sn] || '';
       var fp = '<div class="feature-panel" style="--panel-color:' + (s.color || '#00d4ff') + '">'
-        + '<button class="feature-panel-close" onclick="this.parentElement.remove()">x</button>'
+        + '<button class="feature-panel-close" onclick="this.parentElement.remove()">&times;</button>'
         + '<div class="feature-panel-title">' + sn + '</div>'
         + '<div class="feature-panel-tagline">' + (s.tagline || '') + '</div>'
         + '<div class="feature-list">' + (s.features || []).map(function (f) { return '<div class="feature-item">' + f + '</div>'; }).join('') + '</div>'
