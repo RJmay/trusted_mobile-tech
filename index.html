@@ -3032,10 +3032,8 @@
       var phil = PHILOSOPHY[sn] || '';
       var fp = '<div class="feature-panel" style="--panel-color:' + (s.color || '#00d4ff') + '">'
         + '<button class="feature-panel-close" onclick="this.parentElement.remove()">x</button>'
-        + '<div class="feature-panel-header">'
-        + '<div class="feature-panel-icon">' + cat.icon + '</div>'
-        + '<div><div class="feature-panel-title">' + sn + '</div>'
-        + '<div class="feature-panel-tagline">' + (s.tagline || '') + '</div></div></div>'
+        + '<div class="feature-panel-title">' + sn + '</div>'
+        + '<div class="feature-panel-tagline">' + (s.tagline || '') + '</div>'
         + '<div class="feature-list">' + (s.features || []).map(function (f) { return '<div class="feature-item">' + f + '</div>'; }).join('') + '</div>'
         + (phil ? '<div class="design-philosophy">' + phil + '</div>' : '')
         + '</div>';
@@ -3068,12 +3066,11 @@
       // Show detail panel
       var clr = m.color || s.color || '#0096c7';
       var dp = '<div class="model-feature-panel" id="activeModelDetail" data-model="' + mn + '" style="--panel-color:' + clr + '">'
-        + '<img src="' + m.img + '" class="model-feature-img">'
-        + '<div class="model-feature-body">'
+        + '<div class="model-detail-body">'
         + '<h3>' + m.name + '</h3>'
-        + '<div class="color-label"><span class="model-color-dot" style="background:' + clr + '"></span> ' + (m.colorName || '') + ' — Flagship Colour</div>'
+        + '<div class="color-label"><span class="model-color-dot" style="background:' + clr + '"></span> ' + (m.colorName || '') + '</div>'
         + '<div class="specs">' + (m.features || []).map(function (f) { return '<div class="spec">' + f + '</div>'; }).join('') + '</div>'
-        + (m.uniqueRepair ? '<div class="unique-repair-badge">' + m.uniqueRepair + ' — Exclusive Service</div>' : '')
+        + (m.uniqueRepair ? '<div class="unique-repair-badge">' + m.uniqueRepair + '</div>' : '')
         + '<button class="btn" style="margin-top:18px;width:auto;padding:14px 32px;" data-mn="' + encodeURIComponent(mn) + '" onclick="selectModelByName(this.dataset.mn)">Get Quote for ' + mn + '</button>'
         + '</div></div>';
       document.getElementById('modelFeaturePanel').innerHTML = dp;
