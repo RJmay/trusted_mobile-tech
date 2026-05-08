@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1191,6 +1191,65 @@
       border-radius: 6px;
       padding: 8px 12px;
       border-left: 3px solid var(--green);
+    }
+
+    /* Google Places Autocomplete – dark theme */
+    .pac-container {
+      background: #1a1d2e !important;
+      border: 1px solid rgba(255, 255, 255, .1) !important;
+      border-radius: 10px !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .5) !important;
+      margin-top: 4px;
+      z-index: 9999 !important;
+    }
+
+    .pac-item {
+      background: transparent !important;
+      color: #e2e8f0 !important;
+      border-top: 1px solid rgba(255, 255, 255, .06) !important;
+      padding: 10px 14px !important;
+      cursor: pointer;
+      line-height: 1.6 !important;
+    }
+
+    .pac-item:hover {
+      background: rgba(0, 212, 255, .08) !important;
+    }
+
+    .pac-item-query {
+      color: #fff !important;
+      font-size: 14px !important;
+    }
+
+    .pac-matched {
+      color: var(--brand) !important;
+      font-weight: 700 !important;
+    }
+
+    .pac-icon {
+      filter: invert(1) brightness(0.7);
+    }
+
+    /* New PlaceAutocompleteElement styling */
+    gmp-place-autocomplete {
+      width: 100%;
+    }
+
+    gmp-place-autocomplete input {
+      width: 100% !important;
+      padding: 14px 16px !important;
+      border: 1px solid rgba(255, 255, 255, .1) !important;
+      border-radius: 10px !important;
+      font-size: 15px !important;
+      font-family: var(--font) !important;
+      background: var(--surface) !important;
+      color: #e2e8f0 !important;
+      outline: none !important;
+    }
+
+    gmp-place-autocomplete input:focus {
+      border-color: var(--brand) !important;
+      box-shadow: 0 0 0 3px rgba(0, 150, 199, .15) !important;
     }
 
     .zone-pills {
@@ -3327,7 +3386,7 @@
     function initAutocomplete() {
       const container = document.getElementById('pickupAddressContainer');
       if (!container || typeof google === 'undefined') return;
-      container.innerHTML = '<input type="text" id="pickupAddress" class="address-input" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:var(--font);">';
+      container.innerHTML = '<input type="text" id="pickupAddress" class="address-input" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:1px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;outline:none;">';
       const inp = document.getElementById('pickupAddress');
       try {
         // Try new PlaceAutocompleteElement first
