@@ -1193,65 +1193,6 @@
       border-left: 3px solid var(--green);
     }
 
-    /* Google Places Autocomplete – dark theme */
-    .pac-container {
-      background: #1a1d2e !important;
-      border: 1px solid rgba(255, 255, 255, .1) !important;
-      border-radius: 10px !important;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, .5) !important;
-      margin-top: 4px;
-      z-index: 9999 !important;
-    }
-
-    .pac-item {
-      background: transparent !important;
-      color: #e2e8f0 !important;
-      border-top: 1px solid rgba(255, 255, 255, .06) !important;
-      padding: 10px 14px !important;
-      cursor: pointer;
-      line-height: 1.6 !important;
-    }
-
-    .pac-item:hover {
-      background: rgba(0, 212, 255, .08) !important;
-    }
-
-    .pac-item-query {
-      color: #fff !important;
-      font-size: 14px !important;
-    }
-
-    .pac-matched {
-      color: var(--brand) !important;
-      font-weight: 700 !important;
-    }
-
-    .pac-icon {
-      filter: invert(1) brightness(0.7);
-    }
-
-    /* New PlaceAutocompleteElement styling */
-    gmp-place-autocomplete {
-      width: 100%;
-    }
-
-    gmp-place-autocomplete input {
-      width: 100% !important;
-      padding: 14px 16px !important;
-      border: 1px solid rgba(255, 255, 255, .1) !important;
-      border-radius: 10px !important;
-      font-size: 15px !important;
-      font-family: var(--font) !important;
-      background: var(--surface) !important;
-      color: #e2e8f0 !important;
-      outline: none !important;
-    }
-
-    gmp-place-autocomplete input:focus {
-      border-color: var(--brand) !important;
-      box-shadow: 0 0 0 3px rgba(0, 150, 199, .15) !important;
-    }
-
     .zone-pills {
       display: flex;
       gap: 8px;
@@ -2317,6 +2258,23 @@
       font-family: Georgia, serif;
     }
 
+
+    /* Repair card info toggle */
+    .repair-card {
+      cursor: pointer;
+      transition: all .3s;
+    }
+
+    .repair-card:hover .repair-info {
+      display: block !important;
+    }
+
+    .repair-time {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -2616,7 +2574,7 @@
             </div>
             <div class="store-detail-row">
               <div class="store-detail-icon">🕐</div>
-              <div>Mon–Fri 9am–5:30pm | Sat 9am–3pm | Sun Closed</div>
+              <div>Mon–Fri 10am–8pm | Sat–Sun 6am–8pm</div>
             </div>
           </div>
           <div id="pickupAddressBlock">
@@ -2625,7 +2583,9 @@
                 Brisbane</span></div>
             <div class="address-wrapper" style="margin-top:10px" id="pickupAddressContainer"></div>
             <div class="address-error" id="addressError">⚠️ Sorry, we only service <strong>Sunshine Coast</strong> &amp;
-              <strong>Brisbane</strong>.
+              <strong>Brisbane</strong>.</div>
+            <div class="callout-fee" id="calloutFee"
+              style="display:none;margin-top:12px;padding:14px 18px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.12);border-radius:10px;font-size:14px;color:#e2e8f0;">
             </div>
             <div class="address-ok" id="addressOk">✅ Your address is within our service area!</div>
           </div>
@@ -2726,8 +2686,7 @@
           </div>
           <div id="paidBanner"
             style="display:none;background:rgba(16,185,129,.1);border:2px solid rgba(16,185,129,.3);border-radius:12px;padding:16px 22px;margin-top:18px;text-align:center;">
-            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong>
-          </div>
+            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong></div>
         </div>
       </div>
     </div>
@@ -2864,11 +2823,11 @@
           <div class="contact-hours">
             <h4>🕐 Trading Hours</h4>
             <div class="contact-hours-row"><span>Monday – Friday</span><span
-                style="font-weight:700;color:var(--dark)">9:00am – 5:30pm</span></div>
-            <div class="contact-hours-row"><span>Saturday</span><span style="font-weight:700;color:var(--dark)">9:00am –
-                3:00pm</span></div>
-            <div class="contact-hours-row"><span>Sunday</span><span
-                style="font-weight:700;color:var(--red)">Closed</span></div>
+                style="font-weight:700;color:var(--dark)">10:00am – 8:00pm</span></div>
+            <div class="contact-hours-row"><span>Saturday</span><span style="font-weight:700;color:var(--dark)">6:00am –
+                8:00pm</span></div>
+            <div class="contact-hours-row"><span>Sunday</span><span style="font-weight:700;color:var(--dark)">6:00am –
+                8:00pm</span></div>
           </div>
         </div>
         <div class="contact-form-card">
@@ -3196,11 +3155,110 @@
       }
     };
     const T = DEVICE_DATA;
-    const SP = { 'iPhone 11': [150, 200, 235], 'iPhone 11 Pro': [175, 210, 250], 'iPhone 11 Pro Max': [175, 250, 310], 'iPhone SE (2nd gen)': [100, 130, 160], 'iPhone SE (3rd gen)': [100, 130, 160], 'iPhone 12 Mini': [160, 200, 240], 'iPhone 12': [170, 210, 250], 'iPhone 12 Pro': [180, 220, 260], 'iPhone 12 Pro Max': [200, 240, 290], 'iPhone 13 Mini': [170, 210, 250], 'iPhone 13': [180, 220, 260], 'iPhone 13 Pro': [190, 230, 270], 'iPhone 13 Pro Max': [210, 250, 310], 'iPhone 14': [190, 230, 270], 'iPhone 14 Plus': [200, 240, 290], 'iPhone 14 Pro': [220, 260, 320], 'iPhone 14 Pro Max': [240, 290, 360], 'iPhone 15': [200, 240, 290], 'iPhone 15 Plus': [210, 250, 310], 'iPhone 15 Pro': [230, 270, 340], 'iPhone 15 Pro Max': [250, 300, 370], 'iPhone 16': [220, 260, 330], 'iPhone 16 Plus': [300, 350, 420], 'iPhone 16 Pro': [300, 370, 430], 'iPhone 16 Pro Max': [300, 390, 460], 'iPhone 17': [390, 450, 500], 'iPhone 17 Plus': [320, 400, 520], 'iPhone 17 Pro': [380, 420, 530], 'iPhone 17 Pro Max': [420, 580, 700], 'MacBook Air (M1, 2020)': [350, 450, 550], 'MacBook Air (M2, 2022)': [380, 490, 590], 'MacBook Air (M3, 2024)': [420, 530, 640], 'MacBook Pro 13" (M1, 2020)': [400, 500, 610], 'MacBook Pro 13" (M2, 2022)': [440, 540, 650], 'MacBook Pro 14" (M1 Pro/Max, 2021)': [500, 620, 750], 'MacBook Pro 14" (M2 Pro/Max, 2023)': [540, 660, 800], 'MacBook Pro 14" (M3 Pro/Max, 2023)': [580, 700, 850], 'MacBook Pro 16" (M1 Pro/Max, 2021)': [600, 740, 890], 'MacBook Pro 16" (M2 Pro/Max, 2023)': [640, 780, 940], 'MacBook Pro 16" (M3 Pro/Max, 2023)': [680, 820, 980], 'iPad (9th gen, 2021)': [180, 230, 280], 'iPad (10th gen, 2022)': [220, 270, 330], 'iPad mini (6th gen, 2021)': [250, 310, 380], 'iPad mini (7th gen, 2024)': [280, 350, 420], 'iPad Air (4th gen, 2020)': [280, 350, 420], 'iPad Air (5th gen, 2022)': [310, 380, 460], 'iPad Air 11" M2 (2024)': [340, 420, 500], 'iPad Air 13" M2 (2024)': [400, 490, 590], 'iPad Pro 11" (M1, 2021)': [380, 470, 570], 'iPad Pro 11" (M2, 2022)': [410, 500, 610], 'iPad Pro 11" (M4, 2024)': [460, 560, 680], 'iPad Pro 12.9" (M1, 2021)': [490, 600, 730], 'iPad Pro 12.9" (M2, 2022)': [520, 640, 780], 'iPad Pro 13" (M4, 2024)': [580, 710, 860] };
+
+    const REPAIR_PRICES = {
+      'iPhone SE (2nd gen)': { battery: 69, camera: 89, charging: 79, water: 99, speaker: 69, back_glass: 89, power: 69, volume: 69, home: 79, touch_id: 89, mic: 69, earpiece: 69, vibration: 69, sim: 29, wifi: 99, logic: 199 },
+      'iPhone SE (3rd gen)': { battery: 69, camera: 89, charging: 79, water: 99, speaker: 69, back_glass: 89, power: 69, volume: 69, home: 79, touch_id: 89, mic: 69, earpiece: 69, vibration: 69, sim: 29, wifi: 99, logic: 199 },
+      'iPhone 11': { battery: 79, camera: 99, charging: 89, water: 109, speaker: 69, back_glass: 99, power: 69, volume: 69, home: 79, touch_id: 89, mic: 69, earpiece: 69, vibration: 69, sim: 29, wifi: 109, logic: 219 },
+      'iPhone 11 Pro': { battery: 89, camera: 119, charging: 99, water: 119, speaker: 79, back_glass: 119, power: 79, volume: 79, home: 0, touch_id: 0, mic: 79, earpiece: 79, vibration: 79, sim: 29, wifi: 119, logic: 249 },
+      'iPhone 11 Pro Max': { battery: 89, camera: 129, charging: 99, water: 119, speaker: 79, back_glass: 129, power: 79, volume: 79, home: 0, touch_id: 0, mic: 79, earpiece: 79, vibration: 79, sim: 29, wifi: 119, logic: 259 },
+      'iPhone 12': { battery: 89, camera: 109, charging: 89, water: 119, speaker: 79, back_glass: 109, power: 79, volume: 79, home: 0, touch_id: 0, mic: 79, earpiece: 79, vibration: 79, sim: 29, wifi: 119, logic: 239 },
+      'iPhone 12 Mini': { battery: 89, camera: 109, charging: 89, water: 119, speaker: 79, back_glass: 109, power: 79, volume: 79, home: 0, touch_id: 0, mic: 79, earpiece: 79, vibration: 79, sim: 29, wifi: 119, logic: 239 },
+      'iPhone 12 Pro': { battery: 89, camera: 129, charging: 99, water: 129, speaker: 79, back_glass: 129, power: 79, volume: 79, home: 0, touch_id: 0, mic: 79, earpiece: 79, vibration: 79, sim: 29, wifi: 129, logic: 269 },
+      'iPhone 12 Pro Max': { battery: 99, camera: 139, charging: 99, water: 129, speaker: 89, back_glass: 139, power: 89, volume: 89, home: 0, touch_id: 0, mic: 89, earpiece: 89, vibration: 89, sim: 29, wifi: 129, logic: 279 },
+      'iPhone 13': { battery: 89, camera: 119, charging: 99, water: 129, speaker: 79, back_glass: 119, power: 79, volume: 79, home: 0, touch_id: 0, mic: 79, earpiece: 79, vibration: 79, sim: 29, wifi: 129, logic: 259 },
+      'iPhone 13 Mini': { battery: 89, camera: 119, charging: 99, water: 129, speaker: 79, back_glass: 119, power: 79, volume: 79, home: 0, touch_id: 0, mic: 79, earpiece: 79, vibration: 79, sim: 29, wifi: 129, logic: 259 },
+      'iPhone 13 Pro': { battery: 99, camera: 139, charging: 109, water: 139, speaker: 89, back_glass: 139, power: 89, volume: 89, home: 0, touch_id: 0, mic: 89, earpiece: 89, vibration: 89, sim: 29, wifi: 139, logic: 289 },
+      'iPhone 13 Pro Max': { battery: 99, camera: 149, charging: 109, water: 139, speaker: 89, back_glass: 149, power: 89, volume: 89, home: 0, touch_id: 0, mic: 89, earpiece: 89, vibration: 89, sim: 29, wifi: 139, logic: 299 },
+      'iPhone 14': { battery: 99, camera: 129, charging: 109, water: 139, speaker: 89, back_glass: 129, power: 89, volume: 89, home: 0, touch_id: 0, mic: 89, earpiece: 89, vibration: 89, sim: 29, wifi: 139, logic: 279 },
+      'iPhone 14 Plus': { battery: 99, camera: 139, charging: 109, water: 139, speaker: 89, back_glass: 139, power: 89, volume: 89, home: 0, touch_id: 0, mic: 89, earpiece: 89, vibration: 89, sim: 29, wifi: 139, logic: 289 },
+      'iPhone 14 Pro': { battery: 109, camera: 159, charging: 119, water: 149, speaker: 99, back_glass: 159, power: 99, volume: 99, home: 0, touch_id: 0, mic: 99, earpiece: 99, vibration: 99, sim: 29, wifi: 149, logic: 319 },
+      'iPhone 14 Pro Max': { battery: 109, camera: 169, charging: 119, water: 149, speaker: 99, back_glass: 169, power: 99, volume: 99, home: 0, touch_id: 0, mic: 99, earpiece: 99, vibration: 99, sim: 29, wifi: 149, logic: 339 },
+      'iPhone 15': { battery: 109, camera: 149, charging: 119, water: 149, speaker: 89, back_glass: 149, power: 89, volume: 89, home: 0, touch_id: 0, mic: 89, earpiece: 89, vibration: 89, sim: 29, wifi: 149, logic: 299 },
+      'iPhone 15 Plus': { battery: 109, camera: 159, charging: 119, water: 149, speaker: 99, back_glass: 159, power: 99, volume: 99, home: 0, touch_id: 0, mic: 99, earpiece: 99, vibration: 99, sim: 29, wifi: 149, logic: 309 },
+      'iPhone 15 Pro': { battery: 119, camera: 179, charging: 129, water: 159, speaker: 99, back_glass: 179, power: 99, volume: 99, home: 0, touch_id: 0, mic: 99, earpiece: 99, vibration: 99, sim: 29, wifi: 159, logic: 349 },
+      'iPhone 15 Pro Max': { battery: 119, camera: 189, charging: 129, water: 159, speaker: 109, back_glass: 189, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 159, logic: 369 },
+      'iPhone 16': { battery: 119, camera: 169, charging: 129, water: 159, speaker: 99, back_glass: 169, power: 99, volume: 99, home: 0, touch_id: 0, mic: 99, earpiece: 99, vibration: 99, sim: 29, wifi: 159, logic: 329 },
+      'iPhone 16 Plus': { battery: 119, camera: 179, charging: 129, water: 159, speaker: 99, back_glass: 179, power: 99, volume: 99, home: 0, touch_id: 0, mic: 99, earpiece: 99, vibration: 99, sim: 29, wifi: 159, logic: 339 },
+      'iPhone 16 Pro': { battery: 129, camera: 199, charging: 139, water: 169, speaker: 109, back_glass: 199, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 379 },
+      'iPhone 16 Pro Max': { battery: 129, camera: 219, charging: 139, water: 169, speaker: 119, back_glass: 219, power: 119, volume: 119, home: 0, touch_id: 0, mic: 119, earpiece: 119, vibration: 119, sim: 29, wifi: 169, logic: 399 },
+      'iPhone 17': { battery: 129, camera: 189, charging: 139, water: 169, speaker: 109, back_glass: 189, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 359 },
+      'iPhone 17 Plus': { battery: 129, camera: 199, charging: 139, water: 169, speaker: 109, back_glass: 199, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 369 },
+      'iPhone 17 Pro': { battery: 139, camera: 229, charging: 149, water: 179, speaker: 119, back_glass: 229, power: 119, volume: 119, home: 0, touch_id: 0, mic: 119, earpiece: 119, vibration: 119, sim: 29, wifi: 179, logic: 419 },
+      'iPhone 17 Pro Max': { battery: 139, camera: 249, charging: 149, water: 179, speaker: 129, back_glass: 249, power: 129, volume: 129, home: 0, touch_id: 0, mic: 129, earpiece: 129, vibration: 129, sim: 29, wifi: 179, logic: 449 }
+    };
+    var REPAIR_KEY_MAP = { 'Battery Replacement': 'battery', 'Camera Repair': 'camera', 'Charging Port': 'charging', 'Water Damage': 'water', 'Speaker Repair': 'speaker', 'Back Glass': 'back_glass', 'Power Button': 'power', 'Volume Button': 'volume', 'Home Button': 'home', 'Touch ID Repair': 'touch_id', 'Microphone Repair': 'mic', 'Earpiece Speaker': 'earpiece', 'Vibration Motor': 'vibration', 'SIM Card Tray': 'sim', 'WiFi/Bluetooth': 'wifi', 'Logic Board Repair': 'logic' };
+    function getRepairPrice(repairName, model) {
+      if (repairName === 'Screen Replacement' || repairName === 'Software Issues' || repairName === 'Diagnostic Service') return null;
+      var key = REPAIR_KEY_MAP[repairName];
+      if (!key) return null;
+      var prices = REPAIR_PRICES[model];
+      if (!prices) return null;
+      return prices[key] || null;
+    }
+
+    const SP = {
+      'iPhone SE (2nd gen)': [79, 15, 5], 'iPhone SE (3rd gen)': [89, 15, 5],
+      'iPhone 11': [109, 20, 10], 'iPhone 11 Pro': [139, 25, 15], 'iPhone 11 Pro Max': [159, 30, 20],
+      'iPhone 12': [129, 20, 10], 'iPhone 12 Mini': [129, 20, 10], 'iPhone 12 Pro': [149, 25, 15], 'iPhone 12 Pro Max': [169, 30, 20],
+      'iPhone 13': [149, 25, 15], 'iPhone 13 Mini': [149, 25, 15], 'iPhone 13 Pro': [179, 30, 20], 'iPhone 13 Pro Max': [199, 35, 25],
+      'iPhone 14': [169, 25, 15], 'iPhone 14 Plus': [179, 30, 20], 'iPhone 14 Pro': [209, 35, 25], 'iPhone 14 Pro Max': [239, 40, 30],
+      'iPhone 15': [189, 30, 20], 'iPhone 15 Plus': [199, 35, 25], 'iPhone 15 Pro': [249, 40, 30], 'iPhone 15 Pro Max': [279, 45, 35],
+      'iPhone 16': [219, 35, 25], 'iPhone 16 Plus': [229, 40, 30], 'iPhone 16 Pro': [279, 45, 35], 'iPhone 16 Pro Max': [319, 50, 40],
+      'iPhone 17': [249, 40, 30], 'iPhone 17 Plus': [259, 45, 35], 'iPhone 17 Pro': [309, 50, 40], 'iPhone 17 Pro Max': [349, 55, 45]
+    };
     const QD = { 'C': 'Good quality – Budget-friendly', 'A+': 'Premium – Enhanced clarity', 'S+': 'Superior – Original-like performance' };
-    const IR = [{ n: 'Battery Replacement', i: '🔋', p: 89, t: '1-2h' }, { n: 'Camera Repair', i: '📷', p: 129, t: '1-2h' }, { n: 'Charging Port', i: '🔌', p: 79, t: '1-2h' }, { n: 'Water Damage', i: '💧', p: 199, t: '1-2h' }, { n: 'Speaker Repair', i: '🔊', p: 99, t: '1-2h' }, { n: 'Back Glass', i: '🔲', p: 119, t: '1-2h' }, { n: 'Power Button', i: '⚡', p: 69, t: '1-2h' }, { n: 'Volume Button', i: '🔉', p: 69, t: '1-2h' }, { n: 'Home Button', i: '⏺️', p: 89, t: '1-2h' }, { n: 'Touch ID Repair', i: '👆', p: 99, t: '1-2h' }, { n: 'Microphone Repair', i: '🎤', p: 79, t: '1-2h' }, { n: 'Earpiece Speaker', i: '🎧', p: 89, t: '1-2h' }, { n: 'Vibration Motor', i: '📳', p: 59, t: '1-2h' }, { n: 'SIM Card Tray', i: '💳', p: 49, t: '1-2h' }, { n: 'WiFi/Bluetooth', i: '📶', p: 129, t: '1-2h' }, { n: 'Logic Board Repair', i: '💻', p: 299, t: '2-4h' }, { n: 'Data Recovery', i: '💾', p: 249, t: '1-3h' }, { n: 'Software Issues', i: '⚙️', p: 79, t: '1-2h' }, { n: 'Full Diagnostic', i: '🔍', p: 39, t: '1h' }];
-    const MR = [{ n: 'Battery Replacement', i: '🔋', p: 189, t: '1-2h' }, { n: 'Keyboard Repair', i: '⌨️', p: 149, t: '2-4h' }, { n: 'Trackpad Repair', i: '🖱️', p: 129, t: '1-2h' }, { n: 'Charging Port', i: '🔌', p: 149, t: '1-2h' }, { n: 'Speaker Repair', i: '🔊', p: 129, t: '1-2h' }, { n: 'Camera Repair', i: '📷', p: 149, t: '1-2h' }, { n: 'Water Damage', i: '💧', p: 249, t: '2-4h' }, { n: 'WiFi/Bluetooth', i: '📶', p: 149, t: '2-3h' }, { n: 'Logic Board', i: '💻', p: 399, t: '3-5h' }, { n: 'SSD Upgrade', i: '💽', p: 199, t: '1-2h' }, { n: 'Data Recovery', i: '💾', p: 299, t: '1-3h' }, { n: 'Software Issues', i: '⚙️', p: 99, t: '1-2h' }, { n: 'Full Diagnostic', i: '🔍', p: 49, t: '1h' }];
-    const PR = [{ n: 'Battery Replacement', i: '🔋', p: 129, t: '1-2h' }, { n: 'Camera Repair', i: '📷', p: 129, t: '1-2h' }, { n: 'Charging Port', i: '🔌', p: 99, t: '1-2h' }, { n: 'Water Damage', i: '💧', p: 199, t: '2-4h' }, { n: 'Speaker Repair', i: '🔊', p: 99, t: '1-2h' }, { n: 'Back Glass', i: '🔲', p: 149, t: '1-2h' }, { n: 'Home Button', i: '⏺️', p: 89, t: '1-2h' }, { n: 'Touch ID Repair', i: '👆', p: 99, t: '1-2h' }, { n: 'WiFi/Bluetooth', i: '📶', p: 129, t: '2-3h' }, { n: 'Logic Board', i: '💻', p: 349, t: '2-4h' }, { n: 'Data Recovery', i: '💾', p: 249, t: '1-3h' }, { n: 'Software Issues', i: '⚙️', p: 79, t: '1-2h' }, { n: 'Full Diagnostic', i: '🔍', p: 39, t: '1h' }];
+    const IR = [
+      { n: 'Screen Replacement', i: '📱', p: 0, t: '30-45 min', desc: 'Cracked, unresponsive, or discoloured display replaced with a high-quality screen. Choose from three quality tiers to match your budget and expectations.', hasQuality: true },
+      { n: 'Battery Replacement', i: '🔋', p: 0, t: '30-45 min', desc: 'Restore your battery health to 100%. If your phone dies quickly, shuts down unexpectedly, or shows a service warning, a new battery brings it back to life.' },
+      { n: 'Camera Repair', i: '📷', p: 0, t: '45-60 min', desc: 'Fix blurry photos, black camera screens, or shaking lenses. We replace the affected camera module to restore full photo and video quality.' },
+      { n: 'Charging Port', i: '🔌', p: 0, t: '45-60 min', desc: 'Phone not charging or only charging at certain angles? We replace the entire charging assembly including the microphone flex.' },
+      { n: 'Water Damage', i: '💧', p: 0, t: '1-3 hours', desc: 'Ultrasonic cleaning and corrosion treatment for liquid-damaged devices. Success depends on severity, but early treatment dramatically improves recovery rates.' },
+      { n: 'Speaker Repair', i: '🔊', p: 0, t: '30-45 min', desc: 'Muffled or silent audio from the bottom speaker. We replace the speaker module to restore full volume and clarity.' },
+      { n: 'Back Glass', i: '🔲', p: 0, t: '60-90 min', desc: 'Shattered rear glass panel replaced. This is a more involved repair as the back glass is adhesively bonded to the frame on newer models.' },
+      { n: 'Power Button', i: '⚡', p: 0, t: '30-45 min', desc: 'Unresponsive or stuck power button repaired by replacing the flex cable assembly that controls power and flashlight.' },
+      { n: 'Volume Button', i: '🔉', p: 0, t: '30-45 min', desc: 'Fix stuck or non-functional volume controls by replacing the volume flex cable. Includes mute switch on applicable models.' },
+      { n: 'Home Button', i: '⏺️', p: 0, t: '30-45 min', desc: 'Restore Home button functionality. Note: Touch ID pairing is device-specific and may not transfer to a replacement button.' },
+      { n: 'Touch ID Repair', i: '👆', p: 0, t: '45-60 min', desc: 'Touch ID sensor diagnostics and flex cable repair. Full fingerprint functionality may require the original sensor component.' },
+      { n: 'Microphone Repair', i: '🎤', p: 0, t: '30-45 min', desc: 'People cannot hear you on calls, or voice memos sound muffled. We replace the microphone module to restore clear audio capture.' },
+      { n: 'Earpiece Speaker', i: '🎧', p: 0, t: '30-45 min', desc: 'Cannot hear callers or Siri through the top speaker. The earpiece module is replaced to restore clear call audio.' },
+      { n: 'Vibration Motor', i: '📳', p: 0, t: '30-45 min', desc: 'Phone does not vibrate for notifications or calls. We replace the Taptic Engine to restore haptic feedback and vibration alerts.' },
+      { n: 'SIM Card Tray', i: '💳', p: 0, t: '15-20 min', desc: 'Jammed, bent, or missing SIM tray replaced. Quick fix that restores cellular connectivity.' },
+      { n: 'WiFi/Bluetooth', i: '📶', p: 0, t: '60-90 min', desc: 'Weak WiFi signal, Bluetooth not connecting, or greyed-out WiFi toggle. We repair or replace the antenna flex cable.' },
+      { n: 'Logic Board Repair', i: '💽', p: 0, t: '1-3 hours', desc: 'Advanced micro-soldering repair for motherboard-level issues. This includes boot loops, no power, and component-level failures.' },
+      { n: 'Software Issues', i: '🧠', p: 49, t: '30-60 min', desc: 'Stuck on Apple logo, boot loops, frozen screens, or iOS update failures. We diagnose and resolve software-level problems.' },
+      { n: 'Diagnostic Service', i: '🔍', p: 0, t: '15-30 min', desc: 'Full device health check including battery, display, camera, sensors, and internal inspection. Free with any repair booking.' }
+    ];
+    const MR = [
+      { n: 'Screen Replacement', i: '🖥️', p: 0, t: '1-2 hours', desc: 'Cracked, flickering, or dead display replaced. MacBook screens are complete assemblies including the LCD, glass, and housing.' },
+      { n: 'Battery Replacement', i: '🔋', p: 0, t: '45-90 min', desc: 'Restore all-day battery life. Swollen, degraded, or service-warning batteries replaced with quality cells.' },
+      { n: 'Keyboard Replacement', i: '⌨️', p: 0, t: '1-2 hours', desc: 'Sticky, unresponsive, or missing keys fixed. Butterfly keyboard models require full topcase replacement.' },
+      { n: 'Trackpad Repair', i: '🖱️', p: 0, t: '45-60 min', desc: 'Click not registering, cursor jumping, or Force Touch not working. Trackpad module replaced or recalibrated.' },
+      { n: 'Charging Port (USB-C/MagSafe)', i: '🔌', p: 0, t: '45-90 min', desc: 'Not charging, loose connection, or damaged port. We replace the charging board or MagSafe connector.' },
+      { n: 'SSD Upgrade/Replacement', i: '💾', p: 0, t: '30-60 min', desc: 'Upgrade storage capacity or replace a failed drive. Data migration included where possible.' },
+      { n: 'RAM Upgrade', i: '⚙️', p: 0, t: '30-45 min', desc: 'Boost multitasking performance with additional memory. Available on pre-M1 models with removable RAM.' },
+      { n: 'Water Damage', i: '💧', p: 0, t: '2-4 hours', desc: 'Ultrasonic board cleaning and corrosion treatment. MacBooks are particularly vulnerable to liquid damage due to keyboard exposure.' },
+      { n: 'Speaker Repair', i: '🔊', p: 0, t: '45-60 min', desc: 'Crackling, distorted, or silent speakers replaced. MacBook speaker assemblies are model-specific.' },
+      { n: 'Fan Replacement', i: '🌀', p: 0, t: '30-45 min', desc: 'Loud grinding, overheating, or thermal throttling resolved by replacing worn fan assemblies.' },
+      { n: 'Hinge Repair', i: '🔧', p: 0, t: '1-2 hours', desc: 'Stiff, loose, or cracked display hinge repaired. Prevents further damage to the display cable.' },
+      { n: 'Logic Board Repair', i: '💽', p: 0, t: '2-4 hours', desc: 'Advanced micro-soldering for no-power, no-display, or component-level failures on the main board.' },
+      { n: 'Software/macOS Issues', i: '🧠', p: 79, t: '30-60 min', desc: 'macOS reinstallation, boot issues, firmware recovery, or performance optimisation.' },
+      { n: 'Diagnostic Service', i: '🔍', p: 0, t: '15-30 min', desc: 'Comprehensive hardware and software health check. Free with any repair booking.' }
+    ];
+    const PR = [
+      { n: 'Screen Replacement', i: '📱', p: 0, t: '45-90 min', desc: 'Cracked digitiser or LCD replaced. iPad screens are laminated on newer models, requiring full assembly replacement.', hasQuality: true },
+      { n: 'Battery Replacement', i: '🔋', p: 0, t: '45-90 min', desc: 'iPad battery degraded or swollen. Replacement restores full charge capacity and eliminates unexpected shutdowns.' },
+      { n: 'Charging Port', i: '🔌', p: 0, t: '45-60 min', desc: 'Lightning or USB-C port not charging or connecting. Full port assembly replaced for reliable connectivity.' },
+      { n: 'Home Button', i: '⏺️', p: 0, t: '30-45 min', desc: 'Unresponsive or cracked Home button repaired. Touch ID pairing is device-specific on newer models.' },
+      { n: 'Camera Repair', i: '📷', p: 0, t: '45-60 min', desc: 'Blurry, black, or non-functional camera module replaced. Front and rear cameras available.' },
+      { n: 'Speaker Repair', i: '🔊', p: 0, t: '30-45 min', desc: 'Muffled or silent audio from iPad speakers. Module replacement restores full volume.' },
+      { n: 'Water Damage', i: '💧', p: 0, t: '1-3 hours', desc: 'Liquid damage assessment and ultrasonic cleaning. Early treatment significantly improves recovery rates.' },
+      { n: 'Power Button', i: '⚡', p: 0, t: '30-45 min', desc: 'Stuck or non-responsive power button flex cable replaced.' },
+      { n: 'Volume Button', i: '🔉', p: 0, t: '30-45 min', desc: 'Non-functional volume controls repaired by replacing the flex cable assembly.' },
+      { n: 'Logic Board Repair', i: '💽', p: 0, t: '2-4 hours', desc: 'Micro-soldering repair for motherboard failures including no power, boot loops, and component issues.' },
+      { n: 'Software Issues', i: '🧠', p: 49, t: '30-60 min', desc: 'iPadOS recovery, boot loops, activation lock assistance, and performance restoration.' },
+      { n: 'Diagnostic Service', i: '🔍', p: 0, t: '15-30 min', desc: 'Full device health assessment. Free with any repair booking.' }
+    ];
     function repairs() { return selCat === 'MacBook' ? MR : selCat === 'iPad' ? PR : IR; }
     const BOUNDS = { sw: { lat: -27.85, lng: 152.65 }, ne: { lat: -26.10, lng: 153.35 } };
     const SCP = Array.from({ length: 26 }, (_, i) => (4550 + i).toString());
@@ -3336,8 +3394,22 @@
 
     // REPAIRS
     function renderRepairs() {
+      // Expand repair descriptions on click
+      window.toggleRepairInfo = function (el) {
+        var info = el.querySelector('.repair-info');
+        if (info) info.style.display = info.style.display === 'block' ? 'none' : 'block';
+      };
+
       let h = ''; if (SP[selModel]) { h += '<div class="card repair-card" onclick="openQualityModal()"><div class="repair-icon">' + (selCat === 'MacBook' ? '🖥️' : selCat === 'iPad' ? '📲' : '📱') + '</div><div class="repair-name">Screen Replacement</div><div class="repair-price">From $' + SP[selModel][0] + '</div><div class="repair-time">⏱️ 1-2h</div><div class="price-badge">Starting Price</div></div>'; }
-      repairs().forEach(r => { h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + r.p + '" data-rt="' + r.t + '" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)"><div class="checkbox"></div><div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">$' + r.p + '</div><div class="repair-time">⏱️ ' + r.t + '</div></div>'; });
+      repairs().forEach(r => {
+        if (r.n === 'Screen Replacement') return;
+        var price = r.p;
+        if (price === 0 && selModel) { var mp = getRepairPrice(r.n, selModel); if (mp) price = mp; }
+        if (price === 0 && r.n !== 'Diagnostic Service') return;
+        var priceText = price === 0 ? 'Free' : '$' + price;
+        var desc = r.desc || '';
+        h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + price + '" data-rt="' + (r.t || '') + '" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)"><div class="checkbox"></div><div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">' + priceText + '</div><div class="repair-time">' + r.t + '</div>' + (desc ? '<div class="repair-info">' + desc + '</div>' : '') + '</div>';
+      });
       // Add unique model-specific repair if available
       if (selCat && selSeries && selModel) {
         var series = T[selCat]?.series?.[selSeries];
@@ -3388,7 +3460,7 @@
     function initAutocomplete() {
       const container = document.getElementById('pickupAddressContainer');
       if (!container || typeof google === 'undefined') return;
-      container.innerHTML = '<input type="text" id="pickupAddress" class="address-input" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:1px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;outline:none;">';
+      container.innerHTML = '<input type="text" id="pickupAddress" class="address-input" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:var(--font);">';
       const inp = document.getElementById('pickupAddress');
       try {
         // Try new PlaceAutocompleteElement first
@@ -3439,7 +3511,13 @@
       const ok = inB && (SCP.includes(pc) || BNEP.includes(pc));
       const err = document.getElementById('addressError'), okEl = document.getElementById('addressOk');
       const wrap = document.getElementById('pickupAddressContainer');
-      if (ok) { pickupAddress = formatted; addressValid = true; wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid'); err.style.display = 'none'; okEl.style.display = 'block'; }
+      if (ok) {
+        pickupAddress = formatted; addressValid = true;
+        var cf = calcCalloutFee(lat, lng);
+        currentCalloutFee = cf.fee;
+        var cfEl = document.getElementById('calloutFee');
+        if (cfEl) { cfEl.style.display = 'block'; cfEl.innerHTML = '<strong>Mobile Pickup:</strong> ' + cf.label + ' (approx. ' + cf.dist + 'km from our base in Buderim)' + (cf.fee > 0 ? ' — This fee covers travel time and fuel.' : ''); } wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid'); err.style.display = 'none'; okEl.style.display = 'block';
+      }
       else { pickupAddress = ''; addressValid = false; wrap.classList.add('pac-invalid'); wrap.classList.remove('pac-valid'); err.style.display = 'block'; okEl.style.display = 'none'; }
     }
     function onPlaceChanged() { }
@@ -3588,6 +3666,27 @@
 
     document.getElementById('qualityModal').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
 
+
+
+    // Mobile Pickup Callout Fee Calculator (from Buderim)
+    var BUDERIM_LAT = -26.6844;
+    var BUDERIM_LNG = 153.0500;
+    function calcCalloutFee(lat, lng) {
+      var R = 6371;
+      var dLat = (lat - BUDERIM_LAT) * Math.PI / 180;
+      var dLng = (lng - BUDERIM_LNG) * Math.PI / 180;
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(BUDERIM_LAT * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var dist = R * c;
+      var fee = 0; var label = '';
+      if (dist <= 10) { fee = 0; label = 'No callout fee (within 10km)'; }
+      else if (dist <= 25) { fee = 30; label = '$30 callout fee (10-25km from Buderim)'; }
+      else if (dist <= 50) { fee = 50; label = '$50 callout fee (25-50km from Buderim)'; }
+      else if (dist <= 100) { fee = 80; label = '$80 callout fee (Brisbane metro, 50-100km)'; }
+      else { fee = 0; label = 'Outside service area'; }
+      return { fee: fee, label: label, dist: Math.round(dist) };
+    }
+    var currentCalloutFee = 0;
 
     setMinDate(); renderCategories();
   </script>
