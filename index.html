@@ -784,6 +784,21 @@
       border-width: 3px;
     }
 
+    .repair-card.selected .checkbox {
+      background: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .repair-card.selected .checkbox::after {
+      content: '\2713';
+      color: #fff;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
     .model-img {
       width: 100%;
       height: 160px;
@@ -1710,6 +1725,11 @@
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.show,
+    .modal-overlay.active {
+      display: flex;
     }
 
     .modal-overlay.active {
@@ -2648,7 +2668,8 @@
                 Brisbane</span></div>
             <div class="address-wrapper" style="margin-top:10px" id="pickupAddressContainer"></div>
             <div class="address-error" id="addressError">⚠️ Sorry, we only service <strong>Sunshine Coast</strong> &amp;
-              <strong>Brisbane</strong>.</div>
+              <strong>Brisbane</strong>.
+            </div>
             <div class="callout-fee" id="calloutFee"
               style="display:none;margin-top:12px;padding:14px 18px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.12);border-radius:10px;font-size:14px;color:#e2e8f0;">
             </div>
@@ -2757,7 +2778,8 @@
           </div>
           <div id="paidBanner"
             style="display:none;background:rgba(16,185,129,.1);border:2px solid rgba(16,185,129,.3);border-radius:12px;padding:16px 22px;margin-top:18px;text-align:center;">
-            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong></div>
+            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong>
+          </div>
         </div>
       </div>
     </div>
@@ -3540,8 +3562,9 @@
         if (price === 0) return;
         var priceText = '$' + price;
         var onclick = 'toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)';
-        if (r.n === 'Battery Replacement') { onclick = 'openBatteryModal()'; priceText = 'From $' + price; }
-        h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + price + '" data-rt="' + (r.t || '') + '" onclick="' + onclick + '"><div class="checkbox"></div><div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">' + priceText + '</div><div class="repair-time">' + r.t + '</div></div>';
+        var showCheckbox = true;
+        if (r.n === 'Battery Replacement') { onclick = 'openBatteryModal()'; priceText = 'From $' + price; showCheckbox = false; }
+        h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + price + '" data-rt="' + (r.t || '') + '" onclick="' + onclick + '">' + (showCheckbox ? '<div class="checkbox"></div>' : '') + '<div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">' + priceText + '</div><div class="repair-time">' + r.t + '</div></div>';
       });
       // Add unique model-specific repair if available
       if (selCat && selSeries && selModel) {
@@ -3577,7 +3600,7 @@
       document.getElementById('qualityOptions').innerHTML = h;
       document.getElementById('qualityModal').classList.add('show');
     }
-    function closeModal(id) { id = id || 'qualityModal'; document.getElementById(id).classList.remove('show'); document.getElementById(id).classList.remove('active'); }
+    function closeModal(id) { if (!id) id = 'qualityModal'; var el = document.getElementById(id); if (el) { el.classList.remove('show'); el.classList.remove('active'); el.style.display = 'none'; setTimeout(function () { el.style.display = ''; }, 50); } }
     function selectQuality(el, cls, price, name) {
       selQuality = cls;
       selRepairs = selRepairs.filter(function (r) { return !r.name.includes('Screen'); });
@@ -3625,59 +3648,37 @@
       var container = document.getElementById('pickupAddressContainer');
       if (!container) return;
       if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
-        console.warn('Google Maps not loaded yet');
+        console.warn('Google Maps not loaded yet - using plain input');
         container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
         var fb = document.getElementById('pickupAddress');
         if (fb) fb.addEventListener('input', function () { pickupAddress = fb.value; addressValid = fb.value.length > 10; });
         return;
       }
-      container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
-      var inp = document.getElementById('pickupAddress');
-      var success = false;
-      // Try legacy Autocomplete first (better styled, works with most keys)
+      // Use PlaceAutocompleteElement (Places API New)
       try {
-        var bounds = new google.maps.LatLngBounds(
-          new google.maps.LatLng(BOUNDS.sw.lat, BOUNDS.sw.lng),
-          new google.maps.LatLng(BOUNDS.ne.lat, BOUNDS.ne.lng)
-        );
-        autocomplete = new google.maps.places.Autocomplete(inp, {
-          bounds: bounds,
+        container.innerHTML = '';
+        var placeAuto = new google.maps.places.PlaceAutocompleteElement({
           componentRestrictions: { country: 'au' },
-          types: ['address'],
-          fields: ['address_components', 'geometry', 'formatted_address']
+          locationBias: { center: { lat: -26.7, lng: 153.1 }, radius: 80000 }
         });
-        autocomplete.addListener('place_changed', function () {
-          var pl = autocomplete.getPlace();
-          if (!pl || !pl.geometry) return;
-          var comps = (pl.address_components || []).map(function (c) { return { types: c.types, longText: c.long_name, shortText: c.short_name }; });
-          handlePlaceResult(pl.geometry.location.lat(), pl.geometry.location.lng(), comps, pl.formatted_address || '');
+        container.appendChild(placeAuto);
+        autocomplete = placeAuto;
+        placeAuto.addEventListener('gmp-placeselect', function (e) {
+          var place = e.place;
+          place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] }).then(function () {
+            var lat = place.location.lat();
+            var lng = place.location.lng();
+            var comps = place.addressComponents || [];
+            var formatted = place.formattedAddress || '';
+            handlePlaceResult(lat, lng, comps, formatted);
+          }).catch(function (err) { console.error('Place fetch error:', err); });
         });
-        console.log('Autocomplete: legacy widget active');
-        success = true;
-      } catch (e1) { console.warn('Legacy Autocomplete failed:', e1); }
-      // If legacy failed, try new PlaceAutocompleteElement
-      if (!success) {
-        try {
-          if (google.maps.places.PlaceAutocompleteElement) {
-            container.innerHTML = '';
-            var placeAuto = new google.maps.places.PlaceAutocompleteElement({ componentRestrictions: { country: 'au' } });
-            container.appendChild(placeAuto);
-            autocomplete = placeAuto;
-            placeAuto.addEventListener('gmp-placeselect', function (e) {
-              var place = e.place;
-              place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] }).then(function () {
-                handlePlaceResult(place.location.lat(), place.location.lng(), place.addressComponents || [], place.formattedAddress || '');
-              });
-            });
-            console.log('Autocomplete: PlaceAutocompleteElement active');
-            success = true;
-          }
-        } catch (e2) { console.warn('PlaceAutocompleteElement failed:', e2); }
-      }
-      // Final fallback - plain text
-      if (!success) {
-        console.warn('All autocomplete methods failed, using plain input');
-        inp.addEventListener('input', function () { pickupAddress = inp.value; addressValid = inp.value.length > 10; });
+        console.log('PlaceAutocompleteElement active');
+      } catch (ex) {
+        console.warn('PlaceAutocompleteElement failed:', ex);
+        container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
+        var fb2 = document.getElementById('pickupAddress');
+        if (fb2) fb2.addEventListener('input', function () { pickupAddress = fb2.value; addressValid = fb2.value.length > 10; });
       }
     }
     function handlePlaceResult(lat, lng, comps, formatted) {
@@ -3709,7 +3710,7 @@
       if (pg === 1) renderBC();
       document.querySelector('.quote-wrap').scrollIntoView({ behavior: 'smooth' });
     }
-    function setMinDate() { const inp = document.getElementById('date'); const tm = new Date(); tm.setDate(tm.getDate() + 1); inp.min = tm.toISOString().split('T')[0]; }
+    function setMinDate() { var d = new Date(); var today = d.toISOString().split('T')[0]; var el = document.getElementById('date'); if (el) { el.min = today; el.value = today; } }
     function generateQN() { const d = new Date(); return 'QT' + d.getFullYear().toString().slice(-2) + (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0') + '-' + (Math.floor(Math.random() * 9000) + 1000); }
     let currentQuoteNumber = '';
 
@@ -3894,27 +3895,50 @@
     // Check booked time slots when date changes
     document.getElementById('date')?.addEventListener('change', async function () {
       var date = this.value;
-      if (!date || !db) return;
-      try {
-        var { data } = await db.from('quotes').select('appointment_time').eq('appointment_date', date).neq('status', 'cancelled');
-        var bookedTimes = (data || []).map(function (q) { return q.appointment_time; });
-        var select = document.getElementById('time');
-        Array.from(select.options).forEach(function (opt) {
-          if (!opt.value) return;
-          if (bookedTimes.includes(opt.value)) {
-            opt.style.color = '#ef4444';
-            opt.textContent = opt.value + ' (Booked)';
+      var select = document.getElementById('time');
+      if (!date || !select) return;
+      var today = new Date().toISOString().split('T')[0];
+      var isToday = (date === today);
+      var nowHour = new Date().getHours();
+      var minHour = isToday ? nowHour + 2 : 0;
+      // Reset all options first
+      Array.from(select.options).forEach(function (opt) {
+        if (!opt.value) return;
+        opt.style.color = ''; opt.textContent = opt.value; opt.disabled = false;
+        // Parse hour from option
+        var parts = opt.value.match(/(\d+):(\d+)\s*(AM|PM)/i);
+        if (parts) {
+          var h = parseInt(parts[1]); var ampm = parts[3].toUpperCase();
+          if (ampm === 'PM' && h !== 12) h += 12;
+          if (ampm === 'AM' && h === 12) h = 0;
+          if (isToday && h < minHour) {
+            opt.style.color = '#64748b';
+            opt.textContent = opt.value + ' (Too soon)';
             opt.disabled = true;
-          } else {
-            opt.style.color = '';
-            opt.textContent = opt.value;
-            opt.disabled = false;
           }
-        });
-      } catch (e) { console.log('Could not check bookings:', e); }
+        }
+      });
+      // Check booked slots from Supabase
+      if (db) {
+        try {
+          var { data } = await db.from('quotes').select('appointment_time').eq('appointment_date', date).neq('status', 'cancelled');
+          var bookedTimes = (data || []).map(function (q) { return q.appointment_time; });
+          Array.from(select.options).forEach(function (opt) {
+            if (!opt.value || opt.disabled) return;
+            if (bookedTimes.includes(opt.value)) {
+              opt.style.color = '#ef4444';
+              opt.textContent = opt.value + ' (Booked)';
+              opt.disabled = true;
+            }
+          });
+        } catch (e) { console.log('Could not check bookings:', e); }
+      }
+      // Auto-select first available
+      select.value = '';
     });
 
     setMinDate(); renderCategories();
+    setTimeout(function () { var d = document.getElementById('date'); if (d && d.value) d.dispatchEvent(new Event('change')); }, 500);
   </script>
 
   <!-- Environmental Effects Overlay -->
