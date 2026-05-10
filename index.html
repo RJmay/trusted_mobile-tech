@@ -3742,8 +3742,7 @@
           if (placesLib.AutocompleteSuggestion) {
             placesLib.AutocompleteSuggestion.fetchAutocompleteSuggestions({
               input: val,
-              includedRegionCodes: ['au'],
-              locationBias: new google.maps.LatLngBounds(new google.maps.LatLng(-27.5, 152.5), new google.maps.LatLng(-26.0, 153.5))
+              includedRegionCodes: ['au']
             }).then(function (result) {
               var suggestions = result.suggestions || [];
               if (!suggestions.length) { dd.style.display = 'none'; return; }
