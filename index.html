@@ -1793,49 +1793,9 @@
       gap: 14px;
     }
 
-    .quality-option {
-      border: 3px solid var(--border);
-      border-radius: 14px;
-      padding: 22px 26px;
-      cursor: pointer;
-      transition: all .3s;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #fff;
-    }
 
-    .quality-option:hover strong,
-    .quality-option:hover div {
-      color: #fff !important;
-    }
 
-    .quality-option:hover span {
-      color: var(--brand) !important;
-    }
 
-    .quality-option.selected {
-      border-color: var(--brand);
-      background: rgba(0, 212, 255, .08);
-    }
-
-    .quality-option.selected strong,
-    .quality-option.selected div {
-      color: #fff !important;
-    }
-
-    .quality-option:hover {
-      border-color: var(--brand);
-      background: rgba(0, 212, 255, .06);
-      color: #fff;
-      transform: translateX(4px);
-    }
-
-    .quality-option.selected {
-      border-color: var(--brand);
-      background: rgba(0, 212, 255, .1);
-      box-shadow: 0 3px 12px rgba(0, 150, 199, .15);
-    }
 
     .quality-info {
       flex: 1;
@@ -2389,6 +2349,33 @@
 
     input[type="date"]::-webkit-calendar-picker-indicator:hover {
       opacity: 1;
+    }
+
+    /* Quality/Battery option cards */
+    .quality-option {
+      border: 2px solid rgba(255, 255, 255, .15);
+      border-radius: 14px;
+      padding: 22px 26px;
+      cursor: pointer;
+      transition: all .3s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg2);
+      margin-bottom: 16px;
+    }
+
+    .quality-option:hover {
+      border-color: var(--brand);
+      background: rgba(0, 212, 255, .06);
+    }
+
+    .quality-option:hover * {
+      color: #fff !important;
+    }
+
+    .quality-option:hover span {
+      color: var(--brand) !important;
     }
 
     .hidden {
@@ -3583,7 +3570,7 @@
         if (info) info.style.display = info.style.display === 'block' ? 'none' : 'block';
       };
 
-      let h = ''; if (SP[selModel]) { h += '<div class="card repair-card" onclick="openQualityModal()"><div class="repair-icon">' + (selCat === 'MacBook' ? '🖥️' : selCat === 'iPad' ? '📲' : '📱') + '</div><div class="repair-name">Screen Replacement</div><div class="repair-price">From $' + SP[selModel][0] + '</div><div class="repair-time">⏱️ 1-2h</div><div class="price-badge">Starting Price</div></div>'; }
+      let h = ''; if (SP[selModel]) { h += '<div class="card repair-card" onclick="openQualityModal()"><div class="repair-icon">' + (selCat === 'MacBook' ? '🖥️' : selCat === 'iPad' ? '📲' : '📱') + '</div><div class="repair-name">Screen Replacement</div><div class="repair-price">From $' + SP[selModel][0] + '</div><div class="repair-time">30-45 min</div></div>'; }
       repairs().forEach(r => {
         if (r.n === 'Screen Replacement') return;
         var price = r.p;
@@ -3619,13 +3606,13 @@
     function openQualityModal() {
       var sp = SP[selModel]; if (!sp) return;
       var tiers = [
-        { name: 'C Quality (Aftermarket LCD)', price: sp[0], cls: 'c', desc: 'Budget-friendly aftermarket display. Slightly lower brightness and colour accuracy than original. Functional and reliable with a 3-month warranty.', badge: 'Best Value' },
-        { name: 'A+ Quality (Premium Aftermarket)', price: sp[0] + sp[1], cls: 'aplus', desc: 'High-grade aftermarket OLED with excellent colour reproduction. Virtually indistinguishable from original in daily use. 6-month warranty.', badge: 'Most Popular' },
-        { name: 'Genuine Apple Display', price: sp[0] + sp[1] + sp[2], cls: 'splus', desc: 'Authentic Apple display with original colour accuracy, True Tone, and full haptic touch. Identical to factory-installed screen performance. 12-month warranty.', badge: 'Genuine' }
+        { name: 'C Quality (Aftermarket LCD)', price: sp[0], cls: 'c', desc: 'Budget-friendly aftermarket display. Slightly lower brightness and colour accuracy than original. Functional and reliable with a 3-month warranty.', badge: 'Best Value', badgeBg: 'rgba(0,212,255,.1)', badgeColor: 'var(--brand)' },
+        { name: 'A+ Quality (Premium Aftermarket)', price: sp[0] + sp[1], cls: 'aplus', desc: 'High-grade aftermarket OLED with excellent colour reproduction. Virtually indistinguishable from original in daily use. 6-month warranty.', badge: 'Most Popular', badgeBg: 'rgba(16,185,129,.1)', badgeColor: 'var(--green)' },
+        { name: 'Genuine Apple Display', price: sp[0] + sp[1] + sp[2], cls: 'splus', desc: 'Authentic Apple display with original colour accuracy, True Tone, and full haptic touch. Identical to factory-installed screen performance. 12-month warranty.', badge: 'Genuine', badgeBg: 'rgba(245,158,11,.1)', badgeColor: '#f59e0b' }
       ];
       var h = '';
       tiers.forEach(function (t) {
-        h += '<div class="quality-option" onclick="selectQuality(this,\'' + t.cls + '\',' + t.price + ',\'' + t.name.replace(/'/g, '') + '\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><strong style="color:#fff;font-size:16px;">' + t.name + '</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">' + t.badge + '</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">' + t.desc + '</div></div><div style="text-align:right;flex-shrink:0;margin-left:20px;"><div style="font-size:22px;font-weight:800;color:#fff;">$' + t.price + '</div></div></div>';
+        h += '<div class="quality-option" onclick="selectQuality(this,\'' + t.cls + '\',' + t.price + ',\'' + t.name.replace(/'/g, '') + '\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">' + t.name + '</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:' + t.badgeBg + ';color:' + t.badgeColor + ';font-weight:700;">' + t.badge + '</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">' + t.desc + '</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + t.price + '</div></div></div>';
       });
       document.getElementById('qualityOptions').innerHTML = h;
       document.getElementById('qualityModal').classList.add('show');
@@ -3636,17 +3623,20 @@
       selRepairs = selRepairs.filter(function (r) { return !r.name.includes('Screen'); });
       selRepairs.push({ name: 'Screen Replacement (' + cls.toUpperCase() + ')', price: price });
       closeModal('qualityModal');
-      // Show selected tier label on the screen card
-      var screenCard = document.querySelector('.repair-card[data-rn="Screen%20Replacement"]');
-      if (screenCard) {
-        var existing = screenCard.querySelector('.tier-label');
-        if (existing) existing.remove();
-        var label = document.createElement('div');
-        label.className = 'tier-label';
-        label.style.cssText = 'margin-top:8px;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(0,212,255,.1);color:var(--brand);border:1px solid rgba(0,212,255,.2);display:inline-block;';
-        label.textContent = cls.toUpperCase() + ' — $' + price;
-        screenCard.appendChild(label);
-      }
+      // Update screen card to show selected tier
+      var cards = document.querySelectorAll('.repair-card');
+      cards.forEach(function (c) {
+        var rn = c.querySelector('.repair-name');
+        if (rn && rn.textContent === 'Screen Replacement') {
+          var existing = c.querySelector('.tier-label');
+          if (existing) existing.remove();
+          var lbl = document.createElement('div');
+          lbl.className = 'tier-label';
+          lbl.style.cssText = 'margin-top:8px;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(0,212,255,.1);color:var(--brand);border:1px solid rgba(0,212,255,.2);display:inline-block;';
+          lbl.textContent = cls.toUpperCase() + ' — $' + price;
+          c.appendChild(lbl);
+        }
+      });
       updateSummary();
     }
     function pickQuality(q, p, e) { selQuality = { q, p }; document.querySelectorAll('.quality-option').forEach(o => o.classList.remove('selected')); e.currentTarget.classList.add('selected'); document.getElementById('selectQualityBtn').disabled = false; }
@@ -3919,8 +3909,8 @@
       var basePrice = prices.battery;
       var oemPrice = Math.round(basePrice * 1.6);
       var h = '';
-      h += '<div class="quality-option" onclick="selectBattery(\'aftermarket\',' + basePrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><strong style="color:#fff;font-size:16px;">Aftermarket Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality third-party cell rated for 500+ charge cycles and 80% health retention after 18 months. Reliable daily performance with a 6-month warranty. Ideal for older devices or budget repairs.</div></div><div style="text-align:right;flex-shrink:0;margin-left:20px;"><div style="font-size:22px;font-weight:800;color:#fff;">$' + basePrice + '</div></div></div>';
-      h += '<div class="quality-option" onclick="selectBattery(\'oem\',' + oemPrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><strong style="color:#fff;font-size:16px;">OEM-Grade Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Premium</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Genuine-spec cell rated for 800+ charge cycles and 80% health retention after 2+ years. Matches original Apple battery performance, capacity, and longevity. 12-month warranty included.</div></div><div style="text-align:right;flex-shrink:0;margin-left:20px;"><div style="font-size:22px;font-weight:800;color:#fff;">$' + oemPrice + '</div></div></div>';
+      h += '<div class="quality-option" onclick="selectBattery(\'aftermarket\',' + basePrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">Aftermarket Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality third-party cell rated for 500+ charge cycles and 80% health retention after 18 months. 6-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div></div></div>';
+      h += '<div class="quality-option" onclick="selectBattery(\'oem\',' + oemPrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">OEM-Grade Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Premium</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Genuine-spec cell rated for 800+ charge cycles and 80% health retention after 2+ years. Matches original Apple performance. 12-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div></div></div>';
       document.getElementById('batteryOptions').innerHTML = h;
       document.getElementById('batteryModal').classList.add('show');
     }
