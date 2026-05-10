@@ -9,7 +9,12 @@
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"
     rel="stylesheet">
   <script>
-    window.initGoogleMaps = function () { if (typeof initAutocomplete === 'function') initAutocomplete(); };
+    window.initGoogleMaps = function () {
+      console.log('Google Maps API loaded');
+      if (typeof initAutocomplete === 'function') {
+        setTimeout(function () { initAutocomplete(); }, 200);
+      }
+    };
   </script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgXAmCYsFlvDyCL-s6KoYEHcDiUbIvE7g&libraries=places&v=weekly&callback=initGoogleMaps"
@@ -779,9 +784,7 @@
     }
 
     .card.selected {
-      border-color: var(--brand);
-      background: linear-gradient(135deg, #e6f7fb, #f0fbff);
-      border-width: 3px;
+      border-color: rgba(0, 212, 255, .3);
     }
 
     .repair-card.selected .checkbox {
@@ -1802,9 +1805,29 @@
       background: #fff;
     }
 
+    .quality-option:hover strong,
+    .quality-option:hover div {
+      color: #fff !important;
+    }
+
+    .quality-option:hover span {
+      color: var(--brand) !important;
+    }
+
+    .quality-option.selected {
+      border-color: var(--brand);
+      background: rgba(0, 212, 255, .08);
+    }
+
+    .quality-option.selected strong,
+    .quality-option.selected div {
+      color: #fff !important;
+    }
+
     .quality-option:hover {
       border-color: var(--brand);
       background: rgba(0, 212, 255, .06);
+      color: #fff;
       transform: translateX(4px);
     }
 
@@ -2357,6 +2380,15 @@
     input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(0.7);
       cursor: pointer;
+      padding: 12px;
+      margin-right: -8px;
+      width: 36px;
+      height: 36px;
+      opacity: .7;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator:hover {
+      opacity: 1;
     }
 
     .hidden {
@@ -2668,8 +2700,7 @@
                 Brisbane</span></div>
             <div class="address-wrapper" style="margin-top:10px" id="pickupAddressContainer"></div>
             <div class="address-error" id="addressError">⚠️ Sorry, we only service <strong>Sunshine Coast</strong> &amp;
-              <strong>Brisbane</strong>.
-            </div>
+              <strong>Brisbane</strong>.</div>
             <div class="callout-fee" id="calloutFee"
               style="display:none;margin-top:12px;padding:14px 18px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.12);border-radius:10px;font-size:14px;color:#e2e8f0;">
             </div>
@@ -2778,8 +2809,7 @@
           </div>
           <div id="paidBanner"
             style="display:none;background:rgba(16,185,129,.1);border:2px solid rgba(16,185,129,.3);border-radius:12px;padding:16px 22px;margin-top:18px;text-align:center;">
-            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong>
-          </div>
+            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong></div>
         </div>
       </div>
     </div>
@@ -3606,7 +3636,18 @@
       selRepairs = selRepairs.filter(function (r) { return !r.name.includes('Screen'); });
       selRepairs.push({ name: 'Screen Replacement (' + cls.toUpperCase() + ')', price: price });
       closeModal('qualityModal');
-      updateCards(); updateSummary();
+      // Show selected tier label on the screen card
+      var screenCard = document.querySelector('.repair-card[data-rn="Screen%20Replacement"]');
+      if (screenCard) {
+        var existing = screenCard.querySelector('.tier-label');
+        if (existing) existing.remove();
+        var label = document.createElement('div');
+        label.className = 'tier-label';
+        label.style.cssText = 'margin-top:8px;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(0,212,255,.1);color:var(--brand);border:1px solid rgba(0,212,255,.2);display:inline-block;';
+        label.textContent = cls.toUpperCase() + ' — $' + price;
+        screenCard.appendChild(label);
+      }
+      updateSummary();
     }
     function pickQuality(q, p, e) { selQuality = { q, p }; document.querySelectorAll('.quality-option').forEach(o => o.classList.remove('selected')); e.currentTarget.classList.add('selected'); document.getElementById('selectQualityBtn').disabled = false; }
     function confirmQuality_old() { if (!selQuality) return; selRepairs = selRepairs.filter(r => !r.name.includes('Screen')); selRepairs.push({ name: 'Screen Replacement (' + selQuality.q + ')', price: selQuality.p, time: '1-2h' }); closeModal(); updateCards(); updateSummary(); }
@@ -3626,7 +3667,7 @@
         }
       });
     }
-    function updateCards() { updateDiagnosticPrice(); document.querySelectorAll('.repair-card').forEach(c => { const cn = c.querySelector('.repair-name')?.textContent; if (!cn) return; c.classList.toggle('selected', selRepairs.some(r => cn === 'Screen Replacement' ? r.name.includes('Screen') : r.name === cn)); }); }
+    function updateCards() { updateDiagnosticPrice(); document.querySelectorAll('.repair-card').forEach(c => { var cn = c.querySelector('.repair-name'); if (!cn) return; var name = cn.textContent; if (name === 'Screen Replacement' || name === 'Battery Replacement') return; c.classList.toggle('selected', selRepairs.some(function (r) { return r.name === name; })); }); }
     function updateSummary() {
       const b = document.getElementById('repairsSummary'), l = document.getElementById('repairsList'), btn = document.getElementById('continueBtn');
       if (!selRepairs.length) { b.classList.add('hidden'); btn.disabled = true; return; } b.classList.remove('hidden'); btn.disabled = false;
@@ -3642,7 +3683,7 @@
     function selectServiceType(type) {
       serviceType = type; document.getElementById('stCard').classList.toggle('selected', type === 'store'); document.getElementById('muCard').classList.toggle('selected', type === 'mobile');
       if (type === 'store') { document.getElementById('storeDetails').classList.add('visible'); document.getElementById('pickupAddressBlock').style.display = 'none'; addressValid = true; }
-      else { document.getElementById('storeDetails').classList.remove('visible'); document.getElementById('pickupAddressBlock').style.display = 'block'; addressValid = false; if (typeof google !== 'undefined' && !autocomplete) initAutocomplete(); setTimeout(() => { if (typeof google !== 'undefined' && !autocomplete) initAutocomplete(); }, 500); }
+      else { document.getElementById('storeDetails').classList.remove('visible'); document.getElementById('pickupAddressBlock').style.display = 'block'; addressValid = false; setTimeout(function () { initAutocomplete(); }, 100); setTimeout(function () { if (!autocomplete) initAutocomplete(); }, 1000); setTimeout(function () { if (!autocomplete) initAutocomplete(); }, 3000); }
     }
     function initAutocomplete() {
       var container = document.getElementById('pickupAddressContainer');
@@ -3888,7 +3929,21 @@
       selRepairs = selRepairs.filter(function (r) { return !r.name.includes('Battery'); });
       selRepairs.push({ name: name, price: price });
       closeModal('batteryModal');
-      updateCards(); updateTotal();
+      // Show selected type label on the battery card
+      var batteryCards = document.querySelectorAll('.repair-card');
+      batteryCards.forEach(function (c) {
+        var rn = c.querySelector('.repair-name');
+        if (rn && rn.textContent === 'Battery Replacement') {
+          var existing = c.querySelector('.tier-label');
+          if (existing) existing.remove();
+          var label = document.createElement('div');
+          label.className = 'tier-label';
+          label.style.cssText = 'margin-top:8px;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(0,212,255,.1);color:var(--brand);border:1px solid rgba(0,212,255,.2);display:inline-block;';
+          label.textContent = (type === 'oem' ? 'OEM' : 'AFT') + ' — $' + price;
+          c.appendChild(label);
+        }
+      });
+      updateSummary();
     }
 
 
