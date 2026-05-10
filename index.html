@@ -483,9 +483,10 @@
       width: 46px;
       height: 46px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, .08);
+      background: #1e2030;
       position: relative;
       z-index: 2;
+      border: 2px solid rgba(255, 255, 255, .1);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -499,6 +500,13 @@
     .step.active .step-circle {
       background: var(--grad);
       color: #fff;
+      border-color: transparent;
+    }
+
+    .step.done .step-circle {
+      background: var(--brand);
+      color: #fff;
+      border-color: transparent;
       box-shadow: 0 4px 14px rgba(0, 150, 199, .35);
     }
 
