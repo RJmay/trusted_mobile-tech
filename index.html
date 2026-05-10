@@ -3743,7 +3743,7 @@
             placesLib.AutocompleteSuggestion.fetchAutocompleteSuggestions({
               input: val,
               includedRegionCodes: ['au'],
-              locationBias: { center: { lat: -26.7, lng: 153.1 }, radius: 80000 }
+              locationBias: new google.maps.LatLngBounds(new google.maps.LatLng(-27.5, 152.5), new google.maps.LatLng(-26.0, 153.5))
             }).then(function (result) {
               var suggestions = result.suggestions || [];
               if (!suggestions.length) { dd.style.display = 'none'; return; }
