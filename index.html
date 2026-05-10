@@ -3722,39 +3722,37 @@
     function initAutocomplete() {
       var container = document.getElementById('pickupAddressContainer');
       if (!container) return;
-      if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
-        console.warn('Google Maps not loaded yet - using plain input');
+      if (typeof google === 'undefined' || !google.maps) {
         container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
-        var fb = document.getElementById('pickupAddress');
-        if (fb) fb.addEventListener('input', function () { pickupAddress = fb.value; addressValid = fb.value.length > 10; });
+        document.getElementById('pickupAddress')?.addEventListener('input', function () { pickupAddress = this.value; addressValid = this.value.length > 10; });
         return;
       }
-      // Use PlaceAutocompleteElement (Places API New)
-      try {
-        container.innerHTML = '';
-        var placeAuto = new google.maps.places.PlaceAutocompleteElement({
-          componentRestrictions: { country: 'au' },
-          locationBias: { center: { lat: -26.7, lng: 153.1 }, radius: 80000 }
-        });
-        container.appendChild(placeAuto);
-        autocomplete = placeAuto;
-        placeAuto.addEventListener('gmp-placeselect', function (e) {
-          var place = e.place;
-          place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] }).then(function () {
-            var lat = place.location.lat();
-            var lng = place.location.lng();
-            var comps = place.addressComponents || [];
-            var formatted = place.formattedAddress || '';
-            handlePlaceResult(lat, lng, comps, formatted);
-          }).catch(function (err) { console.error('Place fetch error:', err); });
-        });
-        console.log('PlaceAutocompleteElement active');
-      } catch (ex) {
-        console.warn('PlaceAutocompleteElement failed:', ex);
+      // Use importLibrary to load Places properly
+      google.maps.importLibrary('places').then(function (placesLib) {
+        try {
+          container.innerHTML = '';
+          var placeAuto = new placesLib.PlaceAutocompleteElement({
+            componentRestrictions: { country: 'au' },
+          });
+          container.appendChild(placeAuto);
+          autocomplete = placeAuto;
+          placeAuto.addEventListener('gmp-placeselect', function (e) {
+            var place = e.place;
+            place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] }).then(function () {
+              handlePlaceResult(place.location.lat(), place.location.lng(), place.addressComponents || [], place.formattedAddress || '');
+            });
+          });
+          console.log('PlaceAutocompleteElement loaded via importLibrary');
+        } catch (ex) {
+          console.error('PlaceAutocompleteElement error:', ex);
+          container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
+          document.getElementById('pickupAddress')?.addEventListener('input', function () { pickupAddress = this.value; addressValid = this.value.length > 10; });
+        }
+      }).catch(function (err) {
+        console.error('importLibrary failed:', err);
         container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
-        var fb2 = document.getElementById('pickupAddress');
-        if (fb2) fb2.addEventListener('input', function () { pickupAddress = fb2.value; addressValid = fb2.value.length > 10; });
-      }
+        document.getElementById('pickupAddress')?.addEventListener('input', function () { pickupAddress = this.value; addressValid = this.value.length > 10; });
+      });
     }
     function handlePlaceResult(lat, lng, comps, formatted) {
       const inB = lat >= BOUNDS.sw.lat && lat <= BOUNDS.ne.lat && lng >= BOUNDS.sw.lng && lng <= BOUNDS.ne.lng;
