@@ -3722,37 +3722,73 @@
     function initAutocomplete() {
       var container = document.getElementById('pickupAddressContainer');
       if (!container) return;
+      container.innerHTML = '<div style="position:relative;"><input type="text" id="pickupAddress" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;"><div id="acDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:9999;margin-top:4px;background:var(--card-bg);border:1px solid rgba(255,255,255,.1);border-radius:10px;max-height:240px;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.5);"></div></div>';
+      var inp = document.getElementById('pickupAddress');
+      var dd = document.getElementById('acDropdown');
+      if (!inp) return;
       if (typeof google === 'undefined' || !google.maps) {
-        container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
-        document.getElementById('pickupAddress')?.addEventListener('input', function () { pickupAddress = this.value; addressValid = this.value.length > 10; });
+        console.warn('Google Maps not loaded');
+        inp.addEventListener('input', function () { pickupAddress = inp.value; addressValid = inp.value.length > 10; });
         return;
       }
-      // Use importLibrary to load Places properly
-      google.maps.importLibrary('places').then(function (placesLib) {
+      var acService = null; var placesService = null; var debounceTimer = null;
+      google.maps.importLibrary('places').then(function (lib) {
+        acService = new lib.AutocompleteService();
+        placesService = new lib.PlacesService(document.createElement('div'));
+        console.log('AutocompleteService ready');
+      }).catch(function () {
         try {
-          container.innerHTML = '';
-          var placeAuto = new placesLib.PlaceAutocompleteElement({
-            componentRestrictions: { country: 'au' },
-          });
-          container.appendChild(placeAuto);
-          autocomplete = placeAuto;
-          placeAuto.addEventListener('gmp-placeselect', function (e) {
-            var place = e.place;
-            place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] }).then(function () {
-              handlePlaceResult(place.location.lat(), place.location.lng(), place.addressComponents || [], place.formattedAddress || '');
-            });
-          });
-          console.log('PlaceAutocompleteElement loaded via importLibrary');
-        } catch (ex) {
-          console.error('PlaceAutocompleteElement error:', ex);
-          container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
-          document.getElementById('pickupAddress')?.addEventListener('input', function () { pickupAddress = this.value; addressValid = this.value.length > 10; });
-        }
-      }).catch(function (err) {
-        console.error('importLibrary failed:', err);
-        container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
-        document.getElementById('pickupAddress')?.addEventListener('input', function () { pickupAddress = this.value; addressValid = this.value.length > 10; });
+          acService = new google.maps.places.AutocompleteService();
+          placesService = new google.maps.places.PlacesService(document.createElement('div'));
+          console.log('AutocompleteService ready (legacy)');
+        } catch (e) { console.error('No autocomplete service available'); }
       });
+      inp.addEventListener('input', function () {
+        var val = inp.value.trim();
+        if (val.length < 3) { dd.style.display = 'none'; return; }
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+          if (!acService) { return; }
+          acService.getPlacePredictions({
+            input: val,
+            componentRestrictions: { country: 'au' },
+            types: ['address'],
+            locationBias: { center: { lat: -26.7, lng: 153.1 }, radius: 80000 }
+          }, function (predictions, status) {
+            if (status !== 'OK' || !predictions) { dd.style.display = 'none'; return; }
+            dd.innerHTML = '';
+            predictions.forEach(function (p) {
+              var item = document.createElement('div');
+              item.style.cssText = 'padding:12px 16px;cursor:pointer;color:#e2e8f0;font-size:14px;border-bottom:1px solid rgba(255,255,255,.06);transition:background .15s;';
+              item.textContent = p.description;
+              item.addEventListener('mouseenter', function () { item.style.background = 'rgba(0,212,255,.08)'; });
+              item.addEventListener('mouseleave', function () { item.style.background = 'transparent'; });
+              item.addEventListener('click', function () {
+                inp.value = p.description;
+                dd.style.display = 'none';
+                // Get place details for lat/lng
+                if (placesService) {
+                  placesService.getDetails({ placeId: p.place_id, fields: ['address_components', 'geometry', 'formatted_address'] }, function (place, s2) {
+                    if (s2 === 'OK' && place && place.geometry) {
+                      var comps = (place.address_components || []).map(function (c) { return { types: c.types, longText: c.long_name, shortText: c.short_name }; });
+                      handlePlaceResult(place.geometry.location.lat(), place.geometry.location.lng(), comps, place.formatted_address || p.description);
+                    } else {
+                      pickupAddress = p.description; addressValid = true;
+                    }
+                  });
+                } else { pickupAddress = p.description; addressValid = true; }
+              });
+              dd.appendChild(item);
+            });
+            dd.style.display = 'block';
+          });
+        }, 300);
+      });
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function (e) {
+        if (!container.contains(e.target)) { dd.style.display = 'none'; }
+      });
+      autocomplete = true;
     }
     function handlePlaceResult(lat, lng, comps, formatted) {
       const inB = lat >= BOUNDS.sw.lat && lat <= BOUNDS.ne.lat && lng >= BOUNDS.sw.lng && lng <= BOUNDS.ne.lng;
