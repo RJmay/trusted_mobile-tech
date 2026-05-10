@@ -484,6 +484,8 @@
       height: 46px;
       border-radius: 50%;
       background: rgba(255, 255, 255, .08);
+      position: relative;
+      z-index: 2;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -3349,9 +3351,34 @@
       'iPhone 17': { battery: 129, camera: 189, charging: 139, water: 169, speaker: 109, back_glass: 189, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 359 },
       'iPhone 17 Plus': { battery: 129, camera: 199, charging: 139, water: 169, speaker: 109, back_glass: 199, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 369 },
       'iPhone 17 Pro': { battery: 139, camera: 229, charging: 149, water: 179, speaker: 119, back_glass: 229, power: 119, volume: 119, home: 0, touch_id: 0, mic: 119, earpiece: 119, vibration: 119, sim: 29, wifi: 179, logic: 419 },
-      'iPhone 17 Pro Max': { battery: 139, camera: 249, charging: 149, water: 179, speaker: 129, back_glass: 249, power: 129, volume: 129, home: 0, touch_id: 0, mic: 129, earpiece: 129, vibration: 129, sim: 29, wifi: 179, logic: 449 }
+      'iPhone 17 Pro Max': { battery: 139, camera: 249, charging: 149, water: 179, speaker: 129, back_glass: 249, power: 129, volume: 129, home: 0, touch_id: 0, mic: 129, earpiece: 129, vibration: 129, sim: 29, wifi: 179, logic: 449 },
+      'MacBook Air (M1, 2020)': { battery: 179, keyboard: 199, trackpad: 149, charging: 149, ssd: 129, ram: 0, water: 249, speaker: 119, fan: 0, hinge: 149, logic: 399, software: 79 },
+      'MacBook Air (M2, 2022)': { battery: 199, keyboard: 219, trackpad: 159, charging: 159, ssd: 149, ram: 0, water: 269, speaker: 129, fan: 0, hinge: 159, logic: 449, software: 79 },
+      'MacBook Air (M3, 2024)': { battery: 219, keyboard: 239, trackpad: 169, charging: 169, ssd: 169, ram: 0, water: 289, speaker: 139, fan: 0, hinge: 169, logic: 499, software: 79 },
+      'MacBook Pro 13" (M1, 2020)': { battery: 189, keyboard: 229, trackpad: 159, charging: 159, ssd: 139, ram: 0, water: 269, speaker: 129, fan: 99, hinge: 159, logic: 449, software: 79 },
+      'MacBook Pro 13" (M2, 2022)': { battery: 199, keyboard: 239, trackpad: 169, charging: 169, ssd: 149, ram: 0, water: 279, speaker: 139, fan: 109, hinge: 169, logic: 479, software: 79 },
+      'MacBook Pro 14" (M1 Pro/Max, 2021)': { battery: 229, keyboard: 269, trackpad: 179, charging: 179, ssd: 169, ram: 0, water: 299, speaker: 149, fan: 119, hinge: 179, logic: 549, software: 79 },
+      'MacBook Pro 14" (M2 Pro/Max, 2023)': { battery: 249, keyboard: 289, trackpad: 189, charging: 189, ssd: 179, ram: 0, water: 319, speaker: 159, fan: 129, hinge: 189, logic: 599, software: 79 },
+      'MacBook Pro 14" (M3 Pro/Max, 2023)': { battery: 269, keyboard: 309, trackpad: 199, charging: 199, ssd: 199, ram: 0, water: 339, speaker: 169, fan: 139, hinge: 199, logic: 649, software: 79 },
+      'MacBook Pro 16" (M1 Pro/Max, 2021)': { battery: 249, keyboard: 289, trackpad: 189, charging: 189, ssd: 179, ram: 0, water: 319, speaker: 159, fan: 129, hinge: 189, logic: 599, software: 79 },
+      'MacBook Pro 16" (M2 Pro/Max, 2023)': { battery: 269, keyboard: 309, trackpad: 199, charging: 199, ssd: 199, ram: 0, water: 339, speaker: 169, fan: 139, hinge: 199, logic: 649, software: 79 },
+      'MacBook Pro 16" (M3 Pro/Max, 2023)': { battery: 289, keyboard: 329, trackpad: 209, charging: 209, ssd: 219, ram: 0, water: 359, speaker: 179, fan: 149, hinge: 209, logic: 699, software: 79 },
+      'iPad (9th gen, 2021)': { battery: 99, charging: 89, home: 79, camera: 89, speaker: 69, water: 109, power: 69, volume: 69, logic: 219, software: 49 },
+      'iPad (10th gen, 2022)': { battery: 109, charging: 99, home: 0, camera: 99, speaker: 79, water: 119, power: 79, volume: 79, logic: 249, software: 49 },
+      'iPad mini (6th gen, 2021)': { battery: 109, charging: 99, home: 0, camera: 99, speaker: 79, water: 119, power: 79, volume: 79, logic: 249, software: 49 },
+      'iPad mini (7th gen, 2024)': { battery: 119, charging: 109, home: 0, camera: 109, speaker: 89, water: 129, power: 89, volume: 89, logic: 279, software: 49 },
+      'iPad Air (4th gen, 2020)': { battery: 119, charging: 109, home: 0, camera: 109, speaker: 89, water: 129, power: 89, volume: 89, logic: 279, software: 49 },
+      'iPad Air (5th gen, 2022)': { battery: 129, charging: 119, home: 0, camera: 119, speaker: 99, water: 139, power: 99, volume: 99, logic: 299, software: 49 },
+      'iPad Air 11" M2 (2024)': { battery: 139, charging: 129, home: 0, camera: 129, speaker: 109, water: 149, power: 109, volume: 109, logic: 329, software: 49 },
+      'iPad Air 13" M2 (2024)': { battery: 149, charging: 139, home: 0, camera: 139, speaker: 119, water: 159, power: 119, volume: 119, logic: 349, software: 49 },
+      'iPad Pro 11" (M1, 2021)': { battery: 149, charging: 139, home: 0, camera: 139, speaker: 119, water: 159, power: 119, volume: 119, logic: 349, software: 49 },
+      'iPad Pro 11" (M2, 2022)': { battery: 159, charging: 149, home: 0, camera: 149, speaker: 129, water: 169, power: 129, volume: 129, logic: 379, software: 49 },
+      'iPad Pro 11" (M4, 2024)': { battery: 179, charging: 169, home: 0, camera: 169, speaker: 149, water: 189, power: 149, volume: 149, logic: 429, software: 49 },
+      'iPad Pro 12.9" (M1, 2021)': { battery: 169, charging: 159, home: 0, camera: 159, speaker: 139, water: 179, power: 139, volume: 139, logic: 399, software: 49 },
+      'iPad Pro 12.9" (M2, 2022)': { battery: 179, charging: 169, home: 0, camera: 169, speaker: 149, water: 189, power: 149, volume: 149, logic: 429, software: 49 },
+      'iPad Pro 13" (M4, 2024)': { battery: 199, charging: 189, home: 0, camera: 189, speaker: 169, water: 209, power: 169, volume: 169, logic: 479, software: 49 }
     };
-    var REPAIR_KEY_MAP = { 'Battery Replacement': 'battery', 'Camera Repair': 'camera', 'Charging Port': 'charging', 'Water Damage': 'water', 'Speaker Repair': 'speaker', 'Back Glass': 'back_glass', 'Power Button': 'power', 'Volume Button': 'volume', 'Home Button': 'home', 'Touch ID Repair': 'touch_id', 'Microphone Repair': 'mic', 'Earpiece Speaker': 'earpiece', 'Vibration Motor': 'vibration', 'SIM Card Tray': 'sim', 'WiFi/Bluetooth': 'wifi', 'Logic Board Repair': 'logic' };
+    var REPAIR_KEY_MAP = { 'Battery Replacement': 'battery', 'Camera Repair': 'camera', 'Charging Port': 'charging', 'Charging Port (USB-C/MagSafe)': 'charging', 'Water Damage': 'water', 'Speaker Repair': 'speaker', 'Back Glass': 'back_glass', 'Power Button': 'power', 'Volume Button': 'volume', 'Home Button': 'home', 'Touch ID Repair': 'touch_id', 'Microphone Repair': 'mic', 'Earpiece Speaker': 'earpiece', 'Vibration Motor': 'vibration', 'SIM Card Tray': 'sim', 'WiFi/Bluetooth': 'wifi', 'Logic Board Repair': 'logic', 'Keyboard Replacement': 'keyboard', 'Trackpad Repair': 'trackpad', 'SSD Upgrade/Replacement': 'ssd', 'RAM Upgrade': 'ram', 'Fan Replacement': 'fan', 'Hinge Repair': 'hinge', 'Software/macOS Issues': 'software', 'Software Issues': 'software' };
     function getRepairPrice(repairName, model) {
       if (repairName === 'Screen Replacement' || repairName === 'Software Issues' || repairName === 'Diagnostic Service') return null;
       var key = REPAIR_KEY_MAP[repairName];
@@ -3369,7 +3396,16 @@
       'iPhone 14': [169, 25, 15], 'iPhone 14 Plus': [179, 30, 20], 'iPhone 14 Pro': [209, 35, 25], 'iPhone 14 Pro Max': [239, 40, 30],
       'iPhone 15': [189, 30, 20], 'iPhone 15 Plus': [199, 35, 25], 'iPhone 15 Pro': [249, 40, 30], 'iPhone 15 Pro Max': [279, 45, 35],
       'iPhone 16': [219, 35, 25], 'iPhone 16 Plus': [229, 40, 30], 'iPhone 16 Pro': [279, 45, 35], 'iPhone 16 Pro Max': [319, 50, 40],
-      'iPhone 17': [249, 40, 30], 'iPhone 17 Plus': [259, 45, 35], 'iPhone 17 Pro': [309, 50, 40], 'iPhone 17 Pro Max': [349, 55, 45]
+      'iPhone 17': [249, 40, 30], 'iPhone 17 Plus': [259, 45, 35], 'iPhone 17 Pro': [309, 50, 40], 'iPhone 17 Pro Max': [349, 55, 45],
+      'MacBook Air (M1, 2020)': [299, 50, 80], 'MacBook Air (M2, 2022)': [349, 60, 90], 'MacBook Air (M3, 2024)': [399, 70, 100],
+      'MacBook Pro 13" (M1, 2020)': [329, 50, 80], 'MacBook Pro 13" (M2, 2022)': [349, 60, 90],
+      'MacBook Pro 14" (M1 Pro/Max, 2021)': [449, 80, 120], 'MacBook Pro 14" (M2 Pro/Max, 2023)': [499, 90, 130], 'MacBook Pro 14" (M3 Pro/Max, 2023)': [549, 100, 150],
+      'MacBook Pro 16" (M1 Pro/Max, 2021)': [549, 100, 150], 'MacBook Pro 16" (M2 Pro/Max, 2023)': [599, 110, 160], 'MacBook Pro 16" (M3 Pro/Max, 2023)': [649, 120, 180],
+      'iPad (9th gen, 2021)': [129, 20, 40], 'iPad (10th gen, 2022)': [159, 25, 50],
+      'iPad mini (6th gen, 2021)': [149, 25, 50], 'iPad mini (7th gen, 2024)': [179, 30, 60],
+      'iPad Air (4th gen, 2020)': [179, 30, 60], 'iPad Air (5th gen, 2022)': [199, 35, 70], 'iPad Air 11" M2 (2024)': [229, 40, 80], 'iPad Air 13" M2 (2024)': [259, 45, 90],
+      'iPad Pro 11" (M1, 2021)': [279, 50, 100], 'iPad Pro 11" (M2, 2022)': [299, 55, 110], 'iPad Pro 11" (M4, 2024)': [349, 65, 130],
+      'iPad Pro 12.9" (M1, 2021)': [349, 65, 130], 'iPad Pro 12.9" (M2, 2022)': [379, 70, 140], 'iPad Pro 13" (M4, 2024)': [449, 80, 160]
     };
     const QD = { 'C': 'Good quality – Budget-friendly', 'A+': 'Premium – Enhanced clarity', 'S+': 'Superior – Original-like performance' };
     const IR = [
