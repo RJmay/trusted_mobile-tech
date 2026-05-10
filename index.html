@@ -2265,14 +2265,78 @@
       transition: all .3s;
     }
 
-    .repair-card:hover .repair-info {
-      display: block !important;
-    }
-
     .repair-time {
       font-size: 12px;
       color: #94a3b8;
       margin-top: 4px;
+    }
+
+    /* Google Places Autocomplete fixes */
+    .pac-container {
+      z-index: 99999 !important;
+      background: var(--card-bg) !important;
+      border: 1px solid rgba(255, 255, 255, .1) !important;
+      border-radius: 8px !important;
+      margin-top: 4px !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .5) !important;
+    }
+
+    .pac-item {
+      padding: 10px 14px !important;
+      color: #e2e8f0 !important;
+      border-top: 1px solid rgba(255, 255, 255, .06) !important;
+      cursor: pointer !important;
+    }
+
+    .pac-item:hover,
+    .pac-item-selected {
+      background: rgba(0, 212, 255, .08) !important;
+    }
+
+    .pac-item-query {
+      color: #fff !important;
+    }
+
+    .pac-icon {
+      display: none !important;
+    }
+
+    .pac-matched {
+      color: var(--brand) !important;
+      font-weight: 700 !important;
+    }
+
+    gmp-placeautocomplete {
+      display: block;
+      width: 100%;
+    }
+
+    gmp-placeautocomplete input {
+      width: 100% !important;
+      padding: 14px 16px !important;
+      border: 2px solid rgba(255, 255, 255, .1) !important;
+      border-radius: 10px !important;
+      font-size: 15px !important;
+      font-family: var(--font) !important;
+      background: var(--surface) !important;
+      color: #e2e8f0 !important;
+      outline: none !important;
+    }
+
+    gmp-placeautocomplete input:focus {
+      border-color: var(--brand) !important;
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, .1) !important;
+    }
+
+    /* Date input dark theme */
+    input[type="date"] {
+      color-scheme: dark;
+      cursor: text;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.7);
+      cursor: pointer;
     }
 
     .hidden {
@@ -2397,6 +2461,7 @@
       <button class="nav-link active" data-section="home" onclick="showSection('home')">Home</button>
       <button class="nav-link" data-section="quote" onclick="showSection('quote')">Get a Quote</button>
       <button class="nav-link" data-section="reviews" onclick="showSection('reviews')">Reviews</button>
+      <button class="nav-link" data-section="deals" onclick="showSection('deals')">Deals</button>
       <button class="nav-link" data-section="contact" onclick="showSection('contact')">Contact Us</button>
       <button class="nav-cta" onclick="showSection('quote')">Get Quote</button>
     </nav>
@@ -2600,20 +2665,26 @@
           <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input"
               id="email" required placeholder="john@example.com"></div>
           <div class="two-col">
-            <div class="form-group"><label class="form-label">Preferred Date *</label><input type="date"
-                class="form-input" id="date" required></div>
+            <div class="form-group"><label class="form-label">Preferred Date *</label>
+              <div style="display:flex;gap:8px;align-items:center;"><input type="date" class="form-input" id="date"
+                  required style="flex:1;"><button type="button" onclick="document.getElementById('date').value=''"
+                  style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap;">Clear</button>
+              </div>
+            </div>
             <div class="form-group"><label class="form-label">Preferred Time *</label><select class="form-select"
                 id="time" required>
                 <option value="">Select a time</option>
-                <option>9:00 AM</option>
-                <option>10:00 AM</option>
-                <option>11:00 AM</option>
-                <option>12:00 PM</option>
-                <option>1:00 PM</option>
-                <option>2:00 PM</option>
-                <option>3:00 PM</option>
-                <option>4:00 PM</option>
-                <option>5:00 PM</option>
+                <option value="9:00 AM">9:00 AM</option>
+                <option value="10:00 AM">10:00 AM</option>
+                <option value="11:00 AM">11:00 AM</option>
+                <option value="12:00 PM">12:00 PM</option>
+                <option value="1:00 PM">1:00 PM</option>
+                <option value="2:00 PM">2:00 PM</option>
+                <option value="3:00 PM">3:00 PM</option>
+                <option value="4:00 PM">4:00 PM</option>
+                <option value="5:00 PM">5:00 PM</option>
+                <option value="6:00 PM">6:00 PM</option>
+                <option value="7:00 PM">7:00 PM</option>
               </select></div>
           </div>
           <div class="form-group"><label class="form-label">Notes (Optional)</label><textarea class="form-textarea"
@@ -2784,6 +2855,59 @@
   </section>
 
   <!-- ═══════ CONTACT ═══════ -->
+  <!-- Deals Section -->
+  <section class="section" id="sec-deals" style="padding:80px 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Deals &amp; Refurbished Devices</h2>
+        <p>Quality-checked, repaired, and ready to go. All devices come with a 90-day warranty.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;margin-top:36px;">
+        <div class="card" style="padding:28px;text-align:center;cursor:default;">
+          <div style="font-size:14px;color:var(--brand);font-weight:700;margin-bottom:6px;">FEATURED</div>
+          <div style="font-size:48px;margin-bottom:12px;">📱</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;">iPhone 13 — 128GB</div>
+          <div style="font-size:13px;color:#94a3b8;margin-bottom:12px;">Midnight · Battery 96% · Grade A</div>
+          <div style="font-size:13px;color:#94a3b8;text-decoration:line-through;">RRP $799</div>
+          <div style="font-size:26px;font-weight:800;color:var(--green);">$549</div>
+        </div>
+        <div class="card" style="padding:28px;text-align:center;cursor:default;">
+          <div style="font-size:48px;margin-bottom:12px;">📱</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;">iPhone 12 Pro — 256GB</div>
+          <div style="font-size:13px;color:#94a3b8;margin-bottom:12px;">Pacific Blue · Battery 92% · Grade A</div>
+          <div style="font-size:13px;color:#94a3b8;text-decoration:line-through;">RRP $699</div>
+          <div style="font-size:26px;font-weight:800;color:var(--green);">$449</div>
+        </div>
+        <div class="card" style="padding:28px;text-align:center;cursor:default;">
+          <div style="font-size:48px;margin-bottom:12px;">📱</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;">iPhone 14 — 128GB</div>
+          <div style="font-size:13px;color:#94a3b8;margin-bottom:12px;">Purple · Battery 98% · Grade A+</div>
+          <div style="font-size:13px;color:#94a3b8;text-decoration:line-through;">RRP $999</div>
+          <div style="font-size:26px;font-weight:800;color:var(--green);">$699</div>
+        </div>
+        <div class="card" style="padding:28px;text-align:center;cursor:default;">
+          <div style="font-size:48px;margin-bottom:12px;">💻</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px;">MacBook Air M1 — 256GB</div>
+          <div style="font-size:13px;color:#94a3b8;margin-bottom:12px;">Gold · Cycle 124 · Grade A</div>
+          <div style="font-size:13px;color:#94a3b8;text-decoration:line-through;">RRP $1,299</div>
+          <div style="font-size:26px;font-weight:800;color:var(--green);">$849</div>
+        </div>
+        <div class="card"
+          style="padding:28px;text-align:center;cursor:default;border-style:dashed;border-color:rgba(0,212,255,.2);">
+          <div style="font-size:48px;margin-bottom:12px;">🔎</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Looking for Something Specific?
+          </div>
+          <div style="font-size:13px;color:#94a3b8;margin-bottom:16px;line-height:1.6;">Tell us what device, colour,
+            storage, and budget you have in mind.</div>
+          <button class="btn" style="width:auto;padding:12px 28px;font-size:14px;" onclick="showSection('contact')">Send
+            Us a Request</button>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:28px;font-size:14px;color:#94a3b8;">Stock changes regularly. All
+        refurbished devices include a 90-day warranty and full diagnostic.</div>
+    </div>
+  </section>
+
   <section class="section" id="sec-contact">
     <div class="wrap contact-section">
       <div class="section-head">
@@ -2876,6 +3000,7 @@
           <p><a onclick="showSection('home')" style="display:block;cursor:pointer;">Home</a><a
               onclick="showSection('quote')" style="display:block;cursor:pointer;">Get a Quote</a><a
               onclick="showSection('reviews')" style="display:block;cursor:pointer;">Reviews</a><a
+              onclick="showSection('deals')" style="display:block;cursor:pointer;">Deals</a><a
               onclick="showSection('contact')" style="display:block;cursor:pointer;">Contact Us</a></p>
         </div>
         <div>
@@ -2888,12 +3013,12 @@
   </footer>
 
   <!-- QUALITY MODAL -->
-  <div class="modal-overlay" id="qualityModal">
-    <div class="modal"><button class="modal-close" onclick="closeModal()">×</button>
-      <h2 class="modal-title">Choose Screen Quality</h2>
-      <p class="modal-subtitle">Select quality level for your screen</p>
-      <div class="quality-options" id="qualityOptions"></div><button class="modal-btn" id="selectQualityBtn"
-        onclick="confirmQuality()" disabled>Add to Quote</button>
+  <div class="modal-overlay" id="qualityModal" onclick="if(event.target===this)closeModal('qualityModal')">
+    <div class="modal" style="max-width:600px;"><button class="modal-close"
+        onclick="closeModal('qualityModal')">&times;</button>
+      <h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;">Screen Quality</h2>
+      <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose the right screen for your needs and budget.</p>
+      <div id="qualityOptions"></div>
     </div>
   </div>
 
@@ -3373,6 +3498,12 @@
       }
       goToPage(2);
     }
+
+    function removeRepair(index) {
+      selRepairs.splice(index, 1);
+      if (selRepairs.length === 0) { goToPage(2); return; }
+      showQuoteDetails();
+    }
     function selectModelByName(encoded) { selModel = decodeURIComponent(encoded); goToPage(2); }
     function showLevel(n) { [0, 1, 2].forEach(i => { const e = document.getElementById('level' + i); if (e) e.classList.toggle('hidden', i !== n); }); const sr = document.getElementById('searchResultsBox'); if (sr) sr.classList.add('hidden'); document.getElementById('modelSearch').value = ''; }
     function renderBC() {
@@ -3405,10 +3536,12 @@
         if (r.n === 'Screen Replacement') return;
         var price = r.p;
         if (price === 0 && selModel) { var mp = getRepairPrice(r.n, selModel); if (mp) price = mp; }
-        if (price === 0 && r.n !== 'Diagnostic Service') return;
-        var priceText = price === 0 ? 'Free' : '$' + price;
-        var desc = r.desc || '';
-        h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + price + '" data-rt="' + (r.t || '') + '" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)"><div class="checkbox"></div><div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">' + priceText + '</div><div class="repair-time">' + r.t + '</div>' + (desc ? '<div class="repair-info">' + desc + '</div>' : '') + '</div>';
+        if (r.n === 'Diagnostic Service') { price = 49; }
+        if (price === 0) return;
+        var priceText = '$' + price;
+        var onclick = 'toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)';
+        if (r.n === 'Battery Replacement') { onclick = 'openBatteryModal()'; priceText = 'From $' + price; }
+        h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + price + '" data-rt="' + (r.t || '') + '" onclick="' + onclick + '"><div class="checkbox"></div><div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">' + priceText + '</div><div class="repair-time">' + r.t + '</div></div>';
       });
       // Add unique model-specific repair if available
       if (selCat && selSeries && selModel) {
@@ -3431,15 +3564,46 @@
       document.getElementById('repairsGrid').innerHTML = h; updateCards();
     }
     function openQualityModal() {
-      const p = SP[selModel], q = ['C', 'A+', 'S+'];
-      document.getElementById('qualityOptions').innerHTML = q.map((x, i) => '<div class="quality-option" data-q="' + x + '" data-p="' + p[i] + '" onclick="pickQuality(this.dataset.q,+this.dataset.p,event)"><div class="quality-info"><div class="quality-name">' + x + ' Quality</div><div class="quality-desc">' + QD[x] + '</div></div><div class="quality-price">$' + p[i] + '</div></div>').join('');
-      document.getElementById('qualityModal').classList.add('active'); selQuality = null; document.getElementById('selectQualityBtn').disabled = true;
+      var sp = SP[selModel]; if (!sp) return;
+      var tiers = [
+        { name: 'C Quality (Aftermarket LCD)', price: sp[0], cls: 'c', desc: 'Budget-friendly aftermarket display. Slightly lower brightness and colour accuracy than original. Functional and reliable with a 3-month warranty.', badge: 'Best Value' },
+        { name: 'A+ Quality (Premium Aftermarket)', price: sp[0] + sp[1], cls: 'aplus', desc: 'High-grade aftermarket OLED with excellent colour reproduction. Virtually indistinguishable from original in daily use. 6-month warranty.', badge: 'Most Popular' },
+        { name: 'Genuine Apple Display', price: sp[0] + sp[1] + sp[2], cls: 'splus', desc: 'Authentic Apple display with original colour accuracy, True Tone, and full haptic touch. Identical to factory-installed screen performance. 12-month warranty.', badge: 'Genuine' }
+      ];
+      var h = '';
+      tiers.forEach(function (t) {
+        h += '<div class="quality-option" onclick="selectQuality(this,\'' + t.cls + '\',' + t.price + ',\'' + t.name.replace(/'/g, '') + '\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><strong style="color:#fff;font-size:16px;">' + t.name + '</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">' + t.badge + '</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">' + t.desc + '</div></div><div style="text-align:right;flex-shrink:0;margin-left:20px;"><div style="font-size:22px;font-weight:800;color:#fff;">$' + t.price + '</div></div></div>';
+      });
+      document.getElementById('qualityOptions').innerHTML = h;
+      document.getElementById('qualityModal').classList.add('show');
     }
-    function closeModal() { document.getElementById('qualityModal').classList.remove('active'); }
+    function closeModal(id) { id = id || 'qualityModal'; document.getElementById(id).classList.remove('show'); document.getElementById(id).classList.remove('active'); }
+    function selectQuality(el, cls, price, name) {
+      selQuality = cls;
+      selRepairs = selRepairs.filter(function (r) { return !r.name.includes('Screen'); });
+      selRepairs.push({ name: 'Screen Replacement (' + cls.toUpperCase() + ')', price: price });
+      closeModal('qualityModal');
+      updateCards(); updateSummary();
+    }
     function pickQuality(q, p, e) { selQuality = { q, p }; document.querySelectorAll('.quality-option').forEach(o => o.classList.remove('selected')); e.currentTarget.classList.add('selected'); document.getElementById('selectQualityBtn').disabled = false; }
-    function confirmQuality() { if (!selQuality) return; selRepairs = selRepairs.filter(r => !r.name.includes('Screen')); selRepairs.push({ name: 'Screen Replacement (' + selQuality.q + ')', price: selQuality.p, time: '1-2h' }); closeModal(); updateCards(); updateSummary(); }
+    function confirmQuality_old() { if (!selQuality) return; selRepairs = selRepairs.filter(r => !r.name.includes('Screen')); selRepairs.push({ name: 'Screen Replacement (' + selQuality.q + ')', price: selQuality.p, time: '1-2h' }); closeModal(); updateCards(); updateSummary(); }
     function toggleRepair(n, p, t) { const i = selRepairs.findIndex(r => r.name === n); if (i > -1) selRepairs.splice(i, 1); else selRepairs.push({ name: n, price: p, time: t }); updateCards(); updateSummary(); }
-    function updateCards() { document.querySelectorAll('.repair-card').forEach(c => { const cn = c.querySelector('.repair-name')?.textContent; if (!cn) return; c.classList.toggle('selected', selRepairs.some(r => cn === 'Screen Replacement' ? r.name.includes('Screen') : r.name === cn)); }); }
+
+    function updateDiagnosticPrice() {
+      var cards = document.querySelectorAll('.repair-card');
+      cards.forEach(function (c) {
+        var name = c.querySelector('.repair-name');
+        if (name && name.textContent === 'Diagnostic Service') {
+          var hasOtherRepairs = selRepairs.some(function (r) { return !r.name.includes('Diagnostic'); });
+          var priceEl = c.querySelector('.repair-price');
+          if (priceEl) {
+            if (hasOtherRepairs) { priceEl.textContent = 'Free with repair'; c.dataset.rp = '0'; }
+            else { priceEl.textContent = '$49'; c.dataset.rp = '49'; }
+          }
+        }
+      });
+    }
+    function updateCards() { updateDiagnosticPrice(); document.querySelectorAll('.repair-card').forEach(c => { const cn = c.querySelector('.repair-name')?.textContent; if (!cn) return; c.classList.toggle('selected', selRepairs.some(r => cn === 'Screen Replacement' ? r.name.includes('Screen') : r.name === cn)); }); }
     function updateSummary() {
       const b = document.getElementById('repairsSummary'), l = document.getElementById('repairsList'), btn = document.getElementById('continueBtn');
       if (!selRepairs.length) { b.classList.add('hidden'); btn.disabled = true; return; } b.classList.remove('hidden'); btn.disabled = false;
@@ -3458,31 +3622,21 @@
       else { document.getElementById('storeDetails').classList.remove('visible'); document.getElementById('pickupAddressBlock').style.display = 'block'; addressValid = false; if (typeof google !== 'undefined' && !autocomplete) initAutocomplete(); setTimeout(() => { if (typeof google !== 'undefined' && !autocomplete) initAutocomplete(); }, 500); }
     }
     function initAutocomplete() {
-      const container = document.getElementById('pickupAddressContainer');
-      if (!container || typeof google === 'undefined') return;
-      container.innerHTML = '<input type="text" id="pickupAddress" class="address-input" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;font-family:var(--font);">';
-      const inp = document.getElementById('pickupAddress');
+      var container = document.getElementById('pickupAddressContainer');
+      if (!container) return;
+      if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
+        console.warn('Google Maps not loaded yet');
+        container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Enter your full address" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
+        var fb = document.getElementById('pickupAddress');
+        if (fb) fb.addEventListener('input', function () { pickupAddress = fb.value; addressValid = fb.value.length > 10; });
+        return;
+      }
+      container.innerHTML = '<input type="text" id="pickupAddress" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;">';
+      var inp = document.getElementById('pickupAddress');
+      var success = false;
+      // Try legacy Autocomplete first (better styled, works with most keys)
       try {
-        // Try new PlaceAutocompleteElement first
-        if (google.maps.places.PlaceAutocompleteElement) {
-          container.innerHTML = '';
-          const placeAuto = new google.maps.places.PlaceAutocompleteElement({
-            componentRestrictions: { country: 'au' },
-          });
-          container.appendChild(placeAuto);
-          autocomplete = placeAuto;
-          placeAuto.addEventListener('gmp-placeselect', async (e) => {
-            const place = e.place;
-            await place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] });
-            handlePlaceResult(place.location?.lat(), place.location?.lng(), place.addressComponents || [], place.formattedAddress || '');
-          });
-          console.log('Using PlaceAutocompleteElement (new API)');
-          return;
-        }
-      } catch (ex) { console.warn('PlaceAutocompleteElement unavailable:', ex); }
-      try {
-        // Fallback to legacy Autocomplete
-        const bounds = new google.maps.LatLngBounds(
+        var bounds = new google.maps.LatLngBounds(
           new google.maps.LatLng(BOUNDS.sw.lat, BOUNDS.sw.lng),
           new google.maps.LatLng(BOUNDS.ne.lat, BOUNDS.ne.lng)
         );
@@ -3493,15 +3647,37 @@
           fields: ['address_components', 'geometry', 'formatted_address']
         });
         autocomplete.addListener('place_changed', function () {
-          const pl = autocomplete.getPlace();
-          if (!pl.geometry) return;
-          const comps = (pl.address_components || []).map(c => ({ types: c.types, longText: c.long_name, shortText: c.short_name }));
+          var pl = autocomplete.getPlace();
+          if (!pl || !pl.geometry) return;
+          var comps = (pl.address_components || []).map(function (c) { return { types: c.types, longText: c.long_name, shortText: c.short_name }; });
           handlePlaceResult(pl.geometry.location.lat(), pl.geometry.location.lng(), comps, pl.formatted_address || '');
         });
-        console.log('Using legacy Autocomplete');
-      } catch (ex2) {
-        console.warn('Legacy Autocomplete also failed:', ex2);
-        inp.addEventListener('input', () => { pickupAddress = inp.value; addressValid = inp.value.length > 10; });
+        console.log('Autocomplete: legacy widget active');
+        success = true;
+      } catch (e1) { console.warn('Legacy Autocomplete failed:', e1); }
+      // If legacy failed, try new PlaceAutocompleteElement
+      if (!success) {
+        try {
+          if (google.maps.places.PlaceAutocompleteElement) {
+            container.innerHTML = '';
+            var placeAuto = new google.maps.places.PlaceAutocompleteElement({ componentRestrictions: { country: 'au' } });
+            container.appendChild(placeAuto);
+            autocomplete = placeAuto;
+            placeAuto.addEventListener('gmp-placeselect', function (e) {
+              var place = e.place;
+              place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] }).then(function () {
+                handlePlaceResult(place.location.lat(), place.location.lng(), place.addressComponents || [], place.formattedAddress || '');
+              });
+            });
+            console.log('Autocomplete: PlaceAutocompleteElement active');
+            success = true;
+          }
+        } catch (e2) { console.warn('PlaceAutocompleteElement failed:', e2); }
+      }
+      // Final fallback - plain text
+      if (!success) {
+        console.warn('All autocomplete methods failed, using plain input');
+        inp.addEventListener('input', function () { pickupAddress = inp.value; addressValid = inp.value.length > 10; });
       }
     }
     function handlePlaceResult(lat, lng, comps, formatted) {
@@ -3516,7 +3692,7 @@
         var cf = calcCalloutFee(lat, lng);
         currentCalloutFee = cf.fee;
         var cfEl = document.getElementById('calloutFee');
-        if (cfEl) { cfEl.style.display = 'block'; cfEl.innerHTML = '<strong>Mobile Pickup:</strong> ' + cf.label + ' (approx. ' + cf.dist + 'km from our base in Buderim)' + (cf.fee > 0 ? ' — This fee covers travel time and fuel.' : ''); } wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid'); err.style.display = 'none'; okEl.style.display = 'block';
+        if (cfEl) { cfEl.style.display = 'block'; cfEl.innerHTML = '<strong>Mobile Pickup:</strong> ' + cf.label + ' (approx. ' + cf.dist + 'km from ' + cf.base + ')' + (cf.fee > 0 ? ' — This fee covers travel time and fuel.' : ''); } wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid'); err.style.display = 'none'; okEl.style.display = 'block';
       }
       else { pickupAddress = ''; addressValid = false; wrap.classList.add('pac-invalid'); wrap.classList.remove('pac-valid'); err.style.display = 'block'; okEl.style.display = 'none'; }
     }
@@ -3664,35 +3840,94 @@
       renderCategories(); goToPage(1);
     }
 
-    document.getElementById('qualityModal').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
+
 
 
 
     // Mobile Pickup Callout Fee Calculator (from Buderim)
     var BUDERIM_LAT = -26.6844;
     var BUDERIM_LNG = 153.0500;
+    var AROONA_LAT = -26.7417;
+    var AROONA_LNG = 153.0833;
     function calcCalloutFee(lat, lng) {
       var R = 6371;
-      var dLat = (lat - BUDERIM_LAT) * Math.PI / 180;
-      var dLng = (lng - BUDERIM_LNG) * Math.PI / 180;
-      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(BUDERIM_LAT * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      var dist = R * c;
+      function haversine(lat1, lng1, lat2, lng2) {
+        var dLat = (lat2 - lat1) * Math.PI / 180; var dLng = (lng2 - lng1) * Math.PI / 180;
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      }
+      var distBud = haversine(BUDERIM_LAT, BUDERIM_LNG, lat, lng);
+      var distAro = haversine(AROONA_LAT, AROONA_LNG, lat, lng);
+      var dist = Math.min(distBud, distAro);
+      var base = distBud < distAro ? 'Buderim' : 'Aroona';
       var fee = 0; var label = '';
-      if (dist <= 10) { fee = 0; label = 'No callout fee (within 10km)'; }
-      else if (dist <= 25) { fee = 30; label = '$30 callout fee (10-25km from Buderim)'; }
-      else if (dist <= 50) { fee = 50; label = '$50 callout fee (25-50km from Buderim)'; }
-      else if (dist <= 100) { fee = 80; label = '$80 callout fee (Brisbane metro, 50-100km)'; }
+      if (dist <= 10) { fee = 0; label = 'No callout fee (within 10km of ' + base + ')'; }
+      else if (dist <= 25) { fee = 30; label = '$30 callout fee (10-25km from ' + base + ')'; }
+      else if (dist <= 50) { fee = 50; label = '$50 callout fee (25-50km from ' + base + ')'; }
+      else if (dist <= 100) { fee = 80; label = '$80 callout fee (Brisbane metro, 50-100km from ' + base + ')'; }
       else { fee = 0; label = 'Outside service area'; }
-      return { fee: fee, label: label, dist: Math.round(dist) };
+      return { fee: fee, label: label, dist: Math.round(dist), base: base };
     }
     var currentCalloutFee = 0;
+
+
+    function openBatteryModal() {
+      var prices = REPAIR_PRICES[selModel];
+      if (!prices) return;
+      var basePrice = prices.battery;
+      var oemPrice = Math.round(basePrice * 1.6);
+      var h = '';
+      h += '<div class="quality-option" onclick="selectBattery(\'aftermarket\',' + basePrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><strong style="color:#fff;font-size:16px;">Aftermarket Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality third-party cell rated for 500+ charge cycles and 80% health retention after 18 months. Reliable daily performance with a 6-month warranty. Ideal for older devices or budget repairs.</div></div><div style="text-align:right;flex-shrink:0;margin-left:20px;"><div style="font-size:22px;font-weight:800;color:#fff;">$' + basePrice + '</div></div></div>';
+      h += '<div class="quality-option" onclick="selectBattery(\'oem\',' + oemPrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><strong style="color:#fff;font-size:16px;">OEM-Grade Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Premium</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Genuine-spec cell rated for 800+ charge cycles and 80% health retention after 2+ years. Matches original Apple battery performance, capacity, and longevity. 12-month warranty included.</div></div><div style="text-align:right;flex-shrink:0;margin-left:20px;"><div style="font-size:22px;font-weight:800;color:#fff;">$' + oemPrice + '</div></div></div>';
+      document.getElementById('batteryOptions').innerHTML = h;
+      document.getElementById('batteryModal').classList.add('show');
+    }
+    function selectBattery(type, price) {
+      var name = 'Battery Replacement (' + (type === 'oem' ? 'OEM' : 'Aftermarket') + ')';
+      selRepairs = selRepairs.filter(function (r) { return !r.name.includes('Battery'); });
+      selRepairs.push({ name: name, price: price });
+      closeModal('batteryModal');
+      updateCards(); updateTotal();
+    }
+
+
+    // Check booked time slots when date changes
+    document.getElementById('date')?.addEventListener('change', async function () {
+      var date = this.value;
+      if (!date || !db) return;
+      try {
+        var { data } = await db.from('quotes').select('appointment_time').eq('appointment_date', date).neq('status', 'cancelled');
+        var bookedTimes = (data || []).map(function (q) { return q.appointment_time; });
+        var select = document.getElementById('time');
+        Array.from(select.options).forEach(function (opt) {
+          if (!opt.value) return;
+          if (bookedTimes.includes(opt.value)) {
+            opt.style.color = '#ef4444';
+            opt.textContent = opt.value + ' (Booked)';
+            opt.disabled = true;
+          } else {
+            opt.style.color = '';
+            opt.textContent = opt.value;
+            opt.disabled = false;
+          }
+        });
+      } catch (e) { console.log('Could not check bookings:', e); }
+    });
 
     setMinDate(); renderCategories();
   </script>
 
   <!-- Environmental Effects Overlay -->
   <div id="envOverlay" style="position:fixed;inset:0;pointer-events:none;z-index:50;opacity:0;transition:opacity .6s;">
+  </div>
+  <div id="batteryModal" class="modal-overlay" onclick="if(event.target===this)closeModal('batteryModal')">
+    <div class="modal" style="max-width:600px;">
+      <button class="modal-close" onclick="closeModal('batteryModal')">&times;</button>
+      <h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;">Battery Options</h2>
+      <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose between aftermarket or OEM-grade battery
+        replacement.</p>
+      <div id="batteryOptions"></div>
+    </div>
   </div>
 </body>
 
