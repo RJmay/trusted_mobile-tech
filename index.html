@@ -17,7 +17,7 @@
     };
   </script>
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6RGWsn9GWKiEDsoUuq6udPokuuQ6ioT0&libraries=places&v=weekly&callback=initGoogleMaps"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgXAmCYsFlvDyCL-s6KoYEHcDiUbIvE7g&libraries=places&v=weekly&callback=initGoogleMaps"
     async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
@@ -2388,6 +2388,532 @@
       color: var(--brand) !important;
     }
 
+    /* ═══ LIGHT MODE ═══ */
+    body.light {
+      background: #f5f7fa;
+      color: #1e293b;
+    }
+
+    body.light .header {
+      background: rgba(255, 255, 255, .92);
+      border-bottom-color: #e2e8f0;
+    }
+
+    body.light .header.scrolled {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
+    }
+
+    body.light .nav-link {
+      color: #64748b;
+    }
+
+    body.light .nav-link:hover {
+      color: #0096c7;
+      background: rgba(0, 150, 199, .06);
+    }
+
+    body.light .nav-link.active {
+      color: #0096c7;
+      background: rgba(0, 150, 199, .1);
+    }
+
+    body.light .logo-text {
+      color: #0f172a !important;
+    }
+
+    body.light .logo-sub {
+      color: #64748b !important;
+    }
+
+    body.light .qcontainer,
+    body.light .progress-bar {
+      background: #fff;
+      border-color: #e2e8f0;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+    }
+
+    body.light .card,
+    body.light .cat-card,
+    body.light .series-card,
+    body.light .model-card {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .card:hover,
+    body.light .cat-card:hover,
+    body.light .series-card:hover,
+    body.light .model-card:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .1);
+    }
+
+    body.light .card.selected {
+      border-color: #0096c7;
+    }
+
+    body.light .model-name,
+    body.light .cat-name {
+      color: #0f172a;
+    }
+
+    body.light .series-count {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    body.light .series-tagline {
+      color: #64748b;
+    }
+
+    body.light .qtitle,
+    body.light .section-head h2,
+    body.light h2 {
+      color: #0f172a;
+    }
+
+    body.light .qsub,
+    body.light .section-head p {
+      color: #64748b;
+    }
+
+    body.light .hl {
+      color: #0096c7;
+    }
+
+    body.light .step-circle {
+      background: #e2e8f0;
+      color: #94a3b8;
+      border-color: #d1d5db;
+    }
+
+    body.light .step.active .step-circle {
+      background: linear-gradient(135deg, #00b4d8, #0096c7);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    body.light .step-connector {
+      background: #e2e8f0;
+    }
+
+    body.light .step-connector.done {
+      background: #0096c7;
+    }
+
+    body.light .step-label {
+      color: #94a3b8;
+    }
+
+    body.light .step.active .step-label {
+      color: #0096c7;
+    }
+
+    body.light .feature-panel {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .feature-panel-title {
+      color: #0f172a !important;
+    }
+
+    body.light .feature-panel-tagline {
+      color: #64748b !important;
+    }
+
+    body.light .feature-panel-close {
+      background: #f1f5f9;
+      border-color: #e2e8f0;
+      color: #64748b;
+    }
+
+    body.light .feature-panel-close:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    body.light .feature-item {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    body.light .design-philosophy {
+      color: #64748b;
+      border-top-color: #e2e8f0;
+    }
+
+    body.light .model-feature-panel {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .model-detail-body h3 {
+      color: #0f172a !important;
+    }
+
+    body.light .model-detail-body .color-label {
+      color: #64748b !important;
+    }
+
+    body.light .model-detail-body .spec {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    body.light .model-color-name {
+      color: #64748b;
+    }
+
+    body.light .form-input,
+    body.light .form-select,
+    body.light .form-textarea {
+      background: #fff;
+      border-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    body.light .form-input:focus,
+    body.light .form-select:focus {
+      border-color: #0096c7;
+    }
+
+    body.light .form-label {
+      color: #1e293b;
+    }
+
+    body.light .search-input {
+      background: #fff;
+      border-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    body.light .summary-box {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+    }
+
+    body.light .info-box {
+      background: rgba(0, 150, 199, .06);
+      border-color: rgba(0, 150, 199, .15);
+    }
+
+    body.light .location-section {
+      background: rgba(0, 150, 199, .04);
+    }
+
+    body.light .service-type-card {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .service-type-card.selected {
+      border-color: #0096c7;
+      background: rgba(0, 150, 199, .04);
+    }
+
+    body.light .store-details {
+      background: #f8fafc;
+    }
+
+    body.light .modal {
+      background: #fff;
+      color: #1e293b;
+    }
+
+    body.light .modal-close {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    body.light .quality-option {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .quality-option:hover {
+      border-color: #0096c7;
+      background: rgba(0, 150, 199, .04);
+    }
+
+    body.light .quality-option strong {
+      color: #0f172a !important;
+    }
+
+    body.light .quality-option div {
+      color: #1e293b !important;
+    }
+
+    body.light .quality-option:hover * {
+      color: #0f172a !important;
+    }
+
+    body.light .quality-option:hover span {
+      color: #0096c7 !important;
+    }
+
+    body.light .bc-link {
+      color: #0096c7;
+    }
+
+    body.light .bc-sep {
+      color: #cbd5e1;
+    }
+
+    body.light .bc-current {
+      color: #94a3b8;
+    }
+
+    body.light .breadcrumb {
+      color: #64748b;
+    }
+
+    body.light .back-btn {
+      color: #0096c7;
+      border-color: #e2e8f0;
+      background: #fff;
+    }
+
+    body.light .back-btn:hover {
+      background: rgba(0, 150, 199, .06);
+    }
+
+    body.light .repair-card .checkbox {
+      border-color: #d1d5db;
+    }
+
+    body.light .repair-card.selected .checkbox {
+      background: #0096c7;
+      border-color: #0096c7;
+    }
+
+    body.light .repair-name {
+      color: #0f172a;
+    }
+
+    body.light .repair-price {
+      color: #0f172a;
+    }
+
+    body.light .repair-time {
+      color: #64748b;
+    }
+
+    body.light .repair-icon {
+      color: #1e293b;
+    }
+
+    body.light .model-img {
+      background: #f8fafc;
+    }
+
+    body.light .device-card {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .why-section {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .why-card {
+      color: #1e293b;
+    }
+
+    body.light .review-card {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .reviews-summary {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+    }
+
+    body.light .contact-info-card,
+    body.light .contact-form-card {
+      background: #fff;
+      border-color: #e2e8f0;
+    }
+
+    body.light .contact-hours {
+      background: rgba(0, 150, 199, .04);
+    }
+
+    body.light .contact-hours h4 {
+      color: #0f172a;
+    }
+
+    body.light .contact-hours-row span:first-child {
+      color: #64748b;
+    }
+
+    body.light .contact-hours-row span:last-child {
+      color: #0f172a !important;
+    }
+
+    body.light .hero-badge {
+      background: rgba(0, 150, 199, .08);
+      color: #0096c7;
+      border-color: rgba(0, 150, 199, .2);
+    }
+
+    body.light .hero-btn.secondary {
+      background: #fff;
+      color: #0f172a;
+      border-color: #e2e8f0;
+    }
+
+    body.light .hero-btn.secondary:hover {
+      border-color: #0096c7;
+      color: #0096c7;
+    }
+
+    body.light .hero-title {
+      color: #0f172a !important;
+    }
+
+    body.light .hero-sub {
+      color: #64748b !important;
+    }
+
+    body.light .corner-tl,
+    body.light .corner-br {
+      opacity: .25;
+    }
+
+    body.light .modal-overlay {
+      background: rgba(0, 0, 0, .4);
+    }
+
+    body.light .tier-label {
+      background: rgba(0, 150, 199, .08);
+      color: #0096c7;
+      border-color: rgba(0, 150, 199, .2);
+    }
+
+    body.light .unique-repair-badge {
+      background: rgba(0, 150, 199, .06);
+      border-color: rgba(0, 150, 199, .15);
+    }
+
+    body.light .model-badge {
+      opacity: .9;
+    }
+
+    body.light .callout-fee {
+      background: rgba(0, 150, 199, .06);
+      border-color: rgba(0, 150, 199, .15);
+      color: #1e293b;
+    }
+
+    body.light .address-error {
+      background: #fff5f5;
+      color: #ef4444;
+    }
+
+    body.light .address-ok {
+      background: #f0fdf4;
+      color: #10b981;
+    }
+
+    body.light .thankyou-banner {
+      background: linear-gradient(135deg, rgba(0, 150, 199, .08), rgba(0, 180, 216, .06));
+      border-color: rgba(0, 150, 199, .15);
+    }
+
+    body.light #acDropdown {
+      background: #fff !important;
+      border-color: #e2e8f0 !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .12) !important;
+    }
+
+    body.light #acDropdown div {
+      color: #1e293b !important;
+      border-bottom-color: #f1f5f9 !important;
+    }
+
+    body.light #acDropdown div:hover {
+      background: rgba(0, 150, 199, .06) !important;
+    }
+
+    body.light #pickupAddress {
+      background: #fff !important;
+      border-color: #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+
+    body.light input[type="date"] {
+      color-scheme: light;
+    }
+
+    body.light .pac-container {
+      background: #fff !important;
+      border-color: #e2e8f0 !important;
+    }
+
+    body.light .pac-item {
+      color: #1e293b !important;
+      border-top-color: #f1f5f9 !important;
+    }
+
+    body.light .pac-item:hover {
+      background: rgba(0, 150, 199, .06) !important;
+    }
+
+    body.light .pac-item-query {
+      color: #0f172a !important;
+    }
+
+    /* Toggle switch */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      margin-right: 12px;
+      user-select: none;
+    }
+
+    .theme-toggle-track {
+      width: 40px;
+      height: 22px;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, .15);
+      position: relative;
+      transition: background .3s;
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    body.light .theme-toggle-track {
+      background: #e2e8f0;
+      border-color: #d1d5db;
+    }
+
+    .theme-toggle-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      transition: transform .3s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+    }
+
+    body.light .theme-toggle-thumb {
+      transform: translateX(18px);
+      background: #0096c7;
+    }
+
+    .theme-toggle-icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -2697,8 +3223,7 @@
                 Brisbane</span></div>
             <div class="address-wrapper" style="margin-top:10px" id="pickupAddressContainer"></div>
             <div class="address-error" id="addressError">⚠️ Sorry, we only service <strong>Sunshine Coast</strong> &amp;
-              <strong>Brisbane</strong>.
-            </div>
+              <strong>Brisbane</strong>.</div>
             <div class="callout-fee" id="calloutFee"
               style="display:none;margin-top:12px;padding:14px 18px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.12);border-radius:10px;font-size:14px;color:#e2e8f0;">
             </div>
@@ -2807,8 +3332,7 @@
           </div>
           <div id="paidBanner"
             style="display:none;background:rgba(16,185,129,.1);border:2px solid rgba(16,185,129,.3);border-radius:12px;padding:16px 22px;margin-top:18px;text-align:center;">
-            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong>
-          </div>
+            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong></div>
         </div>
       </div>
     </div>
@@ -4083,6 +4607,19 @@
       // Auto-select first available
       select.value = '';
     });
+
+
+    // Theme toggle
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      var isLight = document.body.classList.contains('light');
+      localStorage.setItem('tmt_theme', isLight ? 'light' : 'dark');
+    }
+    // Load saved theme
+    (function () {
+      var saved = localStorage.getItem('tmt_theme');
+      if (saved === 'light') document.body.classList.add('light');
+    })();
 
     setMinDate(); renderCategories();
     setTimeout(function () { var d = document.getElementById('date'); if (d && d.value) d.dispatchEvent(new Event('change')); }, 500);
