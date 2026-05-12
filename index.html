@@ -17,7 +17,7 @@
     };
   </script>
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6RGWsn9GWKiEDsoUuq6udPokuuQ6ioT0&libraries=places&v=weekly&callback=initGoogleMaps"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgXAmCYsFlvDyCL-s6KoYEHcDiUbIvE7g&libraries=places&v=weekly&callback=initGoogleMaps"
     async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
@@ -4168,9 +4168,51 @@
       { n: 'Diagnostic Service', i: '🔍', p: 0, t: '15-30 min', desc: 'Full device health assessment. Free with any repair booking.' }
     ];
     function repairs() { return selCat === 'MacBook' ? MR : selCat === 'iPad' ? PR : IR; }
-    const BOUNDS = { sw: { lat: -27.85, lng: 152.65 }, ne: { lat: -26.10, lng: 153.35 } };
-    const SCP = Array.from({ length: 26 }, (_, i) => (4550 + i).toString());
-    const BNEP = Array.from({ length: 180 }, (_, i) => (4000 + i).toString());
+    // ═══ SERVICE AREA VALIDATION ═══
+    // Sunshine Coast postcodes: 4550-4575
+    const SC_POSTCODES = ['4550', '4551', '4552', '4553', '4554', '4555', '4556', '4557', '4558', '4559', '4560', '4561', '4562', '4563', '4564', '4565', '4566', '4567', '4568', '4569', '4570', '4571', '4572', '4573', '4574', '4575'];
+    // Brisbane metro postcodes: 4000-4209
+    const BNE_POSTCODES = Array.from({ length: 210 }, (_, i) => (4000 + i).toString());
+    // Sunshine Coast suburbs (comprehensive)
+    const SC_SUBURBS = ['aroona', 'battery hill', 'birtinya', 'bokarina', 'buddina', 'buderim', 'caloundra', 'caloundra west', 'currimundi', 'dicky beach', 'golden beach', 'kings beach', 'kawana waters', 'little mountain', 'meridan plains', 'minyama', 'moffat beach', 'mooloolaba', 'mountain creek', 'pacific paradise', 'palmview', 'parrearra', 'pelican waters', 'sippy downs', 'warana', 'wurtulla', 'alexandra headland', 'bli bli', 'coolum beach', 'coolum', 'cotton tree', 'diddillibah', 'eudlo', 'forest glen', 'image flat', 'kunda park', 'kuluin', 'kiels mountain', 'ilkley', 'maroochydore', 'marcoola', 'mudjimba', 'nambour', 'nambour west', 'mons', 'palmwoods', 'peregian beach', 'peregian springs', 'point arkwright', 'rosemount', 'tanawha', 'tewantin', 'twin waters', 'weyba downs', 'woombye', 'yaroomba', 'yandina', 'yandina creek', 'sunshine coast', 'noosa', 'noosa heads', 'noosaville', 'noosa junction', 'sunrise beach', 'sunshine beach', 'castaways beach', 'marcus beach', 'pomona', 'cooroy', 'cooran', 'eumundi', 'kenilworth', 'maleny', 'montville', 'flaxton', 'mapleton', 'landsborough', 'beerwah', 'glass house mountains', 'beerburrum', 'elimbah', 'woodford', 'kilcoy'];
+    // Brisbane suburbs (comprehensive)  
+    const BNE_SUBURBS = ['brisbane', 'brisbane city', 'fortitude valley', 'south brisbane', 'west end', 'woolloongabba', 'kangaroo point', 'new farm', 'teneriffe', 'newstead', 'bowen hills', 'spring hill', 'petrie terrace', 'milton', 'paddington', 'auchenflower', 'toowong', 'st lucia', 'indooroopilly', 'chapel hill', 'kenmore', 'fig tree pocket', 'graceville', 'sherwood', 'corinda', 'oxley', 'darra', 'inala', 'richlands', 'forest lake', 'springfield', 'springfield lakes', 'redbank plains', 'goodna', 'ipswich', 'caboolture', 'north lakes', 'mango hill', 'kallangur', 'petrie', 'strathpine', 'albany creek', 'bridgeman downs', 'aspley', 'chermside', 'stafford', 'kedron', 'nundah', 'clayfield', 'ascot', 'hamilton', 'hendra', 'eagle farm', 'pinkenba', 'wynnum', 'manly', 'carindale', 'mount gravatt', 'sunnybank', 'eight mile plains', 'underwood', 'logan', 'beenleigh', 'coorparoo', 'camp hill', 'morningside', 'balmoral', 'bulimba', 'hawthorne', 'norman park', 'annerley', 'yeronga', 'moorooka', 'tarragindi', 'holland park', 'greenslopes', 'stones corner', 'woolloongabba', 'southbank', 'south bank', 'redcliffe', 'scarborough', 'woody point', 'margate', 'clontarf', 'brighton', 'sandgate', 'shorncliffe', 'deagon', 'bracken ridge', 'zillmere', 'geebung', 'virginia', 'banyo', 'nudgee', 'wavell heights', 'everton park', 'mitchelton', 'gaythorne', 'alderley', 'newmarket', 'enoggera', 'ashgrove', 'the gap', 'bardon', 'red hill', 'kelvin grove', 'herston', 'gordon park', 'lutwyche', 'windsor', 'wilston', 'grange', 'wooloowin', 'albion', 'breakfast creek'];
+
+    function isInServiceArea(comps, formatted) {
+      var postcode = '';
+      var suburb = '';
+      var state = '';
+
+      // Extract from address components
+      comps.forEach(function (c) {
+        var types = c.types || [];
+        if (types.includes('postal_code')) postcode = c.longText || c.long_name || c.shortText || c.short_name || '';
+        if (types.includes('locality') || types.includes('sublocality')) suburb = (c.longText || c.long_name || c.shortText || c.short_name || '').toLowerCase();
+        if (types.includes('administrative_area_level_1')) state = (c.shortText || c.short_name || c.longText || c.long_name || '').toUpperCase();
+      });
+
+      // Must be in QLD
+      if (state && state !== 'QLD' && state !== 'QUEENSLAND') return { ok: false, zone: null };
+
+      // Check postcode first (most reliable)
+      if (SC_POSTCODES.includes(postcode)) return { ok: true, zone: 'sc' };
+      if (BNE_POSTCODES.includes(postcode)) return { ok: true, zone: 'bne' };
+
+      // Check suburb name as fallback
+      if (SC_SUBURBS.includes(suburb)) return { ok: true, zone: 'sc' };
+      if (BNE_SUBURBS.includes(suburb)) return { ok: true, zone: 'bne' };
+
+      // Check if formatted address contains known suburb names
+      var fmtLower = (formatted || '').toLowerCase();
+      for (var i = 0; i < SC_SUBURBS.length; i++) {
+        if (fmtLower.includes(SC_SUBURBS[i] + ',') || fmtLower.includes(SC_SUBURBS[i] + ' qld')) return { ok: true, zone: 'sc' };
+      }
+      for (var j = 0; j < BNE_SUBURBS.length; j++) {
+        if (fmtLower.includes(BNE_SUBURBS[j] + ',') || fmtLower.includes(BNE_SUBURBS[j] + ' qld')) return { ok: true, zone: 'bne' };
+      }
+
+      return { ok: false, zone: null };
+    }
 
     // STATE
     let selModel = null, selRepairs = [], selQuality = null, selCat = null, selSeries = null, browseLevel = 0;
@@ -4513,10 +4555,8 @@
       });
     }
     function handlePlaceResult(lat, lng, comps, formatted) {
-      const inB = lat >= BOUNDS.sw.lat && lat <= BOUNDS.ne.lat && lng >= BOUNDS.sw.lng && lng <= BOUNDS.ne.lng;
-      let pc = '';
-      comps.forEach(c => { if (c.types.includes('postal_code')) pc = c.longText || c.long_name || c.shortText || ''; });
-      const ok = inB && (SCP.includes(pc) || BNEP.includes(pc));
+      var result = isInServiceArea(comps, formatted);
+      var ok = result.ok;
       const err = document.getElementById('addressError'), okEl = document.getElementById('addressOk');
       const wrap = document.getElementById('pickupAddressContainer');
       if (ok) {
