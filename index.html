@@ -3397,8 +3397,7 @@
                 Brisbane</span></div>
             <div class="address-wrapper" style="margin-top:10px" id="pickupAddressContainer"></div>
             <div class="address-error" id="addressError">⚠️ Sorry, we only service <strong>Sunshine Coast</strong> &amp;
-              <strong>Brisbane</strong>.
-            </div>
+              <strong>Brisbane</strong>.</div>
             <div class="callout-fee" id="calloutFee"
               style="display:none;margin-top:12px;padding:14px 18px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.12);border-radius:10px;font-size:14px;color:#e2e8f0;">
             </div>
@@ -3507,8 +3506,7 @@
           </div>
           <div id="paidBanner"
             style="display:none;background:rgba(16,185,129,.1);border:2px solid rgba(16,185,129,.3);border-radius:12px;padding:16px 22px;margin-top:18px;text-align:center;">
-            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong>
-          </div>
+            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong></div>
         </div>
       </div>
     </div>
@@ -4170,62 +4168,47 @@
       { n: 'Diagnostic Service', i: '🔍', p: 0, t: '15-30 min', desc: 'Full device health assessment. Free with any repair booking.' }
     ];
     function repairs() { return selCat === 'MacBook' ? MR : selCat === 'iPad' ? PR : IR; }
-    // ═══ SERVICE AREA VALIDATION (suburb-based) ═══
-    // Sunshine Coast suburbs
-    const SC_SUBURBS = ['aroona', 'battery hill', 'birtinya', 'bokarina', 'buddina', 'buderim', 'caloundra', 'caloundra west', 'currimundi', 'dicky beach', 'golden beach', 'kings beach', 'kawana waters', 'little mountain', 'meridan plains', 'minyama', 'moffat beach', 'mooloolaba', 'mountain creek', 'pacific paradise', 'palmview', 'parrearra', 'pelican waters', 'sippy downs', 'warana', 'wurtulla', 'alexandra headland', 'bli bli', 'coolum beach', 'coolum', 'cotton tree', 'diddillibah', 'eudlo', 'forest glen', 'image flat', 'kunda park', 'kuluin', 'kiels mountain', 'ilkley', 'maroochydore', 'marcoola', 'mudjimba', 'nambour', 'nambour west', 'mons', 'palmwoods', 'peregian beach', 'peregian springs', 'point arkwright', 'rosemount', 'tanawha', 'tewantin', 'twin waters', 'weyba downs', 'woombye', 'yaroomba', 'yandina', 'yandina creek', 'sunshine coast', 'noosa', 'noosa heads', 'noosaville', 'noosa junction', 'sunrise beach', 'sunshine beach', 'castaways beach', 'marcus beach', 'pomona', 'cooroy', 'cooran', 'eumundi', 'kenilworth', 'maleny', 'montville', 'flaxton', 'mapleton', 'landsborough', 'beerwah', 'glass house mountains', 'beerburrum', 'elimbah', 'woodford', 'kilcoy', 'burnside', 'chevallum', 'coes creek', 'dulong', 'highworth', 'hunchy', 'perwillowen', 'towen mountain', 'west woombye', 'witta', 'reesville', 'north maleny', 'north arm', 'verrierdale', 'doonan', 'tinbeerwah', 'lake macdonald', 'black mountain', 'federal', 'kin kin', 'boreen point', 'ringtail creek', 'cootharaba', 'lake cootharaba', 'teewah', 'cooroibah'];
-    // Brisbane metro suburbs
-    const BNE_SUBURBS = ['brisbane', 'brisbane city', 'fortitude valley', 'south brisbane', 'west end', 'woolloongabba', 'kangaroo point', 'new farm', 'teneriffe', 'newstead', 'bowen hills', 'spring hill', 'petrie terrace', 'milton', 'paddington', 'auchenflower', 'toowong', 'st lucia', 'indooroopilly', 'chapel hill', 'kenmore', 'fig tree pocket', 'graceville', 'sherwood', 'corinda', 'oxley', 'darra', 'inala', 'richlands', 'forest lake', 'springfield', 'springfield lakes', 'redbank plains', 'goodna', 'caboolture', 'north lakes', 'mango hill', 'kallangur', 'petrie', 'strathpine', 'albany creek', 'bridgeman downs', 'aspley', 'chermside', 'stafford', 'kedron', 'nundah', 'clayfield', 'ascot', 'hamilton', 'hendra', 'eagle farm', 'pinkenba', 'wynnum', 'manly', 'carindale', 'mount gravatt', 'sunnybank', 'eight mile plains', 'underwood', 'logan', 'beenleigh', 'coorparoo', 'camp hill', 'morningside', 'balmoral', 'bulimba', 'hawthorne', 'norman park', 'annerley', 'yeronga', 'moorooka', 'tarragindi', 'holland park', 'greenslopes', 'stones corner', 'southbank', 'south bank', 'redcliffe', 'scarborough', 'woody point', 'margate', 'clontarf', 'brighton', 'sandgate', 'shorncliffe', 'deagon', 'bracken ridge', 'zillmere', 'geebung', 'virginia', 'banyo', 'nudgee', 'wavell heights', 'everton park', 'mitchelton', 'gaythorne', 'alderley', 'newmarket', 'enoggera', 'ashgrove', 'the gap', 'bardon', 'red hill', 'kelvin grove', 'herston', 'gordon park', 'lutwyche', 'windsor', 'wilston', 'grange', 'wooloowin', 'albion', 'breakfast creek', 'kenmore hills', 'pullenvale', 'brookfield', 'moggill', 'bellbowrie', 'jindalee', 'mount ommaney', 'middle park', 'riverhills', 'jamboree heights', 'sumner', 'westlake', 'sinnamon park', 'seventeen mile rocks', 'ellen grove', 'heathwood', 'pallara', 'algester', 'calamvale', 'drewvale', 'parkinson', 'stretton', 'karawatha', 'runcorn', 'kuraby', 'rochedale', 'robertson', 'mackenzie', 'chandler', 'burbank', 'belmont', 'tingalpa', 'murarrie', 'cannon hill', 'birkdale', 'thorneside', 'wellington point', 'ormiston', 'cleveland', 'thornlands', 'redland bay', 'victoria point', 'sheldon', 'mount cotton', 'alexandra hills', 'capalaba', 'springwood', 'daisy hill', 'shailer park', 'slacks creek', 'woodridge', 'kingston', 'loganlea', 'meadowbrook', 'crestmead', 'marsden', 'waterford', 'boronia heights', 'regents park', 'heritage park', 'browns plains', 'hillcrest', 'forestdale'];
-    // Lat/lng bounding box as a secondary check (generous bounds covering SE QLD)
-    const BOUNDS = { sw: { lat: -28.2, lng: 152.0 }, ne: { lat: -25.8, lng: 153.6 } };
+    // ═══ SERVICE AREA VALIDATION ═══
+    // Sunshine Coast postcodes: 4550-4575
+    // Brisbane metro postcodes: 4000-4209
+    // Sunshine Coast suburbs (comprehensive)
+    const SC_SUBURBS = ['aroona', 'battery hill', 'birtinya', 'bokarina', 'buddina', 'buderim', 'caloundra', 'caloundra west', 'currimundi', 'dicky beach', 'golden beach', 'kings beach', 'kawana waters', 'little mountain', 'meridan plains', 'minyama', 'moffat beach', 'mooloolaba', 'mountain creek', 'pacific paradise', 'palmview', 'parrearra', 'pelican waters', 'sippy downs', 'warana', 'wurtulla', 'alexandra headland', 'bli bli', 'coolum beach', 'coolum', 'cotton tree', 'diddillibah', 'eudlo', 'forest glen', 'image flat', 'kunda park', 'kuluin', 'kiels mountain', 'ilkley', 'maroochydore', 'marcoola', 'mudjimba', 'nambour', 'nambour west', 'mons', 'palmwoods', 'peregian beach', 'peregian springs', 'point arkwright', 'rosemount', 'tanawha', 'tewantin', 'twin waters', 'weyba downs', 'woombye', 'yaroomba', 'yandina', 'yandina creek', 'sunshine coast', 'noosa', 'noosa heads', 'noosaville', 'noosa junction', 'sunrise beach', 'sunshine beach', 'castaways beach', 'marcus beach', 'pomona', 'cooroy', 'cooran', 'eumundi', 'kenilworth', 'maleny', 'montville', 'flaxton', 'mapleton', 'landsborough', 'beerwah', 'glass house mountains', 'beerburrum', 'elimbah', 'woodford', 'kilcoy'];
+    // Brisbane suburbs (comprehensive)  
+    const BNE_SUBURBS = ['brisbane', 'brisbane city', 'fortitude valley', 'south brisbane', 'west end', 'woolloongabba', 'kangaroo point', 'new farm', 'teneriffe', 'newstead', 'bowen hills', 'spring hill', 'petrie terrace', 'milton', 'paddington', 'auchenflower', 'toowong', 'st lucia', 'indooroopilly', 'chapel hill', 'kenmore', 'fig tree pocket', 'graceville', 'sherwood', 'corinda', 'oxley', 'darra', 'inala', 'richlands', 'forest lake', 'springfield', 'springfield lakes', 'redbank plains', 'goodna', 'ipswich', 'caboolture', 'north lakes', 'mango hill', 'kallangur', 'petrie', 'strathpine', 'albany creek', 'bridgeman downs', 'aspley', 'chermside', 'stafford', 'kedron', 'nundah', 'clayfield', 'ascot', 'hamilton', 'hendra', 'eagle farm', 'pinkenba', 'wynnum', 'manly', 'carindale', 'mount gravatt', 'sunnybank', 'eight mile plains', 'underwood', 'logan', 'beenleigh', 'coorparoo', 'camp hill', 'morningside', 'balmoral', 'bulimba', 'hawthorne', 'norman park', 'annerley', 'yeronga', 'moorooka', 'tarragindi', 'holland park', 'greenslopes', 'stones corner', 'woolloongabba', 'southbank', 'south bank', 'redcliffe', 'scarborough', 'woody point', 'margate', 'clontarf', 'brighton', 'sandgate', 'shorncliffe', 'deagon', 'bracken ridge', 'zillmere', 'geebung', 'virginia', 'banyo', 'nudgee', 'wavell heights', 'everton park', 'mitchelton', 'gaythorne', 'alderley', 'newmarket', 'enoggera', 'ashgrove', 'the gap', 'bardon', 'red hill', 'kelvin grove', 'herston', 'gordon park', 'lutwyche', 'windsor', 'wilston', 'grange', 'wooloowin', 'albion', 'breakfast creek'];
 
     function isInServiceArea(comps, formatted, lat, lng) {
       var suburb = '';
       var state = '';
-      // DEBUG: log all components
-      console.log('=== SERVICE AREA DEBUG ===');
-      console.log('Formatted address:', formatted);
-      console.log('Lat/Lng:', lat, lng);
-      comps.forEach(function (c, idx) {
-        console.log('Component ' + idx + ':', JSON.stringify({ types: c.types, longText: c.longText, long_name: c.long_name, shortText: c.shortText, short_name: c.short_name }));
-      });
-      // Extract locality and state from address components
       comps.forEach(function (c) {
         var types = c.types || [];
-        if (types.includes('locality') || types.includes('sublocality') || types.includes('sublocality_level_1') || types.includes('neighborhood') || types.includes('administrative_area_level_2')) {
-          var val = (c.longText || c.long_name || c.shortText || c.short_name || '').toLowerCase().trim();
-          console.log('Potential suburb match - type:', types.join(','), 'value:', val);
-          // Prefer locality/sublocality over administrative_area_level_2
-          if (!suburb || types.includes('locality') || types.includes('sublocality') || types.includes('sublocality_level_1')) {
-            suburb = val;
-          }
+        if (types.includes('locality') || types.includes('sublocality') || types.includes('sublocality_level_1')) {
+          var val = c.longText || c.long_name || c.shortText || c.short_name || '';
+          if (typeof val === 'object' && val.text) val = val.text;
+          suburb = String(val).toLowerCase().trim();
         }
         if (types.includes('administrative_area_level_1')) {
-          state = (c.shortText || c.short_name || c.longText || c.long_name || '').toUpperCase().trim();
+          var sv = c.shortText || c.short_name || c.longText || c.long_name || '';
+          if (typeof sv === 'object' && sv.text) sv = sv.text;
+          state = String(sv).toUpperCase().trim();
         }
       });
-      console.log('Extracted suburb:', suburb, '| state:', state);
-      // Must be in QLD
-      if (state && state !== 'QLD' && state !== 'QUEENSLAND') { console.log('REJECTED: not QLD, state is:', state); return { ok: false, zone: null }; }
-      // Check suburb name
-      if (SC_SUBURBS.includes(suburb)) { console.log('MATCHED: SC suburb -', suburb); return { ok: true, zone: 'sc' }; }
-      if (BNE_SUBURBS.includes(suburb)) { console.log('MATCHED: BNE suburb -', suburb); return { ok: true, zone: 'bne' }; }
-      console.log('Suburb "' + suburb + '" not found in lists, trying formatted address fallback...');
-      // Fallback: check formatted address string
+      console.log('Service area check - suburb:', suburb, 'state:', state, 'formatted:', formatted);
+      if (state && state !== 'QLD' && state !== 'QUEENSLAND') return { ok: false, zone: null };
+      if (SC_SUBURBS.includes(suburb)) { console.log('MATCH: SC suburb', suburb); return { ok: true, zone: 'sc' }; }
+      if (BNE_SUBURBS.includes(suburb)) { console.log('MATCH: BNE suburb', suburb); return { ok: true, zone: 'bne' }; }
       var fmtLower = (formatted || '').toLowerCase();
       for (var i = 0; i < SC_SUBURBS.length; i++) {
-        if (fmtLower.includes(SC_SUBURBS[i] + ',') || fmtLower.includes(SC_SUBURBS[i] + ' qld')) { console.log('MATCHED via formatted address: SC -', SC_SUBURBS[i]); return { ok: true, zone: 'sc' }; }
+        if (fmtLower.includes(SC_SUBURBS[i] + ',') || fmtLower.includes(SC_SUBURBS[i] + ' qld')) return { ok: true, zone: 'sc' };
       }
       for (var j = 0; j < BNE_SUBURBS.length; j++) {
-        if (fmtLower.includes(BNE_SUBURBS[j] + ',') || fmtLower.includes(BNE_SUBURBS[j] + ' qld')) { console.log('MATCHED via formatted address: BNE -', BNE_SUBURBS[j]); return { ok: true, zone: 'bne' }; }
+        if (fmtLower.includes(BNE_SUBURBS[j] + ',') || fmtLower.includes(BNE_SUBURBS[j] + ' qld')) return { ok: true, zone: 'bne' };
       }
-      console.log('Formatted address fallback failed. Trying bounding box...');
-      // Final fallback: if within bounding box, allow it
-      if (lat && lng && lat >= BOUNDS.sw.lat && lat <= BOUNDS.ne.lat && lng >= BOUNDS.sw.lng && lng <= BOUNDS.ne.lng) {
-        console.log('Within bounding box, checking for QLD in address...');
-        // Check formatted address for QLD
-        if (fmtLower.includes('qld') || fmtLower.includes('queensland')) { console.log('MATCHED via bounding box + QLD'); return { ok: true, zone: 'bne' }; }
+      if (lat && lng && lat >= -28.2 && lat <= -25.8 && lng >= 152.0 && lng <= 153.6) {
+        if (fmtLower.includes('qld') || fmtLower.includes('queensland')) {
+          console.log('MATCH: bounding box + QLD'); return { ok: true, zone: 'bne' };
+        }
       }
-      console.log('REJECTED: no match found');
+      console.log('REJECTED: no match');
       return { ok: false, zone: null };
     }
 
@@ -4515,15 +4498,16 @@
                 item.addEventListener('click', function () {
                   inp.value = pred.text.text || pred.text;
                   dd.style.display = 'none';
-                  pred.toPlace().then(function (place) {
-                    return place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] });
-                  }).then(function (result2) {
-                    var place = result2.place || result2;
-                    if (place.location) {
-                      var comps = (place.addressComponents || []);
-                      handlePlaceResult(place.location.lat(), place.location.lng(), comps, place.formattedAddress || inp.value);
-                    } else { pickupAddress = inp.value; addressValid = true; }
-                  }).catch(function () { pickupAddress = inp.value; addressValid = true; });
+                  (function () {
+                    var place = pred.toPlace();
+                    place.fetchFields({ fields: ['addressComponents', 'location', 'formattedAddress'] }).then(function () {
+                      if (place.location) {
+                        var comps = place.addressComponents || [];
+                        console.log('Place resolved:', place.formattedAddress, 'comps:', comps.length);
+                        handlePlaceResult(place.location.lat(), place.location.lng(), comps, place.formattedAddress || inp.value);
+                      } else { pickupAddress = inp.value; addressValid = true; }
+                    }).catch(function (err) { console.error('fetchFields error:', err); pickupAddress = inp.value; addressValid = true; });
+                  })();
                 });
                 dd.appendChild(item);
               });
