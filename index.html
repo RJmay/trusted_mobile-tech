@@ -3212,6 +3212,7 @@
       <button class="nav-link" data-section="reviews" onclick="showSection('reviews')">Reviews</button>
       <button class="nav-link" data-section="deals" onclick="showSection('deals')">Deals</button>
       <button class="nav-link" data-section="contact" onclick="showSection('contact')">Contact Us</button>
+      <button class="nav-link" data-section="sell" onclick="showSection('sell')">Sell Your Device</button>
       <button class="nav-cta" onclick="showSection('quote')">Get Quote</button>
     </nav>
   </header>
@@ -3388,7 +3389,7 @@
             </div>
             <div class="store-detail-row">
               <div class="store-detail-icon">🕐</div>
-              <div>Mon–Fri 10am–8pm | Sat–Sun 6am–8pm</div>
+              <div>Mon–Fri 6am–11:30pm | Sat–Sun 5am–11:30pm</div>
             </div>
           </div>
           <div id="pickupAddressBlock">
@@ -3423,18 +3424,7 @@
             </div>
             <div class="form-group"><label class="form-label">Preferred Time *</label><select class="form-select"
                 id="time" required>
-                <option value="">Select a time</option>
-                <option value="9:00 AM">9:00 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="11:00 AM">11:00 AM</option>
-                <option value="12:00 PM">12:00 PM</option>
-                <option value="1:00 PM">1:00 PM</option>
-                <option value="2:00 PM">2:00 PM</option>
-                <option value="3:00 PM">3:00 PM</option>
-                <option value="4:00 PM">4:00 PM</option>
-                <option value="5:00 PM">5:00 PM</option>
-                <option value="6:00 PM">6:00 PM</option>
-                <option value="7:00 PM">7:00 PM</option>
+                <option value="">Select a date first</option>
               </select></div>
           </div>
           <div class="form-group"><label class="form-label">Notes (Optional)</label><textarea class="form-textarea"
@@ -3499,15 +3489,7 @@
             </ul>
           </div>
           <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px;">
-            <button class="print-btn" onclick="window.print()">🖨️ Print</button>
-            <button class="btn" id="payBtn"
-              style="width:auto;margin-top:0;background:linear-gradient(135deg,#10b981,#059669);"
-              onclick="markAsPaid()">💳 Mark as Paid</button>
             <button class="btn" style="width:auto;margin-top:0;" onclick="resetQuote()">New Quote</button>
-          </div>
-          <div id="paidBanner"
-            style="display:none;background:rgba(16,185,129,.1);border:2px solid rgba(16,185,129,.3);border-radius:12px;padding:16px 22px;margin-top:18px;text-align:center;">
-            <strong style="color:#065f46;font-size:16px;">✅ Payment recorded! Stock updated.</strong>
           </div>
         </div>
       </div>
@@ -3671,14 +3653,14 @@
             <div class="contact-icon">📍</div>
             <div>
               <div class="contact-label">Store Location</div>
-              <div class="contact-value">Shop 12, 123 Ocean St<br>Maroochydore QLD 4558</div>
+              <div class="contact-value">21 Freycinet Row<br>Buderim QLD 4556</div>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">📞</div>
             <div>
               <div class="contact-label">Phone</div>
-              <div class="contact-value">(07) 5XXX XXXX</div>
+              <div class="contact-value">0467 748 433</div>
             </div>
           </div>
           <div class="contact-item">
@@ -3698,11 +3680,11 @@
           <div class="contact-hours">
             <h4>🕐 Trading Hours</h4>
             <div class="contact-hours-row"><span>Monday – Friday</span><span
-                style="font-weight:700;color:var(--dark)">10:00am – 8:00pm</span></div>
-            <div class="contact-hours-row"><span>Saturday</span><span style="font-weight:700;color:var(--dark)">6:00am –
-                8:00pm</span></div>
-            <div class="contact-hours-row"><span>Sunday</span><span style="font-weight:700;color:var(--dark)">6:00am –
-                8:00pm</span></div>
+                style="font-weight:700;color:var(--dark)">6:00am – 11:30pm</span></div>
+            <div class="contact-hours-row"><span>Saturday</span><span style="font-weight:700;color:var(--dark)">5:00am –
+                11:30pm</span></div>
+            <div class="contact-hours-row"><span>Sunday</span><span style="font-weight:700;color:var(--dark)">5:00am –
+                11:30pm</span></div>
           </div>
         </div>
         <div class="contact-form-card">
@@ -3724,21 +3706,91 @@
     </div>
   </section>
 
+  <!-- ═══════ SELL YOUR DEVICE ═══════ -->
+  <section class="section" id="sec-sell">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Sell Your Device</h2>
+        <p>Get cash for your old iPhone, MacBook, or iPad — fill in the details below and we'll send you a quote.</p>
+      </div>
+      <!-- Sell Form -->
+      <div id="sell-form-wrap" style="max-width:560px;margin:0 auto;">
+        <form id="sellForm" onsubmit="submitSellForm(event)" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:36px;">
+          <div class="form-group">
+            <label class="form-label">Device Type *</label>
+            <select class="form-select" id="sell-device" required>
+              <option value="">Select device type</option>
+              <option value="iPhone">iPhone</option>
+              <option value="MacBook">MacBook</option>
+              <option value="iPad">iPad</option>
+              <option value="Other">Other Apple Device</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Model / Description *</label>
+            <input type="text" class="form-input" id="sell-model" required placeholder="e.g. iPhone 14 Pro 256GB">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Condition *</label>
+            <select class="form-select" id="sell-condition" required>
+              <option value="">Select condition</option>
+              <option value="Excellent">Excellent – like new, no scratches</option>
+              <option value="Good">Good – minor wear, fully functional</option>
+              <option value="Fair">Fair – visible wear or minor damage</option>
+              <option value="Poor">Poor – cracked screen or significant damage</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Storage Capacity</label>
+            <select class="form-select" id="sell-storage">
+              <option value="">Select storage (if applicable)</option>
+              <option value="64GB">64GB</option>
+              <option value="128GB">128GB</option>
+              <option value="256GB">256GB</option>
+              <option value="512GB">512GB</option>
+              <option value="1TB">1TB</option>
+              <option value="N/A">Not applicable</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Name *</label>
+            <input type="text" class="form-input" id="sell-name" required placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="sell-email" placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-input" id="sell-phone" placeholder="04XX XXX XXX">
+          </div>
+          <p style="font-size:13px;color:#94a3b8;margin-bottom:20px;">Please provide at least one contact method (email or phone).</p>
+          <button type="submit" class="btn">Get My Sell Quote</button>
+        </form>
+      </div>
+      <!-- Sell Confirmation -->
+      <div id="sell-confirm-wrap" style="display:none;max-width:560px;margin:0 auto;text-align:center;">
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:48px 36px;">
+          <div style="font-size:56px;margin-bottom:16px;">📬</div>
+          <h2 style="margin-bottom:12px;">Quote on Its Way!</h2>
+          <p style="color:#94a3b8;font-size:16px;margin-bottom:24px;" id="sell-confirm-msg">We're preparing your sell quote and will be in touch shortly.</p>
+          <div style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:20px 24px;margin-bottom:28px;text-align:left;">
+            <div style="font-weight:700;margin-bottom:10px;color:#10b981;">What happens next?</div>
+            <div style="color:#94a3b8;font-size:14px;line-height:1.8;">
+              1. We'll review your device details<br>
+              2. We'll send you a personalised offer<br>
+              3. If you accept, drop it in-store or arrange a pickup<br>
+              4. Get paid on the spot!
+            </div>
+          </div>
+          <button class="btn" style="width:auto;padding:14px 32px;" onclick="resetSellForm()">Submit Another Device</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer">
-    <!-- Apple Logo Decorations -->
-    <div style="position:absolute;bottom:30px;left:40px;opacity:.06;">
-      <svg width="80" height="98" viewBox="0 0 814 1000" fill="white">
-        <path
-          d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105.6-57.8-155.5-127.4c-58.3-81.8-105.7-208.2-105.7-328.6 0-193.1 125.3-295.6 248.9-295.6 65.6 0 120.3 43.1 161.3 43.1 39.1 0 100.1-45.7 174.2-45.7 28.2 0 129.5 2.6 196.9 99.2z M554.1 159.4c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.8 32.4-54.4 83.7-54.4 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.5 0 103.7-30.4 134.8-71.3z" />
-      </svg>
-    </div>
-    <div style="position:absolute;bottom:30px;right:40px;opacity:.06;">
-      <svg width="80" height="98" viewBox="0 0 814 1000" fill="white">
-        <path
-          d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105.6-57.8-155.5-127.4c-58.3-81.8-105.7-208.2-105.7-328.6 0-193.1 125.3-295.6 248.9-295.6 65.6 0 120.3 43.1 161.3 43.1 39.1 0 100.1-45.7 174.2-45.7 28.2 0 129.5 2.6 196.9 99.2z M554.1 159.4c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.8 32.4-54.4 83.7-54.4 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.5 0 103.7-30.4 134.8-71.3z" />
-      </svg>
-    </div>
     <div class="wrap">
       <div class="footer-grid">
         <div>
@@ -3756,7 +3808,7 @@
         </div>
         <div>
           <h3>Contact</h3>
-          <p>Shop 12, 123 Ocean St<br>Maroochydore QLD 4558<br><br>(07) 5XXX XXXX<br>info@trustedmobiletech.com.au</p>
+          <p>21 Freycinet Row<br>Buderim QLD 4556<br><br>0467 748 433<br>info@trustedmobiletech.com.au</p>
         </div>
       </div>
       <div class="footer-bottom">© 2025 TrustedMobile Tech. All rights reserved.</div>
@@ -4228,6 +4280,29 @@
       if (id === 'quote') { renderCategories(); goToPage(1); }
     }
     function startQuote(cat) { showSection('quote'); setTimeout(() => selectCategory(cat), 50); }
+
+    function submitSellForm(e) {
+      e.preventDefault();
+      var email = document.getElementById('sell-email').value.trim();
+      var phone = document.getElementById('sell-phone').value.trim();
+      if (!email && !phone) {
+        alert('Please provide at least one contact method — email or phone number.');
+        return;
+      }
+      var contactParts = [];
+      if (email) contactParts.push('email (' + email + ')');
+      if (phone) contactParts.push('phone (' + phone + ')');
+      document.getElementById('sell-confirm-msg').textContent =
+        'Your quote is being sent to your ' + contactParts.join(' and ') + '. We\'ll be in touch shortly!';
+      document.getElementById('sell-form-wrap').style.display = 'none';
+      document.getElementById('sell-confirm-wrap').style.display = 'block';
+    }
+
+    function resetSellForm() {
+      document.getElementById('sellForm').reset();
+      document.getElementById('sell-form-wrap').style.display = 'block';
+      document.getElementById('sell-confirm-wrap').style.display = 'none';
+    }
     window.addEventListener('scroll', () => document.getElementById('header').classList.toggle('scrolled', window.scrollY > 10));
 
     // BROWSE
@@ -4301,7 +4376,7 @@
         + '<h3>' + m.name + '</h3>'
         + '<div class="color-label"><span class="model-color-dot" style="background:' + clr + '"></span> ' + (m.colorName || '') + '</div>'
         + '<div class="specs">' + (m.features || []).map(function (f) { return '<div class="spec">' + f + '</div>'; }).join('') + '</div>'
-        + (m.uniqueRepair ? '<div class="unique-repair-badge">' + m.uniqueRepair + '</div>' : '')
+        + (m.uniqueRepair ? '<div class="unique-repair-badge" style="margin-bottom:18px;">' + m.uniqueRepair + '</div>' : '')
         + '<button class="btn" style="margin-top:18px;width:auto;padding:14px 32px;" data-mn="' + encodeURIComponent(mn) + '" onclick="selectModelByName(this.dataset.mn)">Get Quote for ' + mn + '</button>'
         + '</div></div>';
       document.getElementById('modelFeaturePanel').innerHTML = dp;
@@ -4657,7 +4732,7 @@
     }
 
     function markAsPaid() {
-      const btn = document.getElementById('payBtn'); if (btn.disabled) return; btn.disabled = true; btn.textContent = '✅ Paid'; btn.style.opacity = '.7';
+      const btn = document.getElementById('payBtn'); if (btn) { if (btn.disabled) return; btn.disabled = true; btn.textContent = '✅ Paid'; btn.style.opacity = '.7'; }
       const paidAt = new Date().toISOString();
       // Update in Supabase
       if (currentQuoteId && db) {
@@ -4674,7 +4749,7 @@
       // Also keep localStorage fallback for admin
       const qd = { quoteNumber: document.getElementById('quoteNumber').textContent, customer: document.getElementById('name').value, email: document.getElementById('email').value, phone: document.getElementById('phone').value, device: selModel, repairs: selRepairs, serviceType, pickupAddress: serviceType === 'mobile' ? pickupAddress : 'Store', total: selRepairs.reduce((s, r) => s + r.price, 0), paidAt };
       try { localStorage.setItem('tmt_pending_payment', JSON.stringify(qd)); } catch (e) { }
-      document.getElementById('paidBanner').style.display = 'block';
+      const pb2 = document.getElementById('paidBanner'); if (pb2) pb2.style.display = 'block';
     }
 
     // Deduct stock from Supabase inventory
@@ -4708,7 +4783,7 @@
       document.getElementById('pickupAddressBlock').style.display = 'none';
       document.getElementById('addressError').style.display = 'none';
       document.getElementById('addressOk').style.display = 'none';
-      document.getElementById('paidBanner').style.display = 'none';
+      const pb3 = document.getElementById('paidBanner'); if (pb3) pb3.style.display = 'none';
       const pb = document.getElementById('payBtn'); if (pb) { pb.disabled = false; pb.textContent = '💳 Mark as Paid'; pb.style.opacity = '1'; }
       renderCategories(); goToPage(1);
     }
@@ -4778,48 +4853,89 @@
     }
 
 
+    // Generate time label from total minutes from midnight
+    function minutesToLabel(totalMins) {
+      var h = Math.floor(totalMins / 60);
+      var m = totalMins % 60;
+      var ampm = h < 12 ? 'AM' : 'PM';
+      var h12 = h % 12 || 12;
+      return h12 + ':' + (m === 0 ? '00' : m) + ' ' + ampm;
+    }
+    // Parse a time label back to minutes from midnight
+    function labelToMinutes(label) {
+      var parts = label.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if (!parts) return -1;
+      var h = parseInt(parts[1]), m = parseInt(parts[2]), ampm = parts[3].toUpperCase();
+      if (ampm === 'PM' && h !== 12) h += 12;
+      if (ampm === 'AM' && h === 12) h = 0;
+      return h * 60 + m;
+    }
+
     // Check booked time slots when date changes
     document.getElementById('date')?.addEventListener('change', async function () {
       var date = this.value;
       var select = document.getElementById('time');
       if (!date || !select) return;
+
+      // Determine day of week (0=Sun, 1=Mon, ..., 6=Sat)
+      var parts = date.split('-');
+      var dateObj = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+      var dow = dateObj.getDay();
+      var isWeekend = (dow === 0 || dow === 6);
+
+      // Shop hours in minutes from midnight
+      var openMins = isWeekend ? 5 * 60 : 6 * 60;       // 5:00 AM or 6:00 AM
+      var closeMins = 23 * 60 + 30;                       // 11:30 PM
+
+      // Generate 30-min slots
+      var slots = [];
+      for (var t = openMins; t <= closeMins; t += 30) {
+        slots.push(t);
+      }
+
+      // Determine minimum allowed time for today
       var today = new Date().toISOString().split('T')[0];
       var isToday = (date === today);
-      var nowHour = new Date().getHours();
-      var minHour = isToday ? nowHour + 2 : 0;
-      // Reset all options first
-      Array.from(select.options).forEach(function (opt) {
-        if (!opt.value) return;
-        opt.style.color = ''; opt.textContent = opt.value; opt.disabled = false;
-        // Parse hour from option
-        var parts = opt.value.match(/(\d+):(\d+)\s*(AM|PM)/i);
-        if (parts) {
-          var h = parseInt(parts[1]); var ampm = parts[3].toUpperCase();
-          if (ampm === 'PM' && h !== 12) h += 12;
-          if (ampm === 'AM' && h === 12) h = 0;
-          if (isToday && h < minHour) {
-            opt.style.color = '#64748b';
-            opt.textContent = opt.value + ' (Too soon)';
-            opt.disabled = true;
-          }
+      var nowMins = isToday ? (new Date().getHours() * 60 + new Date().getMinutes() + 120) : 0;
+
+      // Build base options
+      select.innerHTML = '<option value="">Select a time</option>';
+      slots.forEach(function (t) {
+        var label = minutesToLabel(t);
+        var opt = document.createElement('option');
+        opt.value = label;
+        opt.textContent = label;
+        if (isToday && t < nowMins) {
+          opt.textContent = label + ' (Too soon)';
+          opt.disabled = true;
+          opt.style.color = '#64748b';
         }
+        select.appendChild(opt);
       });
-      // Check booked slots from Supabase
+
+      // Check booked slots from Supabase and apply 1.5hr buffer
       if (db) {
         try {
           var { data } = await db.from('quotes').select('appointment_time').eq('appointment_date', date).neq('status', 'cancelled');
-          var bookedTimes = (data || []).map(function (q) { return q.appointment_time; });
+          var bookedMins = (data || []).map(function (q) { return labelToMinutes(q.appointment_time); }).filter(function (m) { return m >= 0; });
+          var bufferMins = 90; // 1.5 hours
           Array.from(select.options).forEach(function (opt) {
             if (!opt.value || opt.disabled) return;
-            if (bookedTimes.includes(opt.value)) {
+            var t = labelToMinutes(opt.value);
+            var blocked = bookedMins.some(function (b) { return Math.abs(t - b) < bufferMins && t !== b; });
+            var booked = bookedMins.includes(t);
+            if (booked) {
               opt.style.color = '#ef4444';
               opt.textContent = opt.value + ' (Booked)';
+              opt.disabled = true;
+            } else if (blocked) {
+              opt.style.color = '#f59e0b';
+              opt.textContent = opt.value + ' (Unavailable)';
               opt.disabled = true;
             }
           });
         } catch (e) { console.log('Could not check bookings:', e); }
       }
-      // Auto-select first available
       select.value = '';
     });
 
