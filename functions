@@ -1,0 +1,12 @@
+exports.handler = async () => {
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://cosmic-sopapillas-8639fe.netlify.app'
+    },
+    body: JSON.stringify({
+      key: process.env.GOOGLE_MAPS_KEY
+    })
+  };
+};
