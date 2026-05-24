@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrustedMobile Tech – iPhone, MacBook & iPad Repairs</title>
+  <title>Trusted Mobile Tech – iPhone, MacBook & iPad Repairs</title>
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"
     rel="stylesheet">
@@ -1396,7 +1396,7 @@
     .timeline::before {
       content: '';
       position: absolute;
-      left: 15px;
+      left: 20px;
       top: 0;
       bottom: 0;
       width: 3px;
@@ -1415,7 +1415,7 @@
 
     .timeline-dot {
       position: absolute;
-      left: -30px;
+      left: -31px;
       top: 3px;
       width: 26px;
       height: 26px;
@@ -2613,6 +2613,9 @@
       background: rgba(0, 150, 199, .04);
     }
 
+    body.light .service-type-name { color: #0f172a; }
+    body.light .service-type-desc { color: #334155; }
+
     body.light .store-details {
       background: #f8fafc;
     }
@@ -2943,6 +2946,11 @@
       color: #0f172a;
     }
 
+    /* Device images: white bg in light mode, black bg in dark mode */
+    .dc-device-img { filter: brightness(1); }
+    body.light .dc-device-img { filter: brightness(0) invert(0); background: #fff; border-radius: 8px; padding: 4px; }
+    body:not(.light) .dc-device-img { background: #000; border-radius: 8px; padding: 4px; }
+
     /* Light mode - series card text */
     body.light .model-name {
       color: #0f172a !important;
@@ -3210,7 +3218,7 @@
       <button class="nav-link active" data-section="home" onclick="showSection('home')">Home</button>
       <button class="nav-link" data-section="quote" onclick="showSection('quote')">Get a Quote</button>
       <button class="nav-link" data-section="reviews" onclick="showSection('reviews')">Reviews</button>
-      <button class="nav-link" data-section="deals" onclick="showSection('deals')">Deals</button>
+      <button class="nav-link" data-section="deals" onclick="showSection('deals')">Refurbished Devices</button>
       <button class="nav-link" data-section="contact" onclick="showSection('contact')">Contact Us</button>
       <button class="nav-link" data-section="sell" onclick="showSection('sell')">Sell Your Device</button>
       <button class="nav-cta" onclick="showSection('quote')">Get Quote</button>
@@ -3245,13 +3253,13 @@
           <span class="dc-badge">8 model lines</span>
         </div>
         <div class="device-card macbook" onclick="startQuote('MacBook')">
-          <span class="dc-icon">💻</span>
+          <span class="dc-icon" style="font-size:0;"><img src="Images/macbook-air-m3.png" class="dc-device-img" style="height:72px;object-fit:contain;"></span>
           <div class="dc-name">MacBook</div>
           <div class="dc-desc">Keyboard, battery, screen, trackpad — MacBook Air &amp; Pro repairs</div>
           <span class="dc-badge">4 model lines</span>
         </div>
         <div class="device-card ipad" onclick="startQuote('iPad')">
-          <span class="dc-icon">📲</span>
+          <span class="dc-icon" style="font-size:0;"><img src="Images/ipad-pro-11-m4.png" class="dc-device-img" style="height:72px;object-fit:contain;"></span>
           <div class="dc-name">iPad</div>
           <div class="dc-desc">Screen, charging, battery — iPad, mini, Air &amp; Pro all generations</div>
           <span class="dc-badge">4 model lines</span>
@@ -3261,7 +3269,7 @@
     <div class="why-section">
       <div class="wrap">
         <div class="section-head">
-          <h2>Why Choose TrustedMobile Tech?</h2>
+          <h2>Why Choose Trusted Mobile Tech?</h2>
         </div>
         <div class="why-grid">
           <div class="why-card">
@@ -3385,7 +3393,7 @@
           <div class="store-details" id="storeDetails">
             <div class="store-detail-row">
               <div class="store-detail-icon">🗺️</div>
-              <div>Shop 12, 123 Ocean St, Maroochydore QLD 4558</div>
+              <div>21 Freycinet Row, Buderim QLD 4556</div>
             </div>
             <div class="store-detail-row">
               <div class="store-detail-icon">🕐</div>
@@ -3592,7 +3600,7 @@
   <section class="section" id="sec-deals" style="padding:80px 0;">
     <div class="wrap">
       <div class="section-head">
-        <h2>Deals &amp; Refurbished Devices</h2>
+        <h2>Refurbished Devices</h2>
         <p>Quality-checked, repaired, and ready to go. All devices come with a 90-day warranty.</p>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;margin-top:36px;">
@@ -3650,13 +3658,6 @@
       <div class="contact-grid">
         <div class="contact-info-card">
           <div class="contact-item">
-            <div class="contact-icon">📍</div>
-            <div>
-              <div class="contact-label">Store Location</div>
-              <div class="contact-value">21 Freycinet Row<br>Buderim QLD 4556</div>
-            </div>
-          </div>
-          <div class="contact-item">
             <div class="contact-icon">📞</div>
             <div>
               <div class="contact-label">Phone</div>
@@ -3667,7 +3668,14 @@
             <div class="contact-icon">✉️</div>
             <div>
               <div class="contact-label">Email</div>
-              <div class="contact-value">info@trustedmobiletech.com.au</div>
+              <div class="contact-value">info@trustedmobiletech.org</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-label">Store Location</div>
+              <div class="contact-value">21 Freycinet Row<br>Buderim QLD 4556</div>
             </div>
           </div>
           <div class="contact-item">
@@ -3794,7 +3802,7 @@
     <div class="wrap">
       <div class="footer-grid">
         <div>
-          <h3>TrustedMobile Tech</h3>
+          <h3>Trusted Mobile Tech</h3>
           <p>Expert iPhone, MacBook &amp; iPad repairs on the Sunshine Coast and Brisbane. Same-day service, 90-day
             warranty, and genuine parts.</p>
         </div>
@@ -3803,15 +3811,15 @@
           <p><a onclick="showSection('home')" style="display:block;cursor:pointer;">Home</a><a
               onclick="showSection('quote')" style="display:block;cursor:pointer;">Get a Quote</a><a
               onclick="showSection('reviews')" style="display:block;cursor:pointer;">Reviews</a><a
-              onclick="showSection('deals')" style="display:block;cursor:pointer;">Deals</a><a
+              onclick="showSection('deals')" style="display:block;cursor:pointer;">Refurbished Devices</a><
               onclick="showSection('contact')" style="display:block;cursor:pointer;">Contact Us</a></p>
         </div>
         <div>
           <h3>Contact</h3>
-          <p>21 Freycinet Row<br>Buderim QLD 4556<br><br>0467 748 433<br>info@trustedmobiletech.com.au</p>
+          <p>0467 748 433<br>info@trustedmobiletech.org<br><br>21 Freycinet Row<br>Buderim QLD 4556</p>
         </div>
       </div>
-      <div class="footer-bottom">© 2025 TrustedMobile Tech. All rights reserved.</div>
+      <div class="footer-bottom">© 2025 Trusted Mobile Tech. All rights reserved.</div>
     </div>
   </footer>
 
@@ -4376,8 +4384,8 @@
         + '<h3>' + m.name + '</h3>'
         + '<div class="color-label"><span class="model-color-dot" style="background:' + clr + '"></span> ' + (m.colorName || '') + '</div>'
         + '<div class="specs">' + (m.features || []).map(function (f) { return '<div class="spec">' + f + '</div>'; }).join('') + '</div>'
-        + (m.uniqueRepair ? '<div class="unique-repair-badge" style="margin-bottom:18px;">' + m.uniqueRepair + '</div>' : '')
-        + '<button class="btn" style="margin-top:18px;width:auto;padding:14px 32px;" data-mn="' + encodeURIComponent(mn) + '" onclick="selectModelByName(this.dataset.mn)">Get Quote for ' + mn + '</button>'
+        + (m.uniqueRepair ? '<div class="unique-repair-badge" style="margin-bottom:18px;display:block;">' + m.uniqueRepair + '</div>' : '')
+        + '<button class="btn" style="margin-top:8px;width:auto;padding:14px 32px;display:block;" data-mn="' + encodeURIComponent(mn) + '" onclick="selectModelByName(this.dataset.mn)">Get Quote for ' + mn + '</button>'
         + '</div></div>';
       document.getElementById('modelFeaturePanel').innerHTML = dp;
       document.getElementById('modelFeaturePanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -4439,7 +4447,10 @@
         if (r.n === 'Diagnostic Service') { price = 49; }
         if (price === 0) return;
         var priceText = '$' + price;
-        var onclick = 'toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)';
+        var noOEM = ['Battery Replacement', 'Screen Replacement', 'Software Issues', 'Software/macOS Issues', 'Diagnostic Service'];
+        var onclick = noOEM.includes(r.n)
+          ? 'toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)'
+          : 'openOEMModal(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)';
         var showCheckbox = true;
         if (r.n === 'Battery Replacement') { onclick = 'openBatteryModal()'; priceText = 'From $' + price; showCheckbox = false; }
         h += '<div class="card repair-card" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + price + '" data-rt="' + (r.t || '') + '" onclick="' + onclick + '">' + (showCheckbox ? '<div class="checkbox"></div>' : '') + '<div class="repair-icon">' + r.i + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">' + priceText + '</div><div class="repair-time">' + r.t + '</div></div>';
@@ -4451,11 +4462,11 @@
           var modelData = series.models.find(function (m) { return m.name === selModel; });
           if (modelData && modelData.uniqueRepair) {
             var ur = modelData.uniqueRepair;
-            h += '<div class="card repair-card" data-rn="' + encodeURIComponent(ur) + '" data-rp="149" data-rt="1-3h" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)">'
+            h += '<div class="card repair-card" data-rn="' + encodeURIComponent(ur) + '" data-rp="520" data-rt="1-3h" onclick="toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)">'
               + '<div class="checkbox"></div>'
               + '<div class="repair-icon">🔬</div>'
               + '<div class="repair-name">' + ur + '</div>'
-              + '<div class="repair-price">$149</div>'
+              + '<div class="repair-price">$520</div>'
               + '<div class="repair-time">⏱️ 1-3h</div>'
               + '<div class="price-badge" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">Specialist Service</div>'
               + '</div>';
@@ -4518,7 +4529,7 @@
         }
       });
     }
-    function updateCards() { updateDiagnosticPrice(); document.querySelectorAll('.repair-card').forEach(c => { var cn = c.querySelector('.repair-name'); if (!cn) return; var name = cn.textContent; if (name === 'Screen Replacement' || name === 'Battery Replacement') return; c.classList.toggle('selected', selRepairs.some(function (r) { return r.name === name; })); }); }
+    function updateCards() { updateDiagnosticPrice(); document.querySelectorAll('.repair-card').forEach(c => { var cn = c.querySelector('.repair-name'); if (!cn) return; var name = cn.textContent; if (name === 'Screen Replacement' || name === 'Battery Replacement') return; c.classList.toggle('selected', selRepairs.some(function (r) { return r.name === name || r.name === name + ' (Aftermarket)' || r.name === name + ' (OEM)'; })); }); }
     function updateSummary() {
       const b = document.getElementById('repairsSummary'), l = document.getElementById('repairsList'), btn = document.getElementById('continueBtn');
       if (!selRepairs.length) { b.classList.add('hidden'); btn.disabled = true; return; } b.classList.remove('hidden'); btn.disabled = false;
@@ -4672,7 +4683,7 @@
       const d = new Date(document.getElementById('date').value);
       document.getElementById('quoteDateTime').textContent = d.toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + document.getElementById('time').value;
       const loc = document.getElementById('quoteLocation');
-      if (serviceType === 'store') { loc.textContent = '🏪 Drop Off – Maroochydore'; document.getElementById('step3title').textContent = 'Drop Off Your Device'; document.getElementById('step3desc').textContent = 'Bring your device and photo ID to our store.'; }
+      if (serviceType === 'store') { loc.textContent = '🏪 Drop Off – 21 Freycinet Row, Buderim'; document.getElementById('step3title').textContent = 'Drop Off Your Device'; document.getElementById('step3desc').textContent = 'Bring your device and photo ID to 21 Freycinet Row, Buderim QLD 4556.'; }
       else { loc.textContent = '🚗 Pickup – ' + pickupAddress; document.getElementById('step3title').textContent = 'We Come to You'; document.getElementById('step3desc').textContent = 'Technician arrives at ' + pickupAddress; }
       const tot = selRepairs.reduce((s, r) => s + r.price, 0);
       document.getElementById('quoteRepairsList').innerHTML = selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span><strong>Total</strong></span><span><strong>$' + tot + '</strong></span></div>';
@@ -4818,6 +4829,25 @@
     }
     var currentCalloutFee = 0;
 
+
+    function openOEMModal(n, basePrice, t) {
+      var alreadyIn = selRepairs.findIndex(function (r) { return r.name === n || r.name === n + ' (Aftermarket)' || r.name === n + ' (OEM)'; });
+      if (alreadyIn > -1) { selRepairs.splice(alreadyIn, 1); updateCards(); updateSummary(); return; }
+      var oemPrice = basePrice + 75;
+      document.getElementById('oemModalTitle').textContent = n;
+      var h = '';
+      h += '<div class="quality-option" onclick="selectOEMRepair(' + JSON.stringify(n) + ',' + basePrice + ',' + JSON.stringify(t) + ',\'aftermarket\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">Aftermarket Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality tested aftermarket component. Fully functional with 6-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div></div></div>';
+      h += '<div class="quality-option" onclick="selectOEMRepair(' + JSON.stringify(n) + ',' + oemPrice + ',' + JSON.stringify(t) + ',\'oem\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">OEM-grade genuine-specification part. Matches original performance with 12-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div></div></div>';
+      document.getElementById('oemOptions').innerHTML = h;
+      document.getElementById('oemModal').classList.add('show');
+    }
+    function selectOEMRepair(n, price, t, type) {
+      selRepairs = selRepairs.filter(function (r) { return r.name !== n && r.name !== n + ' (Aftermarket)' && r.name !== n + ' (OEM)'; });
+      var label = n + ' (' + (type === 'oem' ? 'OEM' : 'Aftermarket') + ')';
+      selRepairs.push({ name: label, price: price, time: t });
+      closeModal('oemModal');
+      updateCards(); updateSummary();
+    }
 
     function openBatteryModal() {
       var prices = REPAIR_PRICES[selModel];
@@ -4966,6 +4996,15 @@
       <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose between aftermarket or OEM-grade battery
         replacement.</p>
       <div id="batteryOptions"></div>
+    </div>
+  </div>
+
+  <div id="oemModal" class="modal-overlay" onclick="if(event.target===this)closeModal('oemModal')">
+    <div class="modal" style="max-width:600px;">
+      <button class="modal-close" onclick="closeModal('oemModal')">&times;</button>
+      <h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;" id="oemModalTitle">Part Options</h2>
+      <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose aftermarket (quality tested) or OEM (genuine-spec part).</p>
+      <div id="oemOptions"></div>
     </div>
   </div>
 </body>
