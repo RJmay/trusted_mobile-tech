@@ -3758,6 +3758,48 @@
         <h2>Sell Your Device</h2>
         <p>Get cash for your old iPhone, MacBook, or iPad — fill in the details below and we'll send you a quote.</p>
       </div>
+      <!-- How to find your device info -->
+      <div style="max-width:560px;margin:0 auto 32px;">
+        <div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);border-radius:16px;padding:24px 28px;">
+          <div style="font-weight:700;font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">📋 How to find your device info</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="font-size:22px;flex-shrink:0;">📱</div>
+              <div>
+                <div style="font-weight:700;font-size:14px;margin-bottom:3px;">Model (iPhone / iPad)</div>
+                <div style="font-size:13px;color:#94a3b8;line-height:1.6;">Go to <strong>Settings → General → About</strong>. Look for <em>Model Name</em> (e.g. iPhone 14 Pro) and <em>Capacity</em> (e.g. 256 GB).</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="font-size:22px;flex-shrink:0;">💻</div>
+              <div>
+                <div style="font-weight:700;font-size:14px;margin-bottom:3px;">Model (MacBook)</div>
+                <div style="font-size:13px;color:#94a3b8;line-height:1.6;">Click the <strong>Apple menu → About This Mac</strong>. You'll see the chip (e.g. M2), year, and storage.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="font-size:22px;flex-shrink:0;">🔋</div>
+              <div>
+                <div style="font-weight:700;font-size:14px;margin-bottom:3px;">Battery Health</div>
+                <div style="font-size:13px;color:#94a3b8;line-height:1.6;">On iPhone/iPad: <strong>Settings → Battery → Battery Health & Charging</strong>. On MacBook: hold <strong>Option</strong> and click the battery icon in the menu bar.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="font-size:22px;flex-shrink:0;">🔢</div>
+              <div>
+                <div style="font-weight:700;font-size:14px;margin-bottom:3px;">IMEI Number (iPhone / iPad)</div>
+                <div style="font-size:13px;color:#94a3b8;line-height:1.6;">Go to <strong>Settings → General → About → IMEI</strong>. Or dial <strong>*#06#</strong> on the phone app. You can also find it on the original box. Providing your IMEI helps us verify the device and give you a more accurate quote.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       <!-- Sell Form -->
       <div id="sell-form-wrap" style="max-width:560px;margin:0 auto;">
         <form id="sellForm" onsubmit="submitSellForm(event)" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:36px;">
@@ -3796,6 +3838,11 @@
               <option value="1TB">1TB</option>
               <option value="N/A">Not applicable</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">IMEI Number <span style="font-weight:400;color:#94a3b8;font-size:13px;">(Optional — recommended)</span></label>
+            <input type="text" class="form-input" id="sell-imei" placeholder="e.g. 354 651 114 526 763" maxlength="20">
+            <p style="font-size:12px;color:#94a3b8;margin-top:6px;">Dial *#06# or go to Settings → General → About → IMEI. Helps us verify the device and give a more accurate quote.</p>
           </div>
           <div class="form-group">
             <label class="form-label">Your Name *</label>
