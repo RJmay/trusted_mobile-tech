@@ -20,6 +20,7 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuxrFSYi53kFZXyPtoB7uUG5GAvBz7KdY&libraries=places&v=weekly&callback=initGoogleMaps"
     async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
       --brand: #00d4ff;
@@ -2655,6 +2656,18 @@
     body.light .service-type-name { color: #0f172a; }
     body.light .service-type-desc { color: #334155; }
 
+    /* Sell form — photo upload */
+    .sell-photo-zone{border:2px dashed rgba(255,255,255,.15);border-radius:14px;padding:22px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;color:#94a3b8;font-size:14px;line-height:1.7;margin-top:6px;}
+    .sell-photo-zone:hover,.sell-photo-zone.drag-over{border-color:var(--brand);background:rgba(0,212,255,.05);color:var(--brand);}
+    .sell-photo-zone.has-photos{border-color:rgba(16,185,129,.4);}
+    body.light .sell-photo-zone{border-color:rgba(0,0,0,.15);color:#64748b;}
+    body.light .sell-photo-zone:hover,body.light .sell-photo-zone.drag-over{border-color:var(--brand);color:var(--brand);}
+    .sell-photo-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .sell-photo-thumb{position:relative;width:72px;height:72px;}
+    .sell-photo-thumb img{width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid rgba(255,255,255,.12);}
+    body.light .sell-photo-thumb img{border-color:#e2e8f0;}
+    .sell-photo-del{position:absolute;top:-5px;right:-5px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:18px;height:18px;cursor:pointer;font-size:10px;line-height:18px;text-align:center;padding:0;}
+
     body.light .store-details {
       background: #f8fafc;
     }
@@ -3822,7 +3835,21 @@
             <input type="tel" class="form-input" id="sell-phone" placeholder="04XX XXX XXX">
           </div>
           <p style="font-size:13px;color:#94a3b8;margin-bottom:20px;">Please provide at least one contact method (email or phone).</p>
-          <button type="submit" class="btn">Get My Sell Quote</button>
+          <div class="form-group">
+            <label class="form-label">Device Photos * <span style="font-weight:400;color:#94a3b8;font-size:13px;">At least 1 required</span></label>
+            <div class="sell-photo-zone" id="sellPhotoZone"
+                 onclick="document.getElementById('sellPhotoInput').click()"
+                 ondragover="event.preventDefault();this.classList.add('drag-over')"
+                 ondragleave="this.classList.remove('drag-over')"
+                 ondrop="handleSellPhotoDrop(event)">
+              📷 Click or drag &amp; drop photos here<br>
+              <span style="font-size:12px;opacity:.6;">Front, back, and any damage — helps us give an accurate quote</span>
+              <input type="file" id="sellPhotoInput" accept="image/*" multiple style="display:none" onchange="handleSellPhotoFiles(event)">
+            </div>
+            <div class="sell-photo-strip" id="sellPhotoStrip"></div>
+            <p id="sellPhotoError" style="color:#ef4444;font-size:13px;margin-top:8px;display:none;">Please upload at least one photo of your device.</p>
+          </div>
+          <button type="submit" class="btn" id="sellSubmitBtn">Get My Sell Quote</button>
         </form>
       </div>
       <!-- Sell Confirmation -->
@@ -4397,7 +4424,82 @@
     }
     function startQuote(cat) { showSection('quote'); setTimeout(() => selectCategory(cat), 50); }
 
-    function submitSellForm(e) {
+    // ═══════════════════════════════════════════════════
+    //  EMAIL CONFIG — fill in your EmailJS credentials
+    //  (see setup instructions in the README / chat)
+    // ═══════════════════════════════════════════════════
+    var EMAILJS_PUBLIC_KEY       = 'YOUR_PUBLIC_KEY';      // from EmailJS → Account
+    var EMAILJS_SERVICE_ID       = 'YOUR_SERVICE_ID';      // from EmailJS → Email Services
+    var EMAILJS_SELL_NOTIFY_TPL  = 'sell_notify';          // template IDs you create
+    var EMAILJS_SELL_CONFIRM_TPL = 'sell_confirm';
+    var EMAILJS_QUOTE_NOTIFY_TPL = 'quote_notify';
+    var emailjsReady = false;
+    window.addEventListener('load', function() {
+      if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        emailjsReady = true;
+      }
+    });
+
+    function sendEmail(templateId, params) {
+      if (!emailjsReady) return Promise.resolve();
+      return emailjs.send(EMAILJS_SERVICE_ID, templateId, params).catch(function(err) {
+        console.warn('EmailJS error:', err);
+      });
+    }
+
+    // ── Sell photo upload state ──────────────────────
+    var sellPhotos = []; // {file, previewUrl}
+
+    function handleSellPhotoFiles(e) {
+      Array.from(e.target.files).forEach(function(f) {
+        sellPhotos.push({ file: f, previewUrl: URL.createObjectURL(f) });
+      });
+      e.target.value = '';
+      renderSellPhotoPreviews();
+    }
+    function handleSellPhotoDrop(e) {
+      e.preventDefault();
+      var zone = document.getElementById('sellPhotoZone');
+      zone.classList.remove('drag-over');
+      Array.from(e.dataTransfer.files).filter(function(f) { return f.type.startsWith('image/'); }).forEach(function(f) {
+        sellPhotos.push({ file: f, previewUrl: URL.createObjectURL(f) });
+      });
+      renderSellPhotoPreviews();
+    }
+    function removeSellPhoto(i) {
+      sellPhotos.splice(i, 1);
+      renderSellPhotoPreviews();
+    }
+    function renderSellPhotoPreviews() {
+      var strip = document.getElementById('sellPhotoStrip');
+      var zone = document.getElementById('sellPhotoZone');
+      if (!strip || !zone) return;
+      zone.classList.toggle('has-photos', sellPhotos.length > 0);
+      strip.innerHTML = sellPhotos.map(function(p, i) {
+        return '<div class="sell-photo-thumb">'
+          + '<img src="' + p.previewUrl + '" alt="">'
+          + '<button type="button" class="sell-photo-del" onclick="removeSellPhoto(' + i + ')">✕</button>'
+          + '</div>';
+      }).join('');
+    }
+
+    async function uploadSellPhotos() {
+      if (!db) return [];
+      var urls = [];
+      for (var i = 0; i < sellPhotos.length; i++) {
+        var p = sellPhotos[i];
+        var ext = p.file.name.split('.').pop() || 'jpg';
+        var path = 'sell-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
+        var res = await db.storage.from('device-photos').upload(path, p.file, { upsert: false });
+        if (res.error) { console.warn('Photo upload error:', res.error.message); continue; }
+        var pub = db.storage.from('device-photos').getPublicUrl(path);
+        urls.push(pub.data.publicUrl);
+      }
+      return urls;
+    }
+
+    async function submitSellForm(e) {
       e.preventDefault();
       var email = document.getElementById('sell-email').value.trim();
       var phone = document.getElementById('sell-phone').value.trim();
@@ -4405,17 +4507,63 @@
         alert('Please provide at least one contact method — email or phone number.');
         return;
       }
+      if (sellPhotos.length === 0) {
+        var err = document.getElementById('sellPhotoError');
+        if (err) { err.style.display = 'block'; err.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        return;
+      }
+      document.getElementById('sellPhotoError').style.display = 'none';
+      var btn = document.getElementById('sellSubmitBtn');
+      btn.textContent = 'Submitting…'; btn.disabled = true;
+
+      var photoUrls = await uploadSellPhotos();
+      var name        = document.getElementById('sell-name').value.trim();
+      var deviceType  = document.getElementById('sell-device').value;
+      var model       = document.getElementById('sell-model').value.trim();
+      var condition   = document.getElementById('sell-condition').value;
+      var storage     = document.getElementById('sell-storage').value;
+      var imei        = document.getElementById('sell-imei').value.trim();
+
+      // Email business
+      await sendEmail(EMAILJS_SELL_NOTIFY_TPL, {
+        to_email:      'info@trustedmobiletech.org',
+        customer_name: name,
+        customer_email: email || '(not provided)',
+        customer_phone: phone || '(not provided)',
+        device_type:   deviceType,
+        device_model:  model,
+        condition:     condition,
+        storage:       storage || 'Not specified',
+        imei:          imei || 'Not provided',
+        photo_urls:    photoUrls.join('\n') || 'No photos uploaded',
+        submitted_at:  new Date().toLocaleString('en-AU')
+      });
+
+      // Confirmation to customer if they gave email
+      if (email) {
+        await sendEmail(EMAILJS_SELL_CONFIRM_TPL, {
+          to_email:      email,
+          customer_name: name,
+          device_type:   deviceType,
+          device_model:  model
+        });
+      }
+
       var contactParts = [];
       if (email) contactParts.push('email (' + email + ')');
       if (phone) contactParts.push('phone (' + phone + ')');
       document.getElementById('sell-confirm-msg').textContent =
-        'Your quote is being sent to your ' + contactParts.join(' and ') + '. We\'ll be in touch shortly!';
+        'Your quote request has been sent. We\'ll be in touch via your ' + contactParts.join(' and ') + ' shortly!';
       document.getElementById('sell-form-wrap').style.display = 'none';
       document.getElementById('sell-confirm-wrap').style.display = 'block';
+      btn.textContent = 'Get My Sell Quote'; btn.disabled = false;
     }
 
     function resetSellForm() {
       document.getElementById('sellForm').reset();
+      sellPhotos = [];
+      renderSellPhotoPreviews();
+      document.getElementById('sellPhotoError').style.display = 'none';
       document.getElementById('sell-form-wrap').style.display = 'block';
       document.getElementById('sell-confirm-wrap').style.display = 'none';
     }
@@ -4828,6 +4976,21 @@
           if (db) db.from('activity_log').insert({ message: 'New quote ' + qn + ' from ' + quoteRow.customer_name + ' — $' + quoteRow.total, type: 'info' }).then(() => { });
           // Send SMS notification
           sendSmsNotification(quoteRow);
+          // Send email notification to business
+          sendEmail(EMAILJS_QUOTE_NOTIFY_TPL, {
+            to_email:      'info@trustedmobiletech.org',
+            quote_number:  qn,
+            customer_name: quoteRow.customer_name,
+            customer_email: quoteRow.customer_email || '(not provided)',
+            customer_phone: quoteRow.customer_phone,
+            device:        quoteRow.device,
+            repairs:       quoteRow.repairs.map(function(r) { return r.name + ' $' + r.price; }).join(', '),
+            total:         '$' + quoteRow.total,
+            service:       quoteRow.service_type === 'mobile' ? 'Mobile Pickup — ' + (quoteRow.pickup_address || '') : 'Store Drop-off',
+            date:          quoteRow.appointment_date,
+            time:          quoteRow.appointment_time,
+            submitted_at:  new Date().toLocaleString('en-AU')
+          });
         }
         goToPage(4);
       });
