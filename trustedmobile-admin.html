@@ -266,6 +266,30 @@ tr:hover td{background:#f8fafc;}
 .activity-body span{font-size:12px;color:var(--muted);}
 .activity-meta{font-size:12px;color:var(--muted);white-space:nowrap;}
 
+/* ── LISTINGS ───────────────────────────────────────── */
+.listings-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;height:calc(100vh - 120px);}
+.listings-sidebar{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:0;}
+.listings-form-panel{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px;overflow-y:auto;}
+.listings-form-title{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text);}
+.listing-row{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:8px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;}
+.listing-row:last-child{border-bottom:none;}
+.listing-row:hover{background:#f8fafc;}
+.listing-row.active{background:#e0f2fe;outline:2px solid rgba(0,150,199,.25);outline-offset:-2px;}
+.listing-thumb{width:44px;height:44px;border-radius:8px;background:#f1f5f9;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;}
+.listing-thumb img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
+.listing-row-info{flex:1;min-width:0;}
+.listing-row-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.listing-row-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.listing-row-price{font-size:14px;font-weight:700;color:var(--green);white-space:nowrap;}
+.lf-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;margin-top:12px;}
+.lf-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.img-drop-zone{border:2px dashed var(--border);border-radius:10px;padding:18px;text-align:center;cursor:pointer;margin-top:6px;transition:border-color .2s,background .2s;color:var(--muted);font-size:13px;}
+.img-drop-zone:hover{border-color:var(--brand);background:#f0f9ff;color:var(--brand);}
+.img-preview-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.img-thumb-wrap{position:relative;width:72px;height:72px;}
+.img-thumb-wrap img{width:72px;height:72px;object-fit:cover;border-radius:8px;border:2px solid var(--border);}
+.img-thumb-del{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;cursor:pointer;font-size:10px;line-height:18px;text-align:center;padding:0;}
+
 /* ── RESPONSIVE ─────────────────────────────────────── */
 @media(max-width:900px){
   .sidebar{width:60px;overflow:hidden;}
@@ -274,6 +298,8 @@ tr:hover td{background:#f8fafc;}
   .stat-grid{grid-template-columns:1fr 1fr;}
   .overview-grid{grid-template-columns:1fr;}
   .settings-grid{grid-template-columns:1fr;}
+  .listings-layout{grid-template-columns:1fr;height:auto;}
+  .listings-sidebar{max-height:40vh;}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -344,6 +370,10 @@ tr:hover td{background:#f8fafc;}
     </button>
     <button class="nav-item" onclick="showView('payments')" id="nav-payments">
       <span class="nav-icon">💳</span><span>Payment Log</span>
+    </button>
+    <button class="nav-item" onclick="showView('listings')" id="nav-listings">
+      <span class="nav-icon">🏷️</span><span>Listings</span>
+      <span class="nav-badge hidden" id="listingsBadge">0</span>
     </button>
     <div class="nav-section">System</div>
     <button class="nav-item" onclick="showView('settings')" id="nav-settings">
@@ -475,6 +505,100 @@ tr:hover td{background:#f8fafc;}
           </thead>
           <tbody id="paymentBody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ══ LISTINGS ══════════════════════════════════════ -->
+    <div class="view" id="view-listings">
+      <div class="listings-layout">
+        <!-- LEFT: vertical roll -->
+        <div class="listings-sidebar">
+          <button class="btn btn-primary" style="width:100%;margin-bottom:12px;" onclick="newListing()">＋ New Listing</button>
+          <div id="listingsRoll"></div>
+        </div>
+        <!-- RIGHT: form -->
+        <div class="listings-form-panel">
+          <div class="listings-form-title" id="listingsFormTitle">New Listing</div>
+          <form id="listingForm" onsubmit="saveListing(event)">
+            <div class="lf-row2">
+              <div>
+                <label class="lf-label">Brand</label>
+                <select class="filter-select" id="lf-brand" style="width:100%">
+                  <option>iPhone</option><option>iPad</option><option>MacBook</option>
+                  <option>Samsung</option><option>Google Pixel</option><option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="lf-label">Model</label>
+                <input class="filter-input" id="lf-model" placeholder="e.g. 13 Pro" required style="width:100%">
+              </div>
+            </div>
+            <div class="lf-row2">
+              <div>
+                <label class="lf-label">Storage</label>
+                <input class="filter-input" id="lf-storage" placeholder="e.g. 128GB" style="width:100%">
+              </div>
+              <div>
+                <label class="lf-label">Color</label>
+                <input class="filter-input" id="lf-color" placeholder="e.g. Midnight" style="width:100%">
+              </div>
+            </div>
+            <div class="lf-row2">
+              <div>
+                <label class="lf-label">Grade</label>
+                <select class="filter-select" id="lf-grade" style="width:100%">
+                  <option>Grade A+</option><option>Grade A</option><option>Grade B</option><option>Grade C</option>
+                </select>
+              </div>
+              <div>
+                <label class="lf-label">Battery Health</label>
+                <input class="filter-input" id="lf-battery" placeholder="e.g. 96%" style="width:100%">
+              </div>
+            </div>
+            <div class="lf-row2">
+              <div>
+                <label class="lf-label">Our Price ($) *</label>
+                <input class="filter-input" id="lf-price" type="number" min="0" required placeholder="549" style="width:100%">
+              </div>
+              <div>
+                <label class="lf-label">RRP ($) <span style="font-weight:400;opacity:.6;">optional</span></label>
+                <input class="filter-input" id="lf-rrp" type="number" min="0" placeholder="799" style="width:100%">
+              </div>
+            </div>
+            <div>
+              <label class="lf-label">Description <span style="font-weight:400;opacity:.6;">optional</span></label>
+              <textarea class="filter-input" id="lf-desc" rows="2" placeholder="Any extra details, included accessories, known faults…" style="width:100%;resize:vertical;min-height:54px;"></textarea>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap;">
+              <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px;font-weight:600;">
+                <input type="checkbox" id="lf-featured" style="width:15px;height:15px;accent-color:var(--brand);">
+                ⭐ Featured
+              </label>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+                <label class="lf-label" style="margin:0;white-space:nowrap;">Status</label>
+                <select class="filter-select" id="lf-status">
+                  <option value="available">✓ Available</option>
+                  <option value="sold">✕ Sold</option>
+                  <option value="reserved">◷ Reserved</option>
+                </select>
+              </div>
+            </div>
+            <label class="lf-label" style="margin-top:14px;">Photos</label>
+            <div class="img-drop-zone" id="imgDropZone"
+                 onclick="document.getElementById('imgFileInput').click()"
+                 ondragover="event.preventDefault();this.style.borderColor='var(--brand)'"
+                 ondragleave="this.style.borderColor=''"
+                 ondrop="handleImgDrop(event)">
+              📷 Click or drag &amp; drop photos here
+              <input type="file" id="imgFileInput" accept="image/*" multiple style="display:none" onchange="handleImgFiles(event)">
+            </div>
+            <div class="img-preview-strip" id="imgPreviewStrip"></div>
+            <div style="display:flex;gap:10px;margin-top:18px;">
+              <button type="submit" class="btn btn-primary" id="lfSaveBtn" style="flex:1;">💾 Save Listing</button>
+              <button type="button" class="btn btn-ghost" id="lfCancelBtn" onclick="newListing()" style="display:none;">Cancel</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -770,6 +894,10 @@ async function refreshAll() {
     // Load payments (paid quotes)
     const {data:payData}=await db.from('quotes').select('*').order('created_at',{ascending:false});
     if(payData) payments=payData.map(q=>({quoteNumber:q.quote_number,customer:q.customer_name,email:q.customer_email,phone:q.customer_phone,device:q.device,repairs:q.repairs||[],serviceType:q.service_type,total:q.total,paidAt:q.paid_at,createdAt:q.created_at,status:q.status,dbId:q.id}));
+
+    // Load listings
+    const {data:lstData}=await db.from('listings').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:false});
+    if(lstData) { listings=lstData; updateListingsBadge(); }
   } catch(e) {
     console.error('Supabase load error:',e);
     // Fallback to localStorage
@@ -786,6 +914,7 @@ function renderCurrentView() {
   if (currentView==='inventory')  renderInventory();
   if (currentView==='orders')     renderOrders();
   if (currentView==='payments')   renderPayments();
+  if (currentView==='listings')   renderListingsRoll();
 }
 
 function updateBadges() {
@@ -825,7 +954,7 @@ function validatePinInput(el) { el.value=el.value.replace(/\D/g,'').slice(0,4); 
 // ═══════════════════════════════════════════════════
 //  VIEWS
 // ═══════════════════════════════════════════════════
-const VIEW_TITLES = { overview:'Dashboard', inventory:'Inventory', orders:'Purchase Orders', payments:'Payment Log', settings:'Settings' };
+const VIEW_TITLES = { overview:'Dashboard', inventory:'Inventory', orders:'Purchase Orders', payments:'Payment Log', listings:'Listings', settings:'Settings' };
 function showView(v) {
   currentView=v;
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
@@ -1311,6 +1440,176 @@ function toast(msg, type='info') {
   t.innerHTML=`<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
   c.appendChild(t);
   setTimeout(()=>{ t.classList.add('removing'); setTimeout(()=>t.remove(),300); },4000);
+}
+
+// ═══════════════════════════════════════════════════
+//  LISTINGS
+// ═══════════════════════════════════════════════════
+let listings = [];
+let editingListingId = null;
+let pendingImgs = []; // {file?, previewUrl, existingUrl?}
+
+function updateListingsBadge() {
+  const avail = listings.filter(l=>l.status==='available').length;
+  const b = document.getElementById('listingsBadge');
+  if(!b) return;
+  b.textContent = avail;
+  b.classList.toggle('hidden', avail === 0);
+}
+
+function renderListingsRoll() {
+  const el = document.getElementById('listingsRoll');
+  if (!el) return;
+  if (!listings.length) {
+    el.innerHTML='<div style="text-align:center;color:var(--muted);padding:32px 0;font-size:13px;">No listings yet.<br>Click + New Listing to add one.</div>';
+    return;
+  }
+  el.innerHTML = listings.map(l => {
+    const thumb = l.images && l.images.length
+      ? `<div class="listing-thumb"><img src="${l.images[0]}" onerror="this.parentElement.innerHTML='${l.brand==='MacBook'?'💻':l.brand==='iPad'?'📲':'📱'}'"></div>`
+      : `<div class="listing-thumb">${l.brand==='MacBook'?'💻':l.brand==='iPad'?'📲':'📱'}</div>`;
+    const statusClr = l.status==='available'?'var(--green)':l.status==='sold'?'var(--red)':'var(--amber)';
+    const statusTxt = l.status==='available'?'✓ Available':l.status==='sold'?'✕ Sold':'◷ Reserved';
+    const isActive = editingListingId===l.id;
+    return `<div class="listing-row${isActive?' active':''}" onclick="editListing('${l.id}')">
+      ${thumb}
+      <div class="listing-row-info">
+        <div class="listing-row-name">${l.brand} ${l.model}${l.storage?' '+l.storage:''}</div>
+        <div class="listing-row-meta" style="color:${statusClr}">${statusTxt}${l.featured?' · ⭐':''}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+        <div class="listing-row-price">$${l.price}</div>
+        <button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;padding:2px 8px;font-size:11px;" onclick="event.stopPropagation();deleteListing('${l.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function newListing() {
+  editingListingId = null;
+  pendingImgs = [];
+  document.getElementById('listingForm').reset();
+  document.getElementById('imgPreviewStrip').innerHTML = '';
+  document.getElementById('listingsFormTitle').textContent = 'New Listing';
+  document.getElementById('lfCancelBtn').style.display = 'none';
+  document.getElementById('lf-featured').checked = false;
+  document.getElementById('lf-status').value = 'available';
+  renderListingsRoll();
+}
+
+function editListing(id) {
+  const l = listings.find(x=>x.id===id);
+  if (!l) return;
+  editingListingId = id;
+  pendingImgs = (l.images||[]).map(url=>({previewUrl:url, existingUrl:url}));
+  document.getElementById('lf-brand').value   = l.brand   || 'iPhone';
+  document.getElementById('lf-model').value   = l.model   || '';
+  document.getElementById('lf-storage').value = l.storage || '';
+  document.getElementById('lf-color').value   = l.color   || '';
+  document.getElementById('lf-grade').value   = l.grade   || 'Grade A';
+  document.getElementById('lf-battery').value = l.battery || '';
+  document.getElementById('lf-price').value   = l.price   || '';
+  document.getElementById('lf-rrp').value     = l.rrp     || '';
+  document.getElementById('lf-desc').value    = l.description || '';
+  document.getElementById('lf-featured').checked = !!l.featured;
+  document.getElementById('lf-status').value  = l.status  || 'available';
+  document.getElementById('listingsFormTitle').textContent = 'Edit Listing';
+  document.getElementById('lfCancelBtn').style.display = '';
+  renderImgPreviews();
+  renderListingsRoll();
+  document.querySelector('.listings-form-panel').scrollTop = 0;
+}
+
+function renderImgPreviews() {
+  document.getElementById('imgPreviewStrip').innerHTML = pendingImgs.map((pf,i)=>
+    `<div class="img-thumb-wrap">
+      <img src="${pf.previewUrl}" alt="">
+      <button type="button" class="img-thumb-del" onclick="removeImg(${i})">✕</button>
+    </div>`).join('');
+}
+
+function removeImg(i) { pendingImgs.splice(i,1); renderImgPreviews(); }
+
+function handleImgFiles(e) {
+  Array.from(e.target.files).forEach(file => {
+    pendingImgs.push({file, previewUrl: URL.createObjectURL(file)});
+  });
+  e.target.value = '';
+  renderImgPreviews();
+}
+
+function handleImgDrop(e) {
+  e.preventDefault();
+  document.getElementById('imgDropZone').style.borderColor = '';
+  Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/')).forEach(file => {
+    pendingImgs.push({file, previewUrl: URL.createObjectURL(file)});
+  });
+  renderImgPreviews();
+}
+
+async function uploadPendingImgs() {
+  const urls = [];
+  for (const pf of pendingImgs) {
+    if (pf.existingUrl && !pf.file) { urls.push(pf.existingUrl); continue; }
+    if (!pf.file) continue;
+    const ext = pf.file.name.split('.').pop() || 'jpg';
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const {error} = await db.storage.from('listing-images').upload(path, pf.file, {upsert:false});
+    if (error) { toast('Upload failed: '+error.message, 'error'); continue; }
+    const {data:{publicUrl}} = db.storage.from('listing-images').getPublicUrl(path);
+    urls.push(publicUrl);
+  }
+  return urls;
+}
+
+async function saveListing(e) {
+  e.preventDefault();
+  const btn = document.getElementById('lfSaveBtn');
+  btn.textContent = '⏳ Saving…'; btn.disabled = true;
+  try {
+    const images = await uploadPendingImgs();
+    const payload = {
+      brand:       document.getElementById('lf-brand').value,
+      model:       document.getElementById('lf-model').value.trim(),
+      storage:     document.getElementById('lf-storage').value.trim(),
+      color:       document.getElementById('lf-color').value.trim(),
+      grade:       document.getElementById('lf-grade').value,
+      battery:     document.getElementById('lf-battery').value.trim(),
+      price:       parseInt(document.getElementById('lf-price').value)||0,
+      rrp:         parseInt(document.getElementById('lf-rrp').value)||null,
+      description: document.getElementById('lf-desc').value.trim(),
+      images,
+      featured:    document.getElementById('lf-featured').checked,
+      status:      document.getElementById('lf-status').value,
+    };
+    let error;
+    if (editingListingId) {
+      ({error} = await db.from('listings').update(payload).eq('id', editingListingId));
+    } else {
+      ({error} = await db.from('listings').insert(payload));
+    }
+    if (error) throw error;
+    toast(editingListingId ? 'Listing updated ✓' : 'Listing added ✓', 'success');
+    const {data} = await db.from('listings').select('*').order('sort_order',{ascending:true}).order('created_at',{ascending:false});
+    if (data) { listings = data; updateListingsBadge(); }
+    if (!editingListingId) newListing();
+    else { renderListingsRoll(); }
+  } catch(err) {
+    toast('Save failed: '+err.message, 'error');
+  } finally {
+    btn.textContent = '💾 Save Listing'; btn.disabled = false;
+  }
+}
+
+async function deleteListing(id) {
+  if (!confirm('Delete this listing? This cannot be undone.')) return;
+  const {error} = await db.from('listings').delete().eq('id', id);
+  if (error) { toast('Delete failed: '+error.message, 'error'); return; }
+  toast('Listing deleted', 'warn');
+  listings = listings.filter(l=>l.id!==id);
+  updateListingsBadge();
+  if (editingListingId===id) newListing();
+  else renderListingsRoll();
 }
 
 // Close modals on backdrop click
