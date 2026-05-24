@@ -1261,7 +1261,7 @@
       font-size: 15px;
       font-family: var(--font);
       transition: all .3s;
-      background: #fff;
+      background: var(--surface);
       color: var(--text);
     }
 
@@ -2332,13 +2332,19 @@
     gmp-placeautocomplete input {
       width: 100% !important;
       padding: 14px 16px !important;
-      border: 2px solid rgba(255, 255, 255, .1) !important;
+      border: 2px solid var(--border) !important;
       border-radius: 10px !important;
       font-size: 15px !important;
       font-family: var(--font) !important;
       background: var(--surface) !important;
-      color: #e2e8f0 !important;
+      color: var(--text) !important;
       outline: none !important;
+    }
+
+    body.light gmp-placeautocomplete input {
+      color: #1e293b !important;
+      background: #fff !important;
+      border-color: #e2e8f0 !important;
     }
 
     gmp-placeautocomplete input:focus {
@@ -2586,6 +2592,34 @@
 
     body.light .form-label {
       color: #1e293b;
+    }
+
+    body.light .form-input::placeholder,
+    body.light .form-select::placeholder,
+    body.light .form-textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    body.light .form-input,
+    body.light .form-select,
+    body.light .form-textarea {
+      color: #1e293b !important;
+    }
+
+    .ac-dropdown {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    body.light .ac-dropdown {
+      background: #fff;
+      border-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    body.light .ac-dropdown div:hover {
+      background: rgba(0, 150, 199, .06);
     }
 
     body.light .search-input {
@@ -4556,7 +4590,7 @@
     function initAutocomplete() {
       var container = document.getElementById('pickupAddressContainer');
       if (!container) return;
-      container.innerHTML = '<div style="position:relative;"><input type="text" id="pickupAddress" placeholder="Start typing your address..." autocomplete="off" style="width:100%;padding:14px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--surface);color:#e2e8f0;"><div id="acDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:9999;margin-top:4px;background:var(--card-bg);border:1px solid rgba(255,255,255,.1);border-radius:10px;max-height:240px;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.5);"></div></div>';
+      container.innerHTML = '<div style="position:relative;"><input type="text" id="pickupAddress" class="form-input" placeholder="Start typing your address..." autocomplete="off" style="width:100%;box-sizing:border-box;"><div id="acDropdown" class="ac-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:9999;margin-top:4px;border-radius:10px;max-height:240px;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.3);"></div></div>';
       var inp = document.getElementById('pickupAddress');
       var dd = document.getElementById('acDropdown');
       if (!inp || typeof google === 'undefined' || !google.maps) return;
@@ -4585,7 +4619,7 @@
                 var pred = s.placePrediction;
                 if (!pred) return;
                 var item = document.createElement('div');
-                item.style.cssText = 'padding:12px 16px;cursor:pointer;color:#e2e8f0;font-size:14px;border-bottom:1px solid rgba(255,255,255,.06);transition:background .15s;';
+                item.style.cssText = 'padding:12px 16px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--border);transition:background .15s;';
                 item.textContent = pred.text.text || pred.text;
                 item.addEventListener('mouseenter', function () { item.style.background = 'rgba(0,212,255,.08)'; });
                 item.addEventListener('mouseleave', function () { item.style.background = 'transparent'; });
@@ -4629,7 +4663,7 @@
         var placeSvc = new (lib.PlacesService || google.maps.places.PlacesService)(document.createElement('div'));
         preds.forEach(function (p) {
           var item = document.createElement('div');
-          item.style.cssText = 'padding:12px 16px;cursor:pointer;color:#e2e8f0;font-size:14px;border-bottom:1px solid rgba(255,255,255,.06);transition:background .15s;';
+          item.style.cssText = 'padding:12px 16px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--border);transition:background .15s;';
           item.textContent = p.description;
           item.addEventListener('mouseenter', function () { item.style.background = 'rgba(0,212,255,.08)'; });
           item.addEventListener('mouseleave', function () { item.style.background = 'transparent'; });
@@ -5257,7 +5291,7 @@
             suggestions.forEach(function (s) {
               var pred = s.placePrediction; if (!pred) return;
               var item = document.createElement('div');
-              item.style.cssText = 'padding:12px 16px;cursor:pointer;color:#e2e8f0;font-size:14px;border-bottom:1px solid rgba(255,255,255,.06);';
+              item.style.cssText = 'padding:12px 16px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--border);';
               item.textContent = pred.text.text || pred.text;
               item.addEventListener('click', function () { document.getElementById('coAddressInput').value = item.textContent; dd.style.display = 'none'; });
               dd.appendChild(item);
