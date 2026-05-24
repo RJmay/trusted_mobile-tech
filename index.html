@@ -3251,20 +3251,19 @@
       </div>
       <div class="device-cards">
         <div class="device-card iphone" onclick="startQuote('iPhone')">
-          <span class="dc-icon" style="font-size:0;"><img src="Images/series-iphone-16.png"
-              style="height:72px;object-fit:contain;"></span>
+          <span class="dc-icon">📱</span>
           <div class="dc-name">iPhone</div>
           <div class="dc-desc">Screen, battery, camera, charging &amp; more — iPhone 11 through 17 series</div>
           <span class="dc-badge">8 model lines</span>
         </div>
         <div class="device-card macbook" onclick="startQuote('MacBook')">
-          <span class="dc-icon" style="font-size:0;"><img src="Images/macbook-air-m3.png" class="dc-device-img" style="height:72px;object-fit:contain;"></span>
+          <span class="dc-icon">💻</span>
           <div class="dc-name">MacBook</div>
           <div class="dc-desc">Keyboard, battery, screen, trackpad — MacBook Air &amp; Pro repairs</div>
           <span class="dc-badge">4 model lines</span>
         </div>
         <div class="device-card ipad" onclick="startQuote('iPad')">
-          <span class="dc-icon" style="font-size:0;"><img src="Images/ipad-pro-11-m4.png" class="dc-device-img" style="height:72px;object-fit:contain;"></span>
+          <span class="dc-icon">📲</span>
           <div class="dc-name">iPad</div>
           <div class="dc-desc">Screen, charging, battery — iPad, mini, Air &amp; Pro all generations</div>
           <span class="dc-badge">4 model lines</span>
@@ -3672,7 +3671,7 @@
             <div class="contact-icon">✉️</div>
             <div>
               <div class="contact-label">Email</div>
-              <div class="contact-value">info@trustedmobiletech.org</div>
+              <div class="contact-value"><a href="mailto:info@trustedmobiletech.org" style="color:inherit;text-decoration:none;">info@trustedmobiletech.org</a></div>
             </div>
           </div>
           <div class="contact-item">
@@ -3812,15 +3811,18 @@
         </div>
         <div>
           <h3>Quick Links</h3>
-          <p><a onclick="showSection('home')" style="display:block;cursor:pointer;">Home</a><a
-              onclick="showSection('quote')" style="display:block;cursor:pointer;">Get a Quote</a><a
-              onclick="showSection('reviews')" style="display:block;cursor:pointer;">Reviews</a><a
-              onclick="showSection('deals')" style="display:block;cursor:pointer;">Refurbished Devices</a><
-              onclick="showSection('contact')" style="display:block;cursor:pointer;">Contact Us</a></p>
+          <p>
+            <a onclick="showSection('home')" style="display:block;cursor:pointer;margin-bottom:6px;">Home</a>
+            <a onclick="showSection('quote')" style="display:block;cursor:pointer;margin-bottom:6px;">Get a Quote</a>
+            <a onclick="showSection('reviews')" style="display:block;cursor:pointer;margin-bottom:6px;">Reviews</a>
+            <a onclick="showSection('deals')" style="display:block;cursor:pointer;margin-bottom:6px;">Refurbished Devices</a>
+            <a onclick="showSection('sell')" style="display:block;cursor:pointer;margin-bottom:6px;">Sell Your Device</a>
+            <a onclick="showSection('contact')" style="display:block;cursor:pointer;">Contact Us</a>
+          </p>
         </div>
         <div>
           <h3>Contact</h3>
-          <p>0467 748 433<br>info@trustedmobiletech.org<br><br>21 Freycinet Row<br>Buderim QLD 4556</p>
+          <p><a href="tel:0467748433" style="color:inherit;">0467 748 433</a><br><a href="mailto:info@trustedmobiletech.org" style="color:inherit;">info@trustedmobiletech.org</a><br><br>21 Freycinet Row<br>Buderim QLD 4556</p>
         </div>
       </div>
       <div class="footer-bottom">© 2025 Trusted Mobile Tech. All rights reserved.</div>
@@ -4840,8 +4842,9 @@
       var oemPrice = basePrice + 75;
       document.getElementById('oemModalTitle').textContent = n;
       var h = '';
-      h += '<div class="quality-option" onclick="selectOEMRepair(' + JSON.stringify(n) + ',' + basePrice + ',' + JSON.stringify(t) + ',\'aftermarket\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">Aftermarket Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality tested aftermarket component. Fully functional with 6-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div></div></div>';
-      h += '<div class="quality-option" onclick="selectOEMRepair(' + JSON.stringify(n) + ',' + oemPrice + ',' + JSON.stringify(t) + ',\'oem\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">OEM-grade genuine-specification part. Matches original performance with 12-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div></div></div>';
+      var encN = encodeURIComponent(n), encT = encodeURIComponent(t || '');
+      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + basePrice + '" data-t="' + encT + '" data-type="aftermarket" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">Aftermarket Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality tested aftermarket component. Fully functional with 6-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div></div></div>';
+      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + oemPrice + '" data-t="' + encT + '" data-type="oem" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">OEM-grade genuine-specification part. Matches original performance with 12-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div></div></div>';
       document.getElementById('oemOptions').innerHTML = h;
       document.getElementById('oemModal').classList.add('show');
     }
