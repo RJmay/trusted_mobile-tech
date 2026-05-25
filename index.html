@@ -5405,7 +5405,7 @@
           </div>
         </div>
 
-        <button class="btn" onclick="submitCheckout()">Place Order</button>
+        <button class="btn" onclick="submitCheckout()" style="width:100%;">🔒 Pay Now — Powered by Stripe</button>
       </div>
       <div id="checkoutThanksWrap" style="display:none;text-align:center;padding:24px 0;">
         <div style="font-size:56px;margin-bottom:16px;">✅</div>
@@ -5490,8 +5490,8 @@
       document.getElementById('coTotal').textContent = '$' + total;
     }
 
-    function submitCheckout() {
-      var name = document.getElementById('co-name').value.trim();
+    async function submitCheckout() {
+      var name  = document.getElementById('co-name').value.trim();
       var email = document.getElementById('co-email').value.trim();
       var phone = document.getElementById('co-phone').value.trim();
       if (!name || !email || !phone) { alert('Please fill in your name, email, and phone number.'); return; }
@@ -5500,13 +5500,62 @@
         var addr = document.getElementById('coAddressInput').value.trim();
         if (!addr) { alert('Please enter your delivery address.'); return; }
       }
-      var msg = _coShippingType === 'pickup'
-        ? 'We\'ll contact you at ' + email + ' or ' + phone + ' to arrange your store pickup at 21 Freycinet Row, Buderim QLD 4556.'
-        : 'Confirmation details will be sent to ' + email + '. Your order will be dispatched within 1 business day.';
-      document.getElementById('coThanksMsg').textContent = msg;
-      document.getElementById('checkoutFormWrap').style.display = 'none';
-      document.getElementById('checkoutThanksWrap').style.display = 'block';
+
+      var shippingLabel = _coShippingType === 'express' ? 'Express Shipping (1–2 days)' : _coShippingType === 'standard' ? 'Standard Shipping (3–5 days)' : null;
+
+      var payBtn = document.querySelector('#checkoutFormWrap .btn');
+      payBtn.textContent = '⏳ Redirecting to payment…'; payBtn.disabled = true;
+
+      try {
+        var resp = await fetch('/.netlify/functions/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            device:        document.getElementById('coDeviceName').textContent,
+            spec:          document.getElementById('coDeviceSpec').textContent,
+            devicePrice:   _coDevicePrice,
+            shippingLabel: shippingLabel,
+            shippingCost:  _coShippingCost,
+            upsells:       _coUpsells,
+            name, email, phone,
+          }),
+        });
+        var result = await resp.json();
+        if (result.url) {
+          window.location.href = result.url;
+        } else {
+          alert('Payment error: ' + (result.error || 'Please try again.'));
+          payBtn.textContent = 'Pay Now'; payBtn.disabled = false;
+        }
+      } catch (err) {
+        alert('Connection error — please try again.');
+        payBtn.textContent = 'Pay Now'; payBtn.disabled = false;
+      }
     }
+
+    // Handle return from Stripe (success or cancel)
+    (function() {
+      var p = new URLSearchParams(window.location.search).get('payment');
+      if (!p) return;
+      window.history.replaceState({}, '', window.location.pathname);
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          if (p === 'success') {
+            showSection('deals');
+            // Reuse checkout thanks screen as a standalone success banner
+            var modal = document.getElementById('checkoutModal');
+            var form  = document.getElementById('checkoutFormWrap');
+            var ty    = document.getElementById('checkoutThanksWrap');
+            document.getElementById('coThanksMsg').textContent = 'Payment confirmed! You\'ll receive a confirmation email shortly. Questions? Call 0467 748 433.';
+            if (form) form.style.display = 'none';
+            if (ty)   ty.style.display   = 'block';
+            if (modal) modal.classList.add('show');
+          } else if (p === 'cancelled') {
+            showSection('deals');
+          }
+        }, 300);
+      });
+    })();
 
     // ── Checkout address autocomplete ──
     function coAddressSuggest(val) {
