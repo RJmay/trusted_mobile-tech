@@ -65,7 +65,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(10, 11, 16, .92);
+      background: rgba(0, 0, 0, .96);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(255, 255, 255, .06);
       padding: 0 40px;
@@ -77,44 +77,21 @@
     }
 
     .header.scrolled {
-      box-shadow: 0 4px 30px rgba(0, 0, 0, .5);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, .6);
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 14px;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
-    .logo-box {
-      width: 46px;
-      height: 46px;
-      background: var(--grad);
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo-box svg {
-      width: 26px;
-      height: 26px;
-    }
-
-    .logo-name {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--dark);
-      letter-spacing: -.5px;
-    }
-
-    .logo-tag {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--brand);
-      letter-spacing: 2.5px;
-      margin-top: -2px;
+    .logo-img {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+      display: block;
     }
 
     .nav {
@@ -1610,7 +1587,7 @@
     .contact-item {
       display: flex;
       gap: 16px;
-      align-items: flex-start;
+      align-items: center;
       padding: 18px 0;
       border-bottom: 1px solid var(--border);
     }
@@ -2407,7 +2384,7 @@
     }
 
     body.light .header {
-      background: rgba(255, 255, 255, .92);
+      background: #fff;
       border-bottom-color: #e2e8f0;
     }
 
@@ -2692,6 +2669,9 @@
       background: rgba(0, 150, 199, .04);
     }
 
+    .oem-opt-title { font-size: 16px; color: #e2e8f0; }
+    body.light .oem-opt-title { color: #0f172a !important; }
+
     body.light .quality-option strong {
       color: #0f172a !important;
     }
@@ -2877,7 +2857,12 @@
     body.light .thankyou-banner {
       background: linear-gradient(135deg, rgba(0, 150, 199, .08), rgba(0, 180, 216, .06));
       border-color: rgba(0, 150, 199, .15);
+      color: #1e293b;
     }
+
+    body.light #oemModal h2,
+    body.light #oemModal #oemModalTitle { color: #1e293b !important; }
+    body.light #oemModal > .modal > p { color: #475569 !important; }
 
     body.light #acDropdown {
       background: #fff !important;
@@ -3150,6 +3135,12 @@
     @media(max-width:900px) {
       .header {
         padding: 0 16px;
+        height: auto;
+        min-height: 64px;
+      }
+
+      .logo-img {
+        height: 42px;
       }
 
       .nav {
@@ -3185,6 +3176,14 @@
 
       .reviews-grid {
         grid-template-columns: 1fr;
+      }
+
+      .review-card {
+        padding: 20px 16px;
+      }
+
+      #sec-reviews .wrap {
+        padding: 0 16px;
       }
 
       .contact-grid {
@@ -3248,16 +3247,7 @@
   <!-- HEADER -->
   <header class="header" id="header">
     <div class="logo" onclick="showSection('home')">
-      <div class="logo-box"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path d="M30 50 Q50 30 70 50 Q50 70 30 50" fill="#fff" opacity=".3" />
-          <ellipse cx="35" cy="45" rx="3" ry="3" fill="#fff" />
-          <path d="M50 50 Q60 45 75 48" stroke="#fff" stroke-width="3" fill="none" />
-          <circle cx="55" cy="35" r="2" fill="#fff" />
-        </svg></div>
-      <div>
-        <div class="logo-name">TRUSTEDMOBILE</div>
-        <div class="logo-tag">TECH</div>
-      </div>
+      <img src="artic_waters_4k.JPG" alt="Trusted Mobile Tech" class="logo-img">
     </div>
     <button class="mobile-toggle" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <div class="theme-toggle" onclick="toggleTheme()" title="Switch light/dark mode"><span
@@ -3281,7 +3271,7 @@
   <section class="section active" id="sec-home">
     <div class="wrap">
       <div class="hero">
-        <div class="hero-badge">⚡ Sunshine Coast & Brisbane's Trusted Repair Experts</div>
+        <div class="hero-badge">Sunshine Coast &amp; Brisbane's Trusted Repair Experts</div>
         <h1>Expert <span class="hl">Device Repairs</span><br>Done Right, Done Fast</h1>
         <p>iPhone, MacBook &amp; iPad repairs with same-day turnaround, 90-day warranty, and no-fix-no-fee guarantee.
           Drop off or we come to you.</p>
@@ -5108,8 +5098,8 @@
       document.getElementById('oemModalTitle').textContent = n;
       var h = '';
       var encN = encodeURIComponent(n), encT = encodeURIComponent(t || '');
-      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + basePrice + '" data-t="' + encT + '" data-type="aftermarket" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">Aftermarket Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality tested aftermarket component. Fully functional with 6-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div></div></div>';
-      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + oemPrice + '" data-t="' + encT + '" data-type="oem" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">OEM-grade genuine-specification part. Matches original performance with 12-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div></div></div>';
+      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + basePrice + '" data-t="' + encT + '" data-type="aftermarket" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong class="oem-opt-title">Aftermarket Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(0,212,255,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.7;">High-quality aftermarket component rigorously tested before fitting. Performs to original device specifications in everyday use. Includes <strong style="color:#94a3b8;">6-month parts &amp; labour warranty</strong>. Ideal for budget-conscious repairs without sacrificing reliability.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">inc. fitting</div></div></div>';
+      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + oemPrice + '" data-t="' + encT + '" data-type="oem" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong class="oem-opt-title">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.7;">OEM-specification part sourced from certified suppliers — identical in material, tolerances, and performance to the original manufacturer component. Maintains device resale value and works seamlessly with iOS/macOS. Includes <strong style="color:#94a3b8;">12-month parts &amp; labour warranty</strong>.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">inc. fitting</div></div></div>';
       document.getElementById('oemOptions').innerHTML = h;
       document.getElementById('oemModal').classList.add('show');
     }
@@ -5311,9 +5301,21 @@
             <label class="form-label">Your Review *</label>
             <textarea class="form-textarea" id="rv-text" required placeholder="Tell us about your experience..." style="min-height:120px;"></textarea>
           </div>
-          <div class="form-group" style="margin-bottom:24px;">
+          <div class="form-group" style="margin-bottom:18px;">
             <label class="form-label">Suburb</label>
             <input type="text" class="form-input" id="rv-suburb" placeholder="e.g. Buderim">
+          </div>
+          <div class="form-group" style="margin-bottom:24px;">
+            <label class="form-label">Photos <span style="font-weight:400;color:#94a3b8;font-size:12px;">Optional — show off your repaired device!</span></label>
+            <div class="sell-photo-zone" id="rvPhotoZone"
+                 onclick="document.getElementById('rvPhotoInput').click()"
+                 ondragover="event.preventDefault();this.classList.add('drag-over')"
+                 ondragleave="this.classList.remove('drag-over')"
+                 ondrop="handleRvPhotoDrop(event)">
+              📷 Add photos (optional)
+              <input type="file" id="rvPhotoInput" accept="image/*" multiple style="display:none" onchange="handleRvPhotoFiles(event)">
+            </div>
+            <div class="sell-photo-strip" id="rvPhotoStrip"></div>
           </div>
           <button type="submit" class="btn">Submit Review</button>
         </form>
@@ -5425,6 +5427,7 @@
       document.getElementById('reviewThanksWrap').style.display = 'none';
       document.getElementById('reviewModal').classList.add('show');
       _rvRating = 0; pickStar(0);
+      rvPhotos = []; renderRvPreviews();
     }
     function closeReviewModal() { document.getElementById('reviewModal').classList.remove('show'); }
     function pickStar(v) {
@@ -5435,9 +5438,29 @@
         s.style.color = parseInt(s.dataset.v) <= v ? '#fbbf24' : '';
       });
     }
+    var rvPhotos = [];
+    function handleRvPhotoFiles(e) {
+      Array.from(e.target.files).forEach(function(f) { rvPhotos.push({file:f, previewUrl:URL.createObjectURL(f)}); });
+      e.target.value = ''; renderRvPreviews();
+    }
+    function handleRvPhotoDrop(e) {
+      e.preventDefault(); document.getElementById('rvPhotoZone').classList.remove('drag-over');
+      Array.from(e.dataTransfer.files).filter(function(f){return f.type.startsWith('image/');}).forEach(function(f){ rvPhotos.push({file:f, previewUrl:URL.createObjectURL(f)}); });
+      renderRvPreviews();
+    }
+    function removeRvPhoto(i) { rvPhotos.splice(i,1); renderRvPreviews(); }
+    function renderRvPreviews() {
+      var s = document.getElementById('rvPhotoStrip');
+      if (!s) return;
+      s.innerHTML = rvPhotos.map(function(p,i){
+        return '<div class="sell-photo-thumb"><img src="'+p.previewUrl+'" alt=""><button type="button" class="sell-photo-del" onclick="removeRvPhoto('+i+')">✕</button></div>';
+      }).join('');
+    }
+
     function submitReview(e) {
       e.preventDefault();
       if (!_rvRating) { alert('Please select a star rating.'); return; }
+      rvPhotos = []; renderRvPreviews();
       document.getElementById('reviewFormWrap').style.display = 'none';
       document.getElementById('reviewThanksWrap').style.display = 'block';
     }
