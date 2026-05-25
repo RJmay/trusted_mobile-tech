@@ -91,9 +91,7 @@
       height: 52px;
       width: auto;
       display: block;
-      border-radius: 10px;
-      padding: 4px 12px;
-      background: rgba(255,255,255,0.97);
+      filter: invert(1) hue-rotate(180deg);
     }
 
     .nav {
@@ -2395,9 +2393,7 @@
     }
 
     body.light .logo-img {
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
+      filter: none;
       mix-blend-mode: multiply;
     }
 
