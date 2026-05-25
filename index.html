@@ -85,13 +85,13 @@
       align-items: center;
       cursor: pointer;
       flex-shrink: 0;
+      filter: invert(1) hue-rotate(180deg);
     }
 
     .logo-img {
       height: 62px;
       width: auto;
       display: block;
-      filter: invert(1) hue-rotate(180deg);
     }
 
     .nav {
@@ -2392,9 +2392,8 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
     }
 
-    body.light .logo-img {
+    body.light .logo {
       filter: none;
-      mix-blend-mode: multiply;
     }
 
     body.light .nav-link {
