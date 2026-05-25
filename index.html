@@ -2860,9 +2860,24 @@
       color: #1e293b;
     }
 
+    /* All modal inline-white titles → dark in light mode */
     body.light #oemModal h2,
-    body.light #oemModal #oemModalTitle { color: #1e293b !important; }
-    body.light #oemModal > .modal > p { color: #475569 !important; }
+    body.light #oemModal #oemModalTitle,
+    body.light #batteryModal h2,
+    body.light #qualityModal h2,
+    body.light #checkoutModal h2,
+    body.light #reviewModal h2 { color: #1e293b !important; }
+
+    body.light #oemModal > .modal > p,
+    body.light #batteryModal > .modal > p,
+    body.light #qualityModal > .modal > p { color: #475569 !important; }
+
+    /* Checkout modal section headings & prices (inline color:#e2e8f0) */
+    body.light #checkoutModal div[style*="color:#e2e8f0"] { color: #1e293b !important; }
+    /* Checkout upsell label text */
+    body.light #checkoutModal label div[style*="font-weight:700"] { color: #1e293b !important; }
+    /* Checkout order summary total */
+    body.light #checkoutModal [style*="font-weight:800"][style*="font-size:18px"] { color: #1e293b !important; }
 
     body.light #acDropdown {
       background: #fff !important;
@@ -3247,7 +3262,7 @@
   <!-- HEADER -->
   <header class="header" id="header">
     <div class="logo" onclick="showSection('home')">
-      <img src="artic_waters_4k.JPG" alt="Trusted Mobile Tech" class="logo-img">
+      <img src="arctic_waters_4k.JPEG" alt="Trusted Mobile Tech" class="logo-img">
     </div>
     <button class="mobile-toggle" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <div class="theme-toggle" onclick="toggleTheme()" title="Switch light/dark mode"><span
