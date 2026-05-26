@@ -274,6 +274,96 @@
       background: rgba(0, 212, 255, .06);
     }
 
+    /* ═══ HERO DECALS ═══ */
+    .hero { position: relative; overflow: hidden; }
+    .hero-decals {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero > *:not(.hero-decals) { position: relative; z-index: 1; }
+    .hd-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(72px);
+    }
+    .hd-orb-1 {
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(0,212,255,.20) 0%, transparent 70%);
+      top: -110px; left: -70px;
+    }
+    .hd-orb-2 {
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(124,58,237,.16) 0%, transparent 70%);
+      top: 10px; right: -50px;
+    }
+    .hd-orb-3 {
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(0,212,255,.12) 0%, transparent 70%);
+      bottom: -20px; left: 40%;
+    }
+    .hd-dots {
+      position: absolute;
+      background-image: radial-gradient(circle, rgba(148,163,184,.3) 1px, transparent 1px);
+      background-size: 26px 26px;
+    }
+    .hd-dots-1 { width: 220px; height: 200px; top: 14px; right: 110px; opacity: .5; }
+    .hd-dots-2 { width: 180px; height: 160px; bottom: 18px; left: 44px; opacity: .4; }
+    .hd-phone {
+      position: absolute;
+      font-size: 86px;
+      line-height: 1;
+      opacity: .07;
+      filter: blur(.6px);
+    }
+    .hd-phone-1 { top: 16px; right: 6%; transform: rotate(-15deg); }
+    .hd-phone-2 { bottom: 10px; left: 3%; font-size: 56px; transform: rotate(14deg); }
+    .hd-spanner {
+      position: absolute;
+      font-size: 50px;
+      line-height: 1;
+      opacity: .06;
+      filter: blur(.6px);
+    }
+    .hd-spanner-1 { top: 68px; left: 11%; transform: rotate(28deg); }
+    .hd-spanner-2 { bottom: 18px; right: 14%; transform: rotate(-22deg); }
+
+    /* ═══ REPAIR IMAGES (Why section) ═══ */
+    .repair-imgs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 52px;
+    }
+    .ri-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      box-shadow: 0 4px 20px rgba(0,0,0,.28);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .ri-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 36px rgba(0,0,0,.38);
+    }
+    .ri-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .ri-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 30px 14px 13px;
+      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 100%);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+
     /* ═══ DEVICE CARDS (Home) ═══ */
     .devices-section {
       padding: 0 0 80px;
@@ -3278,6 +3368,13 @@
         flex-direction: column;
         text-align: center;
       }
+
+      .repair-imgs { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .hd-phone-1  { display: none; }
+    }
+
+    @media(max-width:600px) {
+      .repair-imgs { grid-template-columns: 1fr; }
     }
 
     @media print {
@@ -3333,6 +3430,17 @@
   <section class="section active" id="sec-home">
     <div class="wrap">
       <div class="hero">
+        <div class="hero-decals" aria-hidden="true">
+          <div class="hd-orb hd-orb-1"></div>
+          <div class="hd-orb hd-orb-2"></div>
+          <div class="hd-orb hd-orb-3"></div>
+          <div class="hd-dots hd-dots-1"></div>
+          <div class="hd-dots hd-dots-2"></div>
+          <div class="hd-phone hd-phone-1">📱</div>
+          <div class="hd-phone hd-phone-2">📱</div>
+          <div class="hd-spanner hd-spanner-1">🔧</div>
+          <div class="hd-spanner hd-spanner-2">🔩</div>
+        </div>
         <div class="hero-badge">Sunshine Coast &amp; Brisbane's Trusted Repair Experts</div>
         <h1>Expert <span class="hl">Device Repairs</span><br>Done Right, Done Fast</h1>
         <p>iPhone, MacBook &amp; iPad repairs with same-day turnaround, 90-day warranty, and no-fix-no-fee guarantee.
@@ -3373,6 +3481,20 @@
       <div class="wrap">
         <div class="section-head">
           <h2>Why Choose Trusted Mobile Tech?</h2>
+        </div>
+        <div class="repair-imgs">
+          <div class="ri-card">
+            <img src="https://images.unsplash.com/photo-1550041473-d296a3a8a18a?w=800&q=80&auto=format&fit=crop" alt="Expert phone screen repair" loading="lazy">
+            <div class="ri-label">Expert Screen Repairs</div>
+          </div>
+          <div class="ri-card">
+            <img src="https://images.unsplash.com/photo-1539331586018-346b53b2aaa4?w=800&q=80&auto=format&fit=crop" alt="Professional mobile technician" loading="lazy">
+            <div class="ri-label">Professional Technicians</div>
+          </div>
+          <div class="ri-card">
+            <img src="https://images.pexels.com/photos/6754839/pexels-photo-6754839.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop" alt="Quality repair service" loading="lazy">
+            <div class="ri-label">Quality Service</div>
+          </div>
         </div>
         <div class="why-grid">
           <div class="why-card">
