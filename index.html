@@ -1847,6 +1847,109 @@
       font-size: 13px;
     }
 
+    /* ═══ ABOUT PAGE ═══ */
+    .about-story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      margin-bottom: 64px;
+    }
+
+    .about-story-text h2 {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 16px;
+      letter-spacing: -.3px;
+    }
+
+    .about-story-text p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 15px;
+      margin-bottom: 14px;
+    }
+
+    .about-highlight-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      text-align: center;
+    }
+
+    .about-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 64px;
+    }
+
+    .about-stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .about-stat-num {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--brand);
+      margin-bottom: 6px;
+      line-height: 1;
+    }
+
+    .about-stat-label {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .about-expanding {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 64px;
+    }
+
+    .about-values {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .about-value-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .about-value-icon { font-size: 28px; margin-bottom: 10px; }
+
+    .about-value-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .about-value-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    @media(max-width:900px) {
+      .about-story-grid,
+      .about-expanding { grid-template-columns: 1fr; gap: 28px; }
+      .about-stat-grid  { grid-template-columns: 1fr 1fr; }
+      .about-values     { grid-template-columns: 1fr; }
+    }
+
     /* ═══ MODAL ═══ */
     .modal-overlay {
       display: none;
@@ -3457,6 +3560,7 @@
     </div>
     <nav class="nav" id="mainNav">
       <button class="nav-link active" data-section="home" onclick="showSection('home')">Home</button>
+      <button class="nav-link" data-section="about" onclick="showSection('about')">About Us</button>
       <button class="nav-link" data-section="quote" onclick="showSection('quote')">Get a Quote</button>
       <button class="nav-link" data-section="reviews" onclick="showSection('reviews')">Reviews</button>
       <button class="nav-link" data-section="deals" onclick="showSection('deals')">Refurbished Devices</button>
@@ -4090,19 +4194,110 @@
     </div>
   </section>
 
+  <!-- ═══════ ABOUT ═══════ -->
+  <section class="section" id="sec-about">
+    <div class="wrap" style="padding-top:60px;padding-bottom:80px;">
+
+      <!-- Intro -->
+      <div style="text-align:center;margin-bottom:56px;">
+        <div class="hero-badge">Our Story</div>
+        <h1 style="font-size:40px;font-weight:800;color:var(--dark);margin:16px 0 14px;letter-spacing:-.5px;">Built by Mates,<br><span class="hl">Trusted by Locals</span></h1>
+        <p style="font-size:17px;color:var(--muted);max-width:520px;margin:0 auto;line-height:1.7;">Two Sunshine Coast teenagers with a love of tech and a simple goal — honest, fast, affordable repairs.</p>
+      </div>
+
+      <!-- Main story -->
+      <div class="about-story-grid">
+        <div class="about-story-text">
+          <h2>How It All Started</h2>
+          <p>Trusted Mobile Tech was born in 2022 out of a spare bedroom on the Sunshine Coast. Two mates — still in their teens — had been fixing cracked screens and dead batteries for family and friends for years. People kept saying "you should do this properly," so they did.</p>
+          <p>What started as weekend side jobs quickly became something real. Word spread fast on the Coast because the repairs were done right, the prices were fair, and nobody got the runaround. Three years and hundreds of happy customers later, we're still the same two blokes — just with a bit more experience and a lot more customers.</p>
+          <p>We're proud to be a young, local, Australian-owned business. We know what it's like to hand over your phone and hope for the best — so we've built the kind of repair service we'd want to use ourselves.</p>
+        </div>
+        <div class="about-highlight-card">
+          <div style="font-size:52px;margin-bottom:14px;">🏄</div>
+          <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Sunshine Coast, QLD</div>
+          <div style="font-size:22px;font-weight:800;color:var(--dark);margin-bottom:12px;">Founded 2022</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.7;">Two local teenagers who turned a passion for technology into a business their community actually trusts.</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="about-stat-grid">
+        <div class="about-stat-card">
+          <div class="about-stat-num">3+</div>
+          <div class="about-stat-label">Years of repairs</div>
+        </div>
+        <div class="about-stat-card">
+          <div class="about-stat-num">500+</div>
+          <div class="about-stat-label">Devices fixed</div>
+        </div>
+        <div class="about-stat-card">
+          <div class="about-stat-num">⭐ 5.0</div>
+          <div class="about-stat-label">Average rating</div>
+        </div>
+      </div>
+
+      <!-- Expanding to Brisbane -->
+      <div class="about-expanding">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">What's Next</div>
+          <h2 style="font-size:26px;font-weight:800;color:var(--dark);margin-bottom:14px;letter-spacing:-.3px;">Now Expanding to Brisbane</h2>
+          <p style="color:var(--muted);line-height:1.8;font-size:15px;">After three years of building a reputation on the Sunshine Coast, we're taking it south. Brisbane locals can now book the same fast, reliable, no-BS repair service that Coasters have come to rely on — with the same 90-day warranty and no-fix-no-fee guarantee.</p>
+          <p style="color:var(--muted);line-height:1.8;font-size:15px;margin-top:12px;">Whether you're in Buderim or Brisbane, we've got you covered. Drop in or book a mobile visit — we come to you.</p>
+          <button class="hero-btn primary" style="margin-top:20px;" onclick="showSection('quote')">Get a Quote →</button>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:64px;margin-bottom:16px;">🗺️</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--dark);">Sunshine Coast</strong> — Est. 2022</div>
+            <div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--brand);">Brisbane</strong> — Now open!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Values -->
+      <div style="margin-bottom:16px;">
+        <h2 style="font-size:26px;font-weight:800;color:var(--dark);text-align:center;margin-bottom:28px;letter-spacing:-.3px;">What We Stand For</h2>
+        <div class="about-values">
+          <div class="about-value-card">
+            <div class="about-value-icon">🤝</div>
+            <div class="about-value-title">Honesty First</div>
+            <div class="about-value-text">No hidden fees, no unnecessary upsells. If we can't fix it, you don't pay — simple as that.</div>
+          </div>
+          <div class="about-value-card">
+            <div class="about-value-icon">⚡</div>
+            <div class="about-value-title">Fast Turnaround</div>
+            <div class="about-value-text">Most repairs done in 1–2 hours. We know your phone is your lifeline — we don't sit on it.</div>
+          </div>
+          <div class="about-value-card">
+            <div class="about-value-icon">🏠</div>
+            <div class="about-value-title">Local & Independent</div>
+            <div class="about-value-text">We're not a franchise. We're two Aussie lads who live and work in the same communities we serve.</div>
+          </div>
+          <div class="about-value-card">
+            <div class="about-value-icon">🛡️</div>
+            <div class="about-value-title">Backed by Warranty</div>
+            <div class="about-value-text">Every repair comes with a 90-day parts and labour warranty. We stand by our work, always.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="wrap">
       <div class="footer-grid">
         <div>
           <h3>Trusted Mobile Tech</h3>
-          <p>Expert iPhone, MacBook &amp; iPad repairs on the Sunshine Coast and Brisbane. Same-day service, 90-day
-            warranty, and genuine parts.</p>
-          <div class="footer-oem">
-            <span class="oem-badge">🍎</span>
+          <p>Expert iPhone, MacBook &amp; iPad repairs on the Sunshine Coast and Brisbane. Same-day service, 90-day warranty, and no-fix-no-fee guarantee.</p>
+          <p style="font-size:13px;color:#64748b;margin-top:10px;">📍 Sunshine Coast &amp; Brisbane &nbsp;·&nbsp; Founded 2022<br>Started by two local teenagers with a passion for tech — now trusted by hundreds of Aussies across South East Queensland.</p>
+          <div class="footer-oem" style="margin-top:14px;">
+            <span class="oem-badge">🔧</span>
             <div>
-              <strong>Genuine OEM Apple Parts</strong>
-              <p>We use only authentic Apple-certified components sourced directly from authorised suppliers — no aftermarket substitutes, ever.</p>
+              <strong>Quality-Certified Parts</strong>
+              <p>We use premium aftermarket components that meet or exceed OEM specifications — rigorously tested for performance and longevity.</p>
             </div>
           </div>
         </div>
