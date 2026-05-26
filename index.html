@@ -89,7 +89,7 @@
     }
 
     .logo-img {
-      height: 62px;
+      height: 56px;
       width: auto;
       display: block;
       overflow: visible;
@@ -275,41 +275,48 @@
     }
 
     /* ═══ HERO DECALS ═══ */
-    .hero { position: relative; overflow: hidden; }
+    #sec-home { position: relative; overflow: hidden; }
+    #sec-home > .wrap,
+    #sec-home > .why-section { position: relative; z-index: 1; }
     .hero-decals {
       position: absolute;
       inset: 0;
       pointer-events: none;
       z-index: 0;
     }
-    .hero > *:not(.hero-decals) { position: relative; z-index: 1; }
     .hd-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(72px);
+      filter: blur(80px);
     }
     .hd-orb-1 {
-      width: 360px; height: 360px;
-      background: radial-gradient(circle, rgba(0,212,255,.20) 0%, transparent 70%);
-      top: -110px; left: -70px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,212,255,.18) 0%, transparent 70%);
+      top: -160px; left: -100px;
     }
     .hd-orb-2 {
-      width: 260px; height: 260px;
-      background: radial-gradient(circle, rgba(124,58,237,.16) 0%, transparent 70%);
-      top: 10px; right: -50px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(124,58,237,.14) 0%, transparent 70%);
+      top: -60px; right: -80px;
     }
     .hd-orb-3 {
-      width: 160px; height: 160px;
-      background: radial-gradient(circle, rgba(0,212,255,.12) 0%, transparent 70%);
-      bottom: -20px; left: 40%;
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(0,212,255,.10) 0%, transparent 70%);
+      top: 45%; left: 35%;
+    }
+    .hd-orb-4 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(124,58,237,.10) 0%, transparent 70%);
+      bottom: 5%; right: 20%;
     }
     .hd-dots {
       position: absolute;
       background-image: radial-gradient(circle, rgba(148,163,184,.3) 1px, transparent 1px);
       background-size: 26px 26px;
     }
-    .hd-dots-1 { width: 220px; height: 200px; top: 14px; right: 110px; opacity: .5; }
-    .hd-dots-2 { width: 180px; height: 160px; bottom: 18px; left: 44px; opacity: .4; }
+    .hd-dots-1 { width: 280px; height: 260px; top: 8%; right: 8%; opacity: .5; }
+    .hd-dots-2 { width: 220px; height: 200px; bottom: 12%; left: 3%; opacity: .4; }
+    .hd-dots-3 { width: 200px; height: 180px; top: 50%; left: 55%; opacity: .3; }
     .hd-phone {
       position: absolute;
       font-size: 86px;
@@ -317,8 +324,8 @@
       opacity: .07;
       filter: blur(.6px);
     }
-    .hd-phone-1 { top: 16px; right: 6%; transform: rotate(-15deg); }
-    .hd-phone-2 { bottom: 10px; left: 3%; font-size: 56px; transform: rotate(14deg); }
+    .hd-phone-1 { top: 6%; right: 5%; transform: rotate(-15deg); }
+    .hd-phone-2 { top: 55%; left: 2%; font-size: 56px; transform: rotate(14deg); }
     .hd-spanner {
       position: absolute;
       font-size: 50px;
@@ -326,15 +333,16 @@
       opacity: .06;
       filter: blur(.6px);
     }
-    .hd-spanner-1 { top: 68px; left: 11%; transform: rotate(28deg); }
-    .hd-spanner-2 { bottom: 18px; right: 14%; transform: rotate(-22deg); }
+    .hd-spanner-1 { top: 22%; left: 10%; transform: rotate(28deg); }
+    .hd-spanner-2 { bottom: 8%; right: 12%; transform: rotate(-22deg); }
+    .hd-spanner-3 { top: 60%; right: 6%; font-size: 38px; transform: rotate(15deg); }
 
     /* ═══ REPAIR IMAGES (Why section) ═══ */
     .repair-imgs {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      margin-bottom: 52px;
+      margin-top: 52px;
     }
     .ri-card {
       position: relative;
@@ -1798,6 +1806,38 @@
 
     .footer a:hover {
       color: var(--brand2);
+    }
+
+    .footer-oem {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px;
+      background: rgba(255,255,255,.03);
+    }
+
+    .oem-badge {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .footer-oem strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 3px;
+    }
+
+    .footer-oem p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #64748b;
+      margin: 0;
     }
 
     .footer-bottom {
@@ -3428,19 +3468,22 @@
 
   <!-- ═══════ HOME ═══════ -->
   <section class="section active" id="sec-home">
+    <div class="hero-decals" aria-hidden="true">
+      <div class="hd-orb hd-orb-1"></div>
+      <div class="hd-orb hd-orb-2"></div>
+      <div class="hd-orb hd-orb-3"></div>
+      <div class="hd-orb hd-orb-4"></div>
+      <div class="hd-dots hd-dots-1"></div>
+      <div class="hd-dots hd-dots-2"></div>
+      <div class="hd-dots hd-dots-3"></div>
+      <div class="hd-phone hd-phone-1">📱</div>
+      <div class="hd-phone hd-phone-2">📱</div>
+      <div class="hd-spanner hd-spanner-1">🔧</div>
+      <div class="hd-spanner hd-spanner-2">🔩</div>
+      <div class="hd-spanner hd-spanner-3">🔧</div>
+    </div>
     <div class="wrap">
       <div class="hero">
-        <div class="hero-decals" aria-hidden="true">
-          <div class="hd-orb hd-orb-1"></div>
-          <div class="hd-orb hd-orb-2"></div>
-          <div class="hd-orb hd-orb-3"></div>
-          <div class="hd-dots hd-dots-1"></div>
-          <div class="hd-dots hd-dots-2"></div>
-          <div class="hd-phone hd-phone-1">📱</div>
-          <div class="hd-phone hd-phone-2">📱</div>
-          <div class="hd-spanner hd-spanner-1">🔧</div>
-          <div class="hd-spanner hd-spanner-2">🔩</div>
-        </div>
         <div class="hero-badge">Sunshine Coast &amp; Brisbane's Trusted Repair Experts</div>
         <h1>Expert <span class="hl">Device Repairs</span><br>Done Right, Done Fast</h1>
         <p>iPhone, MacBook &amp; iPad repairs with same-day turnaround, 90-day warranty, and no-fix-no-fee guarantee.
@@ -3482,20 +3525,6 @@
         <div class="section-head">
           <h2>Why Choose Trusted Mobile Tech?</h2>
         </div>
-        <div class="repair-imgs">
-          <div class="ri-card">
-            <img src="https://images.unsplash.com/photo-1550041473-d296a3a8a18a?w=800&q=80&auto=format&fit=crop" alt="Expert phone screen repair" loading="lazy">
-            <div class="ri-label">Expert Screen Repairs</div>
-          </div>
-          <div class="ri-card">
-            <img src="https://images.unsplash.com/photo-1539331586018-346b53b2aaa4?w=800&q=80&auto=format&fit=crop" alt="Professional mobile technician" loading="lazy">
-            <div class="ri-label">Professional Technicians</div>
-          </div>
-          <div class="ri-card">
-            <img src="https://images.pexels.com/photos/6754839/pexels-photo-6754839.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop" alt="Quality repair service" loading="lazy">
-            <div class="ri-label">Quality Service</div>
-          </div>
-        </div>
         <div class="why-grid">
           <div class="why-card">
             <div class="why-icon">⚡</div>
@@ -3516,6 +3545,20 @@
             <div class="why-icon">🚗</div>
             <div class="why-title">Mobile Service</div>
             <div class="why-text">We come to you across the Sunshine Coast &amp; Brisbane metro area.</div>
+          </div>
+        </div>
+        <div class="repair-imgs">
+          <div class="ri-card">
+            <img src="https://images.unsplash.com/photo-1550041473-d296a3a8a18a?w=800&q=80&auto=format&fit=crop" alt="Expert phone screen repair" loading="lazy">
+            <div class="ri-label">Expert Screen Repairs</div>
+          </div>
+          <div class="ri-card">
+            <img src="https://images.unsplash.com/photo-1539331586018-346b53b2aaa4?w=800&q=80&auto=format&fit=crop" alt="Professional mobile technician" loading="lazy">
+            <div class="ri-label">Professional Technicians</div>
+          </div>
+          <div class="ri-card">
+            <img src="https://images.pexels.com/photos/6754839/pexels-photo-6754839.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop" alt="Quality repair service" loading="lazy">
+            <div class="ri-label">Quality Service</div>
           </div>
         </div>
       </div>
@@ -4055,6 +4098,13 @@
           <h3>Trusted Mobile Tech</h3>
           <p>Expert iPhone, MacBook &amp; iPad repairs on the Sunshine Coast and Brisbane. Same-day service, 90-day
             warranty, and genuine parts.</p>
+          <div class="footer-oem">
+            <span class="oem-badge">🍎</span>
+            <div>
+              <strong>Genuine OEM Apple Parts</strong>
+              <p>We use only authentic Apple-certified components sourced directly from authorised suppliers — no aftermarket substitutes, ever.</p>
+            </div>
+          </div>
         </div>
         <div>
           <h3>Quick Links</h3>
