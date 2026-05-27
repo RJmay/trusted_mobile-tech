@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trusted Mobile Tech – iPhone, MacBook & iPad Repairs</title>
+  <link rel="icon" type="image/jpeg" href="logo.JPEG">
+  <link rel="apple-touch-icon" href="logo.JPEG">
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"
     rel="stylesheet">
@@ -29,7 +31,7 @@
       --dark: #ffffff;
       --text: #e2e8f0;
       --muted: #94a3b8;
-      --light: #0a0b10;
+      --light: #000000;
       --border: rgba(255, 255, 255, .08);
       --green: #10b981;
       --green2: #059669;
@@ -65,7 +67,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(0, 0, 0, .96);
+      background: #000000;
       backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(255, 255, 255, .06);
       padding: 0 40px;
@@ -459,6 +461,20 @@
       margin-bottom: 20px;
       display: block;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .1));
+    }
+
+    .dc-img {
+      height: 160px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto 20px;
+      display: block;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, .25));
+    }
+
+    body.light .dc-img {
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, .15));
     }
 
     .dc-name {
@@ -1881,7 +1897,7 @@
 
     .about-stat-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 20px;
       margin-bottom: 64px;
     }
@@ -1932,7 +1948,7 @@
       padding: 24px;
     }
 
-    .about-value-icon { font-size: 28px; margin-bottom: 10px; }
+    .about-value-icon { font-size: 42px; margin-bottom: 12px; }
 
     .about-value-title {
       font-size: 16px;
@@ -1948,6 +1964,8 @@
       .about-expanding { grid-template-columns: 1fr; gap: 28px; }
       .about-stat-grid  { grid-template-columns: 1fr 1fr; }
       .about-values     { grid-template-columns: 1fr; }
+      .about-expect-grid { grid-template-columns: 1fr !important; }
+      .about-oem-banner { flex-direction: column; text-align: center; }
     }
 
     /* ═══ MODAL ═══ */
@@ -2623,8 +2641,14 @@
 
     /* ═══ LIGHT MODE ═══ */
     body.light {
-      background: #f5f7fa;
+      background: #ffffff;
       color: #1e293b;
+      --dark: #0f172a;
+      --card-bg: #ffffff;
+      --card-bg2: #f8fafc;
+      --surface: #f1f5f9;
+      --border: rgba(0, 0, 0, .09);
+      --muted: #64748b;
     }
 
     body.light .header {
@@ -3171,16 +3195,17 @@
     .theme-toggle {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
-      margin-right: 12px;
+      margin-left: 10px;
+      margin-right: auto;
       user-select: none;
     }
 
     .theme-toggle-track {
-      width: 40px;
-      height: 22px;
-      border-radius: 11px;
+      width: 34px;
+      height: 18px;
+      border-radius: 9px;
       background: rgba(255, 255, 255, .15);
       position: relative;
       transition: background .3s;
@@ -3193,8 +3218,8 @@
     }
 
     .theme-toggle-thumb {
-      width: 18px;
-      height: 18px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: #fff;
       position: absolute;
@@ -3205,12 +3230,12 @@
     }
 
     body.light .theme-toggle-thumb {
-      transform: translateX(18px);
+      transform: translateX(16px);
       background: #0096c7;
     }
 
     .theme-toggle-icon {
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1;
     }
 
@@ -3295,18 +3320,36 @@
       color: #64748b !important;
     }
 
-    /* Light mode - footer stays dark */
+    /* Light mode - footer goes light */
     body.light .footer {
-      background: #0a0b10;
-      color: #94a3b8;
+      background: #f1f5f9;
+      color: #475569;
     }
 
     body.light .footer h3 {
-      color: #fff;
+      color: #0f172a;
     }
 
     body.light .footer a {
-      color: #94a3b8;
+      color: #475569;
+    }
+
+    body.light .footer-bottom {
+      border-top-color: #e2e8f0;
+      color: #64748b;
+    }
+
+    body.light .footer-oem {
+      border-color: rgba(0, 0, 0, .08);
+      background: rgba(0, 0, 0, .03);
+    }
+
+    body.light .footer-oem strong {
+      color: #1e293b;
+    }
+
+    body.light .footer-oem p {
+      color: #64748b;
     }
 
 
@@ -3401,17 +3444,18 @@
       }
 
       .logo {
-        margin-right: auto;
+        margin-right: 0;
       }
 
       .mobile-toggle {
         display: block;
-        margin-right: 6px;
+        margin-left: 8px;
       }
 
       .theme-toggle {
         gap: 3px;
-        margin-right: 0;
+        margin-left: 8px;
+        margin-right: auto;
       }
 
       .theme-toggle-track {
@@ -3551,13 +3595,13 @@
       <img src="logo-dark.JPEG" alt="Trusted Mobile Tech" class="logo-img logo-dark-only">
       <img src="logo.JPEG"      alt="Trusted Mobile Tech" class="logo-img logo-light-only">
     </div>
-    <button class="mobile-toggle" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <div class="theme-toggle" onclick="toggleTheme()" title="Switch light/dark mode"><span
         class="theme-toggle-icon">🌙</span>
       <div class="theme-toggle-track">
         <div class="theme-toggle-thumb"></div>
       </div><span class="theme-toggle-icon">☀️</span>
     </div>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav').classList.toggle('open')">☰</button>
     <nav class="nav" id="mainNav">
       <button class="nav-link active" data-section="home" onclick="showSection('home')">Home</button>
       <button class="nav-link" data-section="about" onclick="showSection('about')">About Us</button>
@@ -3605,19 +3649,22 @@
       </div>
       <div class="device-cards">
         <div class="device-card iphone" onclick="startQuote('iPhone')">
-          <span class="dc-icon">📱</span>
+          <img src="Images/iphone-16.png" alt="iPhone" class="dc-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="dc-icon" style="display:none;">📱</span>
           <div class="dc-name">iPhone</div>
           <div class="dc-desc">Screen, battery, camera, charging &amp; more — iPhone 11 through 17 series</div>
           <span class="dc-badge">8 model lines</span>
         </div>
         <div class="device-card macbook" onclick="startQuote('MacBook')">
-          <span class="dc-icon">💻</span>
+          <img src="Images/macbook-air-m1.png" alt="MacBook" class="dc-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="dc-icon" style="display:none;">💻</span>
           <div class="dc-name">MacBook</div>
           <div class="dc-desc">Keyboard, battery, screen, trackpad — MacBook Air &amp; Pro repairs</div>
           <span class="dc-badge">4 model lines</span>
         </div>
         <div class="device-card ipad" onclick="startQuote('iPad')">
-          <span class="dc-icon">📲</span>
+          <img src="Images/ipad-air-4.png" alt="iPad" class="dc-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="dc-icon" style="display:none;">📲</span>
           <div class="dc-name">iPad</div>
           <div class="dc-desc">Screen, charging, battery — iPad, mini, Air &amp; Pro all generations</div>
           <span class="dc-badge">4 model lines</span>
@@ -4201,23 +4248,23 @@
       <!-- Intro -->
       <div style="text-align:center;margin-bottom:56px;">
         <div class="hero-badge">Our Story</div>
-        <h1 style="font-size:40px;font-weight:800;color:var(--dark);margin:16px 0 14px;letter-spacing:-.5px;">Built by Mates,<br><span class="hl">Trusted by Locals</span></h1>
-        <p style="font-size:17px;color:var(--muted);max-width:520px;margin:0 auto;line-height:1.7;">Two Sunshine Coast teenagers with a love of tech and a simple goal — honest, fast, affordable repairs.</p>
+        <h1 style="font-size:40px;font-weight:800;color:var(--dark);margin:16px 0 14px;letter-spacing:-.5px;">Built on Trust,<br><span class="hl">Backed by Experience</span></h1>
+        <p style="font-size:17px;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.7;">A Sunshine Coast–born repair business with one goal — honest, fast, and affordable service you can actually rely on.</p>
       </div>
 
       <!-- Main story -->
       <div class="about-story-grid">
         <div class="about-story-text">
           <h2>How It All Started</h2>
-          <p>Trusted Mobile Tech was born in 2022 out of a spare bedroom on the Sunshine Coast. Two mates — still in their teens — had been fixing cracked screens and dead batteries for family and friends for years. People kept saying "you should do this properly," so they did.</p>
-          <p>What started as weekend side jobs quickly became something real. Word spread fast on the Coast because the repairs were done right, the prices were fair, and nobody got the runaround. Three years and hundreds of happy customers later, we're still the same two blokes — just with a bit more experience and a lot more customers.</p>
-          <p>We're proud to be a young, local, Australian-owned business. We know what it's like to hand over your phone and hope for the best — so we've built the kind of repair service we'd want to use ourselves.</p>
+          <p>Trusted Mobile Tech was founded in 2022 on the Sunshine Coast with a clear mission: deliver professional-grade device repairs at fair prices, without the corporate runaround. What began as a local operation quickly earned a reputation for reliability, transparency, and quality workmanship.</p>
+          <p>Word spread fast across the Coast because we do things differently — honest pricing, genuine warranties, and technicians who actually stand behind their work. Three years and hundreds of satisfied customers later, we're proud to be the repair service locals recommend to their families.</p>
+          <p>We're an independent, Australian-owned business. We know what it's like to hand over your device and hope for the best — so we've built the kind of repair service we'd trust ourselves. No hidden fees, no unnecessary parts, no excuses.</p>
         </div>
         <div class="about-highlight-card">
-          <div style="font-size:52px;margin-bottom:14px;">🏄</div>
+          <div style="font-size:64px;margin-bottom:14px;">🏄</div>
           <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Sunshine Coast, QLD</div>
           <div style="font-size:22px;font-weight:800;color:var(--dark);margin-bottom:12px;">Founded 2022</div>
-          <div style="font-size:14px;color:var(--muted);line-height:1.7;">Two local teenagers who turned a passion for technology into a business their community actually trusts.</div>
+          <div style="font-size:14px;color:var(--muted);line-height:1.7;">A locally owned repair business that turned a passion for technology into a service their community actually trusts.</div>
         </div>
       </div>
 
@@ -4225,15 +4272,19 @@
       <div class="about-stat-grid">
         <div class="about-stat-card">
           <div class="about-stat-num">3+</div>
-          <div class="about-stat-label">Years of repairs</div>
+          <div class="about-stat-label">Years in business</div>
         </div>
         <div class="about-stat-card">
           <div class="about-stat-num">500+</div>
-          <div class="about-stat-label">Devices fixed</div>
+          <div class="about-stat-label">Devices repaired</div>
         </div>
         <div class="about-stat-card">
-          <div class="about-stat-num">⭐ 5.0</div>
+          <div class="about-stat-num">5.0</div>
           <div class="about-stat-label">Average rating</div>
+        </div>
+        <div class="about-stat-card">
+          <div class="about-stat-num">90</div>
+          <div class="about-stat-label">Day warranty</div>
         </div>
       </div>
 
@@ -4256,7 +4307,7 @@
       </div>
 
       <!-- Values -->
-      <div style="margin-bottom:16px;">
+      <div style="margin-bottom:56px;">
         <h2 style="font-size:26px;font-weight:800;color:var(--dark);text-align:center;margin-bottom:28px;letter-spacing:-.3px;">What We Stand For</h2>
         <div class="about-values">
           <div class="about-value-card">
@@ -4272,13 +4323,46 @@
           <div class="about-value-card">
             <div class="about-value-icon">🏠</div>
             <div class="about-value-title">Local & Independent</div>
-            <div class="about-value-text">We're not a franchise. We're two Aussie lads who live and work in the same communities we serve.</div>
+            <div class="about-value-text">We're not a franchise. We're an Aussie-owned business operating in the same communities we serve — proudly local.</div>
           </div>
           <div class="about-value-card">
             <div class="about-value-icon">🛡️</div>
             <div class="about-value-title">Backed by Warranty</div>
             <div class="about-value-text">Every repair comes with a 90-day parts and labour warranty. We stand by our work, always.</div>
           </div>
+        </div>
+      </div>
+
+      <!-- What to Expect -->
+      <div style="margin-bottom:56px;">
+        <h2 style="font-size:26px;font-weight:800;color:var(--dark);text-align:center;margin-bottom:8px;letter-spacing:-.3px;">What to Expect</h2>
+        <p style="text-align:center;color:var(--muted);font-size:15px;margin-bottom:32px;">A professional, straightforward repair experience — every time.</p>
+        <div class="about-expect-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+          <div class="about-value-card" style="text-align:center;">
+            <div style="font-size:42px;margin-bottom:12px;">📋</div>
+            <div class="about-value-title">Free Quote</div>
+            <div class="about-value-text">Get an instant, itemised quote online or over the phone. No obligation, no surprise charges.</div>
+          </div>
+          <div class="about-value-card" style="text-align:center;">
+            <div style="font-size:42px;margin-bottom:12px;">🔧</div>
+            <div class="about-value-title">Expert Repair</div>
+            <div class="about-value-text">Quality parts, proven techniques. We repair iPhones, MacBooks, and iPads to the highest standard.</div>
+          </div>
+          <div class="about-value-card" style="text-align:center;">
+            <div style="font-size:42px;margin-bottom:12px;">✅</div>
+            <div class="about-value-title">Tested & Guaranteed</div>
+            <div class="about-value-text">Every device is fully tested before return. Backed by our 90-day warranty — no questions asked.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OEM Quality Assurance -->
+      <div class="about-oem-banner" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;display:flex;align-items:center;gap:32px;margin-bottom:16px;">
+        <div style="font-size:64px;flex-shrink:0;">🏆</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Quality Assurance</div>
+          <h2 style="font-size:22px;font-weight:800;color:var(--dark);margin-bottom:12px;letter-spacing:-.2px;">Premium Parts, Professional Results</h2>
+          <p style="color:var(--muted);line-height:1.8;font-size:15px;">We use only quality-certified parts that meet or exceed OEM specifications. Every component is rigorously tested before installation, and every repair is performed using professional-grade tools and techniques. When you choose Trusted Mobile Tech, you're choosing a repair that lasts.</p>
         </div>
       </div>
 
@@ -4292,7 +4376,7 @@
         <div>
           <h3>Trusted Mobile Tech</h3>
           <p>Expert iPhone, MacBook &amp; iPad repairs on the Sunshine Coast and Brisbane. Same-day service, 90-day warranty, and no-fix-no-fee guarantee.</p>
-          <p style="font-size:13px;color:#64748b;margin-top:10px;">📍 Sunshine Coast &amp; Brisbane &nbsp;·&nbsp; Founded 2022<br>Started by two local teenagers with a passion for tech — now trusted by hundreds of Aussies across South East Queensland.</p>
+          <p style="font-size:13px;color:#64748b;margin-top:10px;">📍 Sunshine Coast &amp; Brisbane &nbsp;·&nbsp; Founded 2022</p>
           <div class="footer-oem" style="margin-top:14px;">
             <span class="oem-badge">🔧</span>
             <div>
@@ -4314,7 +4398,7 @@
         </div>
         <div>
           <h3>Contact</h3>
-          <p><a href="tel:0467748433" style="color:inherit;">0467 748 433</a><br><a href="mailto:info@trustedmobiletech.org" style="color:inherit;">info@trustedmobiletech.org</a><br><br>21 Freycinet Row<br>Buderim QLD 4556</p>
+          <p><a href="tel:0467748433" style="color:inherit;">0467 748 433</a><br><a href="mailto:info@trustedmobiletech.org" style="color:inherit;">info@trustedmobiletech.org</a></p>
         </div>
       </div>
       <div class="footer-bottom">© 2025 Trusted Mobile Tech. All rights reserved.</div>

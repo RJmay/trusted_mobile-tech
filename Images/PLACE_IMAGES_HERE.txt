@@ -1,0 +1,80 @@
+Save your device images to this folder with these exact filenames (PNG format):
+
+── DEVICE CARDS (Home Page) ──────────────────────────────
+Images/iphone-16.png          ← Hero iPhone image (iPhone 16 teal/green)
+Images/macbook-air-m1.png     ← Hero MacBook image (MacBook Air M1 Gold)
+Images/ipad-air-4.png         ← Hero iPad image (iPad Air green)
+
+── iPHONE SERIES (Quote flow - series cards) ─────────────
+Images/series-iphone-se.png
+Images/series-iphone-11.png
+Images/series-iphone-12.png
+Images/series-iphone-13.png   ← (green iPhone 13 duo shot)
+Images/series-iphone-14.png   ← (blue iPhone 14)
+Images/series-iphone-15.png   ← (blue iPhone 15)
+Images/series-iphone-16.png   ← (teal wide shot)
+Images/series-iphone-17.png
+
+── iPHONE MODELS (Quote flow - individual models) ────────
+Images/iphone-se-2.png
+Images/iphone-se-3.png
+Images/iphone-11.png          ← green iPhone 11
+Images/iphone-11-pro.png      ← midnight green iPhone 11 Pro
+Images/iphone-11-pro-max.png
+Images/iphone-12.png          ← purple iPhone 12
+Images/iphone-12-mini.png
+Images/iphone-12-pro.png      ← graphite iPhone 12 Pro
+Images/iphone-12-pro-max.png
+Images/iphone-13.png          ← pink iPhone 13
+Images/iphone-13-mini.png     ← green iPhone 13 mini
+Images/iphone-13-pro.png
+Images/iphone-13-pro-max.png
+Images/iphone-14.png          ← blue iPhone 14
+Images/iphone-14-plus.png
+Images/iphone-14-pro.png
+Images/iphone-14-pro-max.png
+Images/iphone-15.png          ← blue iPhone 15
+Images/iphone-15-plus.png
+Images/iphone-15-pro.png      ← blue titanium iPhone 15 Pro
+Images/iphone-15-pro-max.png  ← natural titanium iPhone 15 Pro Max
+Images/iphone-16.png          ← iPhone 16 teal/green/white
+Images/iphone-16-plus.png
+Images/iphone-16-pro.png      ← orange iPhone 16 Pro
+Images/iphone-16-pro-max.png
+Images/iphone-17.png
+Images/iphone-17-plus.png
+Images/iphone-17-pro.png
+Images/iphone-17-pro-max.png
+
+── iPAD MODELS ───────────────────────────────────────────
+Images/series-ipad.png
+Images/series-ipad-air.png
+Images/series-ipad-mini.png
+Images/series-ipad-pro.png
+Images/ipad-9.png
+Images/ipad-10.png
+Images/ipad-air-4.png         ← green iPad Air
+Images/ipad-air-5.png
+Images/ipad-air-11-m2.png
+Images/ipad-air-13-m2.png
+Images/ipad-mini-6.png        ← pink iPad mini / starlight iPad mini
+Images/ipad-mini-7.png
+Images/ipad-pro-11-m1.png     ← silver iPad Pro 11"
+Images/ipad-pro-11-m2.png
+Images/ipad-pro-11-m4.png
+Images/ipad-pro-129-m1.png    ← space gray iPad Pro 12.9"
+Images/ipad-pro-129-m2.png
+Images/ipad-pro-13-m4.png
+
+── MacBOOK MODELS ────────────────────────────────────────
+Images/macbook-air-m1.png     ← MacBook Air M1 Gold
+Images/macbook-air-m2.png     ← MacBook Air M2/M3 (pink, ChatGPT screenshot)
+Images/macbook-air-m3.png
+Images/macbook-pro-13-m1.png
+Images/macbook-pro-13-m2.png
+Images/macbook-pro-14-m1.png
+Images/macbook-pro-14-m2.png
+Images/macbook-pro-14-m3.png  ← MacBook Pro with Mail app screenshot
+Images/macbook-pro-16-m1.png
+Images/macbook-pro-16-m2.png
+Images/macbook-pro-16-m3.png
