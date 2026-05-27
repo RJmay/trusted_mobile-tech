@@ -53,6 +53,7 @@
 
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
     body {
@@ -60,6 +61,7 @@
       background: var(--light);
       color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     /* ═══ HEADER ═══ */
@@ -3487,11 +3489,11 @@
         top: 72px;
         left: 0;
         right: 0;
-        background: #fff;
+        background: var(--card-bg);
         flex-direction: column;
         padding: 16px;
         border-bottom: 2px solid var(--border);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, .1);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
         z-index: 99;
       }
 
@@ -3562,6 +3564,39 @@
 
     @media(max-width:600px) {
       .repair-imgs { grid-template-columns: 1fr; }
+    }
+
+    @media(max-width:480px) {
+      .quote-wrap { padding: 12px 10px 36px; }
+      .qcontainer { padding: 18px 14px; }
+      .qtitle { font-size: 22px; letter-spacing: -.3px; }
+      .qsub { font-size: 14px; margin-bottom: 22px; }
+      .hero { padding: 48px 0 36px; }
+      .hero p { font-size: 16px; margin-bottom: 24px; }
+      .hero-btn { padding: 13px 24px; font-size: 14px; }
+      .summary-box { padding: 16px; }
+      .location-section { padding: 16px; }
+      .location-section-title { font-size: 16px; }
+      .service-type-card { padding: 16px 12px; }
+      .service-type-icon { font-size: 28px; }
+      .service-type-name { font-size: 15px; }
+      .service-type-desc { font-size: 13px; }
+      .why-grid { grid-template-columns: 1fr; }
+      .about-stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .about-stat-card { padding: 20px 14px; }
+      .about-stat-num { font-size: 30px; }
+      .contact-info-card, .contact-form-card { padding: 22px 16px; }
+      .section-head h2 { font-size: 26px; }
+      .progress-bar { padding: 18px 16px; }
+      .step-label { font-size: 10px; }
+      .back-btn { margin-bottom: 14px; }
+      .repair-card { padding: 16px 12px; }
+      .repair-name { font-size: 13px; }
+      .repair-price { font-size: 13px; }
+      .card { padding: 18px 14px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+      .model-card { padding: 16px 12px; }
+      .btn { width: 100%; }
     }
 
     @media print {
