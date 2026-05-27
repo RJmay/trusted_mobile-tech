@@ -70,11 +70,14 @@ Images/ipad-pro-13-m4.png
 Images/macbook-air-m1.png     ← MacBook Air M1 Gold
 Images/macbook-air-m2.png     ← MacBook Air M2/M3 (pink, ChatGPT screenshot)
 Images/macbook-air-m3.png
+Images/macbook-air-m4.png     ← MacBook Air M4 (2025)
 Images/macbook-pro-13-m1.png
 Images/macbook-pro-13-m2.png
 Images/macbook-pro-14-m1.png
 Images/macbook-pro-14-m2.png
 Images/macbook-pro-14-m3.png  ← MacBook Pro with Mail app screenshot
+Images/macbook-pro-14-m4.png  ← MacBook Pro 14" M4 (2024)
 Images/macbook-pro-16-m1.png
 Images/macbook-pro-16-m2.png
 Images/macbook-pro-16-m3.png
+Images/macbook-pro-16-m4.png  ← MacBook Pro 16" M4 (2024)
