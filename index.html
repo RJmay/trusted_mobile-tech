@@ -3503,6 +3503,8 @@
     body.light .ld-img { background: #f1f5f9; }
     body.light .ld-title { color: #0f172a; }
     body.light .ld-spec { background: #f1f5f9; }
+    #ldGallery img { height: 72px; width: 72px; object-fit: cover; border-radius: 10px; cursor: zoom-in; flex-shrink: 0; border: 2px solid var(--border); transition: border-color .15s; }
+    #ldGallery img:hover { border-color: var(--brand); }
 
     .hidden {
       display: none !important;
@@ -4760,6 +4762,7 @@
     <div id="listingDetail">
       <button class="ld-close" onclick="closeListingOverlay(null)">✕</button>
       <div class="ld-img" id="ldImg"></div>
+      <div id="ldGallery" style="display:none;gap:8px;padding:10px 14px 0;overflow-x:auto;scrollbar-width:thin;"></div>
       <div class="ld-body">
         <div class="ld-featured" id="ldFeatured" style="display:none;">Featured</div>
         <div class="ld-title" id="ldTitle"></div>
@@ -4793,7 +4796,7 @@
             <div class="contact-icon">✉️</div>
             <div>
               <div class="contact-label">Email</div>
-              <div class="contact-value"><a href="mailto:info@trustmobiletech.org" style="color:inherit;text-decoration:none;">info@trustmobiletech.org</a></div>
+              <div class="contact-value"><a href="mailto:info@trustedmobiletech.org" style="color:inherit;text-decoration:none;">info@trustedmobiletech.org</a></div>
             </div>
           </div>
           <div class="contact-item">
@@ -5167,7 +5170,7 @@
         </div>
         <div>
           <h3>Contact</h3>
-          <p style="margin-bottom:10px;"><a href="tel:0467748433" style="color:inherit;">0467 748 433</a><br><a href="mailto:info@trustmobiletech.org" style="color:inherit;">info@trustmobiletech.org</a></p>
+          <p style="margin-bottom:10px;"><a href="tel:0467748433" style="color:inherit;">0467 748 433</a><br><a href="mailto:info@trustedmobiletech.org" style="color:inherit;">info@trustedmobiletech.org</a></p>
           <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px;">
             <a href="https://instagram.com/trustmobiletech" target="_blank" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px;font-size:14px;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -5660,10 +5663,37 @@
       return brand === 'MacBook' ? '💻' : brand === 'iPad' ? '📲' : '📱';
     }
 
+    function getDeviceThumbnail(brand, model) {
+      var m = (model || '').toLowerCase();
+      if (brand === 'iPhone') {
+        var num = (m.match(/\b(se|17|16|15|14|13|12|11)\b/) || [])[0];
+        if (!num) return null;
+        var v = /pro[\s-]?max/i.test(m) ? '-pro-max' : /pro/i.test(m) ? '-pro' : /plus/i.test(m) ? '-plus' : /mini/i.test(m) ? '-mini' : '';
+        return 'Images/iphone-' + num + v + '.png';
+      }
+      if (brand === 'MacBook') {
+        var chip = (m.match(/m[1-4]/) || ['m1'])[0];
+        if (/air/i.test(m)) return 'Images/macbook-air-' + chip + '.png';
+        var sz = /16/i.test(m) ? '16' : '14';
+        return 'Images/macbook-pro-' + sz + '-' + chip + '.png';
+      }
+      if (brand === 'iPad') {
+        if (/pro/i.test(m)) {
+          if (/13|12\.9/i.test(m)) return 'Images/ipad-pro-13-m4.png';
+          var pc = (m.match(/m[1-4]/) || ['m1'])[0];
+          return 'Images/ipad-pro-11-' + pc + '.png';
+        }
+        if (/air/i.test(m)) { var an = (m.match(/\b([4-9])\b/) || ['4'])[0]; return 'Images/ipad-air-' + an + '.png'; }
+        if (/mini/i.test(m)) { var mn2 = (m.match(/\b([6-9])\b/) || ['6'])[0]; return 'Images/ipad-mini-' + mn2 + '.png'; }
+        var bn = (m.match(/\b(9|10)\b/) || ['10'])[0]; return 'Images/ipad-' + bn + '.png';
+      }
+      return null;
+    }
+
     async function loadDeals() {
       if (!db) return;
       try {
-        var res = await db.from('listings').select('*').eq('status','active').order('featured',{ascending:false}).order('created_at',{ascending:false});
+        var res = await db.from('listings').select('*').eq('status','available').order('featured',{ascending:false}).order('created_at',{ascending:false});
         _dealItems = res.data || [];
         var grid = document.getElementById('dealsGrid');
         if (!grid) return;
@@ -5681,8 +5711,9 @@
         _dealItems.forEach(function(l, idx) {
           var title = l.brand + ' ' + l.model + (l.storage ? ' · ' + l.storage : '');
           var meta = [l.color, l.grade].filter(Boolean).join(' · ');
-          var imgEl = (l.images && l.images.length)
-            ? '<img src="' + l.images[0] + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+          var thumb = getDeviceThumbnail(l.brand, l.model);
+          var imgEl = thumb
+            ? '<img src="' + thumb + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
               + '<div class="deal-card-emoji" style="display:none;">' + dealEmoji(l.brand) + '</div>'
             : '<div class="deal-card-emoji">' + dealEmoji(l.brand) + '</div>';
           html += '<div class="deal-card" onclick="openListing(' + idx + ')">'
@@ -5715,12 +5746,27 @@
       var title = l.brand + ' ' + l.model + (l.storage ? ' · ' + l.storage : '');
       var meta = [l.color, l.battery ? 'Battery ' + l.battery : '', l.grade].filter(Boolean);
 
-      // image
+      // primary image: device thumbnail from Images/ folder
       var imgEl = document.getElementById('ldImg');
-      if (l.images && l.images.length) {
-        imgEl.innerHTML = '<img src="' + l.images[0] + '" onerror="this.style.display=\'none\'">';
+      var thumb = getDeviceThumbnail(l.brand, l.model);
+      if (thumb) {
+        imgEl.innerHTML = '<img src="' + thumb + '" onerror="this.outerHTML=\'<div style=\\"font-size:80px;\\">' + dealEmoji(l.brand) + '</div>\'">';
       } else {
         imgEl.innerHTML = '<div style="font-size:80px;">' + dealEmoji(l.brand) + '</div>';
+      }
+
+      // gallery: uploaded photos shown below
+      var gallery = document.getElementById('ldGallery');
+      if (gallery) {
+        if (l.images && l.images.length) {
+          gallery.style.display = 'flex';
+          gallery.innerHTML = l.images.map(function(url) {
+            return '<img src="' + url + '" onclick="ldZoom(this.src)" onerror="this.style.display=\'none\'">';
+          }).join('');
+        } else {
+          gallery.style.display = 'none';
+          gallery.innerHTML = '';
+        }
       }
 
       // featured badge
@@ -5758,6 +5804,13 @@
       document.getElementById('listingOverlay').classList.remove('open');
       document.body.style.overflow = '';
     }
+    function ldZoom(src) {
+      var z = document.createElement('div');
+      z.style.cssText = 'position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
+      z.innerHTML = '<img src="' + src + '" style="max-width:90vw;max-height:90vh;border-radius:12px;object-fit:contain;">';
+      z.onclick = function(){ document.body.removeChild(z); };
+      document.body.appendChild(z);
+    }
 
     var _sectionHistory = [];
     var _currentSection = 'home';
@@ -5790,27 +5843,32 @@
     function startQuote(cat) { showSection('quote'); setTimeout(() => selectCategory(cat), 50); }
 
     // ═══════════════════════════════════════════════════
-    //  EMAIL CONFIG — fill in your EmailJS credentials
-    //  (see setup instructions in the README / chat)
+    //  EMAIL CONFIG — Web3Forms (free at web3forms.com)
+    //  1. Go to https://web3forms.com
+    //  2. Enter info@trustedmobiletech.org → get your access key
+    //  3. Paste it below
     // ═══════════════════════════════════════════════════
-    var EMAILJS_PUBLIC_KEY       = 'YOUR_PUBLIC_KEY';      // from EmailJS → Account
-    var EMAILJS_SERVICE_ID       = 'YOUR_SERVICE_ID';      // from EmailJS → Email Services
-    var EMAILJS_SELL_NOTIFY_TPL  = 'sell_notify';          // template IDs you create
-    var EMAILJS_SELL_CONFIRM_TPL = 'sell_confirm';
-    var EMAILJS_QUOTE_NOTIFY_TPL = 'quote_notify';
-    var emailjsReady = false;
-    window.addEventListener('load', function() {
-      if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-        emailjsReady = true;
-      }
-    });
+    var WEB3FORMS_KEY = 'YOUR_WEB3FORMS_KEY'; // ← paste your key here
 
-    function sendEmail(templateId, params) {
-      if (!emailjsReady) return Promise.resolve();
-      return emailjs.send(EMAILJS_SERVICE_ID, templateId, params).catch(function(err) {
-        console.warn('EmailJS error:', err);
+    function sendEmail(type, params) {
+      if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR_WEB3FORMS_KEY') return Promise.resolve();
+      var lines = Object.entries(params).map(function(e) {
+        return e[0].replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }) + ': ' + e[1];
       });
+      var subjects = {
+        quote_notify: 'New Repair Quote — Trusted Mobile Tech',
+        sell_notify:  'New Device Sale Enquiry — Trusted Mobile Tech',
+        sell_confirm: 'Your Quote Request — Trusted Mobile Tech'
+      };
+      return fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: subjects[type] || 'Trusted Mobile Tech — Notification',
+          message: lines.join('\n\n')
+        })
+      }).then(function(r){ return r.json(); }).catch(function(err){ console.warn('Email error:', err); });
     }
 
     // ── Sell photo upload state ──────────────────────
@@ -5891,7 +5949,7 @@
 
       // Email business
       await sendEmail(EMAILJS_SELL_NOTIFY_TPL, {
-        to_email:      'info@trustmobiletech.org',
+        to_email:      'info@trustedmobiletech.org',
         customer_name: name,
         customer_email: email || '(not provided)',
         customer_phone: phone || '(not provided)',
@@ -5944,7 +6002,13 @@
       }).join('');
     }
     function selectCategory(k) {
-      selCat = k; browseLevel = 1; const c = T[k]; showLevel(1); renderBC();
+      selCat = k;
+      if (k === 'MacBook' || k === 'iPad') {
+        selSeries = null; selModel = null;
+        goToPage(2);
+        return;
+      }
+      browseLevel = 1; const c = T[k]; showLevel(1); renderBC();
       document.getElementById('seriesFeaturePanel').innerHTML = '';
       document.getElementById('l1Title').innerHTML = 'Choose your <span class="hl">' + c.label + '</span>';
       document.getElementById('l1Sub').textContent = 'Select the series, then pick your exact model';
@@ -6345,7 +6409,7 @@
           sendSmsNotification(quoteRow);
           // Send email notification to business
           sendEmail(EMAILJS_QUOTE_NOTIFY_TPL, {
-            to_email:      'info@trustmobiletech.org',
+            to_email:      'info@trustedmobiletech.org',
             quote_number:  qn,
             customer_name: quoteRow.customer_name,
             customer_email: quoteRow.customer_email || '(not provided)',

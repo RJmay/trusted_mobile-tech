@@ -725,7 +725,7 @@
     }
 
     .btn-primary {
-      background: var(--brand-grad);
+      background: var (--brand-grad);
       color: #fff;
       box-shadow: 0 2px 8px rgba(0, 150, 199, .25);
     }
@@ -1688,7 +1688,7 @@
               <div class="lf-row2">
                 <div>
                   <label class="lf-label">Brand</label>
-                  <select class="filter-select" id="lf-brand" style="width:100%">
+                  <select class="filter-select" id="lf-brand" style="width:100%" onchange="updateThumbPreview()">
                     <option>iPhone</option>
                     <option>iPad</option>
                     <option>MacBook</option>
@@ -1699,7 +1699,7 @@
                 </div>
                 <div>
                   <label class="lf-label">Model</label>
-                  <input class="filter-input" id="lf-model" placeholder="e.g. 13 Pro" required style="width:100%">
+                  <input class="filter-input" id="lf-model" placeholder="e.g. 13 Pro" required style="width:100%" oninput="updateThumbPreview()">
                 </div>
               </div>
               <div class="lf-row2">
@@ -1758,7 +1758,12 @@
                   </select>
                 </div>
               </div>
-              <label class="lf-label" style="margin-top:14px;">Photos</label>
+              <label class="lf-label" style="margin-top:14px;">Device Thumbnail <span style="font-weight:400;opacity:.6;">auto-matched from model</span></label>
+              <div id="lfThumbPreview" style="width:100%;aspect-ratio:4/3;background:var(--card-bg2);border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:14px;">
+                <span style="font-size:48px;opacity:.4;">📱</span>
+              </div>
+
+              <label class="lf-label">Gallery Photos <span style="font-weight:400;opacity:.6;">optional — shown in detail view</span></label>
               <div class="img-drop-zone" id="imgDropZone" onclick="document.getElementById('imgFileInput').click()"
                 ondragover="event.preventDefault();this.style.borderColor='var(--brand)'"
                 ondragleave="this.style.borderColor=''" ondrop="handleImgDrop(event)">
@@ -2730,6 +2735,7 @@
       document.getElementById('lf-featured').checked = false;
       document.getElementById('lf-status').value = 'available';
       renderListingsRoll();
+      updateThumbPreview();
     }
 
     function editListing(id) {
@@ -2751,6 +2757,7 @@
       document.getElementById('listingsFormTitle').textContent = 'Edit Listing';
       document.getElementById('lfCancelBtn').style.display = '';
       renderImgPreviews();
+      updateThumbPreview();
       renderListingsRoll();
       document.querySelector('.listings-form-panel').scrollTop = 0;
     }
@@ -2780,6 +2787,47 @@
         pendingImgs.push({ file, previewUrl: URL.createObjectURL(file) });
       });
       renderImgPreviews();
+    }
+
+    function getDeviceThumbnail(brand, model) {
+      var m = (model || '').toLowerCase();
+      if (brand === 'iPhone') {
+        var num = (m.match(/\b(se|17|16|15|14|13|12|11)\b/) || [])[0];
+        if (!num) return null;
+        var v = /pro[\s-]?max/i.test(m) ? '-pro-max' : /pro/i.test(m) ? '-pro' : /plus/i.test(m) ? '-plus' : /mini/i.test(m) ? '-mini' : '';
+        return 'Images/iphone-' + num + v + '.png';
+      }
+      if (brand === 'MacBook') {
+        var chip = (m.match(/m[1-4]/) || ['m1'])[0];
+        if (/air/i.test(m)) return 'Images/macbook-air-' + chip + '.png';
+        var sz = /16/i.test(m) ? '16' : '14';
+        return 'Images/macbook-pro-' + sz + '-' + chip + '.png';
+      }
+      if (brand === 'iPad') {
+        if (/pro/i.test(m)) {
+          if (/13|12\.9/i.test(m)) return 'Images/ipad-pro-13-m4.png';
+          var pc = (m.match(/m[1-4]/) || ['m1'])[0];
+          return 'Images/ipad-pro-11-' + pc + '.png';
+        }
+        if (/air/i.test(m)) { var an = (m.match(/\b([4-9])\b/) || ['4'])[0]; return 'Images/ipad-air-' + an + '.png'; }
+        if (/mini/i.test(m)) { var mn = (m.match(/\b([6-9])\b/) || ['6'])[0]; return 'Images/ipad-mini-' + mn + '.png'; }
+        var bn = (m.match(/\b(9|10)\b/) || ['10'])[0]; return 'Images/ipad-' + bn + '.png';
+      }
+      return null;
+    }
+
+    function updateThumbPreview() {
+      var brand = document.getElementById('lf-brand').value;
+      var model = document.getElementById('lf-model').value;
+      var src = getDeviceThumbnail(brand, model);
+      var el = document.getElementById('lfThumbPreview');
+      if (!el) return;
+      if (src) {
+        el.innerHTML = '<img src="' + src + '" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.innerHTML=\'<span style=\\"font-size:48px;opacity:.4;\\">📱</span>\'">';
+      } else {
+        var emoji = brand === 'MacBook' ? '💻' : brand === 'iPad' ? '📲' : '📱';
+        el.innerHTML = '<span style="font-size:48px;opacity:.4;">' + emoji + '</span>';
+      }
     }
 
     async function uploadPendingImgs() {
