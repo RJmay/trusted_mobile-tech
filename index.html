@@ -934,7 +934,8 @@
       object-fit: contain;
       margin-bottom: 14px;
       border-radius: 10px;
-      background: var(--card-bg2);
+      /* Dark mode: match the page's black background; light mode override below keeps it light */
+      background: #000000;
       padding: 6px;
     }
 
@@ -1683,6 +1684,79 @@
       font-size: 12px;
       color: var(--muted);
     }
+
+    /* Reviews — ratings overview panel */
+    .reviews-overview {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 44px;
+      align-items: center;
+      margin: 40px 0 4px;
+      padding: 34px 40px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .reviews-overview::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(0, 212, 255, .12), transparent 55%);
+      pointer-events: none;
+    }
+    .ro-score { text-align: center; border-right: 1px solid var(--border); padding-right: 40px; position: relative; }
+    .ro-num { font-size: 74px; font-weight: 800; line-height: 1; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .ro-stars { color: #fbbf24; font-size: 22px; letter-spacing: 3px; margin: 10px 0 8px; }
+    .ro-count { font-size: 13px; color: var(--muted); }
+    .ro-bars { display: flex; flex-direction: column; gap: 11px; position: relative; }
+    .ro-bar-row { display: flex; align-items: center; gap: 14px; font-size: 13px; }
+    .ro-bar-label { width: 32px; text-align: right; color: var(--dark); font-weight: 700; }
+    .ro-bar-track { flex: 1; height: 9px; background: var(--card-bg2); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .ro-bar-fill { height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b); border-radius: 6px; }
+    .ro-bar-pct { width: 40px; text-align: right; color: var(--muted); font-weight: 600; }
+    @media (max-width: 720px) {
+      .reviews-overview { grid-template-columns: 1fr; gap: 22px; padding: 28px; }
+      .ro-score { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 22px; }
+    }
+
+    /* Review card — decorative quote mark + hover accent */
+    .review-card { position: relative; overflow: hidden; }
+    .review-card::before {
+      content: '\201D';
+      position: absolute; bottom: -34px; right: 16px;
+      font-family: Georgia, 'Times New Roman', serif; font-size: 130px; line-height: 1;
+      color: var(--brand); opacity: .06; pointer-events: none; z-index: 0;
+    }
+    .review-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--grad); opacity: 0; transition: opacity .3s;
+    }
+    .review-card:hover::after { opacity: 1; }
+    .review-card > * { position: relative; z-index: 1; }
+
+    /* Platform badges in overview */
+    .ro-platforms { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+    .ro-platform { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; background: var(--card-bg2); border: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--dark); }
+
+    /* Verified tick next to reviewer name */
+    .review-author .review-name::after {
+      content: '✓';
+      display: inline-block; width: 14px; height: 14px; line-height: 14px; text-align: center;
+      border-radius: 50%; background: var(--brand); color: #06121a;
+      font-size: 9px; font-weight: 900; margin-left: 6px; vertical-align: middle;
+    }
+
+    /* Review filter chips */
+    .review-filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 30px 0 6px; }
+    .review-chip {
+      padding: 9px 20px; border-radius: 30px; border: 1px solid var(--border);
+      background: var(--card-bg2); color: var(--muted); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all .2s; font-family: inherit;
+    }
+    .review-chip:hover { color: var(--dark); border-color: var(--brand); }
+    .review-chip.active { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(0, 212, 255, .25); }
 
     .reviews-summary {
       text-align: center;
@@ -3752,7 +3826,7 @@
   </style>
 </head>
 
-<body>
+<body class="light">
 
   <!-- HEADER -->
   <header class="header" id="header">
@@ -4095,9 +4169,41 @@
       <div class="section-head">
         <h2>What Our Customers Say</h2>
         <p>Real reviews from real customers on the Sunshine Coast &amp; Brisbane</p>
+        <div style="display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:9px 18px;background:#fff;border-radius:30px;box-shadow:0 2px 14px rgba(0,0,0,.18);">
+          <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          <span style="font-weight:700;color:#3c4043;font-size:14px;letter-spacing:.2px;">Google Certified</span>
+          <span style="color:#fbbc04;font-size:13px;letter-spacing:1px;">★★★★★</span>
+          <span style="color:#5f6368;font-size:13px;font-weight:700;">4.6</span>
+        </div>
+      </div>
+      <div class="reviews-overview">
+        <div class="ro-score">
+          <div class="ro-num">4.6</div>
+          <div class="ro-stars">★★★★★</div>
+          <div class="ro-count">Based on 100+ verified reviews</div>
+          <div class="ro-platforms">
+            <span class="ro-platform"><svg width="13" height="13" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Google</span>
+            <span class="ro-platform"><svg width="13" height="13" viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/></svg>Facebook</span>
+          </div>
+        </div>
+        <div class="ro-bars">
+          <div class="ro-bar-row"><span class="ro-bar-label">5★</span><span class="ro-bar-track"><span class="ro-bar-fill" style="width:76%"></span></span><span class="ro-bar-pct">76%</span></div>
+          <div class="ro-bar-row"><span class="ro-bar-label">4★</span><span class="ro-bar-track"><span class="ro-bar-fill" style="width:15%"></span></span><span class="ro-bar-pct">15%</span></div>
+          <div class="ro-bar-row"><span class="ro-bar-label">3★</span><span class="ro-bar-track"><span class="ro-bar-fill" style="width:6%"></span></span><span class="ro-bar-pct">6%</span></div>
+          <div class="ro-bar-row"><span class="ro-bar-label">2★</span><span class="ro-bar-track"><span class="ro-bar-fill" style="width:2%"></span></span><span class="ro-bar-pct">2%</span></div>
+          <div class="ro-bar-row"><span class="ro-bar-label">1★</span><span class="ro-bar-track"><span class="ro-bar-fill" style="width:1%"></span></span><span class="ro-bar-pct">1%</span></div>
+        </div>
+      </div>
+      <div class="review-filters">
+        <button class="review-chip active" onclick="filterReviews('all',this)">All</button>
+        <button class="review-chip" onclick="filterReviews('5',this)">5★ Only</button>
+        <button class="review-chip" onclick="filterReviews('iPhone',this)">iPhone</button>
+        <button class="review-chip" onclick="filterReviews('MacBook',this)">MacBook</button>
+        <button class="review-chip" onclick="filterReviews('iPad',this)">iPad</button>
       </div>
       <div class="reviews-grid">
-        <div class="review-card">
+        <div class="review-card" style="position:relative;">
+          <img src="Images/iphone-15-pro.png" alt="iPhone 15 Pro" loading="lazy" style="position:absolute;top:18px;right:18px;height:46px;width:auto;object-fit:contain;">
           <div class="review-stars">★★★★★</div>
           <div class="review-text">"Had my iPhone 15 Pro screen replaced in under an hour. Looks brand new and the price
             was way cheaper than Apple. Highly recommend!"</div>
@@ -4109,7 +4215,8 @@
             </div>
           </div>
         </div>
-        <div class="review-card">
+        <div class="review-card" style="position:relative;">
+          <img src="Images/macbook-air-m2.png" alt="MacBook" loading="lazy" style="position:absolute;top:18px;right:16px;height:40px;width:auto;object-fit:contain;">
           <div class="review-stars">★★★★★</div>
           <div class="review-text">"They came to my house in Caloundra to pick up my MacBook. Battery replaced same day
             and delivered back to me. Incredible service!"</div>
@@ -4121,7 +4228,8 @@
             </div>
           </div>
         </div>
-        <div class="review-card">
+        <div class="review-card" style="position:relative;">
+          <img src="Images/ipad-air-4.png" alt="iPad" loading="lazy" style="position:absolute;top:18px;right:18px;height:46px;width:auto;object-fit:contain;">
           <div class="review-stars">★★★★★</div>
           <div class="review-text">"Fixed my daughter's iPad that Apple said was unrepairable. Water damage completely
             resolved. These guys know what they're doing."</div>
@@ -4133,7 +4241,8 @@
             </div>
           </div>
         </div>
-        <div class="review-card">
+        <div class="review-card" style="position:relative;">
+          <img src="Images/iphone-14.png" alt="iPhone 14" loading="lazy" style="position:absolute;top:18px;right:18px;height:46px;width:auto;object-fit:contain;">
           <div class="review-stars">★★★★★</div>
           <div class="review-text">"Dropped my iPhone 14 in the pool. Brought it in expecting the worst — they had it
             working perfectly within 2 hours. Absolute legends!"</div>
@@ -4145,7 +4254,8 @@
             </div>
           </div>
         </div>
-        <div class="review-card">
+        <div class="review-card" style="position:relative;">
+          <img src="Images/macbook-pro-14-m3.png" alt="MacBook Pro" loading="lazy" style="position:absolute;top:18px;right:16px;height:40px;width:auto;object-fit:contain;">
           <div class="review-stars">★★★★☆</div>
           <div class="review-text">"Great service for my MacBook Pro keyboard repair. Only reason for 4 stars is the
             part took an extra day, but they kept me informed the whole time."</div>
@@ -4885,7 +4995,7 @@
             </div>
             <div>
               <div class="contact-label">Facebook</div>
-              <div class="contact-value"><a href="https://facebook.com/trustedmobiletechsolutions" target="_blank" style="color:inherit;text-decoration:none;">@trustmobiletechsolutions</a></div>
+              <div class="contact-value"><a href="https://www.facebook.com/profile.php?id=61581030196523" target="_blank" style="color:inherit;text-decoration:none;">@trustmobiletechsolutions</a></div>
             </div>
           </div>
           <div class="contact-item">
@@ -5122,6 +5232,17 @@
         </div>
       </div>
 
+      <!-- What we repair — device showcase -->
+      <div style="margin:54px 0 10px;text-align:center;">
+        <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">What We Repair</div>
+        <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:26px;letter-spacing:-.3px;">iPhone · MacBook · iPad — done right, done fast</h2>
+        <div style="display:flex;justify-content:center;align-items:flex-end;gap:36px;flex-wrap:wrap;">
+          <img src="Images/iphone-15-pro.png" alt="iPhone repairs" loading="lazy" style="height:185px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 34px rgba(0,0,0,.28));">
+          <img src="Images/macbook-pro-14-m3.png" alt="MacBook repairs" loading="lazy" style="height:135px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 34px rgba(0,0,0,.28));">
+          <img src="Images/ipad-air-4.png" alt="iPad repairs" loading="lazy" style="height:165px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 34px rgba(0,0,0,.28));">
+        </div>
+      </div>
+
       <!-- Expanding to Brisbane -->
       <div class="about-expanding">
         <div>
@@ -5132,7 +5253,7 @@
           <button class="hero-btn primary" style="margin-top:20px;" onclick="showSection('quote')">Get a Quote →</button>
         </div>
         <div style="text-align:center;">
-          <div style="font-size:64px;margin-bottom:16px;">🗺️</div>
+          <div style="font-size:120px;margin-bottom:16px;line-height:1;">🗺️</div>
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--dark);">Sunshine Coast</strong> — Est. 2022</div>
             <div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--brand);">Brisbane</strong> — Now open!</div>
@@ -5242,7 +5363,7 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.72a4.85 4.85 0 01-1.01-.03z"/></svg>
               <span>@trustmobiletech</span>
             </a>
-            <a href="https://facebook.com/trustedmobiletechsolutions" target="_blank" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px;font-size:14px;">
+            <a href="https://www.facebook.com/profile.php?id=61581030196523" target="_blank" style="color:inherit;text-decoration:none;display:flex;align-items:center;gap:10px;font-size:14px;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
               <span>@trustmobiletechsolutions</span>
             </a>
@@ -5327,7 +5448,7 @@
             features: ['First 5G iPhone', 'Ceramic Shield Front Cover', 'MagSafe Charging', 'Flat-Edge Design Returns'],
             models: [
               { name: 'iPhone 12', img: 'Images/iphone-12.png', color: '#023B63', colorName: 'Blue', features: ['6.1" Super Retina XDR', 'Ceramic Shield', 'MagSafe'], uniqueRepair: 'MagSafe Alignment Repair' },
-              { name: 'iPhone 12 Mini', img: 'Images/iphone-12-mini.png', color: '#CC0000', colorName: '(PRODUCT)RED', features: ['5.4" Compact Design', 'Smallest 5G Phone', 'A14 Bionic'], uniqueRepair: null },
+              { name: 'iPhone 12 Mini', img: 'Images/iphone-12-mini.png', color: '#CC0000', colorName: 'Red', features: ['5.4" Compact Design', 'Smallest 5G Phone', 'A14 Bionic'], uniqueRepair: null },
               { name: 'iPhone 12 Pro', img: 'Images/iphone-12-pro.png', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['LiDAR Scanner', 'Dolby Vision Recording', 'Stainless Steel'], uniqueRepair: 'LiDAR Scanner Repair' },
               { name: 'iPhone 12 Pro Max', img: 'Images/iphone-12-pro-max.png', color: '#2D4E5C', colorName: 'Pacific Blue', features: ['6.7" Display', 'Sensor-Shift OIS', 'Best Camera System'], uniqueRepair: 'LiDAR Scanner Repair' },
             ]
@@ -5396,9 +5517,7 @@
             tagline: 'Cosmic Orange. New design. Aluminum Pro.',
             features: ['All-New Design Language', 'Aluminum Frame Returns (Pro)', 'Cosmic Orange (Pro Hero)', 'Apple Intelligence'],
             models: [
-              { name: 'iPhone 17', img: 'Images/iphone-17.png', color: '#2D2D2D', colorName: 'Black', features: ['New Design', 'A19 Chip', 'Apple Intelligence', 'USB-C 3.0'], uniqueRepair: null },
-              { name: 'iPhone 17 Plus', img: 'Images/iphone-17-plus.png', color: '#F5F5F0', colorName: 'White', features: ['6.7" Display', 'A19 Chip', 'New Design', 'Apple Intelligence'], uniqueRepair: null },
-              { name: 'iPhone 17 Pro', img: 'Images/iphone-17-pro.png', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Aluminum Frame', 'A19 Pro', 'New Design', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
+              { name: 'iPhone 17', img: 'Images/iphone-17.png', color: '#2D2D2D', colorName: 'Black', features: ['New Design', 'A19 Chip', 'Apple Intelligence', 'USB-C 3.0'], uniqueRepair: null },              { name: 'iPhone 17 Pro', img: 'Images/iphone-17-pro.png', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Aluminum Frame', 'A19 Pro', 'New Design', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
               { name: 'iPhone 17 Pro Max', img: 'Images/iphone-17-pro-max.png', color: '#E8651A', colorName: 'Cosmic Orange', features: ['Largest Display', 'A19 Pro', '5x Zoom', 'Apple Intelligence Pro'], uniqueRepair: 'Aluminum Frame Repair' },
             ]
           },
@@ -5410,16 +5529,28 @@
         label: 'MacBook', icon: '💻', cls: 'macbook', desc: 'Air & Pro repairs',
         series: {
 
-          'MacBook Air': {
+          'MacBook Air 13"': {
             color: '#7EB5D6', // Sky Blue (M4 hero)
             effect: 'air',
             tagline: 'Impossibly thin. All-day battery.',
-            features: ['Fanless Design', 'All-Day Battery Life', 'Liquid Retina Display', 'MagSafe Charging'],
+            features: ['Fanless Design', 'All-Day Battery Life', '13.6" Liquid Retina', 'MagSafe Charging'],
             models: [
-              { name: 'MacBook Air (M1, 2020)', img: 'Images/macbook-air-m1.png', color: '#C9B99A', colorName: 'Gold', features: ['First Apple Silicon Mac', 'Fanless', '18hr Battery', 'M1 Chip'], uniqueRepair: null },
-              { name: 'MacBook Air (M2, 2022)', img: 'Images/macbook-air-m2.png', color: '#1A1B2E', colorName: 'Midnight', features: ['Complete Redesign', 'Flat Body', 'MagSafe Return', 'Notch Display'], uniqueRepair: null },
-              { name: 'MacBook Air (M3, 2024)', img: 'Images/macbook-air-m3.png', color: '#1A1B2E', colorName: 'Midnight', features: ['Dual External Display', 'Wi-Fi 6E', 'M3 Chip', '60% Faster Than M1'], uniqueRepair: null },
-              { name: 'MacBook Air (M4, 2025)', img: 'Images/macbook-air-m4.png', color: '#5C8A76', colorName: 'Teal', features: ['M4 Chip', 'Centre Stage Camera', 'Wi-Fi 6E', 'Longer Battery Life'], uniqueRepair: null },
+              { name: 'MacBook Air 13" (M1, 2020)', img: 'Images/macbook-air-m1.png', color: '#C9B99A', colorName: 'Gold', features: ['First Apple Silicon Mac', 'Fanless', '18hr Battery', 'M1 Chip'], uniqueRepair: null },
+              { name: 'MacBook Air 13" (M2, 2022)', img: 'Images/macbook-air-m2.png', color: '#1A1B2E', colorName: 'Midnight', features: ['Complete Redesign', 'Flat Body', 'MagSafe Return', 'Notch Display'], uniqueRepair: null },
+              { name: 'MacBook Air 13" (M3, 2024)', img: 'Images/macbook-air-m3.png', color: '#1A1B2E', colorName: 'Midnight', features: ['Dual External Display', 'Wi-Fi 6E', 'M3 Chip', '60% Faster Than M1'], uniqueRepair: null },
+              { name: 'MacBook Air 13" (M4, 2025)', img: 'Images/macbook-air-m4.png', color: '#5C8A76', colorName: 'Teal', features: ['M4 Chip', 'Centre Stage Camera', 'Wi-Fi 6E', 'Longer Battery Life'], uniqueRepair: null },
+            ]
+          },
+
+          'MacBook Air 15"': {
+            color: '#7EB5D6',
+            effect: 'air',
+            tagline: 'More screen. Same thin design.',
+            features: ['15.3" Liquid Retina', 'Fanless Design', 'Six-Speaker Sound', 'MagSafe Charging'],
+            models: [
+              { name: 'MacBook Air 15" (M2, 2023)', img: 'Images/macbook-air-15-m2.png', color: '#1A1B2E', colorName: 'Midnight', features: ['First 15" Air', '15.3" Display', 'Six Speakers', 'M2 Chip'], uniqueRepair: null },
+              { name: 'MacBook Air 15" (M3, 2024)', img: 'Images/macbook-air-15-m3.png', color: '#1A1B2E', colorName: 'Midnight', features: ['15.3" Display', 'Dual External Display', 'Wi-Fi 6E', 'M3 Chip'], uniqueRepair: null },
+              { name: 'MacBook Air 15" (M4, 2025)', img: 'Images/macbook-air-15-m4.png', color: '#7EB5D6', colorName: 'Sky Blue', features: ['M4 Chip', 'Centre Stage Camera', '15.3" Display', 'Longer Battery Life'], uniqueRepair: null },
             ]
           },
 
@@ -5551,14 +5682,15 @@
       'iPhone 16 Plus': { battery: 119, camera: 179, charging: 129, water: 159, speaker: 99, back_glass: 179, power: 99, volume: 99, home: 0, touch_id: 0, mic: 99, earpiece: 99, vibration: 99, sim: 29, wifi: 159, logic: 339 },
       'iPhone 16 Pro': { battery: 129, camera: 199, charging: 139, water: 169, speaker: 109, back_glass: 199, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 379 },
       'iPhone 16 Pro Max': { battery: 129, camera: 219, charging: 139, water: 169, speaker: 119, back_glass: 219, power: 119, volume: 119, home: 0, touch_id: 0, mic: 119, earpiece: 119, vibration: 119, sim: 29, wifi: 169, logic: 399 },
-      'iPhone 17': { battery: 129, camera: 189, charging: 139, water: 169, speaker: 109, back_glass: 189, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 359 },
-      'iPhone 17 Plus': { battery: 129, camera: 199, charging: 139, water: 169, speaker: 109, back_glass: 199, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 369 },
-      'iPhone 17 Pro': { battery: 139, camera: 229, charging: 149, water: 179, speaker: 119, back_glass: 229, power: 119, volume: 119, home: 0, touch_id: 0, mic: 119, earpiece: 119, vibration: 119, sim: 29, wifi: 179, logic: 419 },
+      'iPhone 17': { battery: 129, camera: 189, charging: 139, water: 169, speaker: 109, back_glass: 189, power: 109, volume: 109, home: 0, touch_id: 0, mic: 109, earpiece: 109, vibration: 109, sim: 29, wifi: 169, logic: 359 },      'iPhone 17 Pro': { battery: 139, camera: 229, charging: 149, water: 179, speaker: 119, back_glass: 229, power: 119, volume: 119, home: 0, touch_id: 0, mic: 119, earpiece: 119, vibration: 119, sim: 29, wifi: 179, logic: 419 },
       'iPhone 17 Pro Max': { battery: 139, camera: 249, charging: 149, water: 179, speaker: 129, back_glass: 249, power: 129, volume: 129, home: 0, touch_id: 0, mic: 129, earpiece: 129, vibration: 129, sim: 29, wifi: 179, logic: 449 },
-      'MacBook Air (M1, 2020)': { battery: 179, keyboard: 199, trackpad: 149, charging: 149, ssd: 129, ram: 0, water: 249, speaker: 119, fan: 0, hinge: 149, logic: 399, software: 79 },
-      'MacBook Air (M2, 2022)': { battery: 199, keyboard: 219, trackpad: 159, charging: 159, ssd: 149, ram: 0, water: 269, speaker: 129, fan: 0, hinge: 159, logic: 449, software: 79 },
-      'MacBook Air (M3, 2024)': { battery: 219, keyboard: 239, trackpad: 169, charging: 169, ssd: 169, ram: 0, water: 289, speaker: 139, fan: 0, hinge: 169, logic: 499, software: 79 },
-      'MacBook Air (M4, 2025)': { battery: 239, keyboard: 259, trackpad: 179, charging: 179, ssd: 189, ram: 0, water: 309, speaker: 149, fan: 0, hinge: 179, logic: 549, software: 79 },
+      'MacBook Air 13" (M1, 2020)': { battery: 179, keyboard: 199, trackpad: 149, charging: 149, ssd: 129, ram: 0, water: 249, speaker: 119, fan: 0, hinge: 149, logic: 399, software: 79 },
+      'MacBook Air 13" (M2, 2022)': { battery: 199, keyboard: 219, trackpad: 159, charging: 159, ssd: 149, ram: 0, water: 269, speaker: 129, fan: 0, hinge: 159, logic: 449, software: 79 },
+      'MacBook Air 13" (M3, 2024)': { battery: 219, keyboard: 239, trackpad: 169, charging: 169, ssd: 169, ram: 0, water: 289, speaker: 139, fan: 0, hinge: 169, logic: 499, software: 79 },
+      'MacBook Air 13" (M4, 2025)': { battery: 239, keyboard: 259, trackpad: 179, charging: 179, ssd: 189, ram: 0, water: 309, speaker: 149, fan: 0, hinge: 179, logic: 549, software: 79 },
+      'MacBook Air 15" (M2, 2023)': { battery: 219, keyboard: 219, trackpad: 159, charging: 159, ssd: 149, ram: 0, water: 289, speaker: 139, fan: 0, hinge: 169, logic: 469, software: 79 },
+      'MacBook Air 15" (M3, 2024)': { battery: 239, keyboard: 239, trackpad: 169, charging: 169, ssd: 169, ram: 0, water: 309, speaker: 149, fan: 0, hinge: 179, logic: 519, software: 79 },
+      'MacBook Air 15" (M4, 2025)': { battery: 259, keyboard: 259, trackpad: 179, charging: 179, ssd: 189, ram: 0, water: 329, speaker: 159, fan: 0, hinge: 189, logic: 569, software: 79 },
       'MacBook Pro 13" (M1, 2020)': { battery: 189, keyboard: 229, trackpad: 159, charging: 159, ssd: 139, ram: 0, water: 269, speaker: 129, fan: 99, hinge: 159, logic: 449, software: 79 },
       'MacBook Pro 13" (M2, 2022)': { battery: 199, keyboard: 239, trackpad: 169, charging: 169, ssd: 149, ram: 0, water: 279, speaker: 139, fan: 109, hinge: 169, logic: 479, software: 79 },
       'MacBook Pro 14" (M1 Pro/Max, 2021)': { battery: 229, keyboard: 269, trackpad: 179, charging: 179, ssd: 169, ram: 0, water: 299, speaker: 149, fan: 119, hinge: 179, logic: 549, software: 79 },
@@ -5602,8 +5734,9 @@
       'iPhone 14': [169, 25, 15], 'iPhone 14 Plus': [179, 30, 20], 'iPhone 14 Pro': [209, 35, 25], 'iPhone 14 Pro Max': [239, 40, 30],
       'iPhone 15': [189, 30, 20], 'iPhone 15 Plus': [199, 35, 25], 'iPhone 15 Pro': [249, 40, 30], 'iPhone 15 Pro Max': [279, 45, 35],
       'iPhone 16': [219, 35, 25], 'iPhone 16 Plus': [229, 40, 30], 'iPhone 16 Pro': [279, 45, 35], 'iPhone 16 Pro Max': [319, 50, 40],
-      'iPhone 17': [249, 40, 30], 'iPhone 17 Plus': [259, 45, 35], 'iPhone 17 Pro': [309, 50, 40], 'iPhone 17 Pro Max': [349, 55, 45],
-      'MacBook Air (M1, 2020)': [299, 50, 80], 'MacBook Air (M2, 2022)': [349, 60, 90], 'MacBook Air (M3, 2024)': [399, 70, 100], 'MacBook Air (M4, 2025)': [449, 80, 110],
+      'iPhone 17': [249, 40, 30], 'iPhone 17 Pro': [309, 50, 40], 'iPhone 17 Pro Max': [349, 55, 45],
+      'MacBook Air 13" (M1, 2020)': [299, 50, 80], 'MacBook Air 13" (M2, 2022)': [349, 60, 90], 'MacBook Air 13" (M3, 2024)': [399, 70, 100], 'MacBook Air 13" (M4, 2025)': [449, 80, 110],
+      'MacBook Air 15" (M2, 2023)': [379, 60, 90], 'MacBook Air 15" (M3, 2024)': [429, 70, 100], 'MacBook Air 15" (M4, 2025)': [479, 80, 110],
       'MacBook Pro 13" (M1, 2020)': [329, 50, 80], 'MacBook Pro 13" (M2, 2022)': [349, 60, 90],
       'MacBook Pro 14" (M1 Pro/Max, 2021)': [449, 80, 120], 'MacBook Pro 14" (M2 Pro/Max, 2023)': [499, 90, 130], 'MacBook Pro 14" (M3 Pro/Max, 2023)': [549, 100, 150], 'MacBook Pro 14" (M4 Pro/Max, 2024)': [599, 110, 160],
       'MacBook Pro 16" (M1 Pro/Max, 2021)': [549, 100, 150], 'MacBook Pro 16" (M2 Pro/Max, 2023)': [599, 110, 160], 'MacBook Pro 16" (M3 Pro/Max, 2023)': [649, 120, 180], 'MacBook Pro 16" (M4 Pro/Max, 2024)': [699, 130, 190],
@@ -5916,6 +6049,22 @@
     }
     function startQuote(cat) { showSection('quote'); setTimeout(() => selectCategory(cat), 50); }
 
+    function filterReviews(type, btn) {
+      document.querySelectorAll('.review-chip').forEach(function (c) { c.classList.remove('active'); });
+      if (btn) btn.classList.add('active');
+      document.querySelectorAll('.reviews-grid .review-card').forEach(function (card) {
+        var show = true;
+        if (type === '5') {
+          var st = card.querySelector('.review-stars');
+          show = !!st && st.textContent.replace(/\s/g, '') === '★★★★★';
+        } else if (type !== 'all') {
+          var t = card.querySelector('.review-text');
+          show = !!t && t.textContent.toLowerCase().indexOf(type.toLowerCase()) !== -1;
+        }
+        card.style.display = show ? '' : 'none';
+      });
+    }
+
     // ═══════════════════════════════════════════════════
     //  EMAIL CONFIG — Web3Forms (free at web3forms.com)
     //  1. Go to https://web3forms.com
@@ -6077,11 +6226,6 @@
     }
     function selectCategory(k) {
       selCat = k;
-      if (k === 'MacBook' || k === 'iPad') {
-        selSeries = null; selModel = null;
-        goToPage(2);
-        return;
-      }
       browseLevel = 1; const c = T[k]; showLevel(1); renderBC();
       document.getElementById('seriesFeaturePanel').innerHTML = '';
       document.getElementById('l1Title').innerHTML = 'Choose your <span class="hl">' + c.label + '</span>';
@@ -6097,7 +6241,7 @@
           + '</div>';
       }).join('');
     }
-    var PHILOSOPHY = { 'iPhone SE': 'The SE delivers modern performance in a classic, compact form.', 'iPhone 11': 'Night Mode photography brought professional low-light to everyone. The ultra-wide camera transformed how we capture the world.', 'iPhone 12': 'A return to iconic flat-edge design with aerospace-grade aluminum. First 5G iPhone with Ceramic Shield, the toughest glass ever on a smartphone.', 'iPhone 13': 'Designed for storytellers. Cinematic Mode brought depth-of-field video, while ProMotion 120Hz made every interaction feel impossibly fluid.', 'iPhone 14': 'Dynamic Island reimagined phone interaction, turning the camera cutout into a living interface. Satellite SOS proved a phone can save your life.', 'iPhone 15': 'Grade 5 titanium, the same alloy used in spacecraft. The lightest Pro ever, with a customisable Action Button and the most powerful mobile chip ever made.', 'iPhone 16': 'Camera Control gives you a dedicated button that changes how you capture. With Apple Intelligence built in, iPhone 16 Pro thinks alongside you.', 'iPhone 17': 'Engineered around how you actually hold and use your phone. The refined aluminum frame is lighter and more ergonomic than ever, with contoured edges that feel natural in the hand. Cosmic Orange makes a bold statement.', 'MacBook Air': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge. The M4 Air brings even more speed and a Centre Stage camera to the most popular Mac ever made.', 'MacBook Pro 13in': 'Professional power in the most portable Pro form. The Touch Bar brought context-sensitive controls to your fingertips.', 'MacBook Pro 14in': 'Built for boundary-pushers. Liquid Retina XDR brings reference-grade colour accuracy to a laptop for the first time.', 'MacBook Pro 16in': 'Maximum canvas, maximum power. The 16-inch display gives creators room to work while M-series chips handle anything.', 'iPad': 'The essential iPad. Versatile, affordable, and powerful enough for everything from notes to Netflix to creative work.', 'iPad mini': 'Small enough for anywhere, powerful enough for everything. The mini proves screen size has nothing to do with capability.', 'iPad Air': 'The sweet spot. Colourful, powerful, and ready for anything with M-series performance and Apple Pencil Pro.', 'iPad Pro': 'The ultimate iPad. Tandem OLED delivers the most stunning display Apple has ever made, in the thinnest product ever created.' };
+    var PHILOSOPHY = { 'iPhone SE': 'The SE delivers modern performance in a classic, compact form.', 'iPhone 11': 'Night Mode photography brought professional low-light to everyone. The ultra-wide camera transformed how we capture the world.', 'iPhone 12': 'A return to iconic flat-edge design with aerospace-grade aluminum. First 5G iPhone with Ceramic Shield, the toughest glass ever on a smartphone.', 'iPhone 13': 'Designed for storytellers. Cinematic Mode brought depth-of-field video, while ProMotion 120Hz made every interaction feel impossibly fluid.', 'iPhone 14': 'Dynamic Island reimagined phone interaction, turning the camera cutout into a living interface. Satellite SOS proved a phone can save your life.', 'iPhone 15': 'Grade 5 titanium, the same alloy used in spacecraft. The lightest Pro ever, with a customisable Action Button and the most powerful mobile chip ever made.', 'iPhone 16': 'Camera Control gives you a dedicated button that changes how you capture. With Apple Intelligence built in, iPhone 16 Pro thinks alongside you.', 'iPhone 17': 'Engineered around how you actually hold and use your phone. The refined aluminum frame is lighter and more ergonomic than ever, with contoured edges that feel natural in the hand. Cosmic Orange makes a bold statement.', 'MacBook Air 13"': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge. The M4 Air brings even more speed and a Centre Stage camera to the most popular Mac ever made.', 'MacBook Air 15"': 'The biggest Air ever made — a stunning 15.3-inch Liquid Retina display and six-speaker sound system, still impossibly thin, silent, and light enough to take anywhere.', 'MacBook Air': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge.', 'MacBook Pro 13in': 'Professional power in the most portable Pro form. The Touch Bar brought context-sensitive controls to your fingertips.', 'MacBook Pro 14in': 'Built for boundary-pushers. Liquid Retina XDR brings reference-grade colour accuracy to a laptop for the first time.', 'MacBook Pro 16in': 'Maximum canvas, maximum power. The 16-inch display gives creators room to work while M-series chips handle anything.', 'iPad': 'The essential iPad. Versatile, affordable, and powerful enough for everything from notes to Netflix to creative work.', 'iPad mini': 'Small enough for anywhere, powerful enough for everything. The mini proves screen size has nothing to do with capability.', 'iPad Air': 'The sweet spot. Colourful, powerful, and ready for anything with M-series performance and Apple Pencil Pro.', 'iPad Pro': 'The ultimate iPad. Tandem OLED delivers the most stunning display Apple has ever made, in the thinnest product ever created.' };
     function selectSeries(el) {
       var sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2;
       var cat = T[selCat]; var s = cat.series[sn]; showLevel(2); renderBC();
@@ -6753,10 +6897,29 @@
       var isLight = document.body.classList.contains('light');
       localStorage.setItem('tmt_theme', isLight ? 'light' : 'dark');
     }
-    // Load saved theme
+    // Always start in light mode when the page loads (user can still toggle to dark for the session)
     (function () {
-      var saved = localStorage.getItem('tmt_theme');
-      if (saved === 'light') document.body.classList.add('light');
+      document.body.classList.add('light');
+    })();
+
+    // Global 1ms delay on every click across the site
+    (function () {
+      var SKIP = /^(INPUT|TEXTAREA|SELECT|OPTION)$/;
+      document.addEventListener('click', function (e) {
+        if (e.__delayed) return;                                  // re-dispatched click: let it through
+        var t = e.target;
+        if (!t || SKIP.test(t.tagName) || t.isContentEditable) return; // don't disrupt form fields
+        e.preventDefault();
+        e.stopPropagation();
+        setTimeout(function () {
+          var ev = new MouseEvent('click', {
+            bubbles: true, cancelable: true, view: window,
+            clientX: e.clientX, clientY: e.clientY, button: e.button
+          });
+          ev.__delayed = true;
+          t.dispatchEvent(ev);
+        }, 1);
+      }, true);
     })();
 
     setMinDate(); renderCategories();
