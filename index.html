@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trusted Mobile Tech – iPhone, MacBook & iPad Repairs</title>
-  <link rel="icon" href="favicon.ico?v=2" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
-  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=2">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+  <link rel="icon" href="favicon.ico?v=3" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=3">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=3">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap"
     rel="stylesheet">
@@ -3843,6 +3843,7 @@
       <button class="nav-link" data-section="quote" onclick="showSection('quote')">Get a Quote</button>
       <button class="nav-link" data-section="reviews" onclick="showSection('reviews')">Reviews</button>
       <button class="nav-link" data-section="deals" onclick="showSection('deals')">Refurbished Devices</button>
+      <button class="nav-link" data-section="accessories" onclick="showSection('accessories')">Accessories</button>
       <button class="nav-link" data-section="contact" onclick="showSection('contact')">Contact Us</button>
       <button class="nav-link" data-section="sell" onclick="showSection('sell')">Sell Your Device</button>
       <button class="nav-cta" onclick="showSection('quote')">Get Quote</button>
@@ -4963,6 +4964,40 @@
     </div>
   </div>
 
+  <section class="section" id="sec-accessories" style="padding:80px 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Accessories</h2>
+        <p>Cases, chargers, cables and more — shipped straight to your door. Quality picks to keep your device protected and powered.</p>
+      </div>
+      <div id="accGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-top:36px;"></div>
+      <div style="text-align:center;margin-top:28px;font-size:14px;color:#94a3b8;">Free local pickup available, or flat-rate shipping Australia-wide. Most accessories ship within 5–12 business days.</div>
+    </div>
+  </section>
+
+  <!-- Floating cart button -->
+  <button id="accCartFab" onclick="openAccCart()" style="display:none;position:fixed;bottom:24px;right:24px;z-index:120;background:var(--grad);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:15px;font-weight:700;box-shadow:0 8px 24px rgba(0,180,216,.4);cursor:pointer;align-items:center;gap:8px;">
+    🛒 <span id="accCartFabCount">0</span> · $<span id="accCartFabTotal">0</span>
+  </button>
+
+  <!-- Accessories cart modal -->
+  <div id="accCartModal" class="modal-overlay" onclick="if(event.target===this)closeAccCart()">
+    <div class="modal" style="max-width:560px;max-height:90vh;overflow-y:auto;">
+      <button class="modal-close" onclick="closeAccCart()">✕</button>
+      <h3 style="margin:0 0 18px;font-size:22px;">Your Cart</h3>
+      <div id="accCartItems"></div>
+      <div id="accCartEmpty" style="text-align:center;padding:30px 0;color:#94a3b8;">Your cart is empty.</div>
+      <div id="accCartFooter" style="display:none;">
+        <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin:18px 0;padding-top:16px;border-top:1px solid var(--border);">
+          <span>Total</span><span>$<span id="accCartTotal">0</span> AUD</span>
+        </div>
+        <input id="accEmail" type="email" placeholder="Email for your receipt" style="width:100%;padding:13px 14px;margin-bottom:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;">
+        <button class="btn" style="width:100%;padding:14px;font-size:16px;font-weight:700;border-radius:14px;" onclick="accCheckout()" id="accCheckoutBtn">Checkout</button>
+        <p style="text-align:center;font-size:12px;color:#94a3b8;margin:12px 0 0;">You'll enter your delivery address securely at checkout. Payments handled by Stripe.</p>
+      </div>
+    </div>
+  </div>
+
   <section class="section" id="sec-contact">
     <div class="wrap contact-section">
       <div class="section-head">
@@ -6034,6 +6069,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (id === 'quote') { renderCategories(); goToPage(1); }
       if (id === 'deals' && !dealsLoaded) { loadDeals(); }
+      if (id === 'accessories') { renderAccessories(); }
       var btn = document.getElementById('globalBackBtn');
       if (btn) btn.style.display = _sectionHistory.length > 0 ? 'block' : 'none';
     }
@@ -6175,7 +6211,7 @@
       var imei        = document.getElementById('sell-imei').value.trim();
 
       // Email business
-      await sendEmail(EMAILJS_SELL_NOTIFY_TPL, {
+      await sendEmail('sell_notify', {
         to_email:      'info@trustedmobiletech.org',
         customer_name: name,
         customer_email: email || '(not provided)',
@@ -6191,7 +6227,7 @@
 
       // Confirmation to customer if they gave email
       if (email) {
-        await sendEmail(EMAILJS_SELL_CONFIRM_TPL, {
+        await sendEmail('sell_confirm', {
           to_email:      email,
           customer_name: name,
           device_type:   deviceType,
@@ -6630,7 +6666,7 @@
           // Send SMS notification
           sendSmsNotification(quoteRow);
           // Send email notification to business
-          sendEmail(EMAILJS_QUOTE_NOTIFY_TPL, {
+          sendEmail('quote_notify', {
             to_email:      'info@trustedmobiletech.org',
             quote_number:  qn,
             customer_name: quoteRow.customer_name,
@@ -7238,25 +7274,155 @@
       }
     }
 
+    // ═══════════════════════════════════════════════════
+    //  ACCESSORIES  (placeholder catalog — edit ACCESSORIES below)
+    //  Each item: id, name, blurb, price (AUD), emoji icon, and
+    //  cjSku (CJ Dropshipping product/variant SKU). Leave cjSku as
+    //  '' for now; fill it in when you map products in CJ so a future
+    //  auto-fulfillment step can place orders via the CJ API.
+    // ═══════════════════════════════════════════════════
+    var ACCESSORIES = [
+      { id: 'case-clear',   name: 'Clear Protective Case',    blurb: 'Slim shock-absorbing TPU, crystal clear.',        price: 24, icon: '📱', cjSku: '' },
+      { id: 'case-rugged',  name: 'Rugged Armor Case',        blurb: 'Heavy-duty drop protection with raised edges.',   price: 34, icon: '🛡️', cjSku: '' },
+      { id: 'screen-glass', name: 'Tempered Glass Protector', blurb: '9H hardness, bubble-free, 2-pack.',                price: 19, icon: '🔷', cjSku: '' },
+      { id: 'charger-20w',  name: '20W USB-C Fast Charger',   blurb: 'Wall adapter for rapid charging.',                price: 29, icon: '🔌', cjSku: '' },
+      { id: 'cable-usbc',   name: 'USB-C to Lightning Cable', blurb: 'Braided 1m cable, fast-charge ready.',            price: 18, icon: '🔋', cjSku: '' },
+      { id: 'powerbank',    name: '10,000mAh Power Bank',     blurb: 'Pocket-size dual-port portable charger.',         price: 45, icon: '🔋', cjSku: '' },
+      { id: 'earbuds',      name: 'Wireless Earbuds',         blurb: 'Bluetooth 5.3 with charging case.',               price: 59, icon: '🎧', cjSku: '' },
+      { id: 'magsafe',      name: 'Magnetic Wireless Charger',blurb: '15W MagSafe-compatible charging pad.',            price: 39, icon: '🧲', cjSku: '' }
+    ];
+
+    var accCart = {}; // { id: qty }
+
+    function renderAccessories() {
+      var grid = document.getElementById('accGrid');
+      if (!grid) return;
+      grid.innerHTML = ACCESSORIES.map(function (a) {
+        return '<div class="card" style="padding:22px;display:flex;flex-direction:column;text-align:center;">' +
+            '<div style="font-size:48px;margin-bottom:14px;">' + a.icon + '</div>' +
+            '<div style="font-weight:700;font-size:16px;margin-bottom:6px;">' + a.name + '</div>' +
+            '<div style="font-size:13px;color:#94a3b8;flex:1;margin-bottom:14px;">' + a.blurb + '</div>' +
+            '<div style="font-size:22px;font-weight:800;margin-bottom:14px;">$' + a.price + '</div>' +
+            '<button class="btn" style="width:100%;padding:11px;font-size:14px;font-weight:700;border-radius:12px;" onclick="addToAccCart(\'' + a.id + '\')">Add to Cart</button>' +
+          '</div>';
+      }).join('');
+    }
+
+    function addToAccCart(id) {
+      accCart[id] = (accCart[id] || 0) + 1;
+      updateAccCartFab();
+      openAccCart();
+    }
+    function changeAccQty(id, delta) {
+      accCart[id] = (accCart[id] || 0) + delta;
+      if (accCart[id] <= 0) delete accCart[id];
+      updateAccCartFab();
+      renderAccCart();
+    }
+    function accCartList() {
+      return Object.keys(accCart).map(function (id) {
+        var item = ACCESSORIES.find(function (a) { return a.id === id; });
+        return { item: item, qty: accCart[id] };
+      }).filter(function (r) { return r.item; });
+    }
+    function accCartTotal() {
+      return accCartList().reduce(function (s, r) { return s + r.item.price * r.qty; }, 0);
+    }
+    function accCartCount() {
+      return accCartList().reduce(function (s, r) { return s + r.qty; }, 0);
+    }
+    function updateAccCartFab() {
+      var fab = document.getElementById('accCartFab');
+      var count = accCartCount();
+      fab.style.display = count > 0 ? 'inline-flex' : 'none';
+      document.getElementById('accCartFabCount').textContent = count;
+      document.getElementById('accCartFabTotal').textContent = accCartTotal();
+    }
+    function renderAccCart() {
+      var rows = accCartList();
+      var wrap = document.getElementById('accCartItems');
+      var empty = document.getElementById('accCartEmpty');
+      var footer = document.getElementById('accCartFooter');
+      if (!rows.length) {
+        wrap.innerHTML = ''; empty.style.display = 'block'; footer.style.display = 'none'; return;
+      }
+      empty.style.display = 'none'; footer.style.display = 'block';
+      wrap.innerHTML = rows.map(function (r) {
+        return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">' +
+            '<div style="font-size:30px;">' + r.item.icon + '</div>' +
+            '<div style="flex:1;"><div style="font-weight:600;font-size:14px;">' + r.item.name + '</div>' +
+            '<div style="font-size:13px;color:#94a3b8;">$' + r.item.price + ' each</div></div>' +
+            '<div style="display:flex;align-items:center;gap:8px;">' +
+              '<button onclick="changeAccQty(\'' + r.item.id + '\',-1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">−</button>' +
+              '<span style="min-width:20px;text-align:center;font-weight:700;">' + r.qty + '</span>' +
+              '<button onclick="changeAccQty(\'' + r.item.id + '\',1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">+</button>' +
+            '</div>' +
+            '<div style="min-width:54px;text-align:right;font-weight:700;">$' + (r.item.price * r.qty) + '</div>' +
+          '</div>';
+      }).join('');
+      document.getElementById('accCartTotal').textContent = accCartTotal();
+    }
+    function openAccCart() { renderAccCart(); document.getElementById('accCartModal').classList.add('show'); }
+    function closeAccCart() { document.getElementById('accCartModal').classList.remove('show'); }
+
+    async function accCheckout() {
+      var rows = accCartList();
+      if (!rows.length) return;
+      var email = document.getElementById('accEmail').value.trim();
+      var btn = document.getElementById('accCheckoutBtn');
+      btn.textContent = '⏳ Redirecting to payment…'; btn.disabled = true;
+      try {
+        var resp = await fetch('/.netlify/functions/create-accessories-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            cart: rows.map(function (r) {
+              return { id: r.item.id, name: r.item.name, price: r.item.price, qty: r.qty, cjSku: r.item.cjSku || '' };
+            })
+          })
+        });
+        var result = await resp.json();
+        if (result.url) {
+          try { localStorage.setItem('tmt_acc_cart', JSON.stringify(accCart)); } catch (e) {}
+          window.location.href = result.url;
+        } else {
+          alert('Payment error: ' + (result.error || 'Please try again.'));
+          btn.textContent = 'Checkout'; btn.disabled = false;
+        }
+      } catch (err) {
+        alert('Connection error — please try again.');
+        btn.textContent = 'Checkout'; btn.disabled = false;
+      }
+    }
+
     // Handle return from Stripe (success or cancel)
     (function() {
-      var p = new URLSearchParams(window.location.search).get('payment');
+      var qs = new URLSearchParams(window.location.search);
+      var p = qs.get('payment');
+      var type = qs.get('type');
       if (!p) return;
       window.history.replaceState({}, '', window.location.pathname);
       window.addEventListener('load', function() {
         setTimeout(function() {
+          var dest = type === 'accessories' ? 'accessories' : 'deals';
           if (p === 'success') {
-            showSection('deals');
+            if (type === 'accessories') { accCart = {}; try { localStorage.removeItem('tmt_acc_cart'); } catch (e) {} if (typeof updateAccCartFab === 'function') updateAccCartFab(); }
+            showSection(dest);
             // Reuse checkout thanks screen as a standalone success banner
             var modal = document.getElementById('checkoutModal');
             var form  = document.getElementById('checkoutFormWrap');
             var ty    = document.getElementById('checkoutThanksWrap');
-            document.getElementById('coThanksMsg').textContent = 'Payment confirmed! You\'ll receive a confirmation email shortly. Questions? Call 0467 748 433.';
+            var msg = type === 'accessories'
+              ? 'Order confirmed! We\'ll ship your accessories and email tracking once dispatched. Questions? Call 0467 748 433.'
+              : 'Payment confirmed! You\'ll receive a confirmation email shortly. Questions? Call 0467 748 433.';
+            document.getElementById('coThanksMsg').textContent = msg;
             if (form) form.style.display = 'none';
             if (ty)   ty.style.display   = 'block';
             if (modal) modal.classList.add('show');
           } else if (p === 'cancelled') {
-            showSection('deals');
+            if (type === 'accessories') { try { var saved = JSON.parse(localStorage.getItem('tmt_acc_cart') || '{}'); accCart = saved; } catch (e) {} if (typeof updateAccCartFab === 'function') updateAccCartFab(); }
+            showSection(dest);
           }
         }, 300);
       });
