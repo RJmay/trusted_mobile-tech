@@ -1749,6 +1749,7 @@
     }
     .review-chip:hover { color: var(--dark); border-color: var(--brand); }
     .review-chip.active { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(0, 212, 255, .25); }
+    .review-filter-sep { width: 1px; height: 22px; background: var(--border); margin: 0 6px; align-self: center; }
 
     .reviews-summary {
       text-align: center;
@@ -4156,8 +4157,22 @@
   </section>
 
   <!-- ═══════ REVIEWS ═══════ -->
-  <section class="section" id="sec-reviews">
-    <div class="wrap reviews-section">
+  <section class="section" id="sec-reviews" style="position:relative;overflow:hidden;">
+    <div class="hero-decals" aria-hidden="true">
+      <div class="hd-orb hd-orb-1"></div>
+      <div class="hd-orb hd-orb-2"></div>
+      <div class="hd-orb hd-orb-3"></div>
+      <div class="hd-orb hd-orb-4"></div>
+      <div class="hd-dots hd-dots-1"></div>
+      <div class="hd-dots hd-dots-2"></div>
+      <div class="hd-dots hd-dots-3"></div>
+      <div class="hd-phone hd-phone-1">📱</div>
+      <div class="hd-phone hd-phone-2">📱</div>
+      <div class="hd-spanner hd-spanner-1">🔧</div>
+      <div class="hd-spanner hd-spanner-2">🔩</div>
+      <div class="hd-spanner hd-spanner-3">🔧</div>
+    </div>
+    <div class="wrap reviews-section" style="position:relative;z-index:1;">
       <div class="section-head">
         <h2>What Our Customers Say</h2>
         <p>Real reviews from real customers on the Sunshine Coast &amp; Brisbane</p>
@@ -4188,7 +4203,12 @@
       </div>
       <div class="review-filters">
         <button class="review-chip active" onclick="filterReviews('all',this)">All</button>
-        <button class="review-chip" onclick="filterReviews('5',this)">5★ Only</button>
+        <button class="review-chip" onclick="filterReviews('5',this)">5★</button>
+        <button class="review-chip" onclick="filterReviews('4',this)">4★</button>
+        <button class="review-chip" onclick="filterReviews('3',this)">3★</button>
+        <button class="review-chip" onclick="filterReviews('2',this)">2★</button>
+        <button class="review-chip" onclick="filterReviews('1',this)">1★</button>
+        <span class="review-filter-sep"></span>
         <button class="review-chip" onclick="filterReviews('iPhone',this)">iPhone</button>
         <button class="review-chip" onclick="filterReviews('MacBook',this)">MacBook</button>
         <button class="review-chip" onclick="filterReviews('iPad',this)">iPad</button>
@@ -5224,17 +5244,6 @@
         </div>
       </div>
 
-      <!-- What we repair — device showcase -->
-      <div style="margin:54px 0 10px;text-align:center;">
-        <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">What We Repair</div>
-        <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:26px;letter-spacing:-.3px;">iPhone · MacBook · iPad — done right, done fast</h2>
-        <div style="display:flex;justify-content:center;align-items:flex-end;gap:36px;flex-wrap:wrap;">
-          <img src="Images/iphone-15-pro.png" alt="iPhone repairs" loading="lazy" style="height:185px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 34px rgba(0,0,0,.28));">
-          <img src="Images/macbook-pro-14-m3.png" alt="MacBook repairs" loading="lazy" style="height:135px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 34px rgba(0,0,0,.28));">
-          <img src="Images/ipad-air-4.png" alt="iPad repairs" loading="lazy" style="height:165px;width:auto;object-fit:contain;filter:drop-shadow(0 14px 34px rgba(0,0,0,.28));">
-        </div>
-      </div>
-
       <!-- Expanding to Brisbane -->
       <div class="about-expanding">
         <div>
@@ -6046,9 +6055,10 @@
       if (btn) btn.classList.add('active');
       document.querySelectorAll('.reviews-grid .review-card').forEach(function (card) {
         var show = true;
-        if (type === '5') {
+        if (/^[1-5]$/.test(type)) {
           var st = card.querySelector('.review-stars');
-          show = !!st && st.textContent.replace(/\s/g, '') === '★★★★★';
+          var full = st ? (st.textContent.match(/★/g) || []).length : 0;
+          show = full === parseInt(type, 10);
         } else if (type !== 'all') {
           var t = card.querySelector('.review-text');
           show = !!t && t.textContent.toLowerCase().indexOf(type.toLowerCase()) !== -1;
