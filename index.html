@@ -4976,8 +4976,9 @@
   </section>
 
   <!-- Floating cart button -->
-  <button id="accCartFab" onclick="openAccCart()" style="display:none;position:fixed;bottom:24px;right:24px;z-index:120;background:var(--grad);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-size:15px;font-weight:700;box-shadow:0 8px 24px rgba(0,180,216,.4);cursor:pointer;align-items:center;gap:8px;">
-    🛒 <span id="accCartFabCount">0</span> · $<span id="accCartFabTotal">0</span>
+  <button id="accCartFab" onclick="openAccCart()" aria-label="Open cart" style="display:none;position:fixed;bottom:24px;right:24px;z-index:120;background:var(--grad);color:#fff;border:none;border-radius:50%;width:58px;height:58px;font-size:24px;box-shadow:0 8px 24px rgba(0,180,216,.4);cursor:pointer;align-items:center;justify-content:center;">
+    🛒
+    <span id="accCartFabCount" style="position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 5px;background:var(--red);color:#fff;border-radius:11px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-sizing:border-box;">0</span>
   </button>
 
   <!-- Accessories cart modal -->
@@ -4991,7 +4992,7 @@
         <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin:18px 0;padding-top:16px;border-top:1px solid var(--border);">
           <span>Total</span><span>$<span id="accCartTotal">0</span> AUD</span>
         </div>
-        <input id="accEmail" type="email" placeholder="Email for your receipt" style="width:100%;padding:13px 14px;margin-bottom:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;">
+        <input id="accEmail" type="email" required placeholder="Email for your receipt (required)" style="width:100%;padding:13px 14px;margin-bottom:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;">
         <button class="btn" style="width:100%;padding:14px;font-size:16px;font-weight:700;border-radius:14px;" onclick="accCheckout()" id="accCheckoutBtn">Checkout</button>
         <p style="text-align:center;font-size:12px;color:#94a3b8;margin:12px 0 0;">You'll enter your delivery address securely at checkout. Payments handled by Stripe.</p>
       </div>
@@ -7336,7 +7337,6 @@
       var count = accCartCount();
       fab.style.display = count > 0 ? 'inline-flex' : 'none';
       document.getElementById('accCartFabCount').textContent = count;
-      document.getElementById('accCartFabTotal').textContent = accCartTotal();
     }
     function renderAccCart() {
       var rows = accCartList();
@@ -7369,6 +7369,11 @@
       var rows = accCartList();
       if (!rows.length) return;
       var email = document.getElementById('accEmail').value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address for your order confirmation.');
+        document.getElementById('accEmail').focus();
+        return;
+      }
       var btn = document.getElementById('accCheckoutBtn');
       btn.textContent = '⏳ Redirecting to payment…'; btn.disabled = true;
       try {
