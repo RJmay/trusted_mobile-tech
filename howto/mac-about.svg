@@ -18,9 +18,9 @@
     <text x="150" y="210" font-size="12" fill="#777" text-anchor="middle">14-inch, Nov 2023</text>
 
     <g font-size="13">
-      <rect x="40" y="232" width="220" height="30" rx="6" fill="#d8ecff"/>
+      <rect x="40" y="232" width="220" height="30" rx="8" fill="none" stroke="#e8403a" stroke-width="2.5"/>
       <text x="140" y="252" fill="#333" text-anchor="end" font-weight="700">Chip</text>
-      <text x="156" y="252" fill="#007aff" font-weight="700">Apple M3 Pro</text>
+      <text x="156" y="252" fill="#1a1a1a" font-weight="700">Apple M3 Pro</text>
 
       <text x="140" y="282" fill="#333" text-anchor="end" font-weight="700">Memory</text>
       <text x="156" y="282" fill="#444" font-weight="700">18 GB</text>
