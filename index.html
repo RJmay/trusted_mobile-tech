@@ -1738,6 +1738,29 @@
     .review-card:hover::after { opacity: 1; }
     .review-card > * { position: relative; z-index: 1; }
 
+    /* Auto device image on review cards */
+    .rv-device-img { position: absolute; top: 18px; right: 18px; height: 44px; width: auto; object-fit: contain; z-index: 2; }
+
+    /* In-card uploaded-photo carousel */
+    .rv-carousel { position: relative; margin: 14px 0 4px; border-radius: 12px; overflow: hidden; background: rgba(0,0,0,.18); }
+    .rv-carousel-track { display: flex; align-items: center; justify-content: center; height: 180px; }
+    .rv-carousel-track img { max-height: 180px; max-width: 100%; width: auto; object-fit: contain; display: none; }
+    .rv-carousel-track img.active { display: block; }
+    .rv-cc-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,.5); color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    .rv-cc-btn.prev { left: 8px; } .rv-cc-btn.next { right: 8px; }
+    .rv-cc-dots { position: absolute; bottom: 8px; left: 0; right: 0; display: flex; gap: 6px; justify-content: center; z-index: 2; }
+    .rv-cc-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.45); cursor: pointer; }
+    .rv-cc-dot.active { background: #fff; }
+
+    /* Write-a-review form polish */
+    #reviewFormWrap { position: relative; }
+    .rv-form-accent { position: absolute; top: -36px; left: -36px; right: -36px; height: 90px; background: linear-gradient(135deg, rgba(0,212,255,.16), rgba(0,150,199,.04)); border-radius: 18px 18px 60% 60%; pointer-events: none; }
+    .rv-form-badge { width: 48px; height: 48px; border-radius: 14px; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 6px 18px rgba(0,180,216,.4); flex: none; }
+    .star-pick { transition: transform .12s, opacity .12s; }
+    .star-pick:hover { transform: scale(1.18); }
+    #reviewsShowMore { margin: 28px auto 0; display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 30px; border: 1.5px solid var(--brand); background: transparent; color: var(--brand); font-weight: 700; font-size: 15px; cursor: pointer; transition: background .2s, color .2s; }
+    #reviewsShowMore:hover { background: var(--brand); color: #fff; }
+
     /* Platform badges in overview */
     .ro-platforms { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
     .ro-platform { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; background: var(--card-bg2); border: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--dark); }
@@ -4910,6 +4933,9 @@
           </div>
         </div>
       </div>
+      <div style="text-align:center;">
+        <button id="reviewsShowMore" onclick="showMoreReviews()" style="display:none;">Show more reviews ▾</button>
+      </div>
       <div class="reviews-summary">
         <div class="reviews-big-num">4.6</div>
         <div style="color:#fbbf24;font-size:26px;letter-spacing:4px;margin:8px 0;">★★★★★</div>
@@ -4959,7 +4985,10 @@
           <div class="ld-price" id="ldPrice"></div>
           <div class="ld-rrp" id="ldRrp" style="display:none;"></div>
         </div>
-        <button class="btn" style="width:100%;padding:14px;font-size:16px;font-weight:700;border-radius:14px;" id="ldBuyBtn">Buy Now</button>
+        <div style="display:flex;gap:10px;">
+          <button style="flex:1;padding:14px;font-size:15px;font-weight:700;border-radius:14px;background:transparent;border:1.5px solid var(--brand);color:var(--brand);cursor:pointer;" id="ldAddCartBtn">Add to Cart</button>
+          <button class="btn" style="flex:1;padding:14px;font-size:15px;font-weight:700;border-radius:14px;" id="ldBuyBtn">Buy Now</button>
+        </div>
       </div>
     </div>
   </div>
@@ -4989,12 +5018,15 @@
       <div id="accCartItems"></div>
       <div id="accCartEmpty" style="text-align:center;padding:30px 0;color:#94a3b8;">Your cart is empty.</div>
       <div id="accCartFooter" style="display:none;">
-        <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin:18px 0;padding-top:16px;border-top:1px solid var(--border);">
-          <span>Total</span><span>$<span id="accCartTotal">0</span> AUD</span>
+        <div id="accDeliveryWrap"></div>
+        <div style="padding-top:14px;border-top:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#94a3b8;margin-bottom:6px;"><span>Subtotal</span><span>$<span id="accCartSubtotal">0</span></span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#94a3b8;margin-bottom:10px;"><span>Delivery</span><span id="accCartDelivery">$15</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-bottom:16px;"><span>Total</span><span>$<span id="accCartTotal">0</span> AUD</span></div>
         </div>
         <input id="accEmail" type="email" required placeholder="Email for your receipt (required)" style="width:100%;padding:13px 14px;margin-bottom:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;">
         <button class="btn" style="width:100%;padding:14px;font-size:16px;font-weight:700;border-radius:14px;" onclick="accCheckout()" id="accCheckoutBtn">Checkout</button>
-        <p style="text-align:center;font-size:12px;color:#94a3b8;margin:12px 0 0;">You'll enter your delivery address securely at checkout. Payments handled by Stripe.</p>
+        <p style="text-align:center;font-size:12px;color:#94a3b8;margin:12px 0 0;" id="accCheckoutNote">You'll enter your delivery address securely at checkout. Payments handled by Stripe.</p>
       </div>
     </div>
   </div>
@@ -5101,8 +5133,11 @@
       <!-- How to find your device info -->
       <div style="max-width:560px;margin:0 auto 32px;">
         <div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);border-radius:16px;padding:24px 28px;">
-          <div style="font-weight:700;font-size:16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">📋 How to find your device info</div>
-          <div style="display:flex;flex-direction:column;gap:14px;">
+          <div id="findInfoToggle" onclick="toggleFindInfo()" style="font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;">
+            <span>📋 How to find your device info</span>
+            <span id="findInfoChevron" style="margin-left:auto;font-size:14px;color:var(--brand);transition:transform .25s;">▼</span>
+          </div>
+          <div id="findInfoBody" style="display:none;flex-direction:column;gap:14px;margin-top:16px;">
 
             <div style="display:flex;gap:14px;align-items:flex-start;">
               <div style="font-size:22px;flex-shrink:0;">📱</div>
@@ -6011,6 +6046,12 @@
         openCheckout(title, meta.join(' · '), l.price);
       };
 
+      // add to cart button
+      document.getElementById('ldAddCartBtn').onclick = function() {
+        addDeviceToCart(l.id, title, l.price);
+        closeListingOverlay(null);
+      };
+
       document.getElementById('listingOverlay').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -6071,6 +6112,7 @@
       if (id === 'quote') { renderCategories(); goToPage(1); }
       if (id === 'deals' && !dealsLoaded) { loadDeals(); }
       if (id === 'accessories') { renderAccessories(); }
+      if (id === 'reviews') { initReviews(); }
       var btn = document.getElementById('globalBackBtn');
       if (btn) btn.style.display = _sectionHistory.length > 0 ? 'block' : 'none';
     }
@@ -6084,26 +6126,105 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (prev === 'quote') { renderCategories(); goToPage(1); }
       if (prev === 'deals' && !dealsLoaded) { loadDeals(); }
+      if (prev === 'reviews') { initReviews(); }
       var btn = document.getElementById('globalBackBtn');
       if (btn) btn.style.display = _sectionHistory.length > 0 ? 'block' : 'none';
     }
     function startQuote(cat) { showSection('quote'); setTimeout(() => selectCategory(cat), 50); }
 
+    function toggleFindInfo() {
+      var body = document.getElementById('findInfoBody');
+      var chev = document.getElementById('findInfoChevron');
+      var open = body.style.display !== 'none';
+      body.style.display = open ? 'none' : 'flex';
+      if (chev) chev.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+
+    // ── Reviews: images, filtering, pagination ──
+    var REVIEWS_PER_PAGE = 20;
+    var _reviewsShown = REVIEWS_PER_PAGE;
+    var _reviewFilter = 'all';
+    var _reviewsInit = false;
+
+    // Pick a device image from a brand/model and/or free text
+    function reviewImageFor(brand, model, text) {
+      var hay = ((model || '') + ' ' + (text || ''));
+      var b = brand;
+      if (!b) {
+        if (/macbook/i.test(hay)) b = 'MacBook';
+        else if (/ipad/i.test(hay)) b = 'iPad';
+        else if (/iphone/i.test(hay)) b = 'iPhone';
+      }
+      if (b && b !== 'Other') {
+        var thumb = getDeviceThumbnail(b, hay);
+        if (thumb) return thumb;
+        if (b === 'MacBook') return 'Images/macbook-air-m2.png';
+        if (b === 'iPad') return 'Images/series-ipad.png';
+        if (b === 'iPhone') return 'Images/series-iphone-15.png';
+      }
+      return 'Images/series-iphone-15.png';
+    }
+
+    // Add a device image to any review card that doesn't already have one
+    function decorateReviewImages() {
+      document.querySelectorAll('.reviews-grid .review-card').forEach(function (card) {
+        if (card.querySelector('img')) return;
+        var txt = (card.querySelector('.review-text') || {}).textContent || '';
+        var img = document.createElement('img');
+        img.className = 'rv-device-img';
+        img.src = reviewImageFor(null, null, txt);
+        img.alt = 'Device';
+        img.loading = 'lazy';
+        img.onerror = function () { this.style.display = 'none'; };
+        card.style.position = 'relative';
+        card.insertBefore(img, card.firstChild);
+      });
+    }
+
+    function reviewMatchesFilter(card) {
+      var type = _reviewFilter;
+      if (type === 'all') return true;
+      if (/^[1-5]$/.test(type)) {
+        var st = card.querySelector('.review-stars');
+        var full = st ? (st.textContent.match(/★/g) || []).length : 0;
+        return full === parseInt(type, 10);
+      }
+      var t = card.querySelector('.review-text');
+      return !!t && t.textContent.toLowerCase().indexOf(type.toLowerCase()) !== -1;
+    }
+
+    function applyReviewView() {
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.reviews-grid .review-card'));
+      var matching = cards.filter(reviewMatchesFilter);
+      var shown = 0;
+      cards.forEach(function (card) {
+        if (reviewMatchesFilter(card) && shown < _reviewsShown) { card.style.display = ''; shown++; }
+        else card.style.display = 'none';
+      });
+      var btn = document.getElementById('reviewsShowMore');
+      if (btn) {
+        var remaining = matching.length - shown;
+        btn.style.display = remaining > 0 ? 'inline-flex' : 'none';
+        btn.textContent = remaining > 0 ? ('Show more reviews (' + remaining + ') ▾') : '';
+      }
+    }
+
+    function showMoreReviews() {
+      _reviewsShown += REVIEWS_PER_PAGE;
+      applyReviewView();
+    }
+
     function filterReviews(type, btn) {
+      _reviewFilter = type;
+      _reviewsShown = REVIEWS_PER_PAGE;
       document.querySelectorAll('.review-chip').forEach(function (c) { c.classList.remove('active'); });
       if (btn) btn.classList.add('active');
-      document.querySelectorAll('.reviews-grid .review-card').forEach(function (card) {
-        var show = true;
-        if (/^[1-5]$/.test(type)) {
-          var st = card.querySelector('.review-stars');
-          var full = st ? (st.textContent.match(/★/g) || []).length : 0;
-          show = full === parseInt(type, 10);
-        } else if (type !== 'all') {
-          var t = card.querySelector('.review-text');
-          show = !!t && t.textContent.toLowerCase().indexOf(type.toLowerCase()) !== -1;
-        }
-        card.style.display = show ? '' : 'none';
-      });
+      applyReviewView();
+    }
+
+    function initReviews() {
+      if (!_reviewsInit) { decorateReviewImages(); _reviewsInit = true; }
+      applyReviewView();
     }
 
     // ═══════════════════════════════════════════════════
@@ -6994,7 +7115,17 @@
     <div class="modal" style="max-width:560px;" id="reviewModalInner">
       <button class="modal-close" onclick="closeReviewModal()">&times;</button>
       <div id="reviewFormWrap">
-        <h2 style="font-size:24px;font-weight:800;margin-bottom:6px;">Leave a Review</h2>
+        <div class="rv-form-accent"></div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:6px;">
+          <div class="rv-form-badge">⭐</div>
+          <div>
+            <h2 style="font-size:24px;font-weight:800;margin:0;">Leave a Review</h2>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+              <span style="color:#fbbf24;font-size:13px;letter-spacing:1px;">★★★★★</span>
+              <span style="color:#94a3b8;font-size:12px;">Join 100+ happy customers</span>
+            </div>
+          </div>
+        </div>
         <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">We appreciate your feedback — it helps other customers and helps us improve.</p>
         <form onsubmit="submitReview(event)">
           <div class="form-group" style="margin-bottom:18px;">
@@ -7014,11 +7145,28 @@
           </div>
           <div class="form-group" style="margin-bottom:18px;">
             <label class="form-label">Device Repaired</label>
-            <input type="text" class="form-input" id="rv-device" placeholder="e.g. iPhone 15 Pro">
+            <div style="display:flex;gap:10px;align-items:stretch;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+                <select class="form-select" id="rv-devtype" onchange="updateRvPreview()">
+                  <option value="">Select type…</option>
+                  <option value="iPhone">iPhone</option>
+                  <option value="iPad">iPad</option>
+                  <option value="MacBook">MacBook</option>
+                  <option value="Other">Other</option>
+                </select>
+                <input type="text" class="form-input" id="rv-device" placeholder="Model & variant, e.g. 15 Pro Max" oninput="updateRvPreview()">
+              </div>
+              <div id="rvPreviewBox" style="width:84px;flex:none;border:1.5px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);overflow:hidden;">
+                <span id="rvPreviewHint" style="font-size:11px;color:#94a3b8;text-align:center;padding:6px;">Image preview</span>
+                <img id="rvPreviewImg" alt="" style="display:none;max-height:72px;max-width:78px;object-fit:contain;">
+              </div>
+            </div>
+            <p style="font-size:12px;color:#94a3b8;margin-top:6px;">We'll automatically add a matching device image to your review.</p>
           </div>
           <div class="form-group" style="margin-bottom:18px;">
             <label class="form-label">Your Review *</label>
-            <textarea class="form-textarea" id="rv-text" required placeholder="Tell us about your experience..." style="min-height:120px;"></textarea>
+            <textarea class="form-textarea" id="rv-text" required placeholder="Tell us about your experience..." style="min-height:120px;" maxlength="600" oninput="rvCharCount()"></textarea>
+            <div style="text-align:right;font-size:12px;color:#94a3b8;margin-top:4px;"><span id="rvCharNum">0</span>/600</div>
           </div>
           <div class="form-group" style="margin-bottom:18px;">
             <label class="form-label">Suburb</label>
@@ -7147,6 +7295,47 @@
       document.getElementById('reviewModal').classList.add('show');
       _rvRating = 0; pickStar(0);
       rvPhotos = []; renderRvPreviews();
+      ['rv-name','rv-device','rv-text','rv-suburb'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+      var dt = document.getElementById('rv-devtype'); if (dt) dt.value = '';
+      updateRvPreview(); rvCharCount();
+    }
+    function rvCharCount() {
+      var el = document.getElementById('rv-text');
+      var n = document.getElementById('rvCharNum');
+      if (el && n) n.textContent = el.value.length;
+    }
+    function updateRvPreview() {
+      var type = (document.getElementById('rv-devtype') || {}).value || '';
+      var model = (document.getElementById('rv-device') || {}).value || '';
+      var img = document.getElementById('rvPreviewImg');
+      var hint = document.getElementById('rvPreviewHint');
+      if (!img) return;
+      if (!type && !model) { img.style.display = 'none'; hint.style.display = 'block'; return; }
+      img.src = reviewImageFor(type || null, model, '');
+      img.onload = function () { img.style.display = 'block'; hint.style.display = 'none'; };
+      img.onerror = function () { img.style.display = 'none'; hint.style.display = 'block'; };
+    }
+    function rvCardNav(btn, dir) {
+      var car = btn.closest('.rv-carousel');
+      if (!car) return;
+      var imgs = car.querySelectorAll('.rv-carousel-track img');
+      var dots = car.querySelectorAll('.rv-cc-dot');
+      var cur = 0;
+      imgs.forEach(function (im, i) { if (im.classList.contains('active')) cur = i; });
+      var next = (cur + dir + imgs.length) % imgs.length;
+      imgs.forEach(function (im, i) { im.classList.toggle('active', i === next); });
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === next); });
+    }
+    function rvCardDot(dotEl, idx) {
+      var car = dotEl.closest('.rv-carousel');
+      if (!car) return;
+      car.querySelectorAll('.rv-carousel-track img').forEach(function (im, i) { im.classList.toggle('active', i === idx); });
+      car.querySelectorAll('.rv-cc-dot').forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+    }
+    function escapeHtml(s) {
+      return String(s || '').replace(/[&<>"']/g, function (c) {
+        return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+      });
     }
     function closeReviewModal() { document.getElementById('reviewModal').classList.remove('show'); }
     function pickStar(v) {
@@ -7179,6 +7368,56 @@
     function submitReview(e) {
       e.preventDefault();
       if (!_rvRating) { alert('Please select a star rating.'); return; }
+
+      var name   = document.getElementById('rv-name').value.trim() || 'Anonymous';
+      var type   = (document.getElementById('rv-devtype') || {}).value || '';
+      var model  = document.getElementById('rv-device').value.trim();
+      var text   = document.getElementById('rv-text').value.trim();
+      var suburb = document.getElementById('rv-suburb').value.trim();
+
+      // Build the new review card and add it to the top of the grid
+      var grid = document.querySelector('.reviews-grid');
+      if (grid) {
+        var stars = '★★★★★☆☆☆☆☆'.slice(5 - _rvRating, 10 - _rvRating);
+        var imgSrc = reviewImageFor(type || null, model, text);
+        var initials = name.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+
+        // Uploaded photos → carousel below the text
+        var carousel = '';
+        if (rvPhotos.length) {
+          var imgs = rvPhotos.map(function (p, i) {
+            return '<img src="' + p.previewUrl + '" alt="Customer photo"' + (i === 0 ? ' class="active"' : '') + '>';
+          }).join('');
+          var multi = rvPhotos.length > 1;
+          var nav = multi
+            ? '<button type="button" class="rv-cc-btn prev" onclick="rvCardNav(this,-1)">‹</button>' +
+              '<button type="button" class="rv-cc-btn next" onclick="rvCardNav(this,1)">›</button>' +
+              '<div class="rv-cc-dots">' + rvPhotos.map(function (_, i) {
+                return '<span class="rv-cc-dot' + (i === 0 ? ' active' : '') + '" onclick="rvCardDot(this,' + i + ')"></span>';
+              }).join('') + '</div>'
+            : '';
+          carousel = '<div class="rv-carousel"><div class="rv-carousel-track">' + imgs + '</div>' + nav + '</div>';
+        }
+
+        var card = document.createElement('div');
+        card.className = 'review-card';
+        card.style.position = 'relative';
+        card.innerHTML =
+          '<img class="rv-device-img" src="' + imgSrc + '" alt="Device" loading="lazy" onerror="this.style.display=\'none\'">' +
+          '<div class="review-stars">' + stars + '</div>' +
+          '<div class="review-text">' + (text ? '"' + escapeHtml(text) + '"' : '') + '</div>' +
+          carousel +
+          '<div class="review-author">' +
+            '<div class="review-avatar" style="background:var(--grad)">' + escapeHtml(initials) + '</div>' +
+            '<div><div class="review-name">' + escapeHtml(name) + '</div>' +
+            '<div class="review-date">' + (suburb ? escapeHtml(suburb) + ' · ' : '') + 'Just now</div></div>' +
+          '</div>';
+        grid.insertBefore(card, grid.firstChild);
+        _reviewFilter = 'all';
+        document.querySelectorAll('.review-chip').forEach(function (c, i) { c.classList.toggle('active', i === 0); });
+        applyReviewView();
+      }
+
       rvPhotos = []; renderRvPreviews();
       document.getElementById('reviewFormWrap').style.display = 'none';
       document.getElementById('reviewThanksWrap').style.display = 'block';
@@ -7293,7 +7532,18 @@
       { id: 'magsafe',      name: 'Magnetic Wireless Charger',blurb: '15W MagSafe-compatible charging pad.',            price: 39, icon: '🧲', cjSku: '' }
     ];
 
-    var accCart = {}; // { id: qty }
+    // Cart holds full item snapshots so dynamically-loaded devices survive
+    // the Stripe redirect. Keyed by unique key: 'acc:<id>' or 'dev:<id>'.
+    // Each value: { type:'accessory'|'device', id, name, price, qty, icon, cjSku }
+    var accCart = {};
+
+    // Delivery options
+    var DELIVERY = {
+      regular: { label: 'Regular Shipping', cost: 15, note: '3–7 business days' },
+      express: { label: 'Express Shipping', cost: 25, note: '1–2 business days' },
+      pickup:  { label: 'Local Pickup',     cost: 0,  note: 'Free — collect in-store' }
+    };
+    var accDelivery = 'regular';
 
     function renderAccessories() {
       var grid = document.getElementById('accGrid');
@@ -7310,24 +7560,45 @@
     }
 
     function addToAccCart(id) {
-      accCart[id] = (accCart[id] || 0) + 1;
+      var a = ACCESSORIES.find(function (x) { return x.id === id; });
+      if (!a) return;
+      var key = 'acc:' + a.id;
+      if (accCart[key]) accCart[key].qty += 1;
+      else accCart[key] = { type: 'accessory', id: a.id, name: a.name, price: a.price, qty: 1, icon: a.icon, cjSku: a.cjSku || '' };
       updateAccCartFab();
       openAccCart();
     }
-    function changeAccQty(id, delta) {
-      accCart[id] = (accCart[id] || 0) + delta;
-      if (accCart[id] <= 0) delete accCart[id];
+    function addDeviceToCart(id, name, price) {
+      var key = 'dev:' + id;
+      if (accCart[key]) { openAccCart(); return; } // unique stock — only one
+      accCart[key] = { type: 'device', id: id, name: name, price: price, qty: 1, icon: '📱', cjSku: '' };
+      updateAccCartFab();
+      openAccCart();
+    }
+    function changeAccQty(key, delta) {
+      var it = accCart[key];
+      if (!it) return;
+      if (it.type === 'device') { delete accCart[key]; }   // devices are single-stock; − removes it
+      else {
+        it.qty += delta;
+        if (it.qty <= 0) delete accCart[key];
+      }
       updateAccCartFab();
       renderAccCart();
     }
     function accCartList() {
-      return Object.keys(accCart).map(function (id) {
-        var item = ACCESSORIES.find(function (a) { return a.id === id; });
-        return { item: item, qty: accCart[id] };
-      }).filter(function (r) { return r.item; });
+      return Object.keys(accCart).map(function (k) {
+        return { key: k, item: accCart[k], qty: accCart[k].qty };
+      });
+    }
+    function accItemsSubtotal() {
+      return accCartList().reduce(function (s, r) { return s + r.item.price * r.qty; }, 0);
+    }
+    function accDeliveryCost() {
+      return (DELIVERY[accDelivery] || DELIVERY.regular).cost;
     }
     function accCartTotal() {
-      return accCartList().reduce(function (s, r) { return s + r.item.price * r.qty; }, 0);
+      return accItemsSubtotal() + accDeliveryCost();
     }
     function accCartCount() {
       return accCartList().reduce(function (s, r) { return s + r.qty; }, 0);
@@ -7337,6 +7608,24 @@
       var count = accCartCount();
       fab.style.display = count > 0 ? 'inline-flex' : 'none';
       document.getElementById('accCartFabCount').textContent = count;
+    }
+    function setDelivery(opt) {
+      accDelivery = opt;
+      renderAccCart();
+    }
+    function renderDeliveryOptions() {
+      return '<div style="margin:18px 0;">' +
+        '<div style="font-size:13px;font-weight:700;color:#94a3b8;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em;">Delivery</div>' +
+        Object.keys(DELIVERY).map(function (key) {
+          var d = DELIVERY[key];
+          var sel = accDelivery === key;
+          return '<label onclick="setDelivery(\'' + key + '\')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;border:1.5px solid ' + (sel ? 'var(--brand)' : 'var(--border)') + ';border-radius:12px;cursor:pointer;background:' + (sel ? 'rgba(0,212,255,.06)' : 'transparent') + ';">' +
+              '<span style="width:18px;height:18px;border-radius:50%;border:2px solid ' + (sel ? 'var(--brand)' : 'var(--muted)') + ';display:inline-flex;align-items:center;justify-content:center;flex:none;">' + (sel ? '<span style="width:9px;height:9px;border-radius:50%;background:var(--brand);"></span>' : '') + '</span>' +
+              '<span style="flex:1;"><span style="font-weight:600;font-size:14px;">' + d.label + '</span><br><span style="font-size:12px;color:#94a3b8;">' + d.note + '</span></span>' +
+              '<span style="font-weight:700;font-size:14px;">' + (d.cost ? '$' + d.cost : 'Free') + '</span>' +
+            '</label>';
+        }).join('') +
+      '</div>';
     }
     function renderAccCart() {
       var rows = accCartList();
@@ -7348,19 +7637,28 @@
       }
       empty.style.display = 'none'; footer.style.display = 'block';
       wrap.innerHTML = rows.map(function (r) {
+        var qtyCtrl = r.item.type === 'device'
+          ? '<button onclick="changeAccQty(\'' + r.key + '\',-1)" title="Remove" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:15px;cursor:pointer;">✕</button>'
+          : '<button onclick="changeAccQty(\'' + r.key + '\',-1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">−</button>' +
+            '<span style="min-width:20px;text-align:center;font-weight:700;">' + r.qty + '</span>' +
+            '<button onclick="changeAccQty(\'' + r.key + '\',1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">+</button>';
         return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">' +
             '<div style="font-size:30px;">' + r.item.icon + '</div>' +
             '<div style="flex:1;"><div style="font-weight:600;font-size:14px;">' + r.item.name + '</div>' +
-            '<div style="font-size:13px;color:#94a3b8;">$' + r.item.price + ' each</div></div>' +
-            '<div style="display:flex;align-items:center;gap:8px;">' +
-              '<button onclick="changeAccQty(\'' + r.item.id + '\',-1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">−</button>' +
-              '<span style="min-width:20px;text-align:center;font-weight:700;">' + r.qty + '</span>' +
-              '<button onclick="changeAccQty(\'' + r.item.id + '\',1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">+</button>' +
-            '</div>' +
-            '<div style="min-width:54px;text-align:right;font-weight:700;">$' + (r.item.price * r.qty) + '</div>' +
+            '<div style="font-size:13px;color:#94a3b8;">$' + r.item.price.toLocaleString() + (r.item.type === 'device' ? '' : ' each') + '</div></div>' +
+            '<div style="display:flex;align-items:center;gap:8px;">' + qtyCtrl + '</div>' +
+            '<div style="min-width:64px;text-align:right;font-weight:700;">$' + (r.item.price * r.qty).toLocaleString() + '</div>' +
           '</div>';
       }).join('');
-      document.getElementById('accCartTotal').textContent = accCartTotal();
+      document.getElementById('accDeliveryWrap').innerHTML = renderDeliveryOptions();
+      document.getElementById('accCartSubtotal').textContent = accItemsSubtotal().toLocaleString();
+      var dc = accDeliveryCost();
+      document.getElementById('accCartDelivery').textContent = dc ? '$' + dc : 'Free';
+      document.getElementById('accCartTotal').textContent = accCartTotal().toLocaleString();
+      var note = document.getElementById('accCheckoutNote');
+      if (note) note.textContent = accDelivery === 'pickup'
+        ? 'No address needed — we\'ll email you when your order is ready to collect in-store. Payments handled by Stripe.'
+        : 'You\'ll enter your delivery address securely at checkout. Payments handled by Stripe.';
     }
     function openAccCart() { renderAccCart(); document.getElementById('accCartModal').classList.add('show'); }
     function closeAccCart() { document.getElementById('accCartModal').classList.remove('show'); }
@@ -7374,6 +7672,7 @@
         document.getElementById('accEmail').focus();
         return;
       }
+      var d = DELIVERY[accDelivery] || DELIVERY.regular;
       var btn = document.getElementById('accCheckoutBtn');
       btn.textContent = '⏳ Redirecting to payment…'; btn.disabled = true;
       try {
@@ -7382,14 +7681,15 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email: email,
+            delivery: { method: accDelivery, label: d.label, cost: d.cost, pickup: accDelivery === 'pickup' },
             cart: rows.map(function (r) {
-              return { id: r.item.id, name: r.item.name, price: r.item.price, qty: r.qty, cjSku: r.item.cjSku || '' };
+              return { id: r.item.id, type: r.item.type, name: r.item.name, price: r.item.price, qty: r.qty, cjSku: r.item.cjSku || '' };
             })
           })
         });
         var result = await resp.json();
         if (result.url) {
-          try { localStorage.setItem('tmt_acc_cart', JSON.stringify(accCart)); } catch (e) {}
+          try { localStorage.setItem('tmt_acc_cart', JSON.stringify(accCart)); localStorage.setItem('tmt_acc_delivery', accDelivery); } catch (e) {}
           window.location.href = result.url;
         } else {
           alert('Payment error: ' + (result.error || 'Please try again.'));
@@ -7419,14 +7719,14 @@
             var form  = document.getElementById('checkoutFormWrap');
             var ty    = document.getElementById('checkoutThanksWrap');
             var msg = type === 'accessories'
-              ? 'Order confirmed! We\'ll ship your accessories and email tracking once dispatched. Questions? Call 0467 748 433.'
+              ? 'Order confirmed! You\'ll get a confirmation email, and we\'ll send tracking once your order is on its way (or a pickup-ready notice). Questions? Call 0467 748 433.'
               : 'Payment confirmed! You\'ll receive a confirmation email shortly. Questions? Call 0467 748 433.';
             document.getElementById('coThanksMsg').textContent = msg;
             if (form) form.style.display = 'none';
             if (ty)   ty.style.display   = 'block';
             if (modal) modal.classList.add('show');
           } else if (p === 'cancelled') {
-            if (type === 'accessories') { try { var saved = JSON.parse(localStorage.getItem('tmt_acc_cart') || '{}'); accCart = saved; } catch (e) {} if (typeof updateAccCartFab === 'function') updateAccCartFab(); }
+            if (type === 'accessories') { try { var saved = JSON.parse(localStorage.getItem('tmt_acc_cart') || '{}'); accCart = saved; var sd = localStorage.getItem('tmt_acc_delivery'); if (sd && DELIVERY[sd]) accDelivery = sd; } catch (e) {} if (typeof updateAccCartFab === 'function') updateAccCartFab(); }
             showSection(dest);
           }
         }, 300);

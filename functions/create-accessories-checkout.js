@@ -34,7 +34,7 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid request' }) };
   }
 
-  const { cart, email } = data;
+  const { cart, email, delivery } = data;
   if (!Array.isArray(cart) || cart.length === 0) {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Cart is empty' }) };
   }
@@ -47,8 +47,12 @@ exports.handler = async (event) => {
   params.append('success_url', base + '/?payment=success&type=accessories&session_id={CHECKOUT_SESSION_ID}');
   params.append('cancel_url',  base + '/?payment=cancelled&type=accessories');
 
-  // Collect a delivery address (needed to fulfill the dropship order)
-  params.append('shipping_address_collection[allowed_countries][]', 'AU');
+  const isPickup = delivery && delivery.pickup === true;
+
+  // Collect a delivery address (skip for local pickup) so the order can be fulfilled
+  if (!isPickup) {
+    params.append('shipping_address_collection[allowed_countries][]', 'AU');
+  }
   params.append('phone_number_collection[enabled]', 'true');
 
   // Line items + a compact summary string for fulfillment / CJ mapping
@@ -75,8 +79,20 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'No valid items' }) };
   }
 
+  // Delivery as a line item (skipped for free pickup)
+  const deliveryLabel = (delivery && delivery.label) || 'Regular Shipping';
+  const deliveryCost = delivery ? Number(delivery.cost) || 0 : 15;
+  if (!isPickup && deliveryCost > 0) {
+    params.append(`line_items[${i}][price_data][currency]`, 'aud');
+    params.append(`line_items[${i}][price_data][product_data][name]`, deliveryLabel);
+    params.append(`line_items[${i}][price_data][unit_amount]`, String(Math.round(deliveryCost * 100)));
+    params.append(`line_items[${i}][quantity]`, '1');
+    i++;
+  }
+
   params.append('metadata[order_type]', 'accessories');
   params.append('metadata[items]', summary.join(' | ').slice(0, 500));
+  params.append('metadata[delivery]', isPickup ? 'Local Pickup (free)' : `${deliveryLabel} ($${deliveryCost})`);
 
   params.append('payment_method_types[]', 'card');
 
