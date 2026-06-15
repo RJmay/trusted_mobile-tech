@@ -1,31 +1,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 430" font-family="-apple-system, Helvetica, Arial, sans-serif">
-  <rect width="230" height="430" rx="26" fill="#efeff4"/>
+  <rect width="230" height="430" rx="26" fill="#eef0f3"/>
   <clipPath id="scr3"><rect width="230" height="430" rx="26"/></clipPath>
   <g clip-path="url(#scr3)">
-    <text x="20" y="26" font-size="13" font-weight="700" fill="#000">9:41</text>
-    <rect x="194" y="18" width="16" height="11" rx="2" fill="none" stroke="#000" stroke-width="1.4"/>
-    <rect x="196" y="20" width="9" height="7" rx="1" fill="#000"/>
+    <!-- nav bar -->
+    <text x="12" y="34" font-size="14" fill="#007aff">&#8249; General</text>
+    <text x="115" y="34" font-size="15" font-weight="700" fill="#000" text-anchor="middle">About</text>
 
-    <text x="14" y="58" font-size="15" fill="#007aff">&#8249; General</text>
-    <text x="115" y="58" font-size="16" font-weight="700" fill="#000" text-anchor="middle">About</text>
+    <!-- single grouped card with rows -->
+    <rect x="12" y="50" width="206" height="338" rx="11" fill="#fff"/>
+    <g font-size="12.5">
+      <text x="22" y="76" fill="#000">Model</text>
+      <text x="208" y="76" fill="#8e8e93" text-anchor="end">993-14379LL/A</text>
+      <line x1="22" y1="90" x2="218" y2="90" stroke="#e8e8ed" stroke-width="1"/>
 
-    <rect x="12" y="78" width="206" height="76" rx="11" fill="#fff"/>
-    <text x="22" y="102" font-size="13" fill="#000">Network</text>
-    <text x="208" y="102" font-size="13" fill="#8e8e93" text-anchor="end">Telstra</text>
-    <line x1="22" y1="116" x2="218" y2="116" stroke="#e3e3e8" stroke-width="1"/>
-    <text x="22" y="140" font-size="13" fill="#000">Carrier Version</text>
-    <text x="208" y="140" font-size="13" fill="#8e8e93" text-anchor="end">54.0</text>
+      <text x="22" y="112" fill="#000">Serial Number</text>
+      <text x="208" y="112" fill="#8e8e93" text-anchor="end">X0XXX0XXXX0X</text>
+      <line x1="22" y1="126" x2="218" y2="126" stroke="#e8e8ed" stroke-width="1"/>
 
-    <!-- IMEI card highlighted -->
-    <rect x="12" y="168" width="206" height="44" rx="11" fill="#fff"/>
-    <rect x="12" y="168" width="206" height="44" rx="11" fill="#dbeeff"/>
-    <text x="22" y="195" font-size="13" font-weight="700" fill="#000">IMEI</text>
-    <text x="208" y="195" font-size="13" font-weight="700" fill="#007aff" text-anchor="end">35 123456 789012 4</text>
+      <text x="22" y="148" fill="#000">Wi-Fi Address</text>
+      <text x="208" y="148" fill="#8e8e93" text-anchor="end">XX:XX:0X:XX:X0</text>
+      <line x1="22" y1="162" x2="218" y2="162" stroke="#e8e8ed" stroke-width="1"/>
 
-    <!-- dial code hint -->
-    <rect x="40" y="250" width="150" height="60" rx="14" fill="#1c1c1e"/>
-    <text x="115" y="280" font-size="22" font-weight="700" fill="#fff" text-anchor="middle" font-family="monospace">*#06#</text>
-    <text x="115" y="298" font-size="9" fill="#9aa0a6" text-anchor="middle">dial to show IMEI</text>
-    <text x="115" y="340" font-size="12" fill="#8e8e93" text-anchor="middle">Settings &#8250; General &#8250; About</text>
+      <text x="22" y="184" fill="#000">Bluetooth</text>
+      <text x="208" y="184" fill="#8e8e93" text-anchor="end">XX:XX:0X:XX:X0</text>
+      <line x1="22" y1="198" x2="218" y2="198" stroke="#e8e8ed" stroke-width="1"/>
+
+      <!-- IMEI highlighted with red box -->
+      <text x="22" y="220" fill="#000" font-weight="700">IMEI</text>
+      <text x="208" y="220" fill="#8e8e93" text-anchor="end">01 234567 890123 4</text>
+      <rect x="15" y="204" width="200" height="26" rx="5" fill="none" stroke="#e8403a" stroke-width="2"/>
+      <line x1="22" y1="234" x2="218" y2="234" stroke="#e8e8ed" stroke-width="1"/>
+
+      <text x="22" y="256" fill="#000">ICCID</text>
+      <text x="208" y="256" fill="#8e8e93" text-anchor="end">0123...5678</text>
+      <line x1="22" y1="270" x2="218" y2="270" stroke="#e8e8ed" stroke-width="1"/>
+
+      <text x="22" y="292" fill="#000">MEID</text>
+      <text x="208" y="292" fill="#8e8e93" text-anchor="end">01 234567 890123</text>
+      <line x1="22" y1="306" x2="218" y2="306" stroke="#e8e8ed" stroke-width="1"/>
+
+      <text x="22" y="328" fill="#000">Modem Firmware</text>
+      <line x1="22" y1="342" x2="218" y2="342" stroke="#e8e8ed" stroke-width="1"/>
+
+      <text x="22" y="364" fill="#000">SEID</text>
+      <text x="210" y="364" fill="#c7c7cc" text-anchor="end">&#8250;</text>
+    </g>
+
+    <!-- dial hint -->
+    <text x="115" y="410" font-size="11" fill="#8e8e93" text-anchor="middle">or dial *#06#</text>
   </g>
 </svg>
