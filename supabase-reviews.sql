@@ -44,3 +44,13 @@ create policy "reviews public access"
   to anon
   using (true)
   with check (true);
+
+-- ────────────────────────────────────────────────────────────
+--  Optional: seed a few APPROVED sample reviews so the public
+--  site shows live data immediately. Safe to delete this block
+--  (or the rows) once you have real approved reviews.
+-- ────────────────────────────────────────────────────────────
+insert into public.reviews (name, rating, device_type, device_model, text, suburb, status) values
+  ('Olivia Bennett', 5, 'iPhone', '15 Pro',   'Booked online and dropped my phone in before work — screen was done by lunch and looks flawless. Genuinely impressed.', 'Buderim', 'approved'),
+  ('Marcus Trinh',   5, 'MacBook', 'Air M2',  'Replaced a swollen battery in my MacBook Air same day. Clear pricing, no surprises, friendly team.',                    'Maroochydore', 'approved'),
+  ('Sarah Whitlock', 4, 'iPad', 'Air 5',      'Cracked iPad screen fixed perfectly. Only took a star off because parking was tricky, but the repair was top notch.',     'Mooloolaba', 'approved');
