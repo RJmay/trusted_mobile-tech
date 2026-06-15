@@ -1739,8 +1739,10 @@
     .review-card > * { position: relative; z-index: 1; }
 
     /* "How to find your device info" screenshots */
-    .find-info-img { width: 104px; height: 150px; flex: none; border-radius: 14px; background: rgba(0,0,0,.12); border: 1px solid rgba(0,212,255,.18); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 5px; }
-    .find-info-img img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+    .find-info-img { position: relative; width: 104px; height: 150px; flex: none; border-radius: 14px; background: rgba(0,0,0,.12); border: 1px solid rgba(0,212,255,.18); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 5px; }
+    .find-info-img img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; cursor: zoom-in; transition: transform .2s; }
+    .find-info-img:hover img { transform: scale(1.04); }
+    .find-info-img::after { content: "🔍"; position: absolute; bottom: 4px; right: 4px; font-size: 11px; background: rgba(0,0,0,.55); width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none; }
     @media (max-width: 480px) {
       .find-info-img { width: 84px; height: 124px; }
     }
@@ -5218,7 +5220,7 @@
           <div id="findInfoBody" style="display:none;flex-direction:column;gap:16px;margin-top:16px;">
 
             <div style="display:flex;gap:14px;align-items:center;">
-              <div class="find-info-img"><img src="howto/iphone-about.png" alt="iPhone Settings About screen" loading="lazy" onerror="this.style.display='none'"></div>
+              <div class="find-info-img"><img onclick="ldZoom(this.src)" src="howto/iphone-about.png" alt="iPhone Settings About screen" loading="lazy" onerror="this.style.display='none'"></div>
               <div>
                 <div style="font-weight:700;font-size:14px;margin-bottom:3px;">Model (iPhone / iPad)</div>
                 <div style="font-size:13px;color:#94a3b8;line-height:1.6;">Go to <strong>Settings → General → About</strong>. Look for <em>Model Name</em> (e.g. iPhone 14 Pro) and <em>Capacity</em> (e.g. 256 GB).</div>
@@ -5226,7 +5228,7 @@
             </div>
 
             <div style="display:flex;gap:14px;align-items:center;">
-              <div class="find-info-img"><img src="howto/mac-about.svg" alt="About This Mac window" loading="lazy" onerror="this.style.display='none'"></div>
+              <div class="find-info-img"><img onclick="ldZoom(this.src)" src="howto/mac-about.svg" alt="About This Mac window" loading="lazy" onerror="this.style.display='none'"></div>
               <div>
                 <div style="font-weight:700;font-size:14px;margin-bottom:3px;">Model (MacBook)</div>
                 <div style="font-size:13px;color:#94a3b8;line-height:1.6;">Click the <strong>Apple menu → About This Mac</strong>. You'll see the chip (e.g. M2), year, and storage.</div>
@@ -5234,7 +5236,7 @@
             </div>
 
             <div style="display:flex;gap:14px;align-items:center;">
-              <div class="find-info-img"><img src="howto/battery-health.png" alt="Battery Health screen" loading="lazy" onerror="this.style.display='none'"></div>
+              <div class="find-info-img"><img onclick="ldZoom(this.src)" src="howto/battery-health.png" alt="Battery Health screen" loading="lazy" onerror="this.style.display='none'"></div>
               <div>
                 <div style="font-weight:700;font-size:14px;margin-bottom:3px;">Battery Health</div>
                 <div style="font-size:13px;color:#94a3b8;line-height:1.6;">On iPhone/iPad: <strong>Settings → Battery → Battery Health & Charging</strong>. On MacBook: hold <strong>Option</strong> and click the battery icon in the menu bar.</div>
@@ -5242,7 +5244,7 @@
             </div>
 
             <div style="display:flex;gap:14px;align-items:center;">
-              <div class="find-info-img"><img src="howto/imei-about.svg" alt="IMEI on About screen" loading="lazy" onerror="this.style.display='none'"></div>
+              <div class="find-info-img"><img onclick="ldZoom(this.src)" src="howto/imei-about.svg" alt="IMEI on About screen" loading="lazy" onerror="this.style.display='none'"></div>
               <div>
                 <div style="font-weight:700;font-size:14px;margin-bottom:3px;">IMEI Number (iPhone / iPad)</div>
                 <div style="font-size:13px;color:#94a3b8;line-height:1.6;">Go to <strong>Settings → General → About → IMEI</strong>. Or dial <strong>*#06#</strong> on the phone app. You can also find it on the original box. Providing your IMEI helps us verify the device and give you a more accurate quote.</div>
