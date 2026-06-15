@@ -1411,6 +1411,26 @@
     }
 
     /* ── RESPONSIVE ─────────────────────────────────────── */
+    /* hamburger + drawer overlay (hidden on desktop) */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      line-height: 1;
+      color: var(--text);
+      cursor: pointer;
+      padding: 4px 6px;
+    }
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 998;
+    }
+    .sidebar-overlay.show { display: block; }
+
     @media(max-width:900px) {
       .sidebar {
         width: 60px;
@@ -1450,6 +1470,53 @@
       .listings-sidebar {
         max-height: 40vh;
       }
+    }
+
+    /* ── PHONE (drawer sidebar) ─────────────────────────── */
+    @media(max-width:600px) {
+      .menu-toggle { display: block; }
+
+      /* sidebar becomes an off-canvas drawer with full labels */
+      .sidebar {
+        position: fixed;
+        top: 0; left: 0;
+        width: 250px;
+        height: 100%;
+        z-index: 999;
+        transform: translateX(-100%);
+        transition: transform .25s ease;
+        overflow-y: auto;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, .35);
+      }
+      .sidebar.open { transform: translateX(0); }
+
+      /* re-show everything that the 900px rail hid */
+      .sidebar-logo-text,
+      .nav-item span,
+      .nav-badge,
+      .sidebar-footer .user-info,
+      .sidebar-logo p { display: revert; }
+      .nav-item { justify-content: flex-start; padding: 12px 16px; }
+
+      .topbar { padding: 0 14px; height: 58px; }
+      .topbar-title { font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .topbar-time { display: none; }
+      .refresh-btn { padding: 8px 12px; }
+
+      .content { padding: 16px 14px; }
+
+      .stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+      /* let wide tables scroll horizontally instead of clipping */
+      .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .tbl-wrap table { min-width: 560px; }
+
+      .pin-card { width: 100%; max-width: 340px; padding: 32px 22px; }
+      #reviewFilterBar .btn { flex: 1; min-width: 0; padding: 9px 6px; font-size: 13px; }
+    }
+
+    @media(max-width:380px) {
+      .stat-grid { grid-template-columns: 1fr; }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -1496,6 +1563,9 @@
 
   <!-- TOAST CONTAINER -->
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- MOBILE SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
   <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
@@ -1550,7 +1620,10 @@
   <!-- MAIN CONTENT -->
   <div class="main">
     <div class="topbar">
-      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+        <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      </div>
       <div class="topbar-right">
         <span class="topbar-time" id="topbarTime"></span>
         <button class="refresh-btn" onclick="refreshAll()">↻ Refresh</button>
@@ -2224,6 +2297,16 @@
       document.getElementById('nav-' + v).classList.add('active');
       document.getElementById('topbarTitle').textContent = VIEW_TITLES[v];
       renderCurrentView();
+      closeSidebar();
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('show');
     }
 
     // ═══════════════════════════════════════════════════
