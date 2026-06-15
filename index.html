@@ -1780,21 +1780,74 @@
     .review-filter-sep { width: 1px; height: 22px; background: var(--border); margin: 0 6px; align-self: center; }
 
     .reviews-summary {
+      position: relative;
+      overflow: hidden;
       text-align: center;
       margin-top: 50px;
-      padding: 36px;
+      padding: 44px 36px 40px;
       background: var(--card-bg);
       border-radius: var(--r);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
     }
+    /* top accent bar */
+    .reviews-summary::before {
+      content: "";
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #00d4ff, #0096c7, #00d4ff);
+      background-size: 200% 100%;
+      animation: rsBar 4s linear infinite;
+    }
+    @keyframes rsBar { to { background-position: 200% 0; } }
+    /* soft glow behind the score */
+    .reviews-summary::after {
+      content: "";
+      position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 280px; height: 280px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,212,255,.18), transparent 70%);
+      pointer-events: none;
+    }
+    .reviews-summary > * { position: relative; z-index: 1; }
+    /* giant decorative quote mark */
+    .rs-quote {
+      position: absolute; top: 4px; right: 24px; z-index: 0;
+      font-size: 150px; line-height: 1; font-family: Georgia, serif;
+      color: var(--brand); opacity: .07; pointer-events: none; user-select: none;
+    }
 
     .reviews-big-num {
       font-size: 64px;
       font-weight: 800;
+      line-height: 1;
       background: var(--grad);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+
+    /* platform badges */
+    .rs-platforms { display: flex; gap: 10px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+    .rs-platform {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 14px; border-radius: 30px;
+      background: rgba(255,255,255,.06); border: 1px solid var(--border);
+      font-size: 13px; font-weight: 600; color: var(--text);
+    }
+    .rs-platform .rs-stars { color: #fbbf24; font-size: 12px; letter-spacing: .5px; }
+
+    /* trust stats */
+    .rs-stats { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 26px 0 6px; }
+    .rs-stat {
+      flex: 1; min-width: 130px; max-width: 180px;
+      padding: 16px 12px; border-radius: 14px;
+      background: rgba(0,212,255,.05); border: 1px solid rgba(0,212,255,.12);
+    }
+    .rs-stat-num { font-size: 24px; font-weight: 800; color: var(--brand); line-height: 1; }
+    .rs-stat-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+    @media (max-width: 560px) {
+      .rs-stat { min-width: 100px; padding: 14px 8px; }
+      .rs-stat-num { font-size: 20px; }
+      .rs-quote { font-size: 110px; right: 12px; }
     }
 
     /* ═══ CONTACT ═══ */
@@ -4940,9 +4993,28 @@
         <button id="reviewsShowMore" onclick="showMoreReviews()" style="display:none;">Show more reviews ▾</button>
       </div>
       <div class="reviews-summary">
+        <div class="rs-quote">&rdquo;</div>
         <div class="reviews-big-num">4.6</div>
         <div style="color:#fbbf24;font-size:26px;letter-spacing:4px;margin:8px 0;">★★★★★</div>
         <div style="font-size:16px;color:var(--muted);">Based on 100+ verified customer reviews</div>
+
+        <div class="rs-platforms">
+          <span class="rs-platform">
+            <svg width="15" height="15" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Google <span class="rs-stars">★★★★★</span>
+          </span>
+          <span class="rs-platform">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.49h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/></svg>
+            Facebook <span class="rs-stars">★★★★★</span>
+          </span>
+        </div>
+
+        <div class="rs-stats">
+          <div class="rs-stat"><div class="rs-stat-num">4.6★</div><div class="rs-stat-label">Average rating</div></div>
+          <div class="rs-stat"><div class="rs-stat-num">98%</div><div class="rs-stat-label">Would recommend</div></div>
+          <div class="rs-stat"><div class="rs-stat-num">5,000+</div><div class="rs-stat-label">Devices repaired</div></div>
+        </div>
+
         <button class="hero-btn primary" style="margin-top:24px;" onclick="openReviewModal()">⭐ Leave a Review</button>
       </div>
     </div>
@@ -5027,9 +5099,8 @@
           <div style="display:flex;justify-content:space-between;font-size:14px;color:#94a3b8;margin-bottom:10px;"><span>Delivery</span><span id="accCartDelivery">$15</span></div>
           <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-bottom:16px;"><span>Total</span><span>$<span id="accCartTotal">0</span> AUD</span></div>
         </div>
-        <input id="accEmail" type="email" required placeholder="Email for your receipt (required)" style="width:100%;padding:13px 14px;margin-bottom:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;">
-        <button class="btn" style="width:100%;padding:14px;font-size:16px;font-weight:700;border-radius:14px;" onclick="accCheckout()" id="accCheckoutBtn">Checkout</button>
-        <p style="text-align:center;font-size:12px;color:#94a3b8;margin:12px 0 0;" id="accCheckoutNote">You'll enter your delivery address securely at checkout. Payments handled by Stripe.</p>
+        <button class="btn" style="width:100%;padding:14px;font-size:16px;font-weight:700;border-radius:14px;margin-top:4px;" onclick="accCheckout()" id="accCheckoutBtn">Proceed to Checkout →</button>
+        <p style="text-align:center;font-size:12px;color:#94a3b8;margin:12px 0 0;" id="accCheckoutNote">Email, delivery address & contact details are collected securely on the next step. Payments handled by Stripe.</p>
       </div>
     </div>
   </div>
@@ -6262,8 +6333,87 @@
     }
 
     function initReviews() {
-      if (!_reviewsInit) { decorateReviewImages(); _reviewsInit = true; }
+      if (!_reviewsInit) { decorateReviewImages(); _reviewsInit = true; loadReviews(); }
       applyReviewView();
+    }
+
+    // Build a review card element (shared by Supabase load + live submit)
+    function buildReviewCard(d) {
+      var rating = Math.max(1, Math.min(5, parseInt(d.rating, 10) || 5));
+      var stars = '★★★★★☆☆☆☆☆'.slice(5 - rating, 10 - rating);
+      var name = d.name || 'Anonymous';
+      var initials = name.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
+      var imgSrc = reviewImageFor(d.device_type || null, d.device_model || '', d.text || '');
+      var photos = Array.isArray(d.images) ? d.images : [];
+
+      var carousel = '';
+      if (photos.length) {
+        var imgs = photos.map(function (src, i) {
+          return '<img src="' + src + '" alt="Customer photo"' + (i === 0 ? ' class="active"' : '') + '>';
+        }).join('');
+        var nav = photos.length > 1
+          ? '<button type="button" class="rv-cc-btn prev" onclick="rvCardNav(this,-1)">‹</button>' +
+            '<button type="button" class="rv-cc-btn next" onclick="rvCardNav(this,1)">›</button>' +
+            '<div class="rv-cc-dots">' + photos.map(function (_, i) {
+              return '<span class="rv-cc-dot' + (i === 0 ? ' active' : '') + '" onclick="rvCardDot(this,' + i + ')"></span>';
+            }).join('') + '</div>'
+          : '';
+        carousel = '<div class="rv-carousel"><div class="rv-carousel-track">' + imgs + '</div>' + nav + '</div>';
+      }
+
+      var card = document.createElement('div');
+      card.className = 'review-card';
+      card.style.position = 'relative';
+      card.innerHTML =
+        '<img class="rv-device-img" src="' + imgSrc + '" alt="Device" loading="lazy" onerror="this.style.display=\'none\'">' +
+        '<div class="review-stars">' + stars + '</div>' +
+        '<div class="review-text">' + (d.text ? '"' + escapeHtml(d.text) + '"' : '') + '</div>' +
+        carousel +
+        '<div class="review-author">' +
+          '<div class="review-avatar" style="background:var(--grad)">' + escapeHtml(initials) + '</div>' +
+          '<div><div class="review-name">' + escapeHtml(name) + '</div>' +
+          '<div class="review-date">' + (d.suburb ? escapeHtml(d.suburb) + ' · ' : '') + (d.when || 'Verified customer') + '</div></div>' +
+        '</div>';
+      return card;
+    }
+
+    // Load approved reviews from Supabase and show them at the top of the grid
+    async function loadReviews() {
+      if (!db) return;
+      try {
+        var res = await db.from('reviews').select('*').eq('status', 'approved').order('created_at', { ascending: false });
+        var rows = res.data || [];
+        if (!rows.length) return;
+        var grid = document.querySelector('.reviews-grid');
+        if (!grid) return;
+        // Insert newest-first at the very top
+        rows.slice().reverse().forEach(function (r) {
+          var card = buildReviewCard(r);
+          card.dataset.dynamic = '1';
+          grid.insertBefore(card, grid.firstChild);
+        });
+        applyReviewView();
+      } catch (e) { console.warn('loadReviews error:', e); }
+    }
+
+    function compressImage(file, maxPx, quality) {
+      maxPx = maxPx || 1200; quality = quality || 0.82;
+      return new Promise(function (resolve) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          var img = new Image();
+          img.onload = function () {
+            var w = img.width, h = img.height;
+            if (w > maxPx || h > maxPx) { var r = Math.min(maxPx / w, maxPx / h); w = Math.round(w * r); h = Math.round(h * r); }
+            var canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
     }
 
     // ═══════════════════════════════════════════════════
@@ -7404,7 +7554,7 @@
       }).join('');
     }
 
-    function submitReview(e) {
+    async function submitReview(e) {
       e.preventDefault();
       if (!_rvRating) { alert('Please select a star rating.'); return; }
 
@@ -7414,50 +7564,45 @@
       var text   = document.getElementById('rv-text').value.trim();
       var suburb = document.getElementById('rv-suburb').value.trim();
 
-      // Build the new review card and add it to the top of the grid
+      var submitBtn = e.target.querySelector('button[type="submit"]');
+      if (submitBtn) { submitBtn.textContent = '⏳ Submitting…'; submitBtn.disabled = true; }
+
+      // Compress any uploaded photos to data URLs for persistence
+      var imageData = [];
+      for (var i = 0; i < rvPhotos.length; i++) {
+        try { imageData.push(await compressImage(rvPhotos[i].file)); } catch (err) { /* skip */ }
+      }
+
+      // Persist to Supabase as a pending review (awaits moderation)
+      if (db) {
+        try {
+          await db.from('reviews').insert({
+            name: name, rating: _rvRating, device_type: type || null,
+            device_model: model || null, text: text || null, suburb: suburb || null,
+            images: imageData, status: 'pending'
+          });
+        } catch (err) { console.warn('review insert error:', err); }
+      }
+
+      // Show the customer their review immediately (session preview only —
+      // it becomes public for everyone once an admin approves it)
       var grid = document.querySelector('.reviews-grid');
       if (grid) {
-        var stars = '★★★★★☆☆☆☆☆'.slice(5 - _rvRating, 10 - _rvRating);
-        var imgSrc = reviewImageFor(type || null, model, text);
-        var initials = name.split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
-
-        // Uploaded photos → carousel below the text
-        var carousel = '';
-        if (rvPhotos.length) {
-          var imgs = rvPhotos.map(function (p, i) {
-            return '<img src="' + p.previewUrl + '" alt="Customer photo"' + (i === 0 ? ' class="active"' : '') + '>';
-          }).join('');
-          var multi = rvPhotos.length > 1;
-          var nav = multi
-            ? '<button type="button" class="rv-cc-btn prev" onclick="rvCardNav(this,-1)">‹</button>' +
-              '<button type="button" class="rv-cc-btn next" onclick="rvCardNav(this,1)">›</button>' +
-              '<div class="rv-cc-dots">' + rvPhotos.map(function (_, i) {
-                return '<span class="rv-cc-dot' + (i === 0 ? ' active' : '') + '" onclick="rvCardDot(this,' + i + ')"></span>';
-              }).join('') + '</div>'
-            : '';
-          carousel = '<div class="rv-carousel"><div class="rv-carousel-track">' + imgs + '</div>' + nav + '</div>';
-        }
-
-        var card = document.createElement('div');
-        card.className = 'review-card';
-        card.style.position = 'relative';
-        card.innerHTML =
-          '<img class="rv-device-img" src="' + imgSrc + '" alt="Device" loading="lazy" onerror="this.style.display=\'none\'">' +
-          '<div class="review-stars">' + stars + '</div>' +
-          '<div class="review-text">' + (text ? '"' + escapeHtml(text) + '"' : '') + '</div>' +
-          carousel +
-          '<div class="review-author">' +
-            '<div class="review-avatar" style="background:var(--grad)">' + escapeHtml(initials) + '</div>' +
-            '<div><div class="review-name">' + escapeHtml(name) + '</div>' +
-            '<div class="review-date">' + (suburb ? escapeHtml(suburb) + ' · ' : '') + 'Just now</div></div>' +
-          '</div>';
+        var card = buildReviewCard({
+          name: name, rating: _rvRating, device_type: type, device_model: model,
+          text: text, suburb: suburb,
+          images: rvPhotos.map(function (p) { return p.previewUrl; }),
+          when: 'Just now · pending approval'
+        });
+        card.dataset.dynamic = '1';
         grid.insertBefore(card, grid.firstChild);
         _reviewFilter = 'all';
-        document.querySelectorAll('.review-chip').forEach(function (c, i) { c.classList.toggle('active', i === 0); });
+        document.querySelectorAll('.review-chip').forEach(function (c, idx) { c.classList.toggle('active', idx === 0); });
         applyReviewView();
       }
 
       rvPhotos = []; renderRvPreviews();
+      if (submitBtn) { submitBtn.textContent = 'Submit Review'; submitBtn.disabled = false; }
       document.getElementById('reviewFormWrap').style.display = 'none';
       document.getElementById('reviewThanksWrap').style.display = 'block';
     }
@@ -7560,15 +7705,17 @@
     //  '' for now; fill it in when you map products in CJ so a future
     //  auto-fulfillment step can place orders via the CJ API.
     // ═══════════════════════════════════════════════════
+    // To use real CJ Dropshipping product photos, replace each `img` path
+    // with the product image URL from your CJ listing.
     var ACCESSORIES = [
-      { id: 'case-clear',   name: 'Clear Protective Case',    blurb: 'Slim shock-absorbing TPU, crystal clear.',        price: 24, icon: '📱', cjSku: '' },
-      { id: 'case-rugged',  name: 'Rugged Armor Case',        blurb: 'Heavy-duty drop protection with raised edges.',   price: 34, icon: '🛡️', cjSku: '' },
-      { id: 'screen-glass', name: 'Tempered Glass Protector', blurb: '9H hardness, bubble-free, 2-pack.',                price: 19, icon: '🔷', cjSku: '' },
-      { id: 'charger-20w',  name: '20W USB-C Fast Charger',   blurb: 'Wall adapter for rapid charging.',                price: 29, icon: '🔌', cjSku: '' },
-      { id: 'cable-usbc',   name: 'USB-C to Lightning Cable', blurb: 'Braided 1m cable, fast-charge ready.',            price: 18, icon: '🔋', cjSku: '' },
-      { id: 'powerbank',    name: '10,000mAh Power Bank',     blurb: 'Pocket-size dual-port portable charger.',         price: 45, icon: '🔋', cjSku: '' },
-      { id: 'earbuds',      name: 'Wireless Earbuds',         blurb: 'Bluetooth 5.3 with charging case.',               price: 59, icon: '🎧', cjSku: '' },
-      { id: 'magsafe',      name: 'Magnetic Wireless Charger',blurb: '15W MagSafe-compatible charging pad.',            price: 39, icon: '🧲', cjSku: '' }
+      { id: 'case-clear',   name: 'Clear Protective Case',    blurb: 'Slim shock-absorbing TPU, crystal clear.',        price: 24, img: 'accessories/case-clear.svg',   cjSku: '' },
+      { id: 'case-rugged',  name: 'Rugged Armor Case',        blurb: 'Heavy-duty drop protection with raised edges.',   price: 34, img: 'accessories/case-rugged.svg',  cjSku: '' },
+      { id: 'screen-glass', name: 'Tempered Glass Protector', blurb: '9H hardness, bubble-free, 2-pack.',                price: 19, img: 'accessories/screen-glass.svg', cjSku: '' },
+      { id: 'charger-20w',  name: '20W USB-C Fast Charger',   blurb: 'Wall adapter for rapid charging.',                price: 29, img: 'accessories/charger-20w.svg',  cjSku: '' },
+      { id: 'cable-usbc',   name: 'USB-C to Lightning Cable', blurb: 'Braided 1m cable, fast-charge ready.',            price: 18, img: 'accessories/cable-usbc.svg',   cjSku: '' },
+      { id: 'powerbank',    name: '10,000mAh Power Bank',     blurb: 'Pocket-size dual-port portable charger.',         price: 45, img: 'accessories/powerbank.svg',    cjSku: '' },
+      { id: 'earbuds',      name: 'Wireless Earbuds',         blurb: 'Bluetooth 5.3 with charging case.',               price: 59, img: 'accessories/earbuds.svg',      cjSku: '' },
+      { id: 'magsafe',      name: 'Magnetic Wireless Charger',blurb: '15W MagSafe-compatible charging pad.',            price: 39, img: 'accessories/magsafe.svg',      cjSku: '' }
     ];
 
     // Cart holds full item snapshots so dynamically-loaded devices survive
@@ -7589,7 +7736,9 @@
       if (!grid) return;
       grid.innerHTML = ACCESSORIES.map(function (a) {
         return '<div class="card" style="padding:22px;display:flex;flex-direction:column;text-align:center;">' +
-            '<div style="font-size:48px;margin-bottom:14px;">' + a.icon + '</div>' +
+            '<div style="height:140px;margin-bottom:14px;border-radius:12px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;overflow:hidden;">' +
+              '<img src="' + a.img + '" alt="' + a.name + '" loading="lazy" style="max-height:120px;max-width:90%;object-fit:contain;">' +
+            '</div>' +
             '<div style="font-weight:700;font-size:16px;margin-bottom:6px;">' + a.name + '</div>' +
             '<div style="font-size:13px;color:#94a3b8;flex:1;margin-bottom:14px;">' + a.blurb + '</div>' +
             '<div style="font-size:22px;font-weight:800;margin-bottom:14px;">$' + a.price + '</div>' +
@@ -7603,7 +7752,7 @@
       if (!a) return;
       var key = 'acc:' + a.id;
       if (accCart[key]) accCart[key].qty += 1;
-      else accCart[key] = { type: 'accessory', id: a.id, name: a.name, price: a.price, qty: 1, icon: a.icon, cjSku: a.cjSku || '' };
+      else accCart[key] = { type: 'accessory', id: a.id, name: a.name, price: a.price, qty: 1, img: a.img, cjSku: a.cjSku || '' };
       updateAccCartFab();
       openAccCart();
     }
@@ -7681,8 +7830,11 @@
           : '<button onclick="changeAccQty(\'' + r.key + '\',-1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">−</button>' +
             '<span style="min-width:20px;text-align:center;font-weight:700;">' + r.qty + '</span>' +
             '<button onclick="changeAccQty(\'' + r.key + '\',1)" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:18px;cursor:pointer;">+</button>';
+        var thumb = r.item.img
+          ? '<div style="width:46px;height:46px;flex:none;border-radius:8px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="' + r.item.img + '" alt="" style="max-width:90%;max-height:90%;object-fit:contain;"></div>'
+          : '<div style="font-size:30px;">' + (r.item.icon || '📦') + '</div>';
         return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);">' +
-            '<div style="font-size:30px;">' + r.item.icon + '</div>' +
+            thumb +
             '<div style="flex:1;"><div style="font-weight:600;font-size:14px;">' + r.item.name + '</div>' +
             '<div style="font-size:13px;color:#94a3b8;">$' + r.item.price.toLocaleString() + (r.item.type === 'device' ? '' : ' each') + '</div></div>' +
             '<div style="display:flex;align-items:center;gap:8px;">' + qtyCtrl + '</div>' +
@@ -7705,12 +7857,8 @@
     async function accCheckout() {
       var rows = accCartList();
       if (!rows.length) return;
-      var email = document.getElementById('accEmail').value.trim();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('Please enter a valid email address for your order confirmation.');
-        document.getElementById('accEmail').focus();
-        return;
-      }
+      // Email, shipping address & contact are collected on the secure
+      // Stripe checkout page — no need to capture them here.
       var d = DELIVERY[accDelivery] || DELIVERY.regular;
       var btn = document.getElementById('accCheckoutBtn');
       btn.textContent = '⏳ Redirecting to payment…'; btn.disabled = true;
@@ -7719,7 +7867,6 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email: email,
             delivery: { method: accDelivery, label: d.label, cost: d.cost, pickup: accDelivery === 'pickup' },
             cart: rows.map(function (r) {
               return { id: r.item.id, type: r.item.type, name: r.item.name, price: r.item.price, qty: r.qty, cjSku: r.item.cjSku || '' };
@@ -7732,11 +7879,11 @@
           window.location.href = result.url;
         } else {
           alert('Payment error: ' + (result.error || 'Please try again.'));
-          btn.textContent = 'Checkout'; btn.disabled = false;
+          btn.textContent = 'Proceed to Checkout →'; btn.disabled = false;
         }
       } catch (err) {
         alert('Connection error — please try again.');
-        btn.textContent = 'Checkout'; btn.disabled = false;
+        btn.textContent = 'Proceed to Checkout →'; btn.disabled = false;
       }
     }
 

@@ -1526,6 +1526,10 @@
         <span class="nav-icon">🏷️</span><span>Listings</span>
         <span class="nav-badge hidden" id="listingsBadge">0</span>
       </button>
+      <button class="nav-item" onclick="showView('reviews')" id="nav-reviews">
+        <span class="nav-icon">⭐</span><span>Reviews</span>
+        <span class="nav-badge hidden" id="reviewsBadge">0</span>
+      </button>
       <div class="nav-section">System</div>
       <button class="nav-item" onclick="showView('settings')" id="nav-settings">
         <span class="nav-icon">⚙️</span><span>Settings</span>
@@ -1780,6 +1784,17 @@
             </form>
           </div>
         </div>
+      </div>
+
+      <!-- ══ REVIEWS ════════════════════════════════════════ -->
+      <div class="view" id="view-reviews">
+        <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;" id="reviewFilterBar">
+          <button class="btn" id="rvf-pending" onclick="setReviewModFilter('pending',this)">Pending</button>
+          <button class="btn" id="rvf-approved" onclick="setReviewModFilter('approved',this)">Approved</button>
+          <button class="btn" id="rvf-rejected" onclick="setReviewModFilter('rejected',this)">Rejected</button>
+          <button class="btn" id="rvf-all" onclick="setReviewModFilter('all',this)">All</button>
+        </div>
+        <div id="reviewsModList"></div>
       </div>
 
       <!-- ══ SETTINGS ═══════════════════════════════════════ -->
@@ -2138,6 +2153,10 @@
         // Load listings
         const { data: lstData } = await db.from('listings').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
         if (lstData) { listings = lstData; updateListingsBadge(); }
+
+        // Load reviews
+        const { data: rvData } = await db.from('reviews').select('*').order('created_at', { ascending: false });
+        if (rvData) { reviews = rvData; updateReviewsBadge(); }
       } catch (e) {
         console.error('Supabase load error:', e);
         // Fallback to localStorage
@@ -2155,6 +2174,7 @@
       if (currentView === 'orders') renderOrders();
       if (currentView === 'payments') renderPayments();
       if (currentView === 'listings') renderListingsRoll();
+      if (currentView === 'reviews') renderReviewsMod();
     }
 
     function updateBadges() {
@@ -2164,6 +2184,7 @@
       const ob = document.getElementById('orderBadge');
       lb.textContent = lowParts.length; lb.classList.toggle('hidden', lowParts.length === 0);
       ob.textContent = pendingOrders.length; ob.classList.toggle('hidden', pendingOrders.length === 0);
+      updateReviewsBadge();
     }
 
     function loadSettings() {
@@ -2194,7 +2215,7 @@
     // ═══════════════════════════════════════════════════
     //  VIEWS
     // ═══════════════════════════════════════════════════
-    const VIEW_TITLES = { overview: 'Dashboard', inventory: 'Inventory', orders: 'Purchase Orders', payments: 'Payment Log', listings: 'Listings', settings: 'Settings' };
+    const VIEW_TITLES = { overview: 'Dashboard', inventory: 'Inventory', orders: 'Purchase Orders', payments: 'Payment Log', listings: 'Listings', reviews: 'Reviews', settings: 'Settings' };
     function showView(v) {
       currentView = v;
       document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
@@ -2695,6 +2716,98 @@
       if (!b) return;
       b.textContent = avail;
       b.classList.toggle('hidden', avail === 0);
+    }
+
+    // ═══════════════════════════════════════════════════
+    //  REVIEWS MODERATION
+    // ═══════════════════════════════════════════════════
+    let reviews = [];
+    let reviewModFilter = 'pending';
+
+    function updateReviewsBadge() {
+      const pending = reviews.filter(r => r.status === 'pending').length;
+      const b = document.getElementById('reviewsBadge');
+      if (!b) return;
+      b.textContent = pending;
+      b.classList.toggle('hidden', pending === 0);
+    }
+
+    function setReviewModFilter(f, btn) {
+      reviewModFilter = f;
+      document.querySelectorAll('#reviewFilterBar .btn').forEach(b => b.classList.remove('btn-primary'));
+      if (btn) btn.classList.add('btn-primary');
+      renderReviewsMod();
+    }
+
+    function rvStars(n) {
+      n = Math.max(0, Math.min(5, parseInt(n, 10) || 0));
+      return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n);
+    }
+
+    function renderReviewsMod() {
+      const el = document.getElementById('reviewsModList');
+      if (!el) return;
+      // keep active filter button highlighted
+      document.querySelectorAll('#reviewFilterBar .btn').forEach(b => b.classList.remove('btn-primary'));
+      const activeBtn = document.getElementById('rvf-' + reviewModFilter);
+      if (activeBtn) activeBtn.classList.add('btn-primary');
+
+      const list = reviews.filter(r => reviewModFilter === 'all' ? true : r.status === reviewModFilter);
+      if (!list.length) {
+        el.innerHTML = `<div style="text-align:center;padding:50px;color:var(--muted);">No ${reviewModFilter === 'all' ? '' : reviewModFilter} reviews.</div>`;
+        return;
+      }
+      el.innerHTML = list.map(r => {
+        const imgs = Array.isArray(r.images) ? r.images : [];
+        const photos = imgs.length
+          ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">${imgs.map(s => `<img src="${s}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--border);">`).join('')}</div>`
+          : '';
+        const statusColor = r.status === 'approved' ? 'var(--green)' : r.status === 'rejected' ? 'var(--red)' : 'var(--amber)';
+        const dev = [r.device_type, r.device_model].filter(Boolean).join(' ');
+        const when = r.created_at ? new Date(r.created_at).toLocaleDateString('en-AU') : '';
+        const actions = [];
+        if (r.status !== 'approved') actions.push(`<button class="btn btn-primary" onclick="moderateReview('${r.id}','approved')">✓ Approve</button>`);
+        if (r.status !== 'rejected') actions.push(`<button class="btn" onclick="moderateReview('${r.id}','rejected')">✕ Reject</button>`);
+        actions.push(`<button class="btn" style="color:var(--red);" onclick="deleteReview('${r.id}')">🗑 Delete</button>`);
+        return `<div class="card" style="padding:18px 20px;margin-bottom:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div style="font-weight:700;font-size:15px;">${escapeHtmlA(r.name || 'Anonymous')}
+                <span style="color:#fbbf24;margin-left:8px;">${rvStars(r.rating)}</span></div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px;">${[dev, r.suburb, when].filter(Boolean).join(' · ')}</div>
+            </div>
+            <span class="badge" style="background:${statusColor};color:#fff;text-transform:capitalize;">${r.status}</span>
+          </div>
+          ${r.text ? `<div style="margin-top:10px;font-size:14px;line-height:1.6;color:var(--text);">"${escapeHtmlA(r.text)}"</div>` : ''}
+          ${photos}
+          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">${actions.join('')}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function escapeHtmlA(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    async function moderateReview(id, status) {
+      try {
+        const { error } = await db.from('reviews').update({ status }).eq('id', id);
+        if (error) throw error;
+        const r = reviews.find(x => x.id === id); if (r) r.status = status;
+        updateReviewsBadge(); renderReviewsMod();
+        toast(status === 'approved' ? 'Review approved — now live ✓' : 'Review rejected', status === 'approved' ? 'success' : 'info');
+      } catch (err) { toast('Update failed: ' + err.message, 'error'); }
+    }
+
+    async function deleteReview(id) {
+      if (!confirm('Permanently delete this review?')) return;
+      try {
+        const { error } = await db.from('reviews').delete().eq('id', id);
+        if (error) throw error;
+        reviews = reviews.filter(x => x.id !== id);
+        updateReviewsBadge(); renderReviewsMod();
+        toast('Review deleted', 'info');
+      } catch (err) { toast('Delete failed: ' + err.message, 'error'); }
     }
 
     function renderListingsRoll() {
