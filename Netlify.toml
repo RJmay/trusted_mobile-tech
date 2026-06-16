@@ -8,3 +8,16 @@
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Redirect the www subdomain to the bare apex domain (301, all paths)
+[[redirects]]
+  from = "https://www.trustedmobiletech.org/*"
+  to = "https://trustedmobiletech.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.trustedmobiletech.org/*"
+  to = "https://trustedmobiletech.org/:splat"
+  status = 301
+  force = true
