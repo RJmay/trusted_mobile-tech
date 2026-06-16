@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPhone Image Generator — transparent PNGs</title>
+<link rel="icon" href="favicon.ico?v=4" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=4" />
+<link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=4" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=4" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root { --bg:#0e1116; --panel:#171b22; --line:#262c36; --txt:#e7ebf0; --muted:#9aa4b2; --accent:#3b82f6; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--txt); }
+  header { position:sticky; top:0; z-index:5; background:rgba(14,17,22,.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:16px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  h1 { font-size:18px; margin:0; font-weight:600; }
+  .sub { color:var(--muted); font-size:13px; }
+  button { font:inherit; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--txt); padding:9px 16px; border-radius:9px; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  button:disabled { opacity:.5; cursor:default; }
+  .spacer { flex:1; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:18px; padding:24px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+  /* checkerboard so transparency is visible */
+  .stage { width:100%; aspect-ratio:13/26; border-radius:10px;
+    background-image:linear-gradient(45deg,#2a2f38 25%,transparent 25%),linear-gradient(-45deg,#2a2f38 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2a2f38 75%),linear-gradient(-45deg,transparent 75%,#2a2f38 75%);
+    background-size:18px 18px; background-position:0 0,0 9px,9px -9px,-9px 0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .stage svg { height:100%; width:100%; }
+  .name { font-size:13px; font-weight:600; text-align:center; }
+  .file { font-size:11px; color:var(--muted); font-family:ui-monospace,monospace; }
+  .card button { padding:6px 12px; font-size:12px; font-weight:600; }
+  .note { color:var(--muted); font-size:12px; padding:0 24px 24px; max-width:780px; line-height:1.55; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>iPhone Image Generator</h1>
+    <div class="sub">Back-view illustrations · transparent background · exact <code>Images/</code> filenames</div>
+  </div>
+  <div class="spacer"></div>
+  <button id="zipBtn" class="primary">Download all as ZIP</button>
+  <button id="seqBtn">Download all (individual)</button>
+</header>
+
+<div class="grid" id="grid"></div>
+<p class="note">
+  These are stylized vector illustrations (correct colors &amp; per-generation camera layout), not photographs.
+  Each PNG exports at 2× on a fully transparent background using the filename the app expects
+  (e.g. <code>iphone-15-pro.png</code>). Drop them in the <code>Images/</code> folder, or swap for real photos later.
+</p>
+
+<script>
+const MODELS = [
+  { file:'iphone-se-2',        name:'iPhone SE (2nd)',      color:'#D9473C', cam:'single' },
+  { file:'iphone-se-3',        name:'iPhone SE (3rd)',      color:'#2E3038', cam:'single' },
+  { file:'iphone-11',          name:'iPhone 11',            color:'#A7D8C9', cam:'dual-square' },
+  { file:'iphone-11-pro',      name:'iPhone 11 Pro',        color:'#4E5851', cam:'triple' },
+  { file:'iphone-11-pro-max',  name:'iPhone 11 Pro Max',    color:'#F2E4C6', cam:'triple' },
+  { file:'iphone-12',          name:'iPhone 12',            color:'#B3AEE5', cam:'dual-square' },
+  { file:'iphone-12-mini',     name:'iPhone 12 mini',       color:'#27557E', cam:'dual-square' },
+  { file:'iphone-12-pro',      name:'iPhone 12 Pro',        color:'#54524F', cam:'triple' },
+  { file:'iphone-12-pro-max',  name:'iPhone 12 Pro Max',    color:'#2D4E5B', cam:'triple' },
+  { file:'iphone-13',          name:'iPhone 13',            color:'#F4D9DE', cam:'dual-diag' },
+  { file:'iphone-13-mini',     name:'iPhone 13 mini',       color:'#394C38', cam:'dual-diag' },
+  { file:'iphone-13-pro',      name:'iPhone 13 Pro',        color:'#A7C1D9', cam:'triple' },
+  { file:'iphone-13-pro-max',  name:'iPhone 13 Pro Max',    color:'#E3E4E0', cam:'triple' },
+  { file:'iphone-14',          name:'iPhone 14',            color:'#A0B4D0', cam:'dual-diag' },
+  { file:'iphone-14-plus',     name:'iPhone 14 Plus',       color:'#F2E9C9', cam:'dual-diag' },
+  { file:'iphone-14-pro',      name:'iPhone 14 Pro',        color:'#56516B', cam:'triple' },
+  { file:'iphone-14-pro-max',  name:'iPhone 14 Pro Max',    color:'#F2E6CC', cam:'triple' },
+  { file:'iphone-15',          name:'iPhone 15',            color:'#C7DCDD', cam:'dual-diag' },
+  { file:'iphone-15-plus',     name:'iPhone 15 Plus',       color:'#D2DDCF', cam:'dual-diag' },
+  { file:'iphone-15-pro',      name:'iPhone 15 Pro',        color:'#4F5B66', cam:'triple' },
+  { file:'iphone-15-pro-max',  name:'iPhone 15 Pro Max',    color:'#C2BCB2', cam:'triple' },
+  { file:'iphone-16',          name:'iPhone 16',            color:'#A8D5CE', cam:'dual-pill' },
+  { file:'iphone-16-plus',     name:'iPhone 16 Plus',       color:'#5B6FC9', cam:'dual-pill' },
+  { file:'iphone-16-pro',      name:'iPhone 16 Pro',        color:'#B79E84', cam:'triple' },
+  { file:'iphone-16-pro-max',  name:'iPhone 16 Pro Max',    color:'#C5BFB4', cam:'triple' },
+  { file:'iphone-17',          name:'iPhone 17',            color:'#BFD0E8', cam:'dual-pill' },
+  { file:'iphone-17-plus',     name:'iPhone 17 Plus',       color:'#CBD8C4', cam:'dual-pill' },
+  { file:'iphone-17-pro',      name:'iPhone 17 Pro',        color:'#C58E5A', cam:'triple' },
+  { file:'iphone-17-pro-max',  name:'iPhone 17 Pro Max',    color:'#D8D9D4', cam:'triple' },
+];
+
+const W = 520, H = 1040;
+const APPLE = "M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.2-2.12-9.98-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.93.21-9.84-1.96-14.75-6.52-3.13-2.73-7.04-7.41-11.74-14.04-5.03-7.08-9.17-15.29-12.41-24.65-3.47-10.11-5.21-19.9-5.21-29.38 0-10.86 2.35-20.22 7.05-28.07 3.69-6.3 8.61-11.27 14.76-14.92S58.81 4.69 65.96 4.57c3.92 0 9.05 1.21 15.43 3.59 6.36 2.39 10.45 3.6 12.24 3.6 1.34 0 5.88-1.42 13.57-4.24 7.27-2.62 13.41-3.7 18.44-3.27 13.63 1.1 23.87 6.47 30.68 16.15-12.19 7.39-18.22 17.73-18.1 31 .11 10.34 3.86 18.94 11.23 25.77 3.34 3.17 7.07 5.62 11.22 7.36-.9 2.61-1.85 5.11-2.86 7.51zM119.11 7.24c0 8.1-2.96 15.67-8.86 22.67-7.12 8.32-15.73 13.13-25.07 12.37-.12-.97-.19-1.99-.19-3.07 0-7.78 3.39-16.1 9.4-22.91 3-3.45 6.82-6.31 11.45-8.6 4.62-2.25 8.99-3.5 13.1-3.71.12 1.08.17 2.17.17 3.25z";
+
+function lum(hex){
+  const n = parseInt(hex.slice(1),16);
+  const r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  return (0.299*r + 0.587*g + 0.114*b)/255;
+}
+function shade(hex, amt){ // amt -1..1
+  const n = parseInt(hex.slice(1),16);
+  let r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  const f = v => Math.max(0,Math.min(255, Math.round(v + amt*255)));
+  return '#' + [f(r),f(g),f(b)].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+function lens(cx,cy,r){
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#0d0e10"/>
+    <circle cx="${cx}" cy="${cy}" r="${r*0.62}" fill="#23262c"/>
+    <circle cx="${cx}" cy="${cy}" r="${r*0.32}" fill="#0a0a0c"/>
+    <circle cx="${cx-r*0.28}" cy="${cy-r*0.30}" r="${r*0.14}" fill="#5a6470" opacity="0.7"/>`;
+}
+function flash(cx,cy){ return `<circle cx="${cx}" cy="${cy}" r="10" fill="#f4f3ea"/><circle cx="${cx}" cy="${cy}" r="10" fill="none" stroke="#0006" stroke-width="1"/>`; }
+function mic(cx,cy){ return `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#0007"/>`; }
+
+function cameraModule(m, bx, by){
+  const mx = bx + 34, my = by + 34;        // module origin (top-left of phone back)
+  const glass = 'rgba(0,0,0,0.10)';
+  const stroke = 'rgba(0,0,0,0.18)';
+  if (m.cam === 'single'){
+    const s = 96;
+    return `<rect x="${mx}" y="${my}" width="${s}" height="${s}" rx="26" fill="${glass}" stroke="${stroke}"/>
+      ${lens(mx+s/2, my+s/2, 30)}${flash(mx+s+26, my+24)}${mic(mx+s+24, my+58)}`;
+  }
+  if (m.cam === 'dual-square'){
+    const s = 138;
+    return `<rect x="${mx}" y="${my}" width="${s}" height="${s}" rx="34" fill="${glass}" stroke="${stroke}"/>
+      ${lens(mx+44, my+46, 32)}${lens(mx+44, my+104, 32)}${flash(mx+104, my+46)}${mic(mx+104, my+100)}`;
+  }
+  if (m.cam === 'dual-diag'){
+    const s = 138;
+    return `<rect x="${mx}" y="${my}" width="${s}" height="${s}" rx="34" fill="${glass}" stroke="${stroke}"/>
+      ${lens(mx+46, my+46, 33)}${lens(mx+96, my+96, 33)}${flash(mx+104, my+44)}${mic(mx+44, my+104)}`;
+  }
+  if (m.cam === 'dual-pill'){
+    const pw = 78, ph = 168;
+    return `<rect x="${mx+6}" y="${my}" width="${pw}" height="${ph}" rx="${pw/2}" fill="${glass}" stroke="${stroke}"/>
+      ${lens(mx+6+pw/2, my+46, 32)}${lens(mx+6+pw/2, my+ph-46, 32)}${flash(mx+pw+34, my+22)}`;
+  }
+  // triple (Pro)
+  const s = 172;
+  return `<rect x="${mx}" y="${my}" width="${s}" height="${s}" rx="42" fill="${glass}" stroke="${stroke}"/>
+    ${lens(mx+56, my+56, 35)}${lens(mx+56, my+118, 35)}${lens(mx+118, my+118, 35)}
+    <circle cx="${mx+118}" cy="${my+56}" r="13" fill="#1b1d22"/>
+    <circle cx="${mx+118}" cy="${my+56}" r="6" fill="#3a3f47"/>
+    ${flash(mx+150, my+30)}`;
+}
+
+function buildSVG(m){
+  const bx = 80, by = 30, bw = 360, bh = 980, rx = 108;
+  const top = shade(m.color, 0.10), bot = shade(m.color, -0.10);
+  const logoColor = lum(m.color) > 0.6 ? 'rgba(0,0,0,0.28)' : 'rgba(255,255,255,0.55)';
+  const logoScale = 0.42, lw = 170*logoScale;
+  const lx = bx + bw/2 - lw/2, ly = by + bh*0.46 - lw/2;
+  const btn = 'rgba(0,0,0,0.22)';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="${top}"/><stop offset="1" stop-color="${bot}"/>
+    </linearGradient>
+  </defs>
+  <!-- side buttons -->
+  <rect x="${bx-5}" y="${by+220}" width="6" height="70" rx="3" fill="${btn}"/>
+  <rect x="${bx-5}" y="${by+320}" width="6" height="110" rx="3" fill="${btn}"/>
+  <rect x="${bx-5}" y="${by+450}" width="6" height="110" rx="3" fill="${btn}"/>
+  <rect x="${bx+bw-1}" y="${by+300}" width="6" height="140" rx="3" fill="${btn}"/>
+  <!-- body -->
+  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${rx}" fill="url(#g)" stroke="${shade(m.color,-0.18)}" stroke-width="2"/>
+  <rect x="${bx+6}" y="${by+6}" width="${bw-12}" height="${bh-12}" rx="${rx-6}" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+  <!-- apple logo -->
+  <g transform="translate(${lx},${ly}) scale(${logoScale})"><path d="${APPLE}" fill="${logoColor}"/></g>
+  <!-- camera -->
+  ${cameraModule(m, bx, by)}
+</svg>`;
+}
+
+// ---- render gallery ----
+const grid = document.getElementById('grid');
+MODELS.forEach(m => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<div class="stage">${buildSVG(m)}</div>
+    <div class="name">${m.name}</div>
+    <div class="file">${m.file}.png</div>
+    <button data-file="${m.file}">Download PNG</button>`;
+  card.querySelector('button').onclick = () => downloadOne(m);
+  grid.appendChild(card);
+});
+
+// ---- export helpers ----
+function svgToPngBlob(svg, scale=2){
+  return new Promise((resolve, reject) => {
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = W*scale; c.height = H*scale;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0,0,c.width,c.height); // transparent
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png');
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+function saveBlob(blob, name){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+async function downloadOne(m){
+  saveBlob(await svgToPngBlob(buildSVG(m)), m.file + '.png');
+}
+
+document.getElementById('zipBtn').onclick = async (e) => {
+  const btn = e.target; btn.disabled = true; const orig = btn.textContent;
+  try {
+    if (typeof JSZip === 'undefined') throw new Error('no-jszip');
+    const zip = new JSZip();
+    for (let i=0;i<MODELS.length;i++){
+      btn.textContent = `Building… ${i+1}/${MODELS.length}`;
+      const blob = await svgToPngBlob(buildSVG(MODELS[i]));
+      zip.file(MODELS[i].file + '.png', blob);
+    }
+    btn.textContent = 'Zipping…';
+    const out = await zip.generateAsync({type:'blob'});
+    saveBlob(out, 'iphone-images.zip');
+  } catch(err){
+    alert('ZIP unavailable (offline?). Falling back to individual downloads.');
+    document.getElementById('seqBtn').click();
+  } finally { btn.disabled = false; btn.textContent = orig; }
+};
+
+document.getElementById('seqBtn').onclick = async (e) => {
+  const btn = e.target; btn.disabled = true; const orig = btn.textContent;
+  for (let i=0;i<MODELS.length;i++){
+    btn.textContent = `Downloading… ${i+1}/${MODELS.length}`;
+    await downloadOne(MODELS[i]);
+    await new Promise(r=>setTimeout(r, 250));
+  }
+  btn.disabled = false; btn.textContent = orig;
+};
+</script>
+</body>
+</html>
