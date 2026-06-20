@@ -5187,16 +5187,16 @@
         <div class="contact-form-card">
           <div class="contact-form-title">Send Us a Message</div>
           <div class="contact-form-sub">We'll get back to you within a few hours during business hours.</div>
-          <form onsubmit="event.preventDefault();alert('Message sent! We will be in touch soon.');this.reset();">
+          <form id="contactForm" onsubmit="submitContactForm(event)">
             <div class="form-group"><label class="form-label">Name *</label><input type="text" class="form-input"
-                required placeholder="Your name"></div>
+                id="contact-name" required placeholder="Your name"></div>
             <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-input"
-                required placeholder="your@email.com"></div>
+                id="contact-email" required placeholder="your@email.com"></div>
             <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input"
-                placeholder="04XX XXX XXX"></div>
+                id="contact-phone" placeholder="04XX XXX XXX"></div>
             <div class="form-group"><label class="form-label">Message *</label><textarea class="form-textarea" required
-                placeholder="How can we help?"></textarea></div>
-            <button type="submit" class="btn">Send Message</button>
+                id="contact-message" placeholder="How can we help?"></textarea></div>
+            <button type="submit" class="btn" id="contactSubmitBtn">Send Message</button>
           </form>
         </div>
       </div>
@@ -6388,11 +6388,13 @@
 
     // ═══════════════════════════════════════════════════
     //  EMAIL CONFIG — Web3Forms (free at web3forms.com)
-    //  1. Go to https://web3forms.com
-    //  2. Enter info@trustedmobiletech.org → get your access key
-    //  3. Paste it below
+    //  1. Go to https://web3forms.com → enter your inbox (e.g.
+    //     info@trustedmobiletech.org) → copy the Access Key.
+    //  2. Paste it into WEB3FORMS_KEY below.
+    //  All form submissions (quote, sell, contact) are emailed to that
+    //  inbox; "Reply" goes straight back to the customer.
     // ═══════════════════════════════════════════════════
-    var WEB3FORMS_KEY = 'YOUR_WEB3FORMS_KEY'; // ← paste your key here
+    var WEB3FORMS_KEY = 'a1890417-bdfd-4895-992b-a27e134df96f';
 
     function sendEmail(type, params) {
       if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR_WEB3FORMS_KEY') return Promise.resolve();
@@ -6400,19 +6402,56 @@
         return e[0].replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }) + ': ' + e[1];
       });
       var subjects = {
-        quote_notify: 'New Repair Quote — Trusted Mobile Tech',
-        sell_notify:  'New Device Sale Enquiry — Trusted Mobile Tech',
-        sell_confirm: 'Your Quote Request — Trusted Mobile Tech'
+        quote_notify:   'New Repair Quote — Trusted Mobile Tech',
+        sell_notify:    'New Device Sale Enquiry — Trusted Mobile Tech',
+        sell_confirm:   'Your Quote Request — Trusted Mobile Tech',
+        contact_notify: 'New Contact Message — Trusted Mobile Tech'
       };
+      var body = {
+        access_key: WEB3FORMS_KEY,
+        from_name: 'Trusted Mobile Tech Website',
+        subject: subjects[type] || 'Trusted Mobile Tech — Notification',
+        message: lines.join('\n\n')
+      };
+      // so you can hit "Reply" and reach the customer directly
+      var reply = params.customer_email || params.email || params.to_email;
+      if (reply && /@/.test(reply)) body.replyto = reply;
       return fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          subject: subjects[type] || 'Trusted Mobile Tech — Notification',
-          message: lines.join('\n\n')
-        })
+        body: JSON.stringify(body)
       }).then(function(r){ return r.json(); }).catch(function(err){ console.warn('Email error:', err); });
+    }
+
+    async function submitContactForm(e) {
+      e.preventDefault();
+      var name    = document.getElementById('contact-name').value.trim();
+      var email   = document.getElementById('contact-email').value.trim();
+      var phone   = document.getElementById('contact-phone').value.trim();
+      var message = document.getElementById('contact-message').value.trim();
+      var btn = document.getElementById('contactSubmitBtn');
+      btn.textContent = '⏳ Sending…'; btn.disabled = true;
+      try {
+        var res = await sendEmail('contact_notify', {
+          customer_name:  name,
+          customer_email: email,
+          customer_phone: phone || '(not provided)',
+          message:        message,
+          submitted_at:   new Date().toLocaleString('en-AU')
+        });
+        if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR_WEB3FORMS_KEY') {
+          alert('Email is not configured yet. Please call 0467 748 433 or email info@trustedmobiletech.org.');
+        } else if (res && res.success === false) {
+          alert('Sorry, something went wrong sending your message. Please call 0467 748 433.');
+        } else {
+          alert('Message sent! We\'ll be in touch soon.');
+          document.getElementById('contactForm').reset();
+        }
+      } catch (err) {
+        alert('Connection error — please try again or call 0467 748 433.');
+      } finally {
+        btn.textContent = 'Send Message'; btn.disabled = false;
+      }
     }
 
     // ── Sell photo upload state ──────────────────────
