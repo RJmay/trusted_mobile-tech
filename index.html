@@ -171,6 +171,8 @@
     .section {
       display: none;
       animation: fadeUp .4s ease-out;
+      position: relative;
+      overflow-x: clip;        /* contain decorative orbs/decals — no horizontal scroll on mobile */
     }
 
     .section.active {
@@ -3789,9 +3791,14 @@
         display: block;
       }
 
-      .device-cards,
       .cat-grid {
         grid-template-columns: 1fr;
+      }
+
+      /* keep the 3 device options side-by-side on mobile */
+      .device-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
       }
 
       .why-grid {
@@ -3848,6 +3855,15 @@
 
     @media(max-width:600px) {
       .repair-imgs { grid-template-columns: 1fr; }
+
+      /* compact 3-up device cards on phones */
+      .device-cards { gap: 10px; }
+      .device-card { padding: 18px 8px; border-radius: 14px; border-width: 1.5px; }
+      .dc-img { height: 76px; margin-bottom: 10px; }
+      .dc-icon { font-size: 40px; margin-bottom: 10px; }
+      .dc-name { font-size: 15px; margin-bottom: 4px; }
+      .dc-desc { display: none; }
+      .dc-badge { font-size: 10px; padding: 4px 9px; }
     }
 
     @media(max-width:480px) {
