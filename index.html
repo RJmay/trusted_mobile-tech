@@ -1762,6 +1762,10 @@
     .review-card:hover::after { opacity: 1; }
     .review-card > * { position: relative; z-index: 1; }
 
+    /* Order-in perks */
+    .order-perk { text-align: center; padding: 16px 8px; border: 1px solid var(--border); border-radius: 14px; background: var(--card-bg2); font-size: 12px; font-weight: 700; color: var(--dark); }
+    .order-perk-ic { font-size: 26px; margin-bottom: 6px; }
+
     /* "How to find your device info" screenshots */
     .find-info-img { position: relative; width: 104px; height: 150px; flex: none; border-radius: 14px; background: rgba(0,0,0,.12); border: 1px solid rgba(0,212,255,.18); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 5px; }
     .find-info-img img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; cursor: zoom-in; transition: transform .2s; }
@@ -4019,6 +4023,7 @@
       <button class="nav-link" data-section="reviews" onclick="showSection('reviews')">Reviews</button>
       <button class="nav-link" data-section="deals" onclick="showSection('deals')">Refurbished Devices</button>
       <button class="nav-link" data-section="accessories" onclick="showSection('accessories')">Accessories</button>
+      <button class="nav-link" data-section="order" onclick="showSection('order')">Order a Device</button>
       <button class="nav-link" data-section="contact" onclick="showSection('contact')">Contact Us</button>
       <button class="nav-link" data-section="sell" onclick="showSection('sell')">Sell Your Device</button>
       <button class="nav-cta" onclick="showSection('quote')">Get Quote</button>
@@ -5217,6 +5222,95 @@
     </div>
   </section>
 
+  <!-- ═══════ ORDER A DEVICE ═══════ -->
+  <section class="section" id="sec-order">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Order In a Device</h2>
+        <p>Can't see what you're after? Tell us the exact device and we'll source it for you — Australian stock, quality-checked, with our 90-day warranty.</p>
+      </div>
+
+      <div style="max-width:560px;margin:0 auto 28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div class="order-perk"><div class="order-perk-ic">🔎</div>We find it</div>
+        <div class="order-perk"><div class="order-perk-ic">✅</div>40-point check</div>
+        <div class="order-perk"><div class="order-perk-ic">🛡️</div>90-day warranty</div>
+      </div>
+
+      <div id="order-form-wrap" style="max-width:560px;margin:0 auto;">
+        <form id="orderForm" onsubmit="submitOrderForm(event)" style="background:var(--card-bg2);border:1px solid var(--border);border-radius:20px;padding:32px;">
+          <div class="form-group">
+            <label class="form-label">Device Type *</label>
+            <select class="form-select" id="ord-type" required>
+              <option value="">Select device type</option>
+              <option value="iPhone">iPhone</option>
+              <option value="iPad">iPad</option>
+              <option value="MacBook">MacBook</option>
+              <option value="Apple Watch">Apple Watch</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Model / Variant *</label>
+            <input type="text" class="form-input" id="ord-model" required placeholder="e.g. iPhone 15 Pro Max">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Storage</label>
+              <input type="text" class="form-input" id="ord-storage" placeholder="e.g. 256GB">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Colour</label>
+              <input type="text" class="form-input" id="ord-color" placeholder="e.g. Black">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Preferred Condition</label>
+              <select class="form-select" id="ord-condition">
+                <option value="Any">Any</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+                <option value="Brand New">Brand New</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Max Budget ($)</label>
+              <input type="number" min="0" class="form-input" id="ord-budget" placeholder="e.g. 800">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Name *</label>
+            <input type="text" class="form-input" id="ord-name" required placeholder="Your name">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Email *</label>
+              <input type="email" class="form-input" id="ord-email" required placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input type="tel" class="form-input" id="ord-phone" placeholder="04XX XXX XXX">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes <span style="font-weight:400;color:#94a3b8;font-size:13px;">(optional)</span></label>
+            <textarea class="form-textarea" id="ord-notes" placeholder="Anything else — accessories, timeframe, trade-in, etc."></textarea>
+          </div>
+          <button type="submit" class="btn" id="orderSubmitBtn" style="width:100%;">Submit Request</button>
+          <p style="text-align:center;font-size:12px;color:#94a3b8;margin:12px 0 0;">No payment now — we'll email you a quote and availability, usually within a few hours.</p>
+        </form>
+      </div>
+
+      <div id="order-thanks-wrap" style="display:none;max-width:560px;margin:0 auto;text-align:center;background:var(--card-bg2);border:1px solid var(--border);border-radius:20px;padding:40px 28px;">
+        <div style="font-size:52px;margin-bottom:14px;">🎉</div>
+        <h2 style="margin-bottom:10px;">Request received!</h2>
+        <p style="color:#94a3b8;margin-bottom:24px;">Thanks — we'll source your device and email you a quote with availability shortly. Questions? Call 0467 748 433.</p>
+        <button class="btn" style="width:auto;padding:13px 30px;" onclick="showSection('home')">Back to Home</button>
+      </div>
+    </div>
+  </section>
+
   <!-- Floating cart button -->
   <button id="accCartFab" onclick="openAccCart()" aria-label="Open cart" style="display:none;position:fixed;bottom:24px;right:24px;z-index:120;background:var(--grad);color:#fff;border:none;border-radius:50%;width:58px;height:58px;font-size:24px;box-shadow:0 8px 24px rgba(0,180,216,.4);cursor:pointer;align-items:center;justify-content:center;">
     🛒
@@ -6408,6 +6502,7 @@
       if (id === 'deals' && !dealsLoaded) { loadDeals(); }
       if (id === 'accessories') { renderAccessories(); }
       if (id === 'reviews') { initReviews(); }
+      if (id === 'order') { var ofw=document.getElementById('order-form-wrap'), otw=document.getElementById('order-thanks-wrap'); if(ofw)ofw.style.display='block'; if(otw)otw.style.display='none'; }
       var btn = document.getElementById('globalBackBtn');
       if (btn) btn.style.display = _sectionHistory.length > 0 ? 'block' : 'none';
     }
@@ -6620,7 +6715,8 @@
         quote_notify:   'New Repair Quote — Trusted Mobile Tech',
         sell_notify:    'New Device Sale Enquiry — Trusted Mobile Tech',
         sell_confirm:   'Your Quote Request — Trusted Mobile Tech',
-        contact_notify: 'New Contact Message — Trusted Mobile Tech'
+        contact_notify: 'New Contact Message — Trusted Mobile Tech',
+        order_notify:   'New Device Order Request — Trusted Mobile Tech'
       };
       var body = {
         access_key: WEB3FORMS_KEY,
@@ -6666,6 +6762,43 @@
         alert('Connection error — please try again or call 0467 748 433.');
       } finally {
         btn.textContent = 'Send Message'; btn.disabled = false;
+      }
+    }
+
+    async function submitOrderForm(e) {
+      e.preventDefault();
+      var email = document.getElementById('ord-email').value.trim();
+      var btn = document.getElementById('orderSubmitBtn');
+      btn.textContent = '⏳ Submitting…'; btn.disabled = true;
+      try {
+        var budget = document.getElementById('ord-budget').value.trim();
+        var res = await sendEmail('order_notify', {
+          device_type:    document.getElementById('ord-type').value,
+          model:          document.getElementById('ord-model').value.trim(),
+          storage:        document.getElementById('ord-storage').value.trim() || 'Any',
+          colour:         document.getElementById('ord-color').value.trim() || 'Any',
+          condition:      document.getElementById('ord-condition').value,
+          max_budget:     budget ? '$' + budget : 'Not specified',
+          customer_name:  document.getElementById('ord-name').value.trim(),
+          customer_email: email,
+          customer_phone: document.getElementById('ord-phone').value.trim() || '(not provided)',
+          notes:          document.getElementById('ord-notes').value.trim() || '(none)',
+          submitted_at:   new Date().toLocaleString('en-AU')
+        });
+        if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR_WEB3FORMS_KEY') {
+          alert('Ordering isn\'t configured yet. Please call 0467 748 433 or email info@trustedmobiletech.org.');
+        } else if (res && res.success === false) {
+          alert('Sorry, something went wrong. Please call 0467 748 433.');
+        } else {
+          document.getElementById('order-form-wrap').style.display = 'none';
+          document.getElementById('order-thanks-wrap').style.display = 'block';
+          document.getElementById('orderForm').reset();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      } catch (err) {
+        alert('Connection error — please try again or call 0467 748 433.');
+      } finally {
+        btn.textContent = 'Submit Request'; btn.disabled = false;
       }
     }
 
