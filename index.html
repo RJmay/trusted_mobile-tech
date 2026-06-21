@@ -215,8 +215,9 @@
     .wrap {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 28px;
     }
+    @media (max-width: 480px) { .wrap { padding: 0 22px; } }
 
     /* ═══ HOME ═══ */
     .hero {
@@ -3883,7 +3884,7 @@
       }
 
       .footer-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
 
       .qcontainer {
@@ -3942,7 +3943,7 @@
       .service-type-icon { font-size: 28px; }
       .service-type-name { font-size: 15px; }
       .service-type-desc { font-size: 13px; }
-      .why-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
       .about-stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
       .about-stat-card { padding: 20px 14px; }
       .about-stat-num { font-size: 30px; }
@@ -6232,9 +6233,9 @@
         _dealItems.forEach(function(l, idx) {
           var title = l.brand + ' ' + l.model + (l.storage ? ' · ' + l.storage : '');
           var meta = [l.color, l.grade].filter(Boolean).join(' · ');
-          var thumb = getDeviceThumbnail(l.brand, l.model);
-          var imgEl = thumb
-            ? '<img src="' + thumb + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+          var photo = (l.images && l.images.length) ? l.images[0] : null;
+          var imgEl = photo
+            ? '<img src="' + photo + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
               + '<div class="deal-card-emoji" style="display:none;">' + dealEmoji(l.brand) + '</div>'
             : '<div class="deal-card-emoji">' + dealEmoji(l.brand) + '</div>';
           html += '<div class="deal-card" onclick="openListing(' + idx + ')">'
