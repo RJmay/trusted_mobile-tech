@@ -6278,11 +6278,17 @@
         ['Availability', l.status === 'available' ? 'Ready for Pickup' : (l.status || '—')]
       ].map(function(t){ return '<div class="ld-tile"><div class="ld-tile-label">' + t[0] + '</div><div class="ld-tile-val">' + t[1] + '</div></div>'; }).join('');
 
-      // specifications grid (derived) + storage
-      var specs = getDeviceSpecs(l.brand, l.model);
+      // specifications grid — prefer stored values, fall back to derived
+      var specs = getDeviceSpecs(l.brand, l.model) || {};
       var specSection = document.getElementById('ldSpecSection');
       var rows = [];
-      if (specs) { rows.push(['Display', specs.Display], ['Chip', specs.Chip], ['Camera', specs.Camera]); }
+      var disp = l.spec_display || specs.Display;
+      var chip = l.spec_chip || specs.Chip;
+      var cam = l.spec_camera || specs.Camera;
+      if (disp) rows.push(['Display', disp]);
+      if (chip) rows.push(['Chip', chip]);
+      if (cam) rows.push(['Camera', cam]);
+      if (l.spec_battery) rows.push(['Battery', l.spec_battery]);
       if (l.storage) rows.push(['Storage', l.storage]);
       if (rows.length) {
         document.getElementById('ldSpecGrid').innerHTML = rows.map(function(t){ return '<div class="ld-tile"><div class="ld-tile-label">' + t[0] + '</div><div class="ld-tile-val">' + t[1] + '</div></div>'; }).join('');

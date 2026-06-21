@@ -1819,6 +1819,33 @@
                   <input class="filter-input" id="lf-rrp" type="number" min="0" placeholder="799" style="width:100%">
                 </div>
               </div>
+              <div class="lf-row2">
+                <div>
+                  <label class="lf-label">SKU <span style="font-weight:400;opacity:.6;">optional</span></label>
+                  <input class="filter-input" id="lf-sku" placeholder="e.g. IP13P-6028" style="width:100%">
+                </div>
+                <div>
+                  <label class="lf-label">Chip <span style="font-weight:400;opacity:.6;">optional</span></label>
+                  <input class="filter-input" id="lf-chip" placeholder="e.g. A15 Bionic" style="width:100%">
+                </div>
+              </div>
+              <div class="lf-row2">
+                <div>
+                  <label class="lf-label">Display <span style="font-weight:400;opacity:.6;">optional</span></label>
+                  <input class="filter-input" id="lf-display" placeholder='e.g. 6.1″ Super Retina XDR' style="width:100%">
+                </div>
+                <div>
+                  <label class="lf-label">Camera <span style="font-weight:400;opacity:.6;">optional</span></label>
+                  <input class="filter-input" id="lf-camera" placeholder="e.g. Dual 12MP System" style="width:100%">
+                </div>
+              </div>
+              <div class="lf-row2">
+                <div>
+                  <label class="lf-label">Battery Capacity <span style="font-weight:400;opacity:.6;">optional</span></label>
+                  <input class="filter-input" id="lf-batterycap" placeholder="e.g. 3,095 mAh" style="width:100%">
+                </div>
+                <div></div>
+              </div>
               <div>
                 <label class="lf-label">Description <span style="font-weight:400;opacity:.6;">optional</span></label>
                 <textarea class="filter-input" id="lf-desc" rows="2"
@@ -2952,6 +2979,11 @@
       document.getElementById('lf-price').value = l.price || '';
       document.getElementById('lf-rrp').value = l.rrp || '';
       document.getElementById('lf-desc').value = l.description || '';
+      document.getElementById('lf-sku').value = l.sku || '';
+      document.getElementById('lf-chip').value = l.spec_chip || '';
+      document.getElementById('lf-display').value = l.spec_display || '';
+      document.getElementById('lf-camera').value = l.spec_camera || '';
+      document.getElementById('lf-batterycap').value = l.spec_battery || '';
       document.getElementById('lf-featured').checked = !!l.featured;
       document.getElementById('lf-status').value = l.status || 'available';
       document.getElementById('listingsFormTitle').textContent = 'Edit Listing';
@@ -3083,6 +3115,11 @@
           price: parseInt(document.getElementById('lf-price').value) || 0,
           rrp: parseInt(document.getElementById('lf-rrp').value) || null,
           description: document.getElementById('lf-desc').value.trim(),
+          sku: document.getElementById('lf-sku').value.trim() || null,
+          spec_chip: document.getElementById('lf-chip').value.trim() || null,
+          spec_display: document.getElementById('lf-display').value.trim() || null,
+          spec_camera: document.getElementById('lf-camera').value.trim() || null,
+          spec_battery: document.getElementById('lf-batterycap').value.trim() || null,
           images,
           featured: document.getElementById('lf-featured').checked,
           status: document.getElementById('lf-status').value,
