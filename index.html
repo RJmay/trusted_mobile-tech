@@ -2811,6 +2811,7 @@
       background: #ffffff;
       color: #1e293b;
       --dark: #0f172a;
+      --text: #1e293b;
       --card-bg: #ffffff;
       --card-bg2: #f8fafc;
       --surface: #f1f5f9;
@@ -3310,6 +3311,8 @@
 
     /* Checkout modal section headings & prices (inline color:#e2e8f0) */
     body.light #checkoutModal div[style*="color:#e2e8f0"] { color: #1e293b !important; }
+    /* Catch ALL inline light-grey text site-wide so nothing is invisible in light mode */
+    body.light [style*="color:#e2e8f0"], body.light [style*="color: #e2e8f0"] { color: #1e293b !important; }
     /* Checkout upsell label text */
     body.light #checkoutModal label div[style*="font-weight:700"] { color: #1e293b !important; }
     /* Checkout order summary total */
@@ -5606,7 +5609,7 @@
   <div class="modal-overlay" id="qualityModal" onclick="if(event.target===this)closeModal('qualityModal')">
     <div class="modal" style="max-width:600px;"><button class="modal-close"
         onclick="closeModal('qualityModal')">&times;</button>
-      <h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;">Screen Quality</h2>
+      <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:6px;">Screen Quality</h2>
       <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose the right screen for your needs and budget.</p>
       <div id="qualityOptions"></div>
     </div>
@@ -7366,7 +7369,7 @@
   <div id="batteryModal" class="modal-overlay" onclick="if(event.target===this)closeModal('batteryModal')">
     <div class="modal" style="max-width:600px;">
       <button class="modal-close" onclick="closeModal('batteryModal')">&times;</button>
-      <h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;">Battery Options</h2>
+      <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:6px;">Battery Options</h2>
       <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose between aftermarket or OEM-grade battery
         replacement.</p>
       <div id="batteryOptions"></div>
@@ -7376,7 +7379,7 @@
   <div id="oemModal" class="modal-overlay" onclick="if(event.target===this)closeModal('oemModal')">
     <div class="modal" style="max-width:600px;">
       <button class="modal-close" onclick="closeModal('oemModal')">&times;</button>
-      <h2 style="font-size:24px;font-weight:800;color:#fff;margin-bottom:6px;" id="oemModalTitle">Part Options</h2>
+      <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:6px;" id="oemModalTitle">Part Options</h2>
       <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose aftermarket (quality tested) or OEM (genuine-spec part).</p>
       <div id="oemOptions"></div>
     </div>
