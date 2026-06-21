@@ -3797,11 +3797,13 @@
     /* ═══ RESPONSIVE ═══ */
     @media(max-width:900px) {
       .header {
-        padding: 0 16px;
+        padding: 0 20px;
         height: auto;
-        min-height: 64px;
+        min-height: 66px;
         justify-content: flex-start;
       }
+      .header-actions { gap: 14px; }
+      .hdr-icon-btn { width: 44px; height: 44px; }
 
       .logo {
         margin-right: 0;
@@ -3930,12 +3932,13 @@
         text-align: center;
       }
 
-      .repair-imgs { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .repair-imgs { grid-template-columns: repeat(3, 1fr); gap: 10px; }
       .hd-phone-1  { display: none; }
     }
 
     @media(max-width:600px) {
-      .repair-imgs { grid-template-columns: 1fr; }
+      .repair-imgs { grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 28px; }
+      .ri-label { font-size: 11px; }
 
       /* compact 3-up device cards on phones */
       .device-cards { gap: 10px; }
