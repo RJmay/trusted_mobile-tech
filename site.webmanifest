@@ -1,0 +1,15 @@
+{
+  "name": "Trusted Mobile Tech",
+  "short_name": "Trusted Tech",
+  "description": "Independent Apple repair specialists — instant online quotes for iPhone, MacBook & iPad repairs on the Sunshine Coast & in Brisbane.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    { "src": "favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "maskable" }
+  ]
+}
