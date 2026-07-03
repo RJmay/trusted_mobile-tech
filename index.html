@@ -3865,7 +3865,7 @@
     /* Gallery */
     .rd-gallery { position: sticky; top: 90px; }
     .rd-main { position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-xl); overflow: hidden; background: linear-gradient(160deg, #f3f6fb, #e6ebf3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-    .rd-main img { width: 100%; height: 100%; object-fit: contain; display: block; cursor: zoom-in; }
+    .rd-main img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
     .rd-main .rd-main-emoji { font-size: 96px; }
     .rd-grade-badge { position: absolute; top: 14px; left: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; background: color-mix(in srgb, var(--brand) 90%, #000 0%); color: #fff; box-shadow: 0 4px 14px rgba(15,23,42,.28); }
     .rd-feat-badge { position: absolute; top: 14px; right: 14px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--amber, #f59e0b); color: #241a00; box-shadow: 0 4px 14px rgba(15,23,42,.28); }
@@ -3894,18 +3894,37 @@
     .rd-fulfil .rd-chip .msym { width: 15px; height: 15px; font-size: 15px; color: var(--brand); }
 
     .rd-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
-    .rd-stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; }
-    .rd-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; display: flex; align-items: center; gap: 6px; }
-    .rd-stat-label .msym { width: 14px; height: 14px; font-size: 14px; }
-    .rd-stat-value { font-size: 16px; font-weight: 700; color: var(--dark); margin-top: 6px; }
-    button.rd-stat { text-align: left; cursor: pointer; font-family: inherit; width: 100%; transition: border-color .15s; }
+    .rd-stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; display: flex; align-items: center; gap: 12px; text-align: left; }
+    .rd-stat-ic { width: 38px; height: 38px; border-radius: 10px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); }
+    .rd-stat-ic .msym { width: 19px; height: 19px; font-size: 19px; }
+    .rd-stat-txt { min-width: 0; }
+    .rd-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
+    .rd-stat-value { font-size: 15px; font-weight: 700; color: var(--dark); margin-top: 2px; }
+    button.rd-stat { cursor: pointer; font-family: inherit; width: 100%; transition: border-color .15s; }
     button.rd-stat:hover { border-color: color-mix(in srgb, var(--brand) 45%, var(--border)); }
     button.rd-stat:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-    .rd-stat-hint { font-size: 11px; color: var(--brand); font-weight: 600; margin-top: 4px; }
-    .rd-batt { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-    .rd-batt-track { flex: 1; height: 7px; border-radius: 999px; background: var(--surface); overflow: hidden; border: 1px solid var(--border); }
-    .rd-batt-fill { height: 100%; border-radius: 999px; }
-    .rd-batt-pct { font-size: 15px; font-weight: 800; color: var(--dark); }
+    .rd-stat-hint { font-size: 11px; color: var(--brand); font-weight: 600; margin-top: 2px; }
+
+    /* accepted payments */
+    .rd-pay { margin-top: 20px; }
+    .rd-pay-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; display: block; margin-bottom: 9px; }
+    .rd-pay-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .rd-pay-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--dark); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; line-height: 1; }
+    .rd-pay-badge .msym { width: 15px; height: 15px; font-size: 15px; color: var(--muted); }
+    .rd-pay-badge.rd-pp b { font-style: italic; letter-spacing: -.02em; }
+    .rd-pay-badge.rd-pp b:first-child { color: #003087; } .rd-pay-badge.rd-pp b:last-child { color: #0090da; }
+    body.light .rd-pay-badge.rd-pp b:first-child { color: #002b7a; }
+    .rd-mc { position: relative; width: 27px; height: 16px; display: inline-block; flex: 0 0 auto; }
+    .rd-mc span { position: absolute; top: 0; width: 16px; height: 16px; border-radius: 50%; }
+    .rd-mc span:first-child { left: 0; background: #eb001b; }
+    .rd-mc span:last-child { right: 0; background: #f79e1b; opacity: .92; }
+    .rd-mc::after { content: ""; position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 6px; height: 16px; background: #ff5f00; border-radius: 40%; }
+
+    /* about, inside the buy panel */
+    .rd-panel-about { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+    .rd-panel-about-h { font-family: var(--font-head); font-size: 16px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+    .rd-panel-about p { font-size: 13.5px; color: var(--muted); line-height: 1.62; margin: 0 0 10px; }
+    .rd-panel-about .rd-about-process { color: var(--dark); font-weight: 600; font-size: 12.5px; margin-bottom: 0; }
 
     .rd-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
     .rd-add { width: 100%; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 14px; border: none; background: var(--cta-fill); color: #fff; cursor: pointer; font-family: var(--font); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: background .18s, transform .12s; }
@@ -7972,15 +7991,47 @@
         (e.aliases || []).forEach(function (a) { var k = _rdNorm(a); if (k && !SPEC_ALIAS[k]) SPEC_ALIAS[k] = e.model; });
       });
     }
+    function _rdCatOf(name) {
+      var s = _rdNorm(name);
+      if (/\b(macbook|imac|mac mini|mac studio)\b/.test(s)) return 'mac';
+      if (/\bipad\b/.test(s)) return 'ipad';
+      if (/\biphone\b/.test(s)) return 'iphone';
+      return '';
+    }
+    // Build the real device name. Listings store brand as "iPhone"/"iPad"/"MacBook"
+    // and model as just "13"/"15 Pro", so the name is brand + model = "iPhone 13".
+    function rdDisplayName(l) {
+      var b = (l.brand || '').trim(), m = (l.model || '').trim();
+      if (!m) return b || 'Device';
+      if (!b) return m;
+      var ml = m.toLowerCase();
+      if (ml.indexOf(b.toLowerCase()) !== -1) return m;                       // model already carries the brand
+      if (/^apple$/i.test(b) && /iphone|ipad|macbook|watch|airpod/.test(ml)) return m;
+      return b + ' ' + m;                                                     // "iPhone" + "13" -> "iPhone 13"
+    }
     function specFor(model) {
       if (!model) return null;
       var n = _rdNorm(model);
       if (SPEC_ALIAS[n]) return SPEC_LOOKUP[SPEC_ALIAS[n]];
       var n2 = n.replace(/\b\d+\s?(gb|tb)\b/g, '').replace(/\s+/g, ' ').trim();
       if (SPEC_ALIAS[n2]) return SPEC_LOOKUP[SPEC_ALIAS[n2]];
-      var best = null, len = 0;
-      for (var a in SPEC_ALIAS) { if (a.length >= 6 && a.length > len && (n2.indexOf(a) !== -1 || a.indexOf(n2) !== -1)) { best = SPEC_ALIAS[a]; len = a.length; } }
-      return best ? SPEC_LOOKUP[best] : null;
+      // category-constrained token scoring — an iPhone can NEVER match a MacBook/iPad entry
+      var cat = _rdCatOf(n2), toks = n2.split(' ').filter(Boolean);
+      var best = null, bestScore = 0;
+      for (var key in SPEC_LOOKUP) {
+        if (cat && _rdCatOf(key) !== cat) continue;
+        var e = SPEC_LOOKUP[key];
+        var cands = [_rdNorm(key)].concat((e.aliases || []).map(_rdNorm));
+        var sc = 0;
+        for (var ci = 0; ci < cands.length; ci++) {
+          var ct = cands[ci].split(' ').filter(Boolean), shared = 0;
+          for (var ti = 0; ti < toks.length; ti++) { if (ct.indexOf(toks[ti]) !== -1) shared++; }
+          var s2 = shared - Math.abs(ct.length - toks.length) * 0.15;
+          if (s2 > sc) sc = s2;
+        }
+        if (sc > bestScore) { bestScore = sc; best = e; }
+      }
+      return (best && bestScore >= 1) ? best : null;
     }
 
     // Our own grading tiers (plain-English, original wording)
@@ -8130,7 +8181,7 @@
     function rdAddToCart() {
       var l = _rdCurrent; if (!l) return;
       if (typeof addDeviceToCart === 'function') {
-        var title = (l.brand ? l.brand + ' ' : '') + (l.model || 'Device') + (l.storage ? ' · ' + l.storage : '');
+        var title = rdDisplayName(l) + (l.storage ? ' · ' + l.storage : '');
         addDeviceToCart(l.id, title, Number(l.price) || 0);
       }
       _rdReflectCart(!!(typeof accCart !== 'undefined' && accCart['dev:' + l.id]));
@@ -8147,7 +8198,7 @@
       showSection('contact', true);
       setTimeout(function () {
         var msg = document.getElementById('contact-message');
-        if (msg && l) { msg.value = "Hi team, I'd like to ask about the " + (l.brand ? l.brand + ' ' : '') + (l.model || 'device') + (l.storage ? ' (' + l.storage + ')' : '') + (l.sku ? ' [SKU ' + l.sku + ']' : '') + ' you have listed. '; msg.focus(); }
+        if (msg && l) { msg.value = "Hi team, I'd like to ask about the " + rdDisplayName(l) + (l.storage ? ' (' + l.storage + ')' : '') + (l.sku ? ' [SKU ' + l.sku + ']' : '') + ' you have listed. '; msg.focus(); }
       }, 140);
     }
 
@@ -8178,7 +8229,7 @@
     function _rdMetaEl() { return document.querySelector('meta[name="description"]'); }
     function _rdSetMeta(l) {
       if (_rdDefaultTitle == null) { _rdDefaultTitle = document.title; var me0 = _rdMetaEl(); _rdDefaultDesc = me0 ? me0.getAttribute('content') : ''; }
-      var name = (l.brand ? l.brand + ' ' : '') + (l.model || 'Device') + (l.storage ? ' ' + l.storage : '');
+      var name = rdDisplayName(l) + (l.storage ? ' ' + l.storage : '');
       document.title = name + ' — Certified Refurbished | Trusted Mobile Tech';
       var me = _rdMetaEl();
       if (me) me.setAttribute('content', 'Certified pre-owned ' + name + (l.grade ? ' in ' + l.grade + ' condition' : '') + '. Tested in Buderim with a 90-day local warranty. Free local pickup or shipping Australia-wide.');
@@ -8186,7 +8237,7 @@
     function _rdRestoreMeta() { if (_rdDefaultTitle != null) { document.title = _rdDefaultTitle; var me = _rdMetaEl(); if (me && _rdDefaultDesc != null) me.setAttribute('content', _rdDefaultDesc); } }
     function _rdLdEl(id) { var s = document.getElementById(id); if (!s) { s = document.createElement('script'); s.type = 'application/ld+json'; s.id = id; document.head.appendChild(s); } return s; }
     function _rdSetJsonLd(l, spec, price, sold) {
-      var name = (l.brand ? l.brand + ' ' : '') + (l.model || 'Device') + (l.storage ? ' ' + l.storage : '');
+      var name = rdDisplayName(l) + (l.storage ? ' ' + l.storage : '');
       var prod = { '@context': 'https://schema.org', '@type': 'Product', name: name, category: 'Refurbished ' + rdCategory(l),
         description: (spec && spec.about) ? spec.about.replace(/\s+/g, ' ').trim() : (l.description || ('Certified refurbished ' + name + ', tested in Buderim.')),
         brand: { '@type': 'Brand', name: l.brand || 'Apple' }, sku: l.sku || ('TMT-' + String(l.id || '')),
@@ -8221,13 +8272,14 @@
     function renderRefurbDetail(l, forceSold) {
       _rdCurrent = l;
       var host = document.getElementById('refurbDetail'); if (!host) return;
-      var cat = rdCategory(l), spec = specFor(l.model);
+      var name = rdDisplayName(l);
+      var cat = rdCategory(l), spec = specFor(name);
       var sold = forceSold === true || (l.status && l.status !== 'available');
-      var titleShort = (l.model || 'Device') + (l.storage ? ' · ' + l.storage : '');
+      var titleShort = name + (l.storage ? ' · ' + l.storage : '');
       var grade = rdGradeInfo(l.grade);
       var imgs = (l.images && l.images.length) ? l.images.slice() : [];
-      if (!imgs.length) { var mi = _rdModelImage(l.model); if (mi) imgs = [mi]; }
-      _rdGal = { images: imgs, idx: 0, alt: _rdEsc((l.brand ? l.brand + ' ' : '') + (l.model || 'Device')) };
+      if (!imgs.length) { var mi = _rdModelImage(name); if (mi) imgs = [mi]; }
+      _rdGal = { images: imgs, idx: 0, alt: _rdEsc(rdDisplayName(l)) };
       var battNum = l.battery ? parseInt(String(l.battery).replace(/[^0-9]/g, ''), 10) : null;
       if (isNaN(battNum)) battNum = null;
       var battColor = battNum == null ? 'var(--muted)' : battNum >= 90 ? '#10b981' : battNum >= 80 ? '#f59e0b' : '#ef4444';
@@ -8238,9 +8290,12 @@
       var sku = l.sku || ('TMT-' + String(l.id || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 8).toUpperCase());
       var inCart = !!(typeof accCart !== 'undefined' && accCart['dev:' + l.id]);
       var incl = (Array.isArray(l.included) && l.included.length) ? l.included : (spec && spec.included && spec.included.length ? spec.included : ['device', 'cable']);
+      var aboutHtml = '';
+      if (spec && spec.about) { aboutHtml = spec.about.split(/\n\n+/).map(function (p) { return '<p>' + _rdEsc(p.trim()) + '</p>'; }).join(''); }
+      else if (l.description) { aboutHtml = '<p>' + _rdEsc(l.description) + '</p>'; }
 
       var h = '';
-      h += '<nav class="rd-breadcrumb" aria-label="Breadcrumb"><a onclick="showSection(\'home\', true)">Home</a><span class="rd-crumb-sep">›</span><a onclick="showSection(\'deals\', true)">Refurbished Devices</a><span class="rd-crumb-sep">›</span><span class="rd-crumb-current">' + _rdEsc(l.model || 'Device') + '</span></nav>';
+      h += '<nav class="rd-breadcrumb" aria-label="Breadcrumb"><a onclick="showSection(\'home\', true)">Home</a><span class="rd-crumb-sep">›</span><a onclick="showSection(\'deals\', true)">Refurbished Devices</a><span class="rd-crumb-sep">›</span><span class="rd-crumb-current">' + _rdEsc(name) + '</span></nav>';
 
       h += '<div class="rd-top">';
       // gallery
@@ -8261,10 +8316,10 @@
       if (save > 0) h += '<div class="rd-save">Save ~$' + save.toLocaleString() + ' vs new</div>';
       h += '<div class="rd-fulfil"><span class="rd-chip"><i class="msym" data-lucide="store"></i> Free local pickup</span><span class="rd-chip"><i class="msym" data-lucide="truck"></i> Ships Australia-wide</span></div>';
       h += '<div class="rd-stats">';
-      h += '<div class="rd-stat"><div class="rd-stat-label"><i class="msym" data-lucide="battery-charging"></i> Battery health</div><div class="rd-batt"><span class="rd-batt-pct" style="color:' + battColor + '">' + _rdEsc(battTxt) + '</span>' + (battNum != null ? '<span class="rd-batt-track"><span class="rd-batt-fill" style="width:' + Math.max(4, Math.min(100, battNum)) + '%;background:' + battColor + '"></span></span>' : '') + '</div></div>';
-      h += '<button class="rd-stat" type="button" onclick="rdOpenGrading()"><div class="rd-stat-label"><i class="msym" data-lucide="sparkles"></i> Condition</div><div class="rd-stat-value">' + _rdEsc(grade ? grade.key : (l.grade || 'Tested')) + '</div><div class="rd-stat-hint">View grading guide →</div></button>';
-      h += '<div class="rd-stat"><div class="rd-stat-label"><i class="msym" data-lucide="shield-check"></i> Warranty</div><div class="rd-stat-value">90 days · local</div></div>';
-      h += '<div class="rd-stat"><div class="rd-stat-label"><i class="msym" data-lucide="' + (sold ? 'circle-x' : 'circle-check') + '"></i> Availability</div><div class="rd-stat-value">' + (sold ? 'Sold' : 'In stock') + '</div></div>';
+      h += '<div class="rd-stat"><div class="rd-stat-ic"><i class="msym" data-lucide="battery-charging"></i></div><div class="rd-stat-txt"><div class="rd-stat-label">Battery health</div><div class="rd-stat-value" style="color:' + battColor + '">' + _rdEsc(battTxt) + '</div></div></div>';
+      h += '<button class="rd-stat" type="button" onclick="rdOpenGrading()"><div class="rd-stat-ic"><i class="msym" data-lucide="sparkles"></i></div><div class="rd-stat-txt"><div class="rd-stat-label">Condition</div><div class="rd-stat-value">' + _rdEsc(grade ? grade.key : (l.grade || 'Tested')) + '</div><div class="rd-stat-hint">View grading guide →</div></div></button>';
+      h += '<div class="rd-stat"><div class="rd-stat-ic"><i class="msym" data-lucide="shield-check"></i></div><div class="rd-stat-txt"><div class="rd-stat-label">Warranty</div><div class="rd-stat-value">90 days · local</div></div></div>';
+      h += '<div class="rd-stat"><div class="rd-stat-ic"><i class="msym" data-lucide="' + (sold ? 'circle-x' : 'circle-check') + '"></i></div><div class="rd-stat-txt"><div class="rd-stat-label">Availability</div><div class="rd-stat-value">' + (sold ? 'Sold' : 'In stock') + '</div></div></div>';
       h += '</div>';
       h += '<div class="rd-actions">';
       if (sold) {
@@ -8277,6 +8332,13 @@
       }
       h += '</div>';
       h += '<ul class="rd-checklist"><li class="rd-check"><i class="msym" data-lucide="check"></i> Fully tested &amp; sanitised before sale</li><li class="rd-check"><i class="msym" data-lucide="check"></i> IMEI checked — no activation lock</li><li class="rd-check"><i class="msym" data-lucide="check"></i> Genuine local warranty — Buderim, QLD</li></ul>';
+      h += '<div class="rd-pay"><span class="rd-pay-label">We accept</span><div class="rd-pay-list">'
+        + '<span class="rd-pay-badge rd-pp"><b>Pay</b><b>Pal</b></span>'
+        + '<span class="rd-pay-badge"><i class="msym" data-lucide="credit-card"></i> Card</span>'
+        + '<span class="rd-pay-badge"><span class="rd-mc"><span></span><span></span></span> Mastercard</span>'
+        + '<span class="rd-pay-badge"><i class="msym" data-lucide="banknote"></i> Cash</span>'
+        + '</div></div>';
+      if (aboutHtml) { h += '<div class="rd-panel-about"><div class="rd-panel-about-h">About this device</div>' + aboutHtml + '<p class="rd-about-process">Every device is opened up, cleaned, function-tested across every major component and fully data-wiped before it\'s listed.</p></div>'; }
       h += '</div>'; // buy
       h += '</div>'; // top
 
@@ -8305,11 +8367,7 @@
         + incl.map(function (k) { var m = RD_INCLUDED[k]; if (!m) return ''; var ic = (k === 'device') ? rdCatIcon(cat) : m.icon; return '<div class="rd-incl"><div class="rd-incl-ico"><i class="msym" data-lucide="' + ic + '"></i></div><div><div class="rd-incl-name">' + m.name + '</div><div class="rd-incl-sub">' + m.sub + '</div></div></div>'; }).join('')
         + '</div></div>';
 
-      // about
-      var aboutHtml = '';
-      if (spec && spec.about) { aboutHtml = spec.about.split(/\n\n+/).map(function (p) { return '<p>' + _rdEsc(p.trim()) + '</p>'; }).join(''); }
-      else if (l.description) { aboutHtml = '<p>' + _rdEsc(l.description) + '</p>'; }
-      if (aboutHtml) { h += '<div class="rd-section rd-about"><h2 class="rd-h2">About this device</h2>' + aboutHtml + '<p class="rd-about-process">Every device we sell is opened up, cleaned, function-tested across every major component and fully data-wiped before it\'s listed — so what you read here is exactly what you\'ll get.</p></div>'; }
+      // (About this device now renders inside the buy panel, above)
 
       // why buy
       h += '<div class="rd-section"><h2 class="rd-h2">Why buy refurbished from us</h2><div class="rd-why">'
