@@ -4415,8 +4415,10 @@
     .fix-devices-band { text-align: center; margin-top: 44px; margin-bottom: 30px; }
     .fix-devices-cap { font-family: var(--font-head); font-size: clamp(18px, 2.4vw, 22px); color: var(--dark); font-weight: 600; max-width: 640px; margin: 0 auto 24px; }
     .fix-devices { display: flex; justify-content: center; align-items: flex-end; gap: 30px; flex-wrap: wrap; }
+    .fix-devices .fix-dev { background: none; border: none; padding: 0; margin: 0; cursor: pointer; display: inline-flex; align-items: flex-end; line-height: 0; }
+    .fix-devices .fix-dev:focus-visible { outline: 2px solid var(--brand); outline-offset: 5px; border-radius: 8px; }
     .fix-devices img { height: 112px; width: auto; object-fit: contain; filter: drop-shadow(0 12px 24px rgba(0,0,0,.16)); transition: transform .25s; }
-    .fix-devices img:hover { transform: translateY(-6px); }
+    .fix-devices .fix-dev:hover img { transform: translateY(-6px); }
     @media (max-width: 700px) { .fix-devices { gap: 16px; } .fix-devices img { height: 64px; } }
 
     /* ── Chat widget ── */
@@ -4928,11 +4930,14 @@
       <div class="fix-devices-band">
         <p class="fix-devices-cap">From the latest Pro Max to the trusty SE — we repair <strong>every</strong> Apple device.</p>
         <div class="fix-devices">
-          <img src="Images/iphone-15-pro.png" alt="iPhone" loading="lazy">
-          <img src="Images/ipad-air-5.png" alt="iPad" loading="lazy">
-          <img src="Images/macbook-air-m2.png" alt="MacBook" loading="lazy">
-          <img src="Images/iphone-14.png" alt="iPhone" loading="lazy">
-          <img src="Images/ipad-pro-11-m2.png" alt="iPad Pro" loading="lazy">
+          <button class="fix-dev" type="button" onclick="startQuote('iPhone')" title="iPhone repairs" aria-label="See iPhone repairs"><img src="Images/iphone-16-pro-max.png" alt="iPhone" loading="lazy"></button>
+          <button class="fix-dev" type="button" onclick="startQuote('iPhone')" title="iPhone repairs" aria-label="See iPhone repairs"><img src="Images/iphone-15-pro.png" alt="iPhone" loading="lazy"></button>
+          <button class="fix-dev" type="button" onclick="startQuote('iPad')" title="iPad repairs" aria-label="See iPad repairs"><img src="Images/ipad-pro-129-m2.png" alt="iPad Pro" loading="lazy"></button>
+          <button class="fix-dev" type="button" onclick="startQuote('MacBook')" title="MacBook repairs" aria-label="See MacBook repairs"><img src="Images/macbook-pro-14-m3.png" alt="MacBook Pro" loading="lazy"></button>
+          <button class="fix-dev" type="button" onclick="startQuote('iPad')" title="iPad repairs" aria-label="See iPad repairs"><img src="Images/ipad-air-5.png" alt="iPad Air" loading="lazy"></button>
+          <button class="fix-dev" type="button" onclick="startQuote('iPhone')" title="iPhone repairs" aria-label="See iPhone repairs"><img src="Images/iphone-13.png" alt="iPhone" loading="lazy"></button>
+          <button class="fix-dev" type="button" onclick="startQuote('MacBook')" title="MacBook repairs" aria-label="See MacBook repairs"><img src="Images/macbook-air-m2.png" alt="MacBook Air" loading="lazy"></button>
+          <button class="fix-dev" type="button" onclick="startQuote('iPad')" title="iPad repairs" aria-label="See iPad repairs"><img src="Images/ipad-mini-7.png" alt="iPad mini" loading="lazy"></button>
         </div>
       </div>
     </div>
