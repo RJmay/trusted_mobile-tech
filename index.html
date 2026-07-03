@@ -1047,12 +1047,22 @@
     }
 
     .repair-icon {
-      font-size: 44px;
       margin-bottom: 14px;
       display: flex;
       justify-content: center;
     }
-    .repair-icon .msym { color: var(--brand); }
+    .repair-icon .msym {
+      width: 54px; height: 54px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      border-radius: 15px;
+      color: var(--brand);
+      background: color-mix(in srgb, var(--brand) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--brand) 22%, transparent);
+    }
+    .repair-card:hover .repair-icon .msym {
+      background: color-mix(in srgb, var(--brand) 18%, transparent);
+    }
 
     .repair-name {
       font-weight: 700;
@@ -3641,7 +3651,7 @@
     body.light .hr-stars,
     body.light .hr-stars-sm,
     body.light .rb-stars { color: #b45309; }
-    body.light .deal-card-price { color: #047857; }
+    body.light .deal-card-price { color: #0f172a; }
 
 
     /* Light mode - hero h1 and sub */
@@ -3708,31 +3718,32 @@
       color: #0f172a;
     }
 
-    /* ── Deal cards ── */
+    /* ── Deal cards (Sidekick-style: minimal, square, image-forward) ── */
     .deal-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
-      transition: transform .2s, box-shadow .2s;
+      transition: transform .18s, box-shadow .18s, border-color .18s;
     }
-    .deal-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,.4); }
+    .deal-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,.35); border-color: color-mix(in srgb, var(--brand) 45%, var(--border)); }
     .deal-card-img {
       width: 100%;
       aspect-ratio: 1 / 1;
-      background: linear-gradient(145deg, #1a1d2e, #0f1118);
+      background: linear-gradient(160deg, #f3f6fb, #e6ebf3);
       display: flex; align-items: center; justify-content: center;
       overflow: hidden; padding: 0;
     }
     .deal-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .deal-card-img .deal-card-emoji { font-size: 64px; }
-    .deal-card-body { padding: 14px 16px 18px; }
+    .deal-card-body { padding: 14px 15px 16px; }
     .deal-card-featured { font-size: 10px; font-weight: 700; color: var(--brand); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 5px; }
-    .deal-card-title { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 2px; line-height: 1.3; }
-    .deal-card-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
-    .deal-card-price { font-size: 22px; font-weight: 800; color: var(--green); }
-    .deal-card-rrp { font-size: 12px; color: var(--muted); text-decoration: line-through; margin-bottom: 2px; }
+    .deal-card-title { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 3px; line-height: 1.3; }
+    .deal-card-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .deal-card-pricerow { display: flex; align-items: baseline; gap: 8px; }
+    .deal-card-price { font-size: 20px; font-weight: 800; color: var(--dark); }
+    .deal-card-rrp { font-size: 12.5px; color: var(--muted); text-decoration: line-through; }
 
     /* ── Listing detail overlay ── */
     #listingOverlay {
@@ -4221,10 +4232,10 @@
     .home-deals-grid .deal-card-title { font-size: 18px; margin-bottom: 3px; }
     .home-deals-grid .deal-card-meta { font-size: 13.5px; margin-bottom: 12px; }
     .home-deals-grid .deal-card-rrp { font-size: 13px; }
-    .home-deals-grid .deal-card-price { font-size: 26px; }
+    .home-deals-grid .deal-card-price { font-size: 22px; }
     .deal-card:hover { box-shadow: var(--shadow-hover); }
     .deal-card-img { position: relative; }
-    .deal-badge { position: absolute; top: 10px; left: 10px; background: var(--cta-fill); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: var(--pill); box-shadow: 0 4px 12px rgba(37, 99, 235, .3); }
+    .deal-badge { position: absolute; top: 10px; right: 10px; background: var(--cta-fill); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .02em; padding: 4px 10px; border-radius: 6px; box-shadow: 0 3px 10px rgba(15, 23, 42, .22); }
     .deal-brand { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 3px; }
     .deal-buy { margin-top: 14px; width: 100%; padding: 11px; border: none; border-radius: 12px; background: var(--cta-fill); color: #fff; font-weight: 700; font-size: 14px; cursor: pointer; font-family: var(--font); transition: background .2s, transform .15s; }
     .deal-buy:hover { background: var(--cta-fill-hover); }
@@ -4812,31 +4823,69 @@
             <label class="hq-row hq-row-select"><i class="msym" data-lucide="smartphone"></i><div style="flex:1;min-width:0;"><div class="hq-label">Device</div><select class="hq-select" id="hqDevice" aria-label="Choose your device" onchange="hqUpdate()">
               <option value="" data-price="" selected>Select device type</option>
               <optgroup label="iPhone">
-                <option data-price="199">iPhone 15 Pro Max</option>
-                <option data-price="189">iPhone 15 Pro</option>
-                <option data-price="179">iPhone 15 Plus</option>
-                <option data-price="169">iPhone 15</option>
-                <option data-price="189">iPhone 14 Pro Max</option>
-                <option data-price="179">iPhone 14 Pro</option>
-                <option data-price="169">iPhone 14 Plus</option>
+                <option data-price="339">iPhone 17 Pro Max</option>
+                <option data-price="309">iPhone 17 Pro</option>
+                <option data-price="229">iPhone 17</option>
+                <option data-price="309">iPhone 16 Pro Max</option>
+                <option data-price="279">iPhone 16 Pro</option>
+                <option data-price="229">iPhone 16 Plus</option>
+                <option data-price="199">iPhone 16</option>
+                <option data-price="279">iPhone 15 Pro Max</option>
+                <option data-price="249">iPhone 15 Pro</option>
+                <option data-price="199">iPhone 15 Plus</option>
+                <option data-price="179">iPhone 15</option>
+                <option data-price="249">iPhone 14 Pro Max</option>
+                <option data-price="229">iPhone 14 Pro</option>
+                <option data-price="179">iPhone 14 Plus</option>
                 <option data-price="159">iPhone 14</option>
-                <option data-price="169">iPhone 13 Pro Max</option>
-                <option data-price="159">iPhone 13 Pro</option>
+                <option data-price="199">iPhone 13 Pro Max</option>
+                <option data-price="179">iPhone 13 Pro</option>
                 <option data-price="139">iPhone 13</option>
-                <option data-price="129">iPhone 13 mini</option>
-                <option data-price="119">iPhone 12 / 12 Pro</option>
+                <option data-price="139">iPhone 13 Mini</option>
+                <option data-price="159">iPhone 12 Pro Max</option>
+                <option data-price="139">iPhone 12 Pro</option>
+                <option data-price="119">iPhone 12</option>
+                <option data-price="119">iPhone 12 Mini</option>
+                <option data-price="149">iPhone 11 Pro Max</option>
+                <option data-price="129">iPhone 11 Pro</option>
                 <option data-price="99">iPhone 11</option>
-                <option data-price="89">iPhone SE</option>
+                <option data-price="99">iPhone SE (3rd gen)</option>
+                <option data-price="89">iPhone SE (2nd gen)</option>
               </optgroup>
               <optgroup label="iPad">
-                <option data-price="249">iPad Pro</option>
-                <option data-price="199">iPad Air</option>
-                <option data-price="159">iPad mini</option>
-                <option data-price="149">iPad</option>
+                <option data-price="399">iPad Pro 13" (M4, 2024)</option>
+                <option data-price="369">iPad Pro 12.9" (M2, 2022)</option>
+                <option data-price="349">iPad Pro 12.9" (M1, 2021)</option>
+                <option data-price="349">iPad Pro 11" (M4, 2024)</option>
+                <option data-price="299">iPad Pro 11" (M2, 2022)</option>
+                <option data-price="279">iPad Pro 11" (M1, 2021)</option>
+                <option data-price="289">iPad Air 13" M2 (2024)</option>
+                <option data-price="249">iPad Air 11" M2 (2024)</option>
+                <option data-price="219">iPad Air (5th gen, 2022)</option>
+                <option data-price="199">iPad Air (4th gen, 2020)</option>
+                <option data-price="209">iPad mini (7th gen, 2024)</option>
+                <option data-price="189">iPad mini (6th gen, 2021)</option>
+                <option data-price="169">iPad (10th gen, 2022)</option>
+                <option data-price="149">iPad (9th gen, 2021)</option>
               </optgroup>
               <optgroup label="MacBook">
-                <option data-price="299">MacBook Pro</option>
-                <option data-price="249">MacBook Air</option>
+                <option data-price="779">MacBook Pro 16" (M4 Pro/Max, 2024)</option>
+                <option data-price="749">MacBook Pro 16" (M3 Pro/Max, 2023)</option>
+                <option data-price="729">MacBook Pro 16" (M2 Pro/Max, 2023)</option>
+                <option data-price="699">MacBook Pro 16" (M1 Pro/Max, 2021)</option>
+                <option data-price="679">MacBook Pro 14" (M4 Pro/Max, 2024)</option>
+                <option data-price="649">MacBook Pro 14" (M3 Pro/Max, 2023)</option>
+                <option data-price="629">MacBook Pro 14" (M2 Pro/Max, 2023)</option>
+                <option data-price="599">MacBook Pro 14" (M1 Pro/Max, 2021)</option>
+                <option data-price="469">MacBook Pro 13" (M2, 2022)</option>
+                <option data-price="449">MacBook Pro 13" (M1, 2020)</option>
+                <option data-price="519">MacBook Air 15" (M4, 2025)</option>
+                <option data-price="499">MacBook Air 15" (M3, 2024)</option>
+                <option data-price="479">MacBook Air 15" (M2, 2023)</option>
+                <option data-price="489">MacBook Air 13" (M4, 2025)</option>
+                <option data-price="469">MacBook Air 13" (M3, 2024)</option>
+                <option data-price="449">MacBook Air 13" (M2, 2022)</option>
+                <option data-price="399">MacBook Air 13" (M1, 2020)</option>
               </optgroup>
               <optgroup label="Other">
                 <option data-price="119">Apple Watch</option>
@@ -7520,12 +7569,12 @@
       return '<div class="deal-card" onclick="openListing(' + idx + ')">'
         + '<div class="deal-card-img">' + imgEl + (l.featured ? '<span class="deal-badge">Featured</span>' : '') + '</div>'
         + '<div class="deal-card-body">'
-        + '<div class="deal-brand">' + (l.brand || 'Apple') + '</div>'
         + '<div class="deal-card-title">' + l.model + '</div>'
         + (specs ? '<div class="deal-card-meta">' + specs + '</div>' : '')
-        + (l.rrp ? '<div class="deal-card-rrp">RRP $' + l.rrp.toLocaleString() + '</div>' : '')
-        + '<div class="deal-card-price">$' + l.price.toLocaleString() + '</div>'
-        + '<button class="deal-buy" onclick="event.stopPropagation();openListing(' + idx + ')">Buy Now</button>'
+        + '<div class="deal-card-pricerow">'
+        + '<span class="deal-card-price">$' + l.price.toLocaleString() + '</span>'
+        + (l.rrp ? '<span class="deal-card-rrp">$' + l.rrp.toLocaleString() + '</span>' : '')
+        + '</div>'
         + '</div></div>';
     }
 
@@ -8258,10 +8307,10 @@
     // Map the legacy repair emojis to Lucide icons
     function repairIcon(e) {
       var m = {
-        '📱':'smartphone','🖥️':'monitor','📲':'tablet','🔋':'battery-charging','📷':'camera',
-        '🔌':'plug-zap','💧':'droplets','🔊':'volume-2','🔲':'square','⚡':'power','🔉':'volume-1',
-        '⏺️':'circle','👆':'fingerprint','🎤':'mic','🎧':'headphones','📳':'vibrate','💳':'credit-card',
-        '📶':'wifi','💽':'cpu','🧠':'brain','🔍':'search','⌨️':'keyboard','🖱️':'mouse','💾':'hard-drive',
+        '📱':'smartphone','🖥️':'laptop','📲':'tablet','🔋':'battery-charging','📷':'camera',
+        '🔌':'plug-zap','💧':'droplets','🔊':'volume-2','🔲':'layers-2','⚡':'power','🔉':'volume-1',
+        '⏺️':'circle-dot','👆':'fingerprint','🎤':'mic-vocal','🎧':'ear','📳':'vibrate','💳':'credit-card',
+        '📶':'wifi','💽':'cpu','🧠':'code','🔍':'stethoscope','⌨️':'keyboard','🖱️':'square-mouse-pointer','💾':'hard-drive',
         '⚙️':'memory-stick','🌀':'fan','🔧':'wrench','🔬':'microscope'
       };
       return '<i class="msym" data-lucide="' + (m[e] || 'wrench') + '"></i>';
