@@ -3851,6 +3851,168 @@
     body.light .ld-close { background: rgba(255,255,255,.7); color: #0f172a; border-color: rgba(0,0,0,.1); }
     body.light .ld-close:hover { background: rgba(255,255,255,.95); }
 
+    /* ═══ Refurb device detail view (#sec-refurb-detail) ═══ */
+    #sec-refurb-detail .wrap { max-width: 1160px; }
+    .rd-wrap { padding: 26px 0 90px; }
+    .rd-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+    .rd-breadcrumb a { color: var(--muted); cursor: pointer; text-decoration: none; }
+    .rd-breadcrumb a:hover { color: var(--brand); }
+    .rd-breadcrumb .rd-crumb-sep { opacity: .5; }
+    .rd-breadcrumb .rd-crumb-current { color: var(--dark); font-weight: 600; }
+
+    .rd-top { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 40px; align-items: start; }
+
+    /* Gallery */
+    .rd-gallery { position: sticky; top: 90px; }
+    .rd-main { position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-xl); overflow: hidden; background: linear-gradient(160deg, #f3f6fb, #e6ebf3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+    .rd-main img { width: 100%; height: 100%; object-fit: contain; display: block; cursor: zoom-in; }
+    .rd-main .rd-main-emoji { font-size: 96px; }
+    .rd-grade-badge { position: absolute; top: 14px; left: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; background: color-mix(in srgb, var(--brand) 90%, #000 0%); color: #fff; box-shadow: 0 4px 14px rgba(15,23,42,.28); }
+    .rd-feat-badge { position: absolute; top: 14px; right: 14px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--amber, #f59e0b); color: #241a00; box-shadow: 0 4px 14px rgba(15,23,42,.28); }
+    .rd-gal-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,.82); color: #0f172a; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: background .15s, transform .15s; }
+    .rd-gal-btn:hover { background: #fff; }
+    .rd-gal-btn.prev { left: 12px; } .rd-gal-btn.next { right: 12px; }
+    .rd-gal-btn .msym { width: 20px; height: 20px; font-size: 20px; }
+    .rd-thumbs { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .rd-thumb { width: 66px; height: 66px; border-radius: 12px; overflow: hidden; border: 2px solid var(--border); background: linear-gradient(160deg, #f3f6fb, #e6ebf3); cursor: pointer; padding: 0; flex: 0 0 auto; transition: border-color .15s; }
+    .rd-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .rd-thumb.active { border-color: var(--brand); }
+    .rd-thumb:focus-visible, .rd-gal-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+    /* Buy panel */
+    .rd-buy { min-width: 0; }
+    .rd-title { font-family: var(--font-head); font-size: clamp(24px, 3vw, 30px); font-weight: 800; color: var(--dark); line-height: 1.15; }
+    .rd-sku { font-size: 12.5px; color: var(--muted); margin-top: 5px; letter-spacing: .01em; }
+    .rd-trustline { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--brand); background: color-mix(in srgb, var(--brand) 10%, transparent); border: 1px solid color-mix(in srgb, var(--brand) 22%, transparent); padding: 6px 12px; border-radius: 999px; }
+    .rd-trustline .msym { width: 15px; height: 15px; font-size: 15px; }
+    .rd-price-row { display: flex; align-items: baseline; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+    .rd-price { font-size: 34px; font-weight: 800; color: var(--dark); }
+    .rd-rrp { font-size: 15px; color: var(--muted); text-decoration: line-through; }
+    .rd-save { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); padding: 4px 10px; border-radius: 8px; }
+    .rd-fulfil { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .rd-fulfil .rd-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--dark); background: var(--surface); border: 1px solid var(--border); padding: 7px 12px; border-radius: 999px; }
+    .rd-fulfil .rd-chip .msym { width: 15px; height: 15px; font-size: 15px; color: var(--brand); }
+
+    .rd-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+    .rd-stat { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; }
+    .rd-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .rd-stat-label .msym { width: 14px; height: 14px; font-size: 14px; }
+    .rd-stat-value { font-size: 16px; font-weight: 700; color: var(--dark); margin-top: 6px; }
+    button.rd-stat { text-align: left; cursor: pointer; font-family: inherit; width: 100%; transition: border-color .15s; }
+    button.rd-stat:hover { border-color: color-mix(in srgb, var(--brand) 45%, var(--border)); }
+    button.rd-stat:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+    .rd-stat-hint { font-size: 11px; color: var(--brand); font-weight: 600; margin-top: 4px; }
+    .rd-batt { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .rd-batt-track { flex: 1; height: 7px; border-radius: 999px; background: var(--surface); overflow: hidden; border: 1px solid var(--border); }
+    .rd-batt-fill { height: 100%; border-radius: 999px; }
+    .rd-batt-pct { font-size: 15px; font-weight: 800; color: var(--dark); }
+
+    .rd-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+    .rd-add { width: 100%; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 14px; border: none; background: var(--cta-fill); color: #fff; cursor: pointer; font-family: var(--font); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: background .18s, transform .12s; }
+    .rd-add:hover { background: var(--cta-fill-hover, #1d4ed8); }
+    .rd-add:active { transform: scale(.99); }
+    .rd-add.in-cart { background: var(--green); }
+    .rd-add .msym { width: 18px; height: 18px; font-size: 18px; }
+    .rd-ask { width: 100%; padding: 13px; font-size: 15px; font-weight: 700; border-radius: 14px; background: transparent; border: 1.5px solid var(--border); color: var(--dark); cursor: pointer; font-family: var(--font); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: border-color .15s, color .15s; }
+    .rd-ask:hover { border-color: var(--brand); color: var(--brand); }
+    .rd-ask .msym { width: 16px; height: 16px; font-size: 16px; }
+
+    .rd-checklist { list-style: none; margin: 20px 0 0; padding: 16px 0 0; border-top: 1px solid var(--border); display: grid; gap: 10px; }
+    .rd-check { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--dark); }
+    .rd-check .msym { width: 17px; height: 17px; font-size: 17px; color: var(--green); flex: 0 0 auto; margin-top: 1px; }
+
+    /* Section blocks below the fold */
+    .rd-section { margin-top: 52px; }
+    .rd-h2 { font-family: var(--font-head); font-size: clamp(19px, 2.4vw, 23px); font-weight: 800; color: var(--dark); margin-bottom: 16px; }
+
+    /* Accordion (grading + FAQ) */
+    .rd-acc { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--card-bg); }
+    .rd-acc + .rd-acc { margin-top: 10px; }
+    .rd-acc-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; background: none; border: none; cursor: pointer; font-family: var(--font); font-size: 15px; font-weight: 700; color: var(--dark); text-align: left; }
+    .rd-acc-head:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+    .rd-acc-head .rd-acc-chev { transition: transform .22s; color: var(--muted); width: 18px; height: 18px; font-size: 18px; flex: 0 0 auto; }
+    .rd-acc[aria-expanded="true"] .rd-acc-chev { transform: rotate(180deg); }
+    .rd-acc-body { padding: 0 18px; max-height: 0; overflow: hidden; transition: max-height .28s ease, padding .28s ease; }
+    .rd-acc[aria-expanded="true"] .rd-acc-body { padding: 0 18px 18px; max-height: 900px; }
+    .rd-acc-body p { font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    .rd-grades { display: grid; gap: 12px; }
+    .rd-grade { border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: var(--surface); }
+    .rd-grade-name { font-weight: 800; font-size: 14px; color: var(--dark); display: flex; align-items: center; gap: 8px; }
+    .rd-grade-dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+    .rd-grade-desc { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.55; }
+
+    /* Specifications */
+    .rd-specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .rd-spec-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; }
+    .rd-spec-ico { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); margin-bottom: 10px; }
+    .rd-spec-ico .msym { width: 21px; height: 21px; font-size: 21px; }
+    .rd-spec-label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700; }
+    .rd-spec-val { font-size: 14px; font-weight: 600; color: var(--dark); margin-top: 3px; line-height: 1.4; }
+
+    /* What's included */
+    .rd-incl-row { display: flex; flex-wrap: wrap; gap: 14px; }
+    .rd-incl { flex: 1 1 150px; display: flex; align-items: center; gap: 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; }
+    .rd-incl .rd-incl-ico { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--surface); color: var(--brand); flex: 0 0 auto; }
+    .rd-incl .rd-incl-ico .msym { width: 19px; height: 19px; font-size: 19px; }
+    .rd-incl-name { font-size: 13.5px; font-weight: 700; color: var(--dark); }
+    .rd-incl-sub { font-size: 12px; color: var(--muted); }
+
+    /* About */
+    .rd-about p { font-size: 15px; color: var(--muted); line-height: 1.7; margin: 0 0 12px; max-width: 760px; }
+    .rd-about .rd-about-process { color: var(--dark); font-weight: 600; }
+
+    /* Why buy */
+    .rd-why { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .rd-why-item { display: flex; gap: 13px; align-items: flex-start; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }
+    .rd-why-ico { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); flex: 0 0 auto; }
+    .rd-why-ico .msym { width: 22px; height: 22px; font-size: 22px; }
+    .rd-why-title { font-weight: 800; font-size: 15px; color: var(--dark); }
+    .rd-why-desc { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin-top: 4px; }
+    .rd-why-item .rd-why-cta { display: inline-flex; align-items: center; gap: 5px; margin-top: 8px; font-size: 13px; font-weight: 700; color: var(--brand); cursor: pointer; }
+
+    /* You might also like */
+    .rd-alsolike { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+    /* Sold / not found states */
+    .rd-state { text-align: center; padding: 60px 20px; }
+    .rd-state-ico { font-size: 46px; margin-bottom: 14px; }
+    .rd-state h2 { font-family: var(--font-head); font-size: 24px; color: var(--dark); margin-bottom: 8px; }
+    .rd-state p { font-size: 15px; color: var(--muted); margin-bottom: 22px; }
+    .rd-sold-tag { display: inline-block; background: color-mix(in srgb, #ef4444 14%, transparent); color: #ef4444; border: 1px solid color-mix(in srgb,#ef4444 34%,transparent); font-weight: 700; font-size: 12px; padding: 5px 12px; border-radius: 999px; }
+
+    /* Sticky mobile buy bar */
+    .rd-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 115; display: none; align-items: center; gap: 12px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--section-bg) 92%, transparent); backdrop-filter: blur(12px); border-top: 1px solid var(--border); }
+    .rd-sticky .rd-sticky-price { font-size: 20px; font-weight: 800; color: var(--dark); white-space: nowrap; }
+    .rd-sticky .rd-sticky-sub { font-size: 11px; color: var(--muted); }
+    .rd-sticky .rd-add { margin: 0; flex: 1; padding: 13px; }
+
+    /* Light-mode tuning */
+    body.light .rd-gal-btn { background: rgba(255,255,255,.85); color: #0f172a; }
+    body.light .rd-main, body.light .rd-thumb { background: linear-gradient(160deg, #f7f9fc, #eef2f7); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .rd-top { grid-template-columns: 1fr; gap: 26px; }
+      .rd-gallery { position: static; top: auto; }
+      .rd-specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .rd-why { grid-template-columns: 1fr; }
+      .rd-alsolike { grid-template-columns: repeat(2, 1fr); }
+      .rd-sticky.visible { display: flex; }
+      .rd-wrap { padding-bottom: 96px; }
+    }
+    @media (max-width: 480px) {
+      .rd-specs-grid { grid-template-columns: 1fr; }
+      .rd-stats { grid-template-columns: 1fr 1fr; }
+      .rd-alsolike { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .rd-price { font-size: 30px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rd-acc-body { transition: none; }
+      .rd-acc-chev { transition: none; }
+      .rd-add, .rd-gal-btn, .rd-thumb { transition: none; }
+    }
+
     .hidden {
       display: none !important;
     }
@@ -6256,6 +6418,17 @@
     </div>
   </div>
 
+  <!-- ═══ Refurb device detail view ═══ -->
+  <section class="section" id="sec-refurb-detail">
+    <div class="wrap">
+      <div class="rd-wrap" id="refurbDetail"></div>
+    </div>
+  </section>
+  <div class="rd-sticky" id="rdSticky" aria-hidden="true">
+    <div><div class="rd-sticky-price" id="rdStickyPrice"></div><div class="rd-sticky-sub">Certified Refurbished · Buderim</div></div>
+    <button class="rd-add" id="rdStickyAdd" type="button">Add to Cart</button>
+  </div>
+
   <section class="section" id="sec-accessories" style="padding:80px 0;">
     <div class="wrap">
       <div class="section-head">
@@ -7629,6 +7802,11 @@
     function openListing(idx) {
       var l = _dealItems[idx];
       if (!l) return;
+      location.hash = '#/refurbs/' + encodeURIComponent(l.id);
+    }
+    function _openListingLegacy_unused(idx) {
+      var l = _dealItems[idx];
+      if (!l) return;
       var title = l.brand + ' ' + l.model + (l.storage ? ' · ' + l.storage : '');
       var meta = [l.color, l.battery ? 'Battery ' + l.battery : '', l.grade].filter(Boolean);
 
@@ -7716,9 +7894,460 @@
       document.body.appendChild(z);
     }
 
+
+    var SPEC_LOOKUP_DATA = [
+      {"model": "iPhone SE (2nd gen)", "aliases": ["iphone se 2020", "iphone se 2", "se 2nd gen", "iphone se2"], "battery": "1821 mAh", "display": "4.7-inch Retina HD LCD, 1334x750, 60Hz", "chip": "A13 Bionic", "camera": "12MP Wide (single lens)", "storageOptions": ["64GB", "128GB", "256GB"], "connectivity": "Lightning, 4G LTE, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 2020 SE tucks Apple's A13 chip into the classic 4.7-inch body with a Home button and Touch ID, so if you'd rather a fingerprint reader than Face ID, this is your phone. The single rear camera still takes clean, natural photos in decent light, and the compact size sits nicely in smaller hands and pockets.\n\nAs a second-hand pick it's genuinely hard to beat for a first phone, a spare, or anyone after a dependable iPhone without the bulk. It handles everyday apps with no fuss."},
+      {"model": "iPhone SE (3rd gen)", "aliases": ["iphone se 2022", "iphone se 3", "se 3rd gen", "iphone se3"], "battery": "2018 mAh", "display": "4.7-inch Retina HD LCD, 1334x750, 60Hz", "chip": "A15 Bionic", "camera": "12MP Wide (single lens)", "storageOptions": ["64GB", "128GB", "256GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 2022 SE keeps the familiar 4.7-inch shape and Touch ID Home button but drops in the much quicker A15 chip and 5G, so it'll stay useful for years yet. The single 12MP camera does a solid job in good light, and the small footprint is a treat if you're tired of oversized phones.\n\nSecond-hand, it's a smart buy for anyone who wants current performance, fast updates and a fingerprint unlock in a phone that's easy to hold and easy to live with."},
+      {"model": "iPhone 11", "aliases": ["iphone 11", "iphone11", "apple iphone 11"], "battery": "3110 mAh", "display": "6.1-inch Liquid Retina HD LCD, 60Hz", "chip": "A13 Bionic", "camera": "12MP Wide + 12MP Ultra Wide", "storageOptions": ["64GB", "128GB", "256GB"], "connectivity": "Lightning, 4G LTE, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The iPhone 11 hit the sweet spot for a lot of people: a big 6.1-inch screen, Face ID, all-day battery and a dual camera that added a handy ultra-wide lens for landscapes and group shots. The A13 chip keeps it feeling responsive across messaging, streaming and the usual daily apps.\n\nIt's one of the best-value used iPhones going around. If you want a roomy, reliable phone that still takes lovely photos without paying for the latest model, the 11 is a cracking choice."},
+      {"model": "iPhone 11 Pro", "aliases": ["iphone 11 pro", "11 pro", "iphone11 pro"], "battery": "3046 mAh", "display": "5.8-inch Super Retina XDR OLED, 60Hz", "chip": "A13 Bionic", "camera": "12MP Wide + 12MP Ultra Wide + 12MP 2x Telephoto", "storageOptions": ["64GB", "256GB", "512GB"], "connectivity": "Lightning, 4G LTE, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 11 Pro was Apple's first triple-camera iPhone, pairing wide, ultra-wide and 2x telephoto lenses with a lovely 5.8-inch OLED screen that's crisp and punchy. The A13 chip still handles everything you'll throw at it, and the smaller Pro body is comfortable in one hand.\n\nSecond-hand it's a clever pick for anyone who wants that flexible three-lens setup and a proper OLED display in a compact size, without stretching to a newer flagship. Photos and video still hold up beautifully."},
+      {"model": "iPhone 11 Pro Max", "aliases": ["iphone 11 pro max", "11 pro max", "iphone11 pro max"], "battery": "3969 mAh", "display": "6.5-inch Super Retina XDR OLED, 60Hz", "chip": "A13 Bionic", "camera": "12MP Wide + 12MP Ultra Wide + 12MP 2x Telephoto", "storageOptions": ["64GB", "256GB", "512GB"], "connectivity": "Lightning, 4G LTE, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 11 Pro Max brings the big 6.5-inch OLED screen and the triple-lens camera together with one of the largest batteries Apple had fitted at the time, so it happily lasts a full day and then some. Great for movies, gaming and anyone who likes plenty of screen real estate.\n\nAs a used buy it suits heavy users and film-and-photo fans who want the roomy display and long battery life of a flagship, but are happy to skip the newest release to save a fair bit."},
+      {"model": "iPhone 12", "aliases": ["iphone 12", "iphone12", "apple iphone 12"], "battery": "2815 mAh", "display": "6.1-inch Super Retina XDR OLED, 60Hz", "chip": "A14 Bionic", "camera": "12MP Wide + 12MP Ultra Wide", "storageOptions": ["64GB", "128GB", "256GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The iPhone 12 marked the switch to flat edges, a sharp 6.1-inch OLED screen and 5G, all driven by the quick A14 chip. The dual camera shoots great everyday photos and video, and MagSafe on the back opens up easy magnetic chargers and accessories.\n\nSecond-hand it's a standout value pick, a modern-feeling iPhone with an OLED display and 5G at a much friendlier price than the latest models. Ideal if you want a phone that still feels current without the flagship spend."},
+      {"model": "iPhone 12 Mini", "aliases": ["iphone 12 mini", "12 mini", "iphone12 mini"], "battery": "2227 mAh", "display": "5.4-inch Super Retina XDR OLED, 60Hz", "chip": "A14 Bionic", "camera": "12MP Wide + 12MP Ultra Wide", "storageOptions": ["64GB", "128GB", "256GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 12 Mini crams a full-featured iPhone into a genuinely tiny 5.4-inch body, OLED screen, 5G, the A14 chip and the same dual camera as its bigger sibling. If you've been chasing a phone that fits comfortably in one hand or a small pocket, there aren't many like it.\n\nUsed, it's a favourite for people who miss compact phones and don't want to compromise on features. Just bear in mind the smaller battery, so it suits lighter days or handy top-ups."},
+      {"model": "iPhone 12 Pro", "aliases": ["iphone 12 pro", "12 pro", "iphone12 pro"], "battery": "2815 mAh", "display": "6.1-inch Super Retina XDR OLED, 60Hz", "chip": "A14 Bionic", "camera": "12MP Wide + 12MP Ultra Wide + 12MP 2x Telephoto", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 12 Pro pairs the flat-edge design and 6.1-inch OLED with a triple-lens camera, adding 2x telephoto plus a LiDAR sensor for sharper low-light focus and Night mode portraits. The A14 chip keeps everything quick, and the stainless steel frame gives it a premium feel.\n\nSecond-hand it's a smart choice for keen photographers who want the extra lens and finishing touches of the Pro line, along with 5G and MagSafe, without paying flagship money for a brand-new handset."},
+      {"model": "iPhone 12 Pro Max", "aliases": ["iphone 12 pro max", "12 pro max", "iphone12 pro max"], "battery": "3687 mAh", "display": "6.7-inch Super Retina XDR OLED, 60Hz", "chip": "A14 Bionic", "camera": "12MP Wide + 12MP Ultra Wide + 12MP 2.5x Telephoto", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 12 Pro Max steps up to a large 6.7-inch OLED, a bigger main sensor and a 2.5x telephoto, plus LiDAR for better focus and depth in tricky light. It was the photography flagship of its year and still produces excellent stills and video.\n\nAs a used buy it's ideal for anyone who wants a big, gorgeous screen, strong battery life and the most capable 12-series camera. A lot of phone for the money once it's second-hand."},
+      {"model": "iPhone 13", "aliases": ["iphone 13", "iphone13", "apple iphone 13"], "battery": "3240 mAh", "display": "6.1-inch Super Retina XDR OLED, 60Hz", "chip": "A15 Bionic", "camera": "12MP Wide + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The iPhone 13 brought a noticeably bigger battery, the fast A15 chip and a brighter 6.1-inch OLED, along with sensor-shift stabilisation and Cinematic mode video from the dual camera. It's a well-rounded phone that still feels quick and modern in daily use.\n\nSecond-hand, the 13 is one of the safest value picks in the range: strong battery life, plenty of grunt for years of updates, and lovely photos. A great everyday iPhone if you want reliability without the newest price tag."},
+      {"model": "iPhone 13 Mini", "aliases": ["iphone 13 mini", "13 mini", "iphone13 mini"], "battery": "2438 mAh", "display": "5.4-inch Super Retina XDR OLED, 60Hz", "chip": "A15 Bionic", "camera": "12MP Wide + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 13 Mini is the last of Apple's truly small flagships, packing the A15 chip, 5G and the same dual camera as the standard 13 into a pocket-friendly 5.4-inch frame. Battery life improved over the 12 Mini too, so it gets through a normal day more comfortably.\n\nUsed, it's a gem for anyone who wants a compact phone that doesn't skimp on performance or camera quality. These are increasingly rare, so grab one if small and capable is your thing."},
+      {"model": "iPhone 13 Pro", "aliases": ["iphone 13 pro", "13 pro", "iphone13 pro"], "battery": "3095 mAh", "display": "6.1-inch Super Retina XDR OLED, 120Hz ProMotion", "chip": "A15 Bionic", "camera": "12MP Wide + 12MP Ultra Wide + 12MP 3x Telephoto", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 13 Pro introduced 120Hz ProMotion to iPhone, so scrolling and animations feel wonderfully smooth. Add a triple-lens camera with 3x telephoto, macro shooting and ProRAW, plus the punchy A15 chip, and you've got a genuinely capable all-rounder that still holds its own today.\n\nSecond-hand it's a top pick for anyone who wants the smoother display and flexible camera of the Pro line in a comfortable 6.1-inch size. Plenty of performance left for years of everyday use."},
+      {"model": "iPhone 13 Pro Max", "aliases": ["iphone 13 pro max", "13 pro max", "iphone13 pro max"], "battery": "4352 mAh", "display": "6.7-inch Super Retina XDR OLED, 120Hz ProMotion", "chip": "A15 Bionic", "camera": "12MP Wide + 12MP Ultra Wide + 12MP 3x Telephoto", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 13 Pro Max is a battery champion, one of the longest-lasting iPhones Apple made, wrapped around a big 6.7-inch 120Hz OLED and a triple camera with 3x telephoto, macro and ProRAW. It's built for people who lean on their phone hard all day.\n\nAs a used buy it suits heavy users, creators and anyone who wants the largest screen and best endurance of its generation. Still a seriously capable phone that will keep up for a good while yet."},
+      {"model": "iPhone 14", "aliases": ["iphone 14", "iphone14", "apple iphone 14"], "battery": "3279 mAh", "display": "6.1-inch Super Retina XDR OLED, 60Hz", "chip": "A15 Bionic", "camera": "12MP Main + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The iPhone 14 refines a proven formula: the reliable A15 chip, a 6.1-inch OLED, solid battery life and an upgraded main camera that does better in low light. It also added crash detection and satellite SOS features for extra peace of mind.\n\nSecond-hand it's a dependable middle-ground choice, newer than the 13 with a familiar, easy-to-live-with design. If you want a modern iPhone that just gets on with the job and takes great photos, the 14 fits the bill nicely."},
+      {"model": "iPhone 14 Plus", "aliases": ["iphone 14 plus", "14 plus", "iphone14 plus"], "battery": "4325 mAh", "display": "6.7-inch Super Retina XDR OLED, 60Hz", "chip": "A15 Bionic", "camera": "12MP Main + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 14 Plus gives you the big 6.7-inch screen of a Max model paired with excellent battery life, but without the Pro price. The A15 chip and dual camera handle everyday photos, streaming and games with ease, and the large display is lovely for reading and video.\n\nSecond-hand it's a great fit for anyone who wants a large-screen iPhone that lasts and lasts on a charge. A comfortable, no-drama phone that's easy to recommend as a used pick."},
+      {"model": "iPhone 14 Pro", "aliases": ["iphone 14 pro", "14 pro", "iphone14 pro"], "battery": "3200 mAh", "display": "6.1-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A16 Bionic", "camera": "48MP Main + 12MP Ultra Wide + 12MP 3x Telephoto", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 14 Pro was a big step up, introducing the Dynamic Island, an always-on display and Apple's first 48MP main camera for sharper, more detailed photos. Back that with 120Hz ProMotion and the fast A16 chip and it still feels every bit a flagship.\n\nSecond-hand it's a smart way into the Pro experience: gorgeous smooth screen, high-resolution camera and premium build in the tidy 6.1-inch size. Plenty of grunt and camera quality to keep you happy for years."},
+      {"model": "iPhone 14 Pro Max", "aliases": ["iphone 14 pro max", "14 pro max", "iphone14 pro max"], "battery": "4323 mAh", "display": "6.7-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A16 Bionic", "camera": "48MP Main + 12MP Ultra Wide + 12MP 3x Telephoto", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "Lightning, 5G, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 14 Pro Max combines the largest 6.7-inch ProMotion screen with the Dynamic Island, always-on display and that 48MP main camera, plus a strong battery to power it all. It was the flagship to beat in its year for both photography and endurance.\n\nAs a used buy it's ideal for anyone who wants the full Pro package at its biggest, brilliant screen, top-tier cameras and long battery life. Still a genuinely high-end phone well after release."},
+      {"model": "iPhone 15", "aliases": ["iphone 15", "iphone15", "apple iphone 15"], "battery": "3349 mAh", "display": "6.1-inch Super Retina XDR OLED, 60Hz, Dynamic Island", "chip": "A16 Bionic", "camera": "48MP Main + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "USB-C, 5G, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The iPhone 15 brought two big changes to the standard line: USB-C charging and the handy Dynamic Island, along with a 48MP main camera that delivers sharper photos and a useful 2x crop. The A16 chip keeps it fast and future-ready.\n\nSecond-hand it's a strong value choice for anyone wanting a recent iPhone with USB-C and a high-resolution camera, without paying for a Pro. Modern features, tidy size and photos that punch above the price."},
+      {"model": "iPhone 15 Plus", "aliases": ["iphone 15 plus", "15 plus", "iphone15 plus"], "battery": "4383 mAh", "display": "6.7-inch Super Retina XDR OLED, 60Hz, Dynamic Island", "chip": "A16 Bionic", "camera": "48MP Main + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "USB-C, 5G, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 15 Plus offers the large 6.7-inch screen and excellent battery life alongside USB-C, the Dynamic Island and a 48MP main camera. It's the pick if you love a big display and want a charge that comfortably sees out a busy day.\n\nSecond-hand it's a great option for anyone after a large, recent iPhone with modern conveniences and long endurance, minus the Pro premium. Lots of screen and staying power for the money."},
+      {"model": "iPhone 15 Pro", "aliases": ["iphone 15 pro", "15 pro", "iphone15 pro"], "battery": "3274 mAh", "display": "6.1-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A17 Pro", "camera": "48MP Main + 12MP Ultra Wide + 12MP 3x Telephoto", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "USB-C, 5G, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 15 Pro moved to a lighter titanium frame, added the customisable Action button and switched to USB-C with faster data transfer. The A17 Pro chip brings console-grade gaming performance, and the 48MP triple camera with 3x telephoto handles just about anything.\n\nSecond-hand it's a superb pick for anyone who wants a genuinely high-end iPhone in a compact, lightweight body. Fast, beautifully built and still very much a current-feeling phone with plenty of life ahead of it."},
+      {"model": "iPhone 15 Pro Max", "aliases": ["iphone 15 pro max", "15 pro max", "iphone15 pro max"], "battery": "4441 mAh", "display": "6.7-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A17 Pro", "camera": "48MP Main + 12MP Ultra Wide + 12MP 5x Telephoto", "storageOptions": ["256GB", "512GB", "1TB"], "connectivity": "USB-C, 5G, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 15 Pro Max is the standout of its year, adding an exclusive 5x tetraprism telephoto for real reach, along with titanium build, the Action button, USB-C and the powerful A17 Pro chip. The big 6.7-inch ProMotion screen and strong battery round out a serious flagship.\n\nSecond-hand it's the one to chase if you want the best 15-series camera zoom and top performance. A premium, capable phone that still feels right at the pointy end well after launch."},
+      {"model": "iPhone 16", "aliases": ["iphone 16", "iphone16", "apple iphone 16"], "battery": "3561 mAh", "display": "6.1-inch Super Retina XDR OLED, 60Hz, Dynamic Island", "chip": "A18", "camera": "48MP Fusion + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "USB-C, 5G, Wi-Fi 7, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The iPhone 16 adds the new Camera Control button for quick access to the shooter, plus the fast A18 chip, Wi-Fi 7 and a revised 48MP dual camera with a handy macro mode. It's a polished, capable phone that's ready for the latest software features.\n\nSecond-hand it's a smart pick for anyone wanting a very recent iPhone with modern connectivity and strong cameras, without stepping up to a Pro. Quick, well-rounded and set to stay current for a good while."},
+      {"model": "iPhone 16 Plus", "aliases": ["iphone 16 plus", "16 plus", "iphone16 plus"], "battery": "4674 mAh", "display": "6.7-inch Super Retina XDR OLED, 60Hz, Dynamic Island", "chip": "A18", "camera": "48MP Fusion + 12MP Ultra Wide", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "USB-C, 5G, Wi-Fi 7, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 16 Plus pairs a big 6.7-inch screen with excellent battery life, the new Camera Control button and the quick A18 chip. If you want a large display, plenty of endurance and the latest features without going Pro, this hits the mark.\n\nSecond-hand it's ideal for heavier users and big-screen fans who want a recent iPhone that lasts all day and keeps up with new software. A lot of modern phone for a sensible used price."},
+      {"model": "iPhone 16 Pro", "aliases": ["iphone 16 pro", "16 pro", "iphone16 pro"], "battery": "3582 mAh", "display": "6.3-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A18 Pro", "camera": "48MP Fusion + 48MP Ultra Wide + 12MP 5x Telephoto", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "USB-C, 5G, Wi-Fi 7, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 16 Pro grows slightly to a 6.3-inch ProMotion screen and brings the 5x telephoto down to the smaller Pro for the first time, alongside a new 48MP ultra-wide, the Camera Control button and the powerful A18 Pro chip. It's a top-tier phone in a manageable size.\n\nSecond-hand it's a great choice for anyone who wants flagship cameras, smooth 120Hz scrolling and titanium build without going to the largest model. Fast, premium and well set up for the future."},
+      {"model": "iPhone 16 Pro Max", "aliases": ["iphone 16 pro max", "16 pro max", "iphone16 pro max"], "battery": "4685 mAh", "display": "6.9-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A18 Pro", "camera": "48MP Fusion + 48MP Ultra Wide + 12MP 5x Telephoto", "storageOptions": ["256GB", "512GB", "1TB"], "connectivity": "USB-C, 5G, Wi-Fi 7, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 16 Pro Max is the biggest and most capable of its year, with a huge 6.9-inch ProMotion display, the full 48MP camera system including 5x telephoto and 48MP ultra-wide, the Camera Control button and the A18 Pro chip. Battery life is excellent to match.\n\nSecond-hand it's the phone for creators and power users who want the best screen, cameras and performance available. A genuine top-of-the-line handset that stays cutting-edge long after release."},
+      {"model": "iPhone 17", "aliases": ["iphone 17", "iphone17", "apple iphone 17"], "battery": "3692 mAh", "display": "6.3-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A19", "camera": "48MP Fusion Main + 48MP Ultra Wide", "storageOptions": ["256GB", "512GB"], "connectivity": "USB-C, 5G, Wi-Fi 7, Bluetooth 6", "included": ["device", "cable", "sim-tool"], "about": "The iPhone 17 finally brings 120Hz ProMotion to the standard model, so the 6.3-inch screen is beautifully smooth and now supports always-on too. It steps up to a dual 48MP camera, the fast A19 chip and a bigger starting storage of 256GB.\n\nAs a used pick it's about as current as it gets, with a Pro-grade display feature, high-resolution cameras and the latest software support. If you want a near-new iPhone that'll stay relevant for years, the 17 is a brilliant option."},
+      {"model": "iPhone 17 Pro", "aliases": ["iphone 17 pro", "17 pro", "iphone17 pro"], "battery": "4252 mAh", "display": "6.3-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A19 Pro", "camera": "48MP Fusion Main + 48MP Ultra Wide + 48MP Telephoto (4x optical, up to 8x)", "storageOptions": ["256GB", "512GB", "1TB"], "connectivity": "USB-C, 5G, Wi-Fi 7, Bluetooth 6", "included": ["device", "cable", "sim-tool"], "about": "The 17 Pro moves to an aluminium unibody design with improved cooling and steps up to a full trio of 48MP cameras, including a longer-reaching telephoto. The A19 Pro chip is seriously quick, and battery life takes a solid leap over the previous generation.\n\nSecond-hand it's a fantastic buy for anyone chasing near-latest flagship performance and photography in the compact 6.3-inch size. Fast, powerful and packed with features that'll keep it feeling current for a long time."},
+      {"model": "iPhone 17 Pro Max", "aliases": ["iphone 17 pro max", "17 pro max", "iphone17 pro max"], "battery": "5088 mAh", "display": "6.9-inch Super Retina XDR OLED, 120Hz ProMotion, Always-On, Dynamic Island", "chip": "A19 Pro", "camera": "48MP Fusion Main + 48MP Ultra Wide + 48MP Telephoto (4x optical, up to 8x)", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "USB-C, 5G, Wi-Fi 7, Bluetooth 6", "included": ["device", "cable", "sim-tool"], "about": "The 17 Pro Max is the flagship at its fullest: a large 6.9-inch ProMotion screen, a triple 48MP camera system with long-range telephoto, the A19 Pro chip and one of the biggest batteries Apple has ever fitted to an iPhone. It even offers storage up to 2TB.\n\nSecond-hand it's the top choice for creators and power users who want the very best screen, cameras and endurance going. A no-compromise phone that'll stay right at the front of the pack for years."},
+      {"model": "iPad (9th gen, 2021)", "aliases": ["ipad 9", "ipad 9th gen", "ipad 2021", "ipad 10.2"], "battery": "32.4Wh", "display": "10.2-inch Retina IPS LCD, 2160x1620, 60Hz", "chip": "A13 Bionic", "camera": "8MP Wide rear + 12MP Ultra Wide front with Centre Stage", "storageOptions": ["64GB", "256GB"], "connectivity": "Lightning, Wi-Fi, optional 4G LTE cellular, Bluetooth 4.2, 3.5mm headphone jack", "included": ["device", "cable", "sim-tool"], "about": "The 9th gen iPad is the classic Home-button model with Touch ID and a roomy 10.2-inch screen. It handles browsing, streaming, email, video calls and schoolwork without any fuss, and works well with the first-gen Apple Pencil and the Smart Keyboard.\n\nAs a second-hand buy it's one of the easiest to recommend for anyone who just wants a reliable tablet without paying for extras they won't use. Great as a first iPad, a kids' device or a knockabout unit for around the house."},
+      {"model": "iPad (10th gen, 2022)", "aliases": ["ipad 10", "ipad 10th gen", "ipad 2022", "ipad 10.9"], "battery": "28.6Wh", "display": "10.9-inch Liquid Retina IPS LCD, 2360x1640, 60Hz", "chip": "A14 Bionic", "camera": "12MP Wide rear + 12MP Ultra Wide landscape front with Centre Stage", "storageOptions": ["64GB", "256GB"], "connectivity": "USB-C, Wi-Fi 6, optional 5G cellular, Bluetooth 5.2", "included": ["device", "cable", "sim-tool"], "about": "The 10th gen iPad brought the modern all-screen look, USB-C charging and a bigger 10.9-inch display, with the front camera moved to the long edge so you look straight ahead on video calls. It's plenty quick for everyday tasks and everyday creativity.\n\nSecond-hand it's a smart pick for someone wanting a newer design without stepping up to the Air or Pro. Good all-rounder for the family, study or light work on the go."},
+      {"model": "iPad mini (6th gen, 2021)", "aliases": ["ipad mini 6", "ipad mini 2021", "mini 6th gen", "ipad mini 8.3"], "battery": "19.3Wh", "display": "8.3-inch Liquid Retina IPS LCD, 2266x1488, 60Hz", "chip": "A15 Bionic", "camera": "12MP Wide rear + 12MP Ultra Wide front with Centre Stage", "storageOptions": ["64GB", "256GB"], "connectivity": "USB-C, Wi-Fi 6, optional 5G cellular, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 6th gen mini packs a proper iPad into a size you can hold one-handed. The 8.3-inch screen, USB-C and second-gen Apple Pencil support make it a favourite for reading, note-taking, travel and anyone on their feet all day like tradies and pilots.\n\nAs a used buy it holds up nicely thanks to the punchy A15 chip. Ideal if you want the full iPad experience but find the standard size a bit much to carry around."},
+      {"model": "iPad mini (7th gen, 2024)", "aliases": ["ipad mini 7", "ipad mini 2024", "mini 7th gen", "ipad mini a17 pro"], "battery": "19.3Wh", "display": "8.3-inch Liquid Retina IPS LCD, 2266x1488, 60Hz", "chip": "A17 Pro", "camera": "12MP Wide rear + 12MP Ultra Wide front with Centre Stage", "storageOptions": ["128GB", "256GB", "512GB"], "connectivity": "USB-C, Wi-Fi 6E, optional 5G cellular, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 7th gen mini keeps the same compact, one-handed shape but steps up to the faster A17 Pro chip and starts at 128GB of storage. It's a great little device for reading, notes, maps and gaming, and it works with the Apple Pencil Pro.\n\nSecond-hand it's a tidy choice for anyone who loves the small form but wants more grunt and headroom. Easy to slip in a bag or a big pocket and still get real work done."},
+      {"model": "iPad Air (4th gen, 2020)", "aliases": ["ipad air 4", "ipad air 2020", "air 4th gen", "ipad air 10.9"], "battery": "28.6Wh", "display": "10.9-inch Liquid Retina IPS LCD, 2360x1640, 60Hz", "chip": "A14 Bionic", "camera": "12MP Wide rear + 7MP FaceTime HD front", "storageOptions": ["64GB", "256GB"], "connectivity": "USB-C, Wi-Fi 6, optional 4G LTE cellular, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 4th gen Air was the model that gave the Air its modern flat-edge design, USB-C and Touch ID built into the top button. The 10.9-inch laminated screen looks sharp, and it pairs with the second-gen Apple Pencil and Magic Keyboard for a light laptop-style setup.\n\nAs a refurb it's a sensible middle ground with plenty of everyday speed left in it. A solid step up from the standard iPad for study, creative work or a bit of everything."},
+      {"model": "iPad Air (5th gen, 2022)", "aliases": ["ipad air 5", "ipad air 2022", "air 5th gen", "ipad air m1"], "battery": "28.6Wh", "display": "10.9-inch Liquid Retina IPS LCD, 2360x1640, 60Hz", "chip": "Apple M1", "camera": "12MP Wide rear + 12MP Ultra Wide front with Centre Stage", "storageOptions": ["64GB", "256GB"], "connectivity": "USB-C, Wi-Fi 6, optional 5G cellular, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The 5th gen Air put the same M1 chip found in Pro models and Macs into the lighter Air body, so it flies through editing, multitasking and demanding apps. It adds 5G on cellular versions and a Centre Stage front camera that keeps you framed on calls.\n\nSecond-hand it's one of the best value tablets going, offering near-Pro performance for a lot less. A great match for students, designers and anyone wanting real power in a slim package."},
+      {"model": "iPad Air 11\" M2 (2024)", "aliases": ["ipad air 11 m2", "ipad air m2 11", "air 11 2024", "ipad air 6 11"], "battery": "28.93Wh", "display": "11-inch Liquid Retina IPS LCD, 2360x1640, 60Hz", "chip": "Apple M2", "camera": "12MP Wide rear + 12MP Ultra Wide landscape front with Centre Stage", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "USB-C, Wi-Fi 6E, optional 5G cellular, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 11-inch M2 Air brings the quicker M2 chip, a landscape front camera and starts at 128GB, so there's plenty of room from the get-go. It's fast enough for serious photo and video editing yet stays light and easy to carry all day.\n\nAs a used buy it's a strong all-rounder that works beautifully with the Apple Pencil Pro and Magic Keyboard. Ideal for anyone wanting a capable, portable iPad without stepping all the way up to the Pro."},
+      {"model": "iPad Air 13\" M2 (2024)", "aliases": ["ipad air 13 m2", "ipad air m2 13", "air 13 2024", "ipad air 6 13"], "battery": "36.59Wh", "display": "13-inch Liquid Retina IPS LCD, 2732x2048, 60Hz", "chip": "Apple M2", "camera": "12MP Wide rear + 12MP Ultra Wide landscape front with Centre Stage", "storageOptions": ["128GB", "256GB", "512GB", "1TB"], "connectivity": "USB-C, Wi-Fi 6E, optional 5G cellular, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The 13-inch M2 Air gives you a big, roomy canvas for editing, drawing and side-by-side multitasking, with the same fast M2 chip as its smaller sibling. The larger screen and louder speakers make it great for movies and creative work spread across two apps.\n\nSecond-hand it's a smart way into a large-screen iPad for less. A great fit for artists, students and anyone who wants more room to work without the Pro price."},
+      {"model": "iPad Pro 11\" (M1, 2021)", "aliases": ["ipad pro 11 m1", "pro 11 2021", "ipad pro m1 11", "11 inch pro m1"], "battery": "28.65Wh", "display": "11-inch Liquid Retina IPS LCD, 2388x1668, 120Hz ProMotion", "chip": "Apple M1", "camera": "12MP Wide + 10MP Ultra Wide + LiDAR rear; 12MP Ultra Wide front with Centre Stage", "storageOptions": ["128GB", "256GB", "512GB", "1TB", "2TB"], "connectivity": "Thunderbolt / USB-C, Wi-Fi 6, optional 5G cellular, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The M1 11-inch Pro pairs a smooth 120Hz ProMotion screen with proper Mac-class power, a dual rear camera with LiDAR and fast Thunderbolt for external drives and displays. It stays quick and responsive across demanding creative apps and heavy multitasking.\n\nAs a refurb it's a lot of performance for the money, and the M1 still handles current software with ease. A great pick for photographers, editors and pros who want a powerful tablet in the more portable size."},
+      {"model": "iPad Pro 11\" (M2, 2022)", "aliases": ["ipad pro 11 m2", "pro 11 2022", "ipad pro m2 11", "11 inch pro m2"], "battery": "28.65Wh", "display": "11-inch Liquid Retina IPS LCD, 2388x1668, 120Hz ProMotion", "chip": "Apple M2", "camera": "12MP Wide + 10MP Ultra Wide + LiDAR rear; 12MP Ultra Wide front with Centre Stage", "storageOptions": ["128GB", "256GB", "512GB", "1TB", "2TB"], "connectivity": "Thunderbolt / USB-C, Wi-Fi 6E, optional 5G cellular, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The M2 11-inch Pro builds on a strong formula with the faster M2 chip, Wi-Fi 6E and Apple Pencil hover, which previews your stroke before it touches the screen. The 120Hz ProMotion display stays lovely and smooth for drawing, scrolling and editing.\n\nSecond-hand it's a top-tier tablet that still feels current for serious work. Well suited to designers, video editors and anyone wanting Pro features in the compact 11-inch size."},
+      {"model": "iPad Pro 11\" (M4, 2024)", "aliases": ["ipad pro 11 m4", "pro 11 2024", "ipad pro m4 11", "11 inch pro oled"], "battery": "31.29Wh", "display": "11-inch Ultra Retina XDR tandem OLED, 2420x1668, 120Hz ProMotion", "chip": "Apple M4", "camera": "12MP Wide + LiDAR rear; 12MP Ultra Wide landscape front with Centre Stage", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "Thunderbolt 4 / USB-C, Wi-Fi 6E, optional 5G cellular, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The M4 11-inch Pro is the thinnest iPad Apple has made, with a stunning tandem OLED screen that delivers deep blacks and bright highlights. The new M4 chip is seriously fast, and it supports the Apple Pencil Pro for tilt, squeeze and barrel-roll controls.\n\nAs a used buy it's about as advanced as iPads get, ideal for professional photo, video and design work. A great choice for creatives who want the best display and portability together."},
+      {"model": "iPad Pro 12.9\" (M1, 2021)", "aliases": ["ipad pro 12.9 m1", "pro 12.9 2021", "ipad pro m1 12.9", "12.9 inch pro m1"], "battery": "40.88Wh", "display": "12.9-inch Liquid Retina XDR mini-LED, 2732x2048, 120Hz ProMotion", "chip": "Apple M1", "camera": "12MP Wide + 10MP Ultra Wide + LiDAR rear; 12MP Ultra Wide front with Centre Stage", "storageOptions": ["128GB", "256GB", "512GB", "1TB", "2TB"], "connectivity": "Thunderbolt / USB-C, Wi-Fi 6, optional 5G cellular, Bluetooth 5.0", "included": ["device", "cable", "sim-tool"], "about": "The M1 12.9-inch Pro was the first with the mini-LED XDR display, giving it big, bright HDR visuals that make photo and video work a pleasure. Add the M1 chip, LiDAR camera and Thunderbolt and it doubles as a portable studio.\n\nSecond-hand it remains a genuine workhorse with heaps of screen real estate. A great fit for editors, illustrators and anyone who wants a large, colour-accurate display without buying the newest model."},
+      {"model": "iPad Pro 12.9\" (M2, 2022)", "aliases": ["ipad pro 12.9 m2", "pro 12.9 2022", "ipad pro m2 12.9", "12.9 inch pro m2"], "battery": "40.88Wh", "display": "12.9-inch Liquid Retina XDR mini-LED, 2732x2048, 120Hz ProMotion", "chip": "Apple M2", "camera": "12MP Wide + 10MP Ultra Wide + LiDAR rear; 12MP Ultra Wide front with Centre Stage", "storageOptions": ["128GB", "256GB", "512GB", "1TB", "2TB"], "connectivity": "Thunderbolt / USB-C, Wi-Fi 6E, optional 5G cellular, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The M2 12.9-inch Pro keeps the excellent mini-LED XDR display and adds the faster M2 chip, Wi-Fi 6E and Apple Pencil hover for more precise work. The big, bright screen is brilliant for editing HDR photos and video or drawing at scale.\n\nAs a refurb it's a premium large-screen tablet that still feels right at the pointy end. Ideal for creative pros and power users who want maximum screen and performance in one device."},
+      {"model": "iPad Pro 13\" (M4, 2024)", "aliases": ["ipad pro 13 m4", "pro 13 2024", "ipad pro m4 13", "13 inch pro oled"], "battery": "38.99Wh", "display": "13-inch Ultra Retina XDR tandem OLED, 2752x2064, 120Hz ProMotion", "chip": "Apple M4", "camera": "12MP Wide + LiDAR rear; 12MP Ultra Wide landscape front with Centre Stage", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "Thunderbolt 4 / USB-C, Wi-Fi 6E, optional 5G cellular, Bluetooth 5.3", "included": ["device", "cable", "sim-tool"], "about": "The M4 13-inch Pro is remarkably thin and light for its size, with a gorgeous tandem OLED display that handles HDR beautifully. The powerful M4 chip chews through big editing jobs, and the Apple Pencil Pro adds handy new gestures for creative work.\n\nSecond-hand it's the flagship iPad experience with a huge, stunning screen. A top choice for professional photographers, videographers and designers who want the largest and most capable iPad available."},
+      {"model": "MacBook Air 13\" (M1, 2020)", "aliases": ["macbook air m1", "mba m1", "air 13 m1", "macbook air 2020"], "battery": "49.9Wh", "display": "13.3-inch Retina, 2560x1600, 400 nits", "chip": "Apple M1", "camera": "720p FaceTime HD", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "2x Thunderbolt/USB 4, 3.5mm headphone, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "adapter"], "about": "The M1 Air was the laptop that changed the game for Apple's silicon, and it still holds up brilliantly for everyday use. It runs completely silent with no fan at all, handles browsing, email, uni work and video calls without breaking a sweat, and the battery easily gets you through a full day.\n\nAs a used buy it's hard to fault. It's the cheapest way into a modern Mac, parts and cases are everywhere, and macOS keeps it supported for years yet. A cracker of a first Mac."},
+      {"model": "MacBook Air 13\" (M2, 2022)", "aliases": ["macbook air m2", "mba m2", "air 13 m2", "macbook air 2022"], "battery": "52.6Wh", "display": "13.6-inch Liquid Retina, 2560x1664, 500 nits", "chip": "Apple M2", "camera": "1080p FaceTime HD", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "MagSafe 3, 2x Thunderbolt/USB 4, 3.5mm headphone, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "adapter"], "about": "The M2 Air brought the flat, redesigned body with a bigger, brighter screen and the return of MagSafe charging, so you're not tying up a USB-C port just to top it up. It's thin, light and quiet, and the sharper 1080p camera makes it a proper option for working from home.\n\nSecond-hand it's a smart middle ground: newer looks and a faster chip than the M1, but with plenty of these around now. Ideal for students, writers and anyone after a tidy everyday machine."},
+      {"model": "MacBook Air 13\" (M3, 2024)", "aliases": ["macbook air m3", "mba m3", "air 13 m3", "macbook air 2024"], "battery": "52.6Wh", "display": "13.6-inch Liquid Retina, 2560x1664, 500 nits", "chip": "Apple M3", "camera": "1080p FaceTime HD", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "MagSafe 3, 2x Thunderbolt/USB 4, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M3 Air keeps the same slim, likeable design but adds a quicker chip, faster Wi-Fi 6E and support for two external monitors when the lid's closed. It's a genuinely capable all-rounder that stays fanless and silent, with battery life that comfortably lasts a working day.\n\nBuying one used gets you a near-current Mac for a good bit less than new. It suits professionals, students and families who want something fast, light and future-proof without stepping up to a Pro."},
+      {"model": "MacBook Air 13\" (M4, 2025)", "aliases": ["macbook air m4", "mba m4", "air 13 m4", "macbook air 2025"], "battery": "53.8Wh", "display": "13.6-inch Liquid Retina, 2560x1664, 500 nits", "chip": "Apple M4", "camera": "12MP Center Stage", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "MagSafe 3, 2x Thunderbolt 4, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M4 Air is the newest 13-inch, pairing the fast M4 chip with a smarter 12MP camera that keeps you centred on video calls. It handles two external displays, stays silent under load and gives you snappy performance for editing, coding and heavy multitasking in a package you'll barely feel in a bag.\n\nAs a used buy it's about as current as it gets, so you're getting years of headroom. A top pick for anyone who wants the latest without paying full retail."},
+      {"model": "MacBook Air 15\" (M2, 2023)", "aliases": ["macbook air 15 m2", "mba 15 m2", "air 15 m2", "15 inch air 2023"], "battery": "66.5Wh", "display": "15.3-inch Liquid Retina, 2880x1864, 500 nits", "chip": "Apple M2", "camera": "1080p FaceTime HD", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "MagSafe 3, 2x Thunderbolt/USB 4, 3.5mm headphone, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The first 15-inch Air gave people the big-screen laptop they'd been asking for without the weight or fan noise of a Pro. The extra room makes spreadsheets, browsing and side-by-side windows far comfier, and the six-speaker setup sounds surprisingly full for something this thin.\n\nSecond-hand it's a great value large-screen Mac. If you want more display for the money but still want that light, silent Air feel, this is the one. Great for home offices and anyone who works with a lot on screen at once."},
+      {"model": "MacBook Air 15\" (M3, 2024)", "aliases": ["macbook air 15 m3", "mba 15 m3", "air 15 m3", "15 inch air 2024"], "battery": "66.5Wh", "display": "15.3-inch Liquid Retina, 2880x1864, 500 nits", "chip": "Apple M3", "camera": "1080p FaceTime HD", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "MagSafe 3, 2x Thunderbolt/USB 4, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The 15-inch M3 Air takes the roomy screen and adds a faster chip, quicker Wi-Fi 6E and dual external display support with the lid shut. It stays fanless and quiet, weighs next to nothing for its size, and the battery keeps going all day, making it a genuinely comfortable machine to live with.\n\nBought used, it's a near-new big-screen Mac for less. A smart choice for anyone who finds 13 inches a touch tight and wants space to spread out without lugging a heavy laptop around."},
+      {"model": "MacBook Air 15\" (M4, 2025)", "aliases": ["macbook air 15 m4", "mba 15 m4", "air 15 m4", "15 inch air 2025"], "battery": "66.5Wh", "display": "15.3-inch Liquid Retina, 2880x1864, 500 nits", "chip": "Apple M4", "camera": "12MP Center Stage", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "MagSafe 3, 2x Thunderbolt 4, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The latest 15-inch Air combines the big, bright screen with the fast M4 chip and a 12MP Center Stage camera that keeps you framed on calls. It drives two external monitors, stays completely silent and offers loads of grunt for editing, study and everyday work, all in a slim body that's easy to carry.\n\nAs a used buy this is about as fresh as it comes in the large-screen Air range, so you're set for years. Ideal for anyone wanting maximum screen and modern performance."},
+      {"model": "MacBook Pro 13\" (M1, 2020)", "aliases": ["macbook pro 13 m1", "mbp 13 m1", "pro 13 m1", "macbook pro 2020"], "battery": "58.2Wh", "display": "13.3-inch Retina, 2560x1600, 500 nits", "chip": "Apple M1", "camera": "720p FaceTime HD", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "2x Thunderbolt/USB 4, 3.5mm headphone, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "adapter"], "about": "The M1 Pro 13 pairs Apple's breakthrough first chip with an active cooling fan, so it can hold its pace a little longer than the Air under sustained work. It's got the brighter 500-nit screen, the Touch Bar strip up top and a bigger battery, making it a solid, dependable workhorse for editing and multitasking.\n\nSecond-hand it's excellent buying. You get real performance and long battery life for not much, and it's still well supported. A sensible pick for anyone who wants a bit more staying power than the Air."},
+      {"model": "MacBook Pro 13\" (M2, 2022)", "aliases": ["macbook pro 13 m2", "mbp 13 m2", "pro 13 m2", "macbook pro 2022"], "battery": "58.2Wh", "display": "13.3-inch Retina, 2560x1600, 500 nits", "chip": "Apple M2", "camera": "720p FaceTime HD", "storageOptions": ["256GB", "512GB", "1TB", "2TB"], "connectivity": "2x Thunderbolt/USB 4, 3.5mm headphone, Wi-Fi 6, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M2 Pro 13 was the last of the classic Pro design, keeping the Touch Bar and a fan for sustained performance. The M2 chip gives it a handy lift over the M1 for photo work, exports and heavier multitasking, and the battery is genuinely long-lasting thanks to the efficient silicon.\n\nUsed, it's a smart value Pro. It does more than an Air when the pressure's on, and there are plenty going around. Good for anyone who wants steady grunt and all-day battery in a compact, familiar body."},
+      {"model": "MacBook Pro 14\" (M1 Pro/Max, 2021)", "aliases": ["macbook pro 14 m1 pro", "mbp 14 m1 max", "pro 14 2021", "14 inch m1 pro"], "battery": "70Wh", "display": "14.2-inch Liquid Retina XDR, 3024x1964, 120Hz ProMotion, 1600 nits peak", "chip": "Apple M1 Pro / M1 Max", "camera": "1080p FaceTime HD", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 4, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "adapter"], "about": "This was the big redesign that brought back the ports pros had been missing: HDMI, an SD slot and MagSafe all returned, alongside a stunning mini-LED XDR display with 120Hz ProMotion. With M1 Pro or M1 Max inside, it chews through video editing, music production and code with ease, and the fans stay quiet doing it.\n\nSecond-hand it's superb value for serious work. You're getting a proper creative machine with a screen that still looks incredible, for a fraction of what it cost new."},
+      {"model": "MacBook Pro 14\" (M2 Pro/Max, 2023)", "aliases": ["macbook pro 14 m2 pro", "mbp 14 m2 max", "pro 14 2023 m2", "14 inch m2 pro"], "battery": "70Wh", "display": "14.2-inch Liquid Retina XDR, 3024x1964, 120Hz ProMotion, 1600 nits peak", "chip": "Apple M2 Pro / M2 Max", "camera": "1080p FaceTime HD", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 4, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M2 Pro/Max 14 refines a great formula with a faster chip, Wi-Fi 6E and HDMI that now handles higher-resolution external displays. The XDR screen with ProMotion is brilliant for photo and video work, and the machine stays composed under long, demanding jobs while still running most of the day on battery.\n\nBought used, it's a lot of professional Mac for the money. A strong option for editors, developers and creatives who want serious performance and that full set of ports in a portable size."},
+      {"model": "MacBook Pro 14\" (M3 Pro/Max, 2023)", "aliases": ["macbook pro 14 m3 pro", "mbp 14 m3 max", "pro 14 2023 m3", "14 inch m3 pro"], "battery": "70Wh", "display": "14.2-inch Liquid Retina XDR, 3024x1964, 120Hz ProMotion, 600 nits SDR, 1600 nits peak", "chip": "Apple M3 Pro / M3 Max", "camera": "1080p FaceTime HD", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 4, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M3 Pro/Max 14 brought a big jump in graphics, with hardware ray tracing that makes a real difference for 3D and gaming, plus a brighter 600-nit SDR mode for everyday use. It keeps the excellent XDR ProMotion screen and full port lineup, and the Max models handle very heavy workloads without fuss.\n\nSecond-hand it's a genuinely powerful, near-current pro laptop for less. Well suited to video editors, 3D artists and developers who want strong graphics grunt and a top-tier display."},
+      {"model": "MacBook Pro 14\" (M4 Pro/Max, 2024)", "aliases": ["macbook pro 14 m4 pro", "mbp 14 m4 max", "pro 14 2024 m4", "14 inch m4 pro"], "battery": "72.4Wh", "display": "14.2-inch Liquid Retina XDR, 3024x1964, 120Hz ProMotion, 1000 nits SDR, 1600 nits peak", "chip": "Apple M4 Pro / M4 Max", "camera": "12MP Center Stage", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 5, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M4 Pro/Max 14 is the current flagship compact Pro, adding much faster Thunderbolt 5 ports, a brighter 1000-nit SDR screen and a new 12MP Center Stage camera. The chips are seriously quick, making short work of 4K and 8K editing, big code builds and machine-learning tasks, all in that portable 14-inch body with every port you need.\n\nAs a used buy it's about as future-proof as Macs get right now. The pick for demanding creators who want the latest performance without paying full new price."},
+      {"model": "MacBook Pro 16\" (M1 Pro/Max, 2021)", "aliases": ["macbook pro 16 m1 pro", "mbp 16 m1 max", "pro 16 2021", "16 inch m1 pro"], "battery": "100Wh", "display": "16.2-inch Liquid Retina XDR, 3456x2234, 120Hz ProMotion, 1600 nits peak", "chip": "Apple M1 Pro / M1 Max", "camera": "1080p FaceTime HD", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 4, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6, Bluetooth 5.0", "included": ["device", "cable", "adapter"], "about": "The 16-inch M1 Pro/Max is a proper desktop-replacement laptop, with a huge, gorgeous XDR display and the biggest battery Apple's ever put in a Mac. It's built for heavy lifting: long video edits, big audio sessions and multitasking across loads of windows, with the return of HDMI, SD and MagSafe making it a joy to plug into a setup.\n\nSecond-hand it's outstanding value for the money. If you want the largest screen and serious grunt for creative work, this is a lot of machine for the outlay."},
+      {"model": "MacBook Pro 16\" (M2 Pro/Max, 2023)", "aliases": ["macbook pro 16 m2 pro", "mbp 16 m2 max", "pro 16 2023 m2", "16 inch m2 pro"], "battery": "100Wh", "display": "16.2-inch Liquid Retina XDR, 3456x2234, 120Hz ProMotion, 1600 nits peak", "chip": "Apple M2 Pro / M2 Max", "camera": "1080p FaceTime HD", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 4, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M2 Pro/Max 16 builds on a great big-screen Pro with a faster chip, Wi-Fi 6E and HDMI that supports higher-resolution external displays. The enormous XDR ProMotion screen is a treat for editing and design, the battery lasts and lasts, and even the Max configs stay quiet through demanding, sustained jobs.\n\nBought used, it's a serious professional laptop for well under new pricing. A great fit for video editors, photographers and developers who want maximum screen space and power in one portable package."},
+      {"model": "MacBook Pro 16\" (M3 Pro/Max, 2023)", "aliases": ["macbook pro 16 m3 pro", "mbp 16 m3 max", "pro 16 2023 m3", "16 inch m3 pro"], "battery": "100Wh", "display": "16.2-inch Liquid Retina XDR, 3456x2234, 120Hz ProMotion, 600 nits SDR, 1600 nits peak", "chip": "Apple M3 Pro / M3 Max", "camera": "1080p FaceTime HD", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 4, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M3 Pro/Max 16 adds a big graphics leap with hardware ray tracing, a brighter 600-nit SDR mode and the option of a deep new Space Black finish. With the giant XDR screen, huge battery and full port selection, it's built to handle the heaviest 3D, video and audio work you can throw at it without slowing down.\n\nSecond-hand it's a near-current powerhouse for a good bit less. Ideal for 3D artists, editors and anyone whose work truly benefits from top-end graphics and a massive display."},
+      {"model": "MacBook Pro 16\" (M4 Pro/Max, 2024)", "aliases": ["macbook pro 16 m4 pro", "mbp 16 m4 max", "pro 16 2024 m4", "16 inch m4 pro"], "battery": "100Wh", "display": "16.2-inch Liquid Retina XDR, 3456x2234, 120Hz ProMotion, 1000 nits SDR, 1600 nits peak", "chip": "Apple M4 Pro / M4 Max", "camera": "12MP Center Stage", "storageOptions": ["512GB", "1TB", "2TB", "4TB", "8TB"], "connectivity": "MagSafe 3, 3x Thunderbolt 5, HDMI, SDXC card slot, 3.5mm headphone, Wi-Fi 6E, Bluetooth 5.3", "included": ["device", "cable", "adapter"], "about": "The M4 Pro/Max 16 sits at the top of the range, pairing Apple's fastest laptop chips with speedy Thunderbolt 5, a brighter 1000-nit SDR screen and a new 12MP Center Stage camera. With the enormous XDR display, all-day battery and the full spread of ports, it eats through 8K video, huge builds and heavy ML work with room to spare.\n\nAs a used buy it's the most future-proof MacBook on offer. The go-to for professionals who want the biggest screen and the most performance available, for less than new."}
+    ];
+
+    /* ═══════════════════════════════════════════════════════════════
+       REFURB DEVICE DETAIL VIEW  (#/refurbs/{id})
+       Full product page rendered from the same listings data as the grid.
+       ═══════════════════════════════════════════════════════════════ */
+
+    var SPEC_LOOKUP = {}, SPEC_ALIAS = {};
+    function _rdNorm(s) { return (s == null ? '' : String(s)).toLowerCase().replace(/[^a-z0-9. ]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+    function _rdBuildSpecIndex() {
+      SPEC_LOOKUP = {}; SPEC_ALIAS = {};
+      SPEC_LOOKUP_DATA.forEach(function (e) {
+        SPEC_LOOKUP[e.model] = e;
+        SPEC_ALIAS[_rdNorm(e.model)] = e.model;
+        (e.aliases || []).forEach(function (a) { var k = _rdNorm(a); if (k && !SPEC_ALIAS[k]) SPEC_ALIAS[k] = e.model; });
+      });
+    }
+    function specFor(model) {
+      if (!model) return null;
+      var n = _rdNorm(model);
+      if (SPEC_ALIAS[n]) return SPEC_LOOKUP[SPEC_ALIAS[n]];
+      var n2 = n.replace(/\b\d+\s?(gb|tb)\b/g, '').replace(/\s+/g, ' ').trim();
+      if (SPEC_ALIAS[n2]) return SPEC_LOOKUP[SPEC_ALIAS[n2]];
+      var best = null, len = 0;
+      for (var a in SPEC_ALIAS) { if (a.length >= 6 && a.length > len && (n2.indexOf(a) !== -1 || a.indexOf(n2) !== -1)) { best = SPEC_ALIAS[a]; len = a.length; } }
+      return best ? SPEC_LOOKUP[best] : null;
+    }
+
+    // Our own grading tiers (plain-English, original wording)
+    var RD_GRADES = [
+      { key: 'Excellent', match: ['excellent', 'grade a', 'a', 'a+', 'mint', 'pristine', 'as new'], color: '#10b981',
+        desc: "Looks close to brand new. Under normal light you'd struggle to find a mark — at most a faint hairline you'd have to hunt for. Screen and glass are clean, with no chips or visible scratches, and it works flawlessly." },
+      { key: 'Good', match: ['good', 'grade b', 'b', 'very good'], color: '#3b82f6',
+        desc: "Light, honest signs of everyday use — the odd fine scratch or a small scuff on the frame you'll spot up close but not from arm's length. The screen is fully clear with no cracks, and everything works perfectly." },
+      { key: 'Fair', match: ['fair', 'grade c', 'c', 'acceptable', 'well used', 'well-used'], color: '#f59e0b',
+        desc: "A well-loved unit with more obvious marks — scratches, scuffs or minor edge dings you'll notice at a glance, and possibly light screen marks that don't affect use. Still fully tested and 100% functional — the best value on the shelf." },
+    ];
+    function rdGradeInfo(g) {
+      var n = _rdNorm(g); if (!n) return null;
+      for (var i = 0; i < RD_GRADES.length; i++) { if (RD_GRADES[i].match.indexOf(n) !== -1) return RD_GRADES[i]; }
+      for (var j = 0; j < RD_GRADES.length; j++) { for (var k = 0; k < RD_GRADES[j].match.length; k++) { var t = RD_GRADES[j].match[k]; if (t.length >= 4 && n.indexOf(t) !== -1) return RD_GRADES[j]; } }
+      return null;
+    }
+
+    // What's-in-the-box icon + label per included key
+    var RD_INCLUDED = {
+      'device':   { icon: 'package-check', name: 'The device',    sub: 'Cleaned, tested & ready' },
+      'cable':    { icon: 'cable',         name: 'Charging cable', sub: 'Ready to charge out of the box' },
+      'adapter':  { icon: 'plug-zap',      name: 'Power adapter',  sub: 'Wall charger included' },
+      'sim-tool': { icon: 'key-round',     name: 'SIM eject tool', sub: 'For swapping your SIM' },
+    };
+
+    // Why-buy-from-us points (our voice; last one cross-sells repairs)
+    var RD_WHY = [
+      { icon: 'clipboard-check', title: 'Multi-point tested', desc: 'Battery, screen, cameras, speakers, buttons, Face/Touch ID and connectivity are all checked before anything reaches the shelf.' },
+      { icon: 'shield-check', title: '90-day local warranty', desc: "Warranty claims are handled right here in Buderim — no posting your device interstate and waiting weeks to hear back." },
+      { icon: 'leaf', title: 'Kinder to the planet', desc: 'Choosing refurbished keeps a perfectly good device out of landfill and skips the e-waste and carbon of building brand new.' },
+      { icon: 'wrench', title: 'Repairs if you ever need them', desc: 'If something goes wrong down the track, grab an instant online quote — we fix Apple devices in-house.', cta: 'Get an instant repair quote', ctaAction: "showSection('quote', true)" },
+    ];
+
+    // FAQ (original copy — no payment-plan / Afterpay claims)
+    var RD_FAQ = [
+      { q: 'What does the 90-day warranty actually cover?', a: "It covers hardware faults that aren't down to accidental damage — a battery that suddenly drops off, a speaker that stops working, a button that fails. Bring the device back to us in Buderim and we'll repair or replace it. Accidental damage like drops or liquid isn't covered, but we can always quote you for that repair." },
+      { q: 'What does the battery health percentage mean?', a: "It's how much charge the battery holds compared to when it was new. A device at 90% lasts noticeably longer between charges than one at 80%. We list the real figure for every device so there are no surprises, and if it ever dips too low we can fit a fresh battery for you." },
+      { q: "Can I return it if it's not right for me?", a: "Yes. If you change your mind, get in touch within 14 days and — as long as it comes back in the same condition — we'll sort out a refund or a swap. Faulty items are always looked after separately under the warranty." },
+      { q: 'How long does delivery take?', a: 'Local pickup in Buderim is free and usually ready the same or next day. For posted orders we ship Australia-wide, with most parcels arriving within a few business days depending on where you are.' },
+      { q: 'How can I pay?', a: "You can pay securely by card at checkout, or settle up in person if you're collecting locally. Your card details are handled by our payment provider — we never see or store them." },
+    ];
+
+    var _rdCurrent = null, _rdDefaultTitle = null, _rdDefaultDesc = null, _rdStickyObs = null;
+    var _rdGal = { images: [], idx: 0, alt: '' };
+
+    function _rdEsc(s) { return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function _rdEnsureDb() { if (typeof db !== 'undefined' && !db && window.supabase && window.supabase.createClient) { try { db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch (e) {} } }
+    function rdCategory(l) {
+      var s = ((l.brand || '') + ' ' + (l.model || '')).toLowerCase();
+      if (/macbook|imac|mac mini|mac studio/.test(s)) return 'MacBook';
+      if (/ipad/.test(s)) return 'iPad';
+      if (/iphone/.test(s)) return 'iPhone';
+      if (/watch/.test(s)) return 'Apple Watch';
+      if (/airpod/.test(s)) return 'AirPods';
+      return 'iPhone';
+    }
+    function rdCatIcon(cat) { return cat === 'MacBook' ? 'laptop' : cat === 'iPad' ? 'tablet' : cat === 'Apple Watch' ? 'watch' : cat === 'AirPods' ? 'headphones' : 'smartphone'; }
+    function _rdModelImage(model) {
+      try {
+        var src = (typeof T !== 'undefined' && T) ? T : (typeof DEVICE_DATA !== 'undefined' ? DEVICE_DATA : null);
+        if (!src) return null;
+        var n = _rdNorm(model), best = null, len = 0;
+        for (var ck in src) { var cat = src[ck]; if (!cat || !cat.series) continue;
+          for (var sk in cat.series) { var ms = cat.series[sk].models || [];
+            for (var i = 0; i < ms.length; i++) { var mn = _rdNorm(ms[i].name);
+              if (mn === n) return ms[i].img;
+              if (mn.length > len && (n.indexOf(mn) !== -1 || mn.indexOf(n) !== -1)) { best = ms[i].img; len = mn.length; }
+            }
+          }
+        }
+        return best;
+      } catch (e) { return null; }
+    }
+
+    // ── Routing ──
+    function handleRefurbRoute() {
+      var m = (location.hash || '').match(/^#\/refurbs\/(.+)$/);
+      if (m) { openRefurbDetail(decodeURIComponent(m[1])); return true; }
+      if (_currentSection === 'refurb-detail') { showSection('deals'); }
+      return false;
+    }
+    async function fetchListingById(id) {
+      _rdEnsureDb();
+      if (typeof db === 'undefined' || !db) return null;
+      try { var res = await db.from('listings').select('*').eq('id', id).limit(1); return (res && res.data && res.data[0]) || null; }
+      catch (e) { return null; }
+    }
+    async function openRefurbDetail(id) {
+      showSection('refurb-detail');
+      var host = document.getElementById('refurbDetail');
+      if (host) host.innerHTML = '<div class="rd-state"><div class="rd-state-ico">⏳</div><p>Loading device…</p></div>';
+      if (!_dealItems.length) { _rdEnsureDb(); try { await fetchDeals(); } catch (e) {} }
+      var l = _dealItems.filter(function (x) { return String(x.id) === String(id); })[0];
+      if (l) { renderRefurbDetail(l, false); return; }
+      var sold = await fetchListingById(id);
+      if (sold) { renderRefurbDetail(sold, true); }
+      else { renderRefurbNotFound(id); }
+    }
+
+    // ── Gallery ──
+    function _rdGalMainHTML() {
+      if (_rdGal.images.length) { return '<img id="rdMainImg" src="' + _rdEsc(_rdGal.images[_rdGal.idx]) + '" alt="' + _rdGal.alt + '" loading="eager" onclick="rdZoom(this.src)" onerror="this.style.display=\'none\'">'; }
+      return '<div class="rd-main-emoji">📱</div>';
+    }
+    function rdGalRender() {
+      var img = document.getElementById('rdMainImg');
+      if (img) { img.src = _rdGal.images[_rdGal.idx]; img.style.display = ''; }
+      var thumbs = document.querySelectorAll('#rdThumbs .rd-thumb');
+      thumbs.forEach(function (t, i) { t.classList.toggle('active', i === _rdGal.idx); });
+    }
+    function rdGalNav(dir) { if (_rdGal.images.length < 2) return; _rdGal.idx = (_rdGal.idx + dir + _rdGal.images.length) % _rdGal.images.length; rdGalRender(); }
+    function rdGalGoTo(i) { _rdGal.idx = i; rdGalRender(); }
+    function _rdBindGallery() {
+      var main = document.getElementById('rdMain'); if (!main || _rdGal.images.length < 2) return;
+      var x0 = null;
+      main.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      main.addEventListener('touchend', function (e) { if (x0 == null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) rdGalNav(dx < 0 ? 1 : -1); x0 = null; }, { passive: true });
+    }
+    function rdZoom(src) {
+      if (!src) return;
+      var z = document.createElement('div');
+      z.setAttribute('role', 'dialog'); z.setAttribute('aria-label', 'Zoomed device image'); z.tabIndex = -1;
+      z.style.cssText = 'position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;';
+      z.innerHTML = '<img src="' + _rdEsc(src) + '" alt="' + _rdGal.alt + '" style="max-width:94vw;max-height:92vh;object-fit:contain;border-radius:12px;">';
+      function close() { document.removeEventListener('keydown', onKey); if (z.parentNode) z.parentNode.removeChild(z); }
+      function onKey(e) { if (e.key === 'Escape') close(); }
+      z.onclick = close; document.addEventListener('keydown', onKey);
+      document.body.appendChild(z); z.focus();
+    }
+
+    // ── Accordions ──
+    function rdToggleAcc(btn) {
+      var acc = btn.closest('.rd-acc'); if (!acc) return;
+      var open = acc.getAttribute('aria-expanded') === 'true';
+      acc.setAttribute('aria-expanded', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    }
+    function rdOpenGrading() {
+      var acc = document.getElementById('rdGradingAcc'); if (!acc) return;
+      acc.setAttribute('aria-expanded', 'true');
+      var b = acc.querySelector('.rd-acc-head'); if (b) b.setAttribute('aria-expanded', 'true');
+      acc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // ── Cart / ask ──
+    function rdAddToCart() {
+      var l = _rdCurrent; if (!l) return;
+      if (typeof addDeviceToCart === 'function') {
+        var title = (l.brand ? l.brand + ' ' : '') + (l.model || 'Device') + (l.storage ? ' · ' + l.storage : '');
+        addDeviceToCart(l.id, title, Number(l.price) || 0);
+      }
+      _rdReflectCart(!!(typeof accCart !== 'undefined' && accCart['dev:' + l.id]));
+    }
+    function _rdReflectCart(inCart) {
+      var b = document.getElementById('rdAddBtn');
+      if (b) { b.classList.toggle('in-cart', inCart); b.innerHTML = inCart ? '<i class="msym" data-lucide="check"></i> In your cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart'; }
+      var sb = document.getElementById('rdStickyAdd');
+      if (sb) { sb.classList.toggle('in-cart', inCart); sb.innerHTML = inCart ? '<i class="msym" data-lucide="check"></i> In cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart'; }
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+    }
+    function rdAsk() {
+      var l = _rdCurrent;
+      showSection('contact', true);
+      setTimeout(function () {
+        var msg = document.getElementById('contact-message');
+        if (msg && l) { msg.value = "Hi team, I'd like to ask about the " + (l.brand ? l.brand + ' ' : '') + (l.model || 'device') + (l.storage ? ' (' + l.storage + ')' : '') + (l.sku ? ' [SKU ' + l.sku + ']' : '') + ' you have listed. '; msg.focus(); }
+      }, 140);
+    }
+
+    // ── Sticky mobile bar ──
+    function _rdSetupSticky(l, price, sold, inCart) {
+      var bar = document.getElementById('rdSticky'), panel = document.getElementById('rdBuyPanel');
+      if (!bar) return;
+      var pr = document.getElementById('rdStickyPrice'); if (pr) pr.textContent = '$' + (Number(price) || 0).toLocaleString();
+      var addBtn = document.getElementById('rdStickyAdd');
+      if (addBtn) {
+        if (sold) { addBtn.textContent = 'See similar'; addBtn.classList.remove('in-cart'); addBtn.onclick = function () { showSection('deals', true); }; }
+        else { addBtn.onclick = function () { rdAddToCart(); }; addBtn.classList.toggle('in-cart', inCart); addBtn.innerHTML = inCart ? '<i class="msym" data-lucide="check"></i> In cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart'; if (window.lucide && lucide.createIcons) lucide.createIcons(); }
+      }
+      if (_rdStickyObs) { try { _rdStickyObs.disconnect(); } catch (e) {} _rdStickyObs = null; }
+      bar.classList.remove('visible');
+      if (panel && 'IntersectionObserver' in window) {
+        _rdStickyObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (_currentSection !== 'refurb-detail') { bar.classList.remove('visible'); return; }
+            bar.classList.toggle('visible', !en.isIntersecting);
+          });
+        }, { threshold: 0 });
+        _rdStickyObs.observe(panel);
+      }
+    }
+
+    // ── Title / meta / JSON-LD ──
+    function _rdMetaEl() { return document.querySelector('meta[name="description"]'); }
+    function _rdSetMeta(l) {
+      if (_rdDefaultTitle == null) { _rdDefaultTitle = document.title; var me0 = _rdMetaEl(); _rdDefaultDesc = me0 ? me0.getAttribute('content') : ''; }
+      var name = (l.brand ? l.brand + ' ' : '') + (l.model || 'Device') + (l.storage ? ' ' + l.storage : '');
+      document.title = name + ' — Certified Refurbished | Trusted Mobile Tech';
+      var me = _rdMetaEl();
+      if (me) me.setAttribute('content', 'Certified pre-owned ' + name + (l.grade ? ' in ' + l.grade + ' condition' : '') + '. Tested in Buderim with a 90-day local warranty. Free local pickup or shipping Australia-wide.');
+    }
+    function _rdRestoreMeta() { if (_rdDefaultTitle != null) { document.title = _rdDefaultTitle; var me = _rdMetaEl(); if (me && _rdDefaultDesc != null) me.setAttribute('content', _rdDefaultDesc); } }
+    function _rdLdEl(id) { var s = document.getElementById(id); if (!s) { s = document.createElement('script'); s.type = 'application/ld+json'; s.id = id; document.head.appendChild(s); } return s; }
+    function _rdSetJsonLd(l, spec, price, sold) {
+      var name = (l.brand ? l.brand + ' ' : '') + (l.model || 'Device') + (l.storage ? ' ' + l.storage : '');
+      var prod = { '@context': 'https://schema.org', '@type': 'Product', name: name, category: 'Refurbished ' + rdCategory(l),
+        description: (spec && spec.about) ? spec.about.replace(/\s+/g, ' ').trim() : (l.description || ('Certified refurbished ' + name + ', tested in Buderim.')),
+        brand: { '@type': 'Brand', name: l.brand || 'Apple' }, sku: l.sku || ('TMT-' + String(l.id || '')),
+        offers: { '@type': 'Offer', priceCurrency: 'AUD', price: String(Number(price) || 0),
+          availability: sold ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/RefurbishedCondition',
+          seller: { '@type': 'Organization', name: 'Trusted Mobile Tech' } } };
+      if (l.images && l.images.length) prod.image = l.images;
+      _rdLdEl('rdProductLd').textContent = JSON.stringify(prod);
+      var faq = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: RD_FAQ.map(function (f) { return { '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }; }) };
+      _rdLdEl('rdFaqLd').textContent = JSON.stringify(faq);
+    }
+    function _rdClearJsonLd() { ['rdProductLd', 'rdFaqLd'].forEach(function (id) { var s = document.getElementById(id); if (s) s.textContent = '{}'; }); }
+    function _rdLeaveDetail() {
+      if (/^#\/refurbs\//.test(location.hash || '')) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+      var bar = document.getElementById('rdSticky'); if (bar) bar.classList.remove('visible');
+      if (_rdStickyObs) { try { _rdStickyObs.disconnect(); } catch (e) {} _rdStickyObs = null; }
+      _rdRestoreMeta(); _rdClearJsonLd(); _rdCurrent = null;
+    }
+
+    function renderRefurbNotFound(id) {
+      _rdCurrent = null;
+      var host = document.getElementById('refurbDetail'); if (!host) return;
+      host.innerHTML = '<div class="rd-state"><div class="rd-state-ico">🔍</div><h2>Device not found</h2>'
+        + '<p>This device may have sold, or the link might be out of date.</p>'
+        + '<button class="btn-cta" onclick="showSection(\'deals\', true)"><i class="msym" data-lucide="grid-2x2"></i> Browse available devices</button></div>';
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+      document.title = 'Device not found | Trusted Mobile Tech';
+    }
+
+    // ── Main render ──
+    function renderRefurbDetail(l, forceSold) {
+      _rdCurrent = l;
+      var host = document.getElementById('refurbDetail'); if (!host) return;
+      var cat = rdCategory(l), spec = specFor(l.model);
+      var sold = forceSold === true || (l.status && l.status !== 'available');
+      var titleShort = (l.model || 'Device') + (l.storage ? ' · ' + l.storage : '');
+      var grade = rdGradeInfo(l.grade);
+      var imgs = (l.images && l.images.length) ? l.images.slice() : [];
+      if (!imgs.length) { var mi = _rdModelImage(l.model); if (mi) imgs = [mi]; }
+      _rdGal = { images: imgs, idx: 0, alt: _rdEsc((l.brand ? l.brand + ' ' : '') + (l.model || 'Device')) };
+      var battNum = l.battery ? parseInt(String(l.battery).replace(/[^0-9]/g, ''), 10) : null;
+      if (isNaN(battNum)) battNum = null;
+      var battColor = battNum == null ? 'var(--muted)' : battNum >= 90 ? '#10b981' : battNum >= 80 ? '#f59e0b' : '#ef4444';
+      var battTxt = l.battery ? (String(l.battery).indexOf('%') !== -1 ? l.battery : l.battery + '%') : 'Not specified';
+      var price = Number(l.price) || 0;
+      var newP = Number(l.newPrice || l.rrp || 0) || 0;
+      var save = (newP > price) ? newP - price : 0;
+      var sku = l.sku || ('TMT-' + String(l.id || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 8).toUpperCase());
+      var inCart = !!(typeof accCart !== 'undefined' && accCart['dev:' + l.id]);
+      var incl = (Array.isArray(l.included) && l.included.length) ? l.included : (spec && spec.included && spec.included.length ? spec.included : ['device', 'cable']);
+
+      var h = '';
+      h += '<nav class="rd-breadcrumb" aria-label="Breadcrumb"><a onclick="showSection(\'home\', true)">Home</a><span class="rd-crumb-sep">›</span><a onclick="showSection(\'deals\', true)">Refurbished Devices</a><span class="rd-crumb-sep">›</span><span class="rd-crumb-current">' + _rdEsc(l.model || 'Device') + '</span></nav>';
+
+      h += '<div class="rd-top">';
+      // gallery
+      h += '<div class="rd-gallery"><div class="rd-main" id="rdMain">' + _rdGalMainHTML();
+      h += grade ? '<span class="rd-grade-badge"><span class="rd-grade-dot" style="background:' + grade.color + '"></span>' + _rdEsc(grade.key) + ' condition</span>' : (l.grade ? '<span class="rd-grade-badge">' + _rdEsc(l.grade) + '</span>' : '');
+      if (l.featured) h += '<span class="rd-feat-badge">Featured</span>';
+      if (imgs.length > 1) h += '<button class="rd-gal-btn prev" type="button" aria-label="Previous image" onclick="rdGalNav(-1)"><i class="msym" data-lucide="chevron-left"></i></button><button class="rd-gal-btn next" type="button" aria-label="Next image" onclick="rdGalNav(1)"><i class="msym" data-lucide="chevron-right"></i></button>';
+      h += '</div>';
+      if (imgs.length > 1) { h += '<div class="rd-thumbs" id="rdThumbs">' + imgs.map(function (src, i) { return '<button class="rd-thumb' + (i === 0 ? ' active' : '') + '" type="button" aria-label="View image ' + (i + 1) + '" onclick="rdGalGoTo(' + i + ')"><img src="' + _rdEsc(src) + '" alt="" loading="lazy"></button>'; }).join('') + '</div>'; }
+      h += '</div>';
+
+      // buy panel
+      h += '<div class="rd-buy" id="rdBuyPanel">';
+      h += '<h1 class="rd-title">' + _rdEsc(titleShort) + '</h1>';
+      h += '<div class="rd-sku">SKU ' + _rdEsc(sku) + (l.color ? ' · ' + _rdEsc(l.color) : '') + '</div>';
+      h += '<div class="rd-trustline"><i class="msym" data-lucide="badge-check"></i> Certified Pre-Owned — Tested in Buderim</div>';
+      h += '<div class="rd-price-row"><span class="rd-price">$' + price.toLocaleString() + '</span>' + (newP > price ? '<span class="rd-rrp">$' + newP.toLocaleString() + ' new</span>' : '') + '</div>';
+      if (save > 0) h += '<div class="rd-save">Save ~$' + save.toLocaleString() + ' vs new</div>';
+      h += '<div class="rd-fulfil"><span class="rd-chip"><i class="msym" data-lucide="store"></i> Free local pickup</span><span class="rd-chip"><i class="msym" data-lucide="truck"></i> Ships Australia-wide</span></div>';
+      h += '<div class="rd-stats">';
+      h += '<div class="rd-stat"><div class="rd-stat-label"><i class="msym" data-lucide="battery-charging"></i> Battery health</div><div class="rd-batt"><span class="rd-batt-pct" style="color:' + battColor + '">' + _rdEsc(battTxt) + '</span>' + (battNum != null ? '<span class="rd-batt-track"><span class="rd-batt-fill" style="width:' + Math.max(4, Math.min(100, battNum)) + '%;background:' + battColor + '"></span></span>' : '') + '</div></div>';
+      h += '<button class="rd-stat" type="button" onclick="rdOpenGrading()"><div class="rd-stat-label"><i class="msym" data-lucide="sparkles"></i> Condition</div><div class="rd-stat-value">' + _rdEsc(grade ? grade.key : (l.grade || 'Tested')) + '</div><div class="rd-stat-hint">View grading guide →</div></button>';
+      h += '<div class="rd-stat"><div class="rd-stat-label"><i class="msym" data-lucide="shield-check"></i> Warranty</div><div class="rd-stat-value">90 days · local</div></div>';
+      h += '<div class="rd-stat"><div class="rd-stat-label"><i class="msym" data-lucide="' + (sold ? 'circle-x' : 'circle-check') + '"></i> Availability</div><div class="rd-stat-value">' + (sold ? 'Sold' : 'In stock') + '</div></div>';
+      h += '</div>';
+      h += '<div class="rd-actions">';
+      if (sold) {
+        h += '<div class="rd-sold-tag">This one has sold</div>';
+        h += '<button class="rd-ask" type="button" onclick="showSection(\'deals\', true)"><i class="msym" data-lucide="grid-2x2"></i> See similar devices</button>';
+        h += '<button class="rd-ask" type="button" onclick="rdAsk()"><i class="msym" data-lucide="mail"></i> Ask us to find another</button>';
+      } else {
+        h += '<button class="rd-add" id="rdAddBtn" type="button" onclick="rdAddToCart()">' + (inCart ? '<i class="msym" data-lucide="check"></i> In your cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart') + '</button>';
+        h += '<button class="rd-ask" type="button" onclick="rdAsk()"><i class="msym" data-lucide="message-circle-question"></i> Ask a question</button>';
+      }
+      h += '</div>';
+      h += '<ul class="rd-checklist"><li class="rd-check"><i class="msym" data-lucide="check"></i> Fully tested &amp; sanitised before sale</li><li class="rd-check"><i class="msym" data-lucide="check"></i> IMEI checked — no activation lock</li><li class="rd-check"><i class="msym" data-lucide="check"></i> Genuine local warranty — Buderim, QLD</li></ul>';
+      h += '</div>'; // buy
+      h += '</div>'; // top
+
+      // grading explainer
+      h += '<div class="rd-section"><h2 class="rd-h2">Condition &amp; grading</h2><div class="rd-acc" id="rdGradingAcc" aria-expanded="true"><button class="rd-acc-head" aria-expanded="true" onclick="rdToggleAcc(this)">How we grade condition <i class="msym rd-acc-chev" data-lucide="chevron-down"></i></button><div class="rd-acc-body"><div class="rd-grades">'
+        + RD_GRADES.map(function (g) { return '<div class="rd-grade"><div class="rd-grade-name"><span class="rd-grade-dot" style="background:' + g.color + '"></span>' + g.key + '</div><div class="rd-grade-desc">' + g.desc + '</div></div>'; }).join('')
+        + '</div></div></div></div>';
+
+      // specifications
+      if (spec) {
+        var specItems = [
+          { ic: 'cpu', lb: 'Chip', v: spec.chip },
+          { ic: 'monitor', lb: 'Display', v: spec.display },
+          { ic: 'battery-charging', lb: 'Battery', v: spec.battery },
+          { ic: 'camera', lb: 'Camera', v: spec.camera },
+          { ic: 'hard-drive', lb: 'Storage', v: (l.storage ? l.storage + ' (this unit)' : (spec.storageOptions || []).join(' / ')) },
+          { ic: 'wifi', lb: 'Connectivity', v: spec.connectivity },
+        ];
+        h += '<div class="rd-section"><h2 class="rd-h2">Specifications</h2><div class="rd-specs-grid">'
+          + specItems.filter(function (s) { return s.v; }).map(function (s) { return '<div class="rd-spec-card"><div class="rd-spec-ico"><i class="msym" data-lucide="' + s.ic + '"></i></div><div class="rd-spec-label">' + s.lb + '</div><div class="rd-spec-val">' + _rdEsc(s.v) + '</div></div>'; }).join('')
+          + '</div></div>';
+      }
+
+      // what's included
+      h += '<div class="rd-section"><h2 class="rd-h2">What\'s in the box</h2><div class="rd-incl-row">'
+        + incl.map(function (k) { var m = RD_INCLUDED[k]; if (!m) return ''; var ic = (k === 'device') ? rdCatIcon(cat) : m.icon; return '<div class="rd-incl"><div class="rd-incl-ico"><i class="msym" data-lucide="' + ic + '"></i></div><div><div class="rd-incl-name">' + m.name + '</div><div class="rd-incl-sub">' + m.sub + '</div></div></div>'; }).join('')
+        + '</div></div>';
+
+      // about
+      var aboutHtml = '';
+      if (spec && spec.about) { aboutHtml = spec.about.split(/\n\n+/).map(function (p) { return '<p>' + _rdEsc(p.trim()) + '</p>'; }).join(''); }
+      else if (l.description) { aboutHtml = '<p>' + _rdEsc(l.description) + '</p>'; }
+      if (aboutHtml) { h += '<div class="rd-section rd-about"><h2 class="rd-h2">About this device</h2>' + aboutHtml + '<p class="rd-about-process">Every device we sell is opened up, cleaned, function-tested across every major component and fully data-wiped before it\'s listed — so what you read here is exactly what you\'ll get.</p></div>'; }
+
+      // why buy
+      h += '<div class="rd-section"><h2 class="rd-h2">Why buy refurbished from us</h2><div class="rd-why">'
+        + RD_WHY.map(function (w) { return '<div class="rd-why-item"><div class="rd-why-ico"><i class="msym" data-lucide="' + w.icon + '"></i></div><div><div class="rd-why-title">' + w.title + '</div><div class="rd-why-desc">' + w.desc + '</div>' + (w.cta ? '<span class="rd-why-cta" onclick="' + w.ctaAction + '">' + w.cta + ' <i class="msym" data-lucide="arrow-right"></i></span>' : '') + '</div></div>'; }).join('')
+        + '</div></div>';
+
+      // you might also like
+      var others = [];
+      for (var oi = 0; oi < _dealItems.length && others.length < 4; oi++) { if (String(_dealItems[oi].id) !== String(l.id)) others.push(oi); }
+      if (others.length && typeof dealCardHTML === 'function') {
+        h += '<div class="rd-section"><h2 class="rd-h2">You might also like</h2><div class="rd-alsolike">'
+          + others.map(function (idx) { return dealCardHTML(_dealItems[idx], idx); }).join('')
+          + '</div></div>';
+      }
+
+      // FAQ
+      h += '<div class="rd-section"><h2 class="rd-h2">Frequently asked</h2>'
+        + RD_FAQ.map(function (f) { return '<div class="rd-acc" aria-expanded="false"><button class="rd-acc-head" aria-expanded="false" onclick="rdToggleAcc(this)">' + _rdEsc(f.q) + ' <i class="msym rd-acc-chev" data-lucide="chevron-down"></i></button><div class="rd-acc-body"><p>' + _rdEsc(f.a) + '</p></div></div>'; }).join('')
+        + '</div>';
+
+      host.innerHTML = h;
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+      _rdSetMeta(l);
+      _rdSetJsonLd(l, spec, price, sold);
+      _rdBindGallery();
+      _rdSetupSticky(l, price, sold, inCart);
+      try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) { window.scrollTo(0, 0); }
+    }
+
+    _rdBuildSpecIndex();
+    window.addEventListener('hashchange', handleRefurbRoute);
+    window.addEventListener('load', function () { handleRefurbRoute(); });
+    /* ═══════════════ END REFURB DEVICE DETAIL VIEW ═══════════════ */
+
     var _sectionHistory = [];
     var _currentSection = 'home';
     function showSection(id, resetHist) {
+      if (id !== 'refurb-detail' && typeof _rdLeaveDetail === 'function') _rdLeaveDetail();
       if (resetHist) { _sectionHistory = []; }
       else if (id !== _currentSection) { _sectionHistory.push(_currentSection); }
       _currentSection = id;
@@ -7739,7 +8368,7 @@
       if (id === 'reviews') { initReviews(); }
       // sticky mobile CTA bar: hide where it would duplicate the page's own actions
       var bar = document.getElementById('mobileCtaBar');
-      if (bar) bar.style.display = (id === 'quote' || id === 'contact') ? 'none' : '';
+      if (bar) bar.style.display = (id === 'quote' || id === 'contact' || id === 'refurb-detail') ? 'none' : '';
       renderIcons();
       var btn = document.getElementById('globalBackBtn');
       if (btn) btn.style.display = _sectionHistory.length > 0 ? 'block' : 'none';
@@ -7747,6 +8376,7 @@
     function goBack() {
       if (_sectionHistory.length === 0) return;
       var prev = _sectionHistory.pop();
+      if (prev !== 'refurb-detail' && typeof _rdLeaveDetail === 'function') _rdLeaveDetail();
       _currentSection = prev;
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.getElementById('sec-' + prev).classList.add('active');
