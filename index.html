@@ -3806,6 +3806,20 @@
     @media (max-width: 900px) { .rw-steps { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 520px) { .rw-steps { grid-template-columns: 1fr; } }
     @media (prefers-reduced-motion: reduce) { .rw-step { transition: none; } }
+
+    /* Home: "Inside our workshop" real-photo band */
+    .ws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+    .ws-tile { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 16 / 10; background: var(--surface); margin: 0; }
+    .ws-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: transform .5s ease; }
+    .ws-tile:hover img { transform: scale(1.04); }
+    .ws-ph { position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 16%, var(--surface)), var(--surface)); color: color-mix(in srgb, var(--brand) 55%, var(--muted)); }
+    .ws-ph .msym { width: 42px; height: 42px; font-size: 42px; opacity: .5; }
+    .ws-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 34px 20px 16px; display: flex; flex-direction: column; gap: 2px; background: linear-gradient(to top, rgba(0,0,0,.74), rgba(0,0,0,.28) 55%, rgba(0,0,0,0)); }
+    .ws-cap b { color: #fff; font-family: var(--font-head); font-size: 17px; font-weight: 800; }
+    .ws-cap span { color: rgba(255,255,255,.85); font-size: 13px; }
+    @media (max-width: 700px) { .ws-grid { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .ws-tile img { transition: none; } .ws-tile:hover img { transform: none; } }
+
     @media (max-width: 560px) { .deals-toolbar { flex-direction: column; align-items: stretch; } .deals-sort { justify-content: space-between; } .deals-sort select { flex: 1; } .deals-facets .deals-select { flex: 1 1 42%; } .deals-count { margin-left: 0; width: 100%; } }
 
     /* ── Listing detail overlay ── */
@@ -5249,6 +5263,31 @@
           <div class="rw-step"><span class="rw-step-n">2</span><div class="rw-step-ic"><i class="msym" data-lucide="calendar-check"></i></div><h3>Book it in</h3><p>Drop into our Buderim workshop, or book a mobile visit across the Sunshine Coast &amp; Brisbane.</p></div>
           <div class="rw-step"><span class="rw-step-n">3</span><div class="rw-step-ic"><i class="msym" data-lucide="wrench"></i></div><h3>We fix it</h3><p>Quality parts and experienced techs — and every device is fully tested before it goes back.</p></div>
           <div class="rw-step"><span class="rw-step-n">4</span><div class="rw-step-ic"><i class="msym" data-lucide="badge-check"></i></div><h3>Back in your hands</h3><p>Most repairs are done the same day, backed by our 90-day warranty and no-fix-no-fee promise.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSIDE OUR WORKSHOP (real repair photos) -->
+    <div class="home-section reveal">
+      <div class="wrap">
+        <div class="home-head">
+          <div class="home-head-tx">
+            <h2>Inside our workshop</h2>
+            <p>Real repairs on real benches — from delicate board-level work to fresh glass.</p>
+          </div>
+          <a class="head-link" onclick="showSection('quote', true)">Book a repair <i class="msym" data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="ws-grid">
+          <figure class="ws-tile">
+            <div class="ws-ph"><i class="msym" data-lucide="cpu"></i></div>
+            <img src="Images/workshop-board-repair.jpg" alt="Technician performing a board-level micro-repair on an Apple logic board" loading="lazy" onerror="this.style.display='none'">
+            <figcaption class="ws-cap"><b>Board-level micro-repairs</b><span>Down to the component when it counts</span></figcaption>
+          </figure>
+          <figure class="ws-tile">
+            <div class="ws-ph"><i class="msym" data-lucide="smartphone"></i></div>
+            <img src="Images/workshop-screen-repair.jpg" alt="Cracked iPhone Pro mounted on a repair clamp, ready for screen and back-glass replacement" loading="lazy" onerror="this.style.display='none'">
+            <figcaption class="ws-cap"><b>Screen &amp; back-glass replacement</b><span>Precision-fitted, then fully tested</span></figcaption>
+          </figure>
         </div>
       </div>
     </div>
