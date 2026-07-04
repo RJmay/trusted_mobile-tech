@@ -3757,10 +3757,14 @@
     .deal-chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
     .deals-sort { display: flex; align-items: center; gap: 9px; }
     .deals-sort label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
-    .deals-sort select { font-family: var(--font); font-size: 13.5px; font-weight: 600; color: var(--dark); background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 9px 36px 9px 14px; cursor: pointer; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; }
-    .deals-sort select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
-    .deals-sort select option { color: #0f172a; background: #fff; }
-    @media (max-width: 560px) { .deals-toolbar { flex-direction: column; align-items: stretch; } .deals-sort { justify-content: space-between; } .deals-sort select { flex: 1; } }
+    .deals-sort select, .deals-select { font-family: var(--font); font-size: 13.5px; font-weight: 600; color: var(--dark); background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 9px 36px 9px 14px; cursor: pointer; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; max-width: 100%; }
+    .deals-sort select:focus-visible, .deals-select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+    .deals-sort select option, .deals-select option { color: #0f172a; background: #fff; }
+    .deals-facets { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+    .deals-clear { background: none; border: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; padding: 6px 4px; font-family: var(--font); }
+    .deals-clear:hover { color: var(--brand); }
+    .deals-count { font-size: 13px; color: var(--muted); margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+    @media (max-width: 560px) { .deals-toolbar { flex-direction: column; align-items: stretch; } .deals-sort { justify-content: space-between; } .deals-sort select { flex: 1; } .deals-facets .deals-select { flex: 1 1 42%; } .deals-count { margin-left: 0; width: 100%; } }
 
     /* ── Listing detail overlay ── */
     #listingOverlay {
@@ -6422,7 +6426,7 @@
         <div class="deals-filters" id="dealsFilters"></div>
         <div class="deals-sort">
           <label for="dealsSort">Sort</label>
-          <select id="dealsSort" onchange="applyDealsSort()" aria-label="Sort devices">
+          <select class="deals-select" id="dealsSort" onchange="applyDealsSort()" aria-label="Sort devices">
             <option value="featured">Featured</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
@@ -6430,6 +6434,14 @@
             <option value="newest">Newest arrivals</option>
           </select>
         </div>
+      </div>
+      <div class="deals-facets" id="dealsFacets">
+        <select class="deals-select" id="fModel" onchange="setDealFacet('model', this.value)" aria-label="Filter by model"><option value="">All models</option></select>
+        <select class="deals-select" id="fColor" onchange="setDealFacet('color', this.value)" aria-label="Filter by colour"><option value="">All colours</option></select>
+        <select class="deals-select" id="fStorage" onchange="setDealFacet('storage', this.value)" aria-label="Filter by storage"><option value="">All storage</option></select>
+        <select class="deals-select" id="fGrade" onchange="setDealFacet('grade', this.value)" aria-label="Filter by condition"><option value="">Any condition</option></select>
+        <button type="button" class="deals-clear" id="dealsClear" onclick="clearDealFilters()" style="display:none;">Clear filters</button>
+        <span class="deals-count" id="dealsCount"></span>
       </div>
       <div id="dealsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin-top:22px;">
         <div class="card" style="padding:28px;text-align:center;">
@@ -7809,7 +7821,7 @@
         + '</div></div>';
     }
 
-    var _dealFilter = 'all', _dealSort = 'featured';
+    var _dealFilter = 'all', _dealSort = 'featured', _dealFacets = { model: '', color: '', storage: '', grade: '' };
 
     async function loadDeals() {
       await fetchDeals();
@@ -7819,28 +7831,50 @@
     }
 
     function _dealBattNum(l) { var n = l.battery ? parseInt(String(l.battery).replace(/[^0-9]/g, ''), 10) : 0; return isNaN(n) ? 0 : n; }
+    function _dealStorageGB(s) { var m = String(s || '').match(/([\d.]+)/); if (!m) return 0; var n = parseFloat(m[1]); return /tb/i.test(String(s)) ? n * 1024 : n; }
+    function _dealDistinct(vals) { var seen = {}, out = []; vals.forEach(function (v) { if (v != null && v !== '' && !seen[v]) { seen[v] = 1; out.push(v); } }); return out; }
+    function _dealAnyFacet() { return _dealFilter !== 'all' || _dealFacets.model || _dealFacets.color || _dealFacets.storage || _dealFacets.grade; }
 
-    // Build the device-type filter chips from whatever categories are in stock
+    // Device-type chips + colour / storage / model / condition dropdowns, all built from stock
     function _buildDealFilters() {
       var wrap = document.getElementById('dealsFilters');
-      if (!wrap) return;
-      var cats = [];
-      _dealItems.forEach(function (l) { var c = rdCategory(l); if (cats.indexOf(c) === -1) cats.push(c); });
-      var order = ['iPhone', 'iPad', 'MacBook', 'Apple Watch', 'AirPods'];
-      cats.sort(function (a, b) { return order.indexOf(a) - order.indexOf(b); });
-      if (_dealFilter !== 'all' && cats.indexOf(_dealFilter) === -1) _dealFilter = 'all';
-      var chips = [{ k: 'all', label: 'All devices' }].concat(cats.map(function (c) { return { k: c, label: c }; }));
-      wrap.innerHTML = chips.map(function (c) {
-        return '<button class="deal-chip' + (c.k === _dealFilter ? ' active' : '') + '" type="button" aria-pressed="' + (c.k === _dealFilter) + '" onclick="setDealFilter(\'' + c.k + '\')">' + c.label + '</button>';
+      if (wrap) {
+        var cats = [];
+        _dealItems.forEach(function (l) { var c = rdCategory(l); if (cats.indexOf(c) === -1) cats.push(c); });
+        var order = ['iPhone', 'iPad', 'MacBook', 'Apple Watch', 'AirPods'];
+        cats.sort(function (a, b) { return order.indexOf(a) - order.indexOf(b); });
+        if (_dealFilter !== 'all' && cats.indexOf(_dealFilter) === -1) _dealFilter = 'all';
+        var chips = [{ k: 'all', label: 'All devices' }].concat(cats.map(function (c) { return { k: c, label: c }; }));
+        wrap.innerHTML = chips.map(function (c) {
+          return '<button class="deal-chip' + (c.k === _dealFilter ? ' active' : '') + '" type="button" aria-pressed="' + (c.k === _dealFilter) + '" onclick="setDealFilter(\'' + c.k + '\')">' + c.label + '</button>';
+        }).join('');
+      }
+      // facet dropdowns reflect the devices in the chosen category
+      var base = _dealItems.filter(function (l) { return _dealFilter === 'all' || rdCategory(l) === _dealFilter; });
+      _fillDealFacet('fModel', _dealDistinct(base.map(function (l) { return rdDisplayName(l); })).sort(), 'model', 'All models');
+      _fillDealFacet('fColor', _dealDistinct(base.map(function (l) { return l.color; })).sort(), 'color', 'All colours');
+      _fillDealFacet('fStorage', _dealDistinct(base.map(function (l) { return l.storage; })).sort(function (a, b) { return _dealStorageGB(a) - _dealStorageGB(b); }), 'storage', 'All storage');
+      _fillDealFacet('fGrade', _dealDistinct(base.map(function (l) { return l.grade; })).sort(), 'grade', 'Any condition');
+    }
+    function _fillDealFacet(id, opts, key, allLabel) {
+      var sel = document.getElementById(id); if (!sel) return;
+      if (_dealFacets[key] && opts.indexOf(_dealFacets[key]) === -1) _dealFacets[key] = '';   // reset if no longer in stock
+      sel.innerHTML = '<option value="">' + allLabel + '</option>' + opts.map(function (o) {
+        return '<option value="' + _rdEsc(o) + '"' + (o === _dealFacets[key] ? ' selected' : '') + '>' + _rdEsc(o) + '</option>';
       }).join('');
+      sel.value = _dealFacets[key] || '';
     }
 
-    function setDealFilter(k) { _dealFilter = k; _buildDealFilters(); renderDealsGrid(); }
+    function setDealFilter(k) { _dealFilter = k; _dealFacets = { model: '', color: '', storage: '', grade: '' }; _buildDealFilters(); renderDealsGrid(); }
+    function setDealFacet(key, val) { _dealFacets[key] = val; renderDealsGrid(); }
+    function clearDealFilters() { _dealFilter = 'all'; _dealFacets = { model: '', color: '', storage: '', grade: '' }; _buildDealFilters(); renderDealsGrid(); }
     function applyDealsSort() { var s = document.getElementById('dealsSort'); _dealSort = s ? s.value : 'featured'; renderDealsGrid(); }
 
     function renderDealsGrid() {
       var grid = document.getElementById('dealsGrid');
       if (!grid) return;
+      var clearBtn = document.getElementById('dealsClear'); if (clearBtn) clearBtn.style.display = _dealAnyFacet() ? '' : 'none';
+      var countEl = document.getElementById('dealsCount');
       if (!_dealItems.length) {
         grid.innerHTML = '<div class="card" style="padding:40px;text-align:center;grid-column:1/-1;">'
           + '<div style="font-size:40px;margin-bottom:12px;">🔎</div>'
@@ -7848,11 +7882,16 @@
           + '<div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Stock changes regularly — send us a request and we\'ll find it for you.</div>'
           + '<button class="btn" onclick="showSection(\'contact\')">Send Us a Request</button>'
           + '</div>';
+        if (countEl) countEl.textContent = '';
         return;
       }
       // keep the ORIGINAL index so openListing(idx) stays correct after filter/sort
       var list = _dealItems.map(function (l, i) { return { l: l, i: i }; });
       if (_dealFilter !== 'all') list = list.filter(function (x) { return rdCategory(x.l) === _dealFilter; });
+      if (_dealFacets.model) list = list.filter(function (x) { return rdDisplayName(x.l) === _dealFacets.model; });
+      if (_dealFacets.color) list = list.filter(function (x) { return x.l.color === _dealFacets.color; });
+      if (_dealFacets.storage) list = list.filter(function (x) { return x.l.storage === _dealFacets.storage; });
+      if (_dealFacets.grade) list = list.filter(function (x) { return x.l.grade === _dealFacets.grade; });
       var s = _dealSort;
       list.sort(function (a, b) {
         if (s === 'price-asc') return (Number(a.l.price) || 0) - (Number(b.l.price) || 0);
@@ -7861,12 +7900,13 @@
         if (s === 'newest') return String(b.l.created_at || '').localeCompare(String(a.l.created_at || ''));
         return (b.l.featured ? 1 : 0) - (a.l.featured ? 1 : 0);   // featured first (stable)
       });
+      if (countEl) countEl.textContent = _dealAnyFacet() ? (list.length + ' of ' + _dealItems.length + ' devices') : (_dealItems.length + (_dealItems.length === 1 ? ' device' : ' devices'));
       var html;
       if (!list.length) {
         html = '<div class="card" style="padding:36px;text-align:center;grid-column:1/-1;">'
           + '<div style="font-size:34px;margin-bottom:10px;">🔍</div>'
-          + '<div style="font-size:15px;color:var(--muted);margin-bottom:16px;">No ' + _rdEsc(_dealFilter) + ' in stock right now.</div>'
-          + '<button class="btn-cta" onclick="setDealFilter(\'all\')"><i class="msym" data-lucide="grid-2x2"></i> Show all devices</button></div>';
+          + '<div style="font-size:15px;color:var(--muted);margin-bottom:16px;">No devices match those filters.</div>'
+          + '<button class="btn-cta" onclick="clearDealFilters()"><i class="msym" data-lucide="rotate-ccw"></i> Clear filters</button></div>';
       } else {
         html = list.map(function (x) { return dealCardHTML(x.l, x.i); }).join('');
         html += '<div class="deal-card" style="border-style:dashed;border-color:rgba(37,99,235,.28);cursor:pointer;" onclick="showSection(\'contact\')">'
