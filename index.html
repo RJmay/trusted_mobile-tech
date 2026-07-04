@@ -4990,6 +4990,86 @@
       #sec-quote .service-type-grid { grid-template-columns: 1fr !important; }
     }
   </style>
+
+  <!-- ════════════════════════════════════════════════════════════════
+       MOBILE REDESIGN (phones ≤ 767px) — mobile-native layout.
+       Loaded last so it wins the cascade; desktop (≥768px) untouched.
+       ════════════════════════════════════════════════════════════════ -->
+  <style id="mobile-redesign">
+  @media (max-width: 767px) {
+
+    /* ── kill horizontal overflow, tighten gutters ───────────────── */
+    html, body { max-width: 100%; overflow-x: hidden; }
+    .wrap { padding-left: 18px; padding-right: 18px; }
+    img, svg, video, canvas { max-width: 100%; height: auto; }
+    .section { padding-bottom: 88px; }               /* clear the sticky CTA bar */
+
+    /* ── HEADER: compact, everything fits ────────────────────────── */
+    .header { padding: 0 14px; gap: 10px; }
+    .logo-img { height: 30px; width: auto; }
+    .header-actions { gap: 6px; }
+
+    /* ── HERO: balanced — headline + CTAs first, quote tool below ── */
+    .hero-v2 { padding: 24px 0 30px; text-align: left; overflow: visible; }
+    .hero-mesh, .hero-decals, .page-decals { display: none; }   /* no stray decals expanding width */
+    .hero-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);          /* THE overflow fix */
+      gap: 22px;
+    }
+    .hero-copy  { order: 1; min-width: 0; max-width: 100%; }
+    .hero-quote { order: 2; min-width: 0; width: 100%; max-width: 100%; margin: 0; }
+
+    .hero-eyebrow { font-size: 12.5px; margin-bottom: 14px; }
+    .hero-v2 h1 { font-size: clamp(30px, 8.6vw, 42px); line-height: 1.08; letter-spacing: -.8px; margin-bottom: 12px; }
+    .hero-v2 .hero-sub { font-size: 15.5px; line-height: 1.55; margin: 0 0 20px; max-width: 100%; }
+
+    .hero-cta-row { flex-direction: column; gap: 10px; align-items: stretch; }
+    .hero-cta-row .btn-cta,
+    .hero-cta-row .btn-outline { width: 100%; justify-content: center; font-size: 15.5px; padding: 15px 20px; }
+
+    .hero-trust { gap: 10px 18px; margin-top: 20px; font-size: 12.5px; justify-content: flex-start; }
+
+    /* quote card fits its width */
+    .hero-quote { padding: 18px; }
+    .hq-head { font-size: 15px; }
+    .hq-row  { min-width: 0; max-width: 100%; }
+    .hq-select { width: 100%; min-width: 0; max-width: 100%; }
+
+    /* ── WHY STRIP → clean 2×2 ───────────────────────────────────── */
+    .why-strip { grid-template-columns: 1fr 1fr; }
+    .why-item { padding: 16px 15px; border-right: 1px solid var(--border) !important; border-bottom: 1px solid var(--border) !important; }
+    .why-item:nth-child(2n) { border-right: none !important; }
+    .why-item:nth-child(n+3) { border-bottom: none !important; }
+    .why-item h4 { font-size: 13.5px; }
+    .why-item p  { font-size: 11.5px; line-height: 1.45; }
+
+    /* ── SECTION HEADS: consistent mobile hierarchy ──────────────── */
+    .home-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .home-head .head-link { margin-top: 2px; }
+    .home-section h2, .section-head h2 { font-size: 26px; line-height: 1.15; letter-spacing: -.5px; }
+    .home-section .home-head-tx p, .section-head p { font-size: 14.5px; }
+
+    /* ── CARD GRIDS → single column, comfy tap targets ───────────── */
+    .feature-row, .svc-grid, .home-deals-grid, .svc-bento { grid-template-columns: 1fr !important; gap: 14px; }
+    .rw-steps { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ws-grid  { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ── REFURB DEALS: 1-up cards, stacked toolbar ───────────────── */
+    .deals-grid { grid-template-columns: 1fr !important; }
+    .deals-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+
+    /* ── REVIEWS: single-file, swipeable ─────────────────────────── */
+    .hr-track .hr-card { flex-basis: 84vw; min-width: 84vw; }
+
+    /* ── FORMS: full width, no side overflow ─────────────────────── */
+    form, .quote-wrap, .area-wrap { max-width: 100%; }
+    input, select, textarea, .btn, .btn-cta { max-width: 100%; }
+
+    /* ── FOOTER: stack ───────────────────────────────────────────── */
+    .footer-grid, .foot-grid { grid-template-columns: 1fr 1fr; gap: 22px 18px; }
+  }
+  </style>
 </head>
 
 <body class="light">
