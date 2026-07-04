@@ -3808,16 +3808,17 @@
     @media (prefers-reduced-motion: reduce) { .rw-step { transition: none; } }
 
     /* Home: "Inside our workshop" real-photo band */
-    .ws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
-    .ws-tile { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 16 / 10; background: var(--surface); margin: 0; }
+    .ws-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
+    .ws-tile { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4 / 3; background: var(--surface); margin: 0; }
     .ws-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: transform .5s ease; }
     .ws-tile:hover img { transform: scale(1.04); }
     .ws-ph { position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 16%, var(--surface)), var(--surface)); color: color-mix(in srgb, var(--brand) 55%, var(--muted)); }
-    .ws-ph .msym { width: 42px; height: 42px; font-size: 42px; opacity: .5; }
-    .ws-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 34px 20px 16px; display: flex; flex-direction: column; gap: 2px; background: linear-gradient(to top, rgba(0,0,0,.74), rgba(0,0,0,.28) 55%, rgba(0,0,0,0)); }
-    .ws-cap b { color: #fff; font-family: var(--font-head); font-size: 17px; font-weight: 800; }
-    .ws-cap span { color: rgba(255,255,255,.85); font-size: 13px; }
-    @media (max-width: 700px) { .ws-grid { grid-template-columns: 1fr; } }
+    .ws-ph .msym { width: 32px; height: 32px; font-size: 32px; opacity: .5; }
+    .ws-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 26px 14px 12px; display: flex; flex-direction: column; gap: 1px; background: linear-gradient(to top, rgba(0,0,0,.76), rgba(0,0,0,.3) 55%, rgba(0,0,0,0)); }
+    .ws-cap b { color: #fff; font-family: var(--font-head); font-size: 14px; font-weight: 800; line-height: 1.25; }
+    .ws-cap span { color: rgba(255,255,255,.85); font-size: 11.5px; }
+    @media (max-width: 900px) { .ws-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .ws-grid { grid-template-columns: 1fr; } }
     @media (prefers-reduced-motion: reduce) { .ws-tile img { transition: none; } .ws-tile:hover img { transform: none; } }
 
     @media (max-width: 560px) { .deals-toolbar { flex-direction: column; align-items: stretch; } .deals-sort { justify-content: space-between; } .deals-sort select { flex: 1; } .deals-facets .deals-select { flex: 1 1 42%; } .deals-count { margin-left: 0; width: 100%; } }
