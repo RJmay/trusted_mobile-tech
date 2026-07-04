@@ -1,2 +1,15 @@
 auto-push.ps1
 .vscode/
+
+# OS / editor junk
+.DS_Store
+**/.DS_Store
+*.code-workspace
+
+# Local tool config
+.claude/
+
+# Secrets — NEVER commit credentials or sessions
+**/.env
+swoop-scanner/sessions/
+**/*.log
