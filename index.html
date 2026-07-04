@@ -3793,6 +3793,19 @@
     .addon-check { width: 22px; height: 22px; flex: 0 0 auto; border-radius: 6px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; color: #fff; }
     .addon-row.on .addon-check { background: var(--brand); border-color: var(--brand); }
     .addon-check .msym { width: 14px; height: 14px; font-size: 14px; }
+
+    /* Home: "How your repair works" step strip */
+    .rw-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+    .rw-step { position: relative; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px 20px; transition: transform .18s ease, border-color .18s ease; }
+    .rw-step:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--brand) 40%, var(--border)); }
+    .rw-step-ic { width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); margin-bottom: 14px; }
+    .rw-step-ic .msym { width: 24px; height: 24px; font-size: 24px; }
+    .rw-step-n { position: absolute; top: 16px; right: 18px; font-family: var(--font-head); font-size: 20px; font-weight: 800; color: color-mix(in srgb, var(--brand) 32%, transparent); line-height: 1; }
+    .rw-step h3 { font-size: 16px; font-weight: 800; color: var(--dark); margin: 0 0 6px; }
+    .rw-step p { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin: 0; }
+    @media (max-width: 900px) { .rw-steps { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .rw-steps { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .rw-step { transition: none; } }
     @media (max-width: 560px) { .deals-toolbar { flex-direction: column; align-items: stretch; } .deals-sort { justify-content: space-between; } .deals-sort select { flex: 1; } .deals-facets .deals-select { flex: 1 1 42%; } .deals-count { margin-left: 0; width: 100%; } }
 
     /* ── Listing detail overlay ── */
@@ -5217,6 +5230,25 @@
             <p>Tell us the symptoms and we'll pin it down — with a price in about a minute.</p>
             <span class="svc-link">Start my quote <i class="msym" data-lucide="arrow-right"></i></span>
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW YOUR REPAIR WORKS -->
+    <div class="home-section reveal">
+      <div class="wrap">
+        <div class="home-head">
+          <div class="home-head-tx">
+            <h2>How your repair works</h2>
+            <p>From quote to fixed — four simple steps, no surprises along the way.</p>
+          </div>
+          <a class="head-link" onclick="showSection('quote', true)">Get a quote <i class="msym" data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="rw-steps">
+          <div class="rw-step"><span class="rw-step-n">1</span><div class="rw-step-ic"><i class="msym" data-lucide="calculator"></i></div><h3>Get your quote</h3><p>Pick your device and repair for an instant, itemised price online — or give us a call. No obligation.</p></div>
+          <div class="rw-step"><span class="rw-step-n">2</span><div class="rw-step-ic"><i class="msym" data-lucide="calendar-check"></i></div><h3>Book it in</h3><p>Drop into our Buderim workshop, or book a mobile visit across the Sunshine Coast &amp; Brisbane.</p></div>
+          <div class="rw-step"><span class="rw-step-n">3</span><div class="rw-step-ic"><i class="msym" data-lucide="wrench"></i></div><h3>We fix it</h3><p>Quality parts and experienced techs — and every device is fully tested before it goes back.</p></div>
+          <div class="rw-step"><span class="rw-step-n">4</span><div class="rw-step-ic"><i class="msym" data-lucide="badge-check"></i></div><h3>Back in your hands</h3><p>Most repairs are done the same day, backed by our 90-day warranty and no-fix-no-fee promise.</p></div>
         </div>
       </div>
     </div>
