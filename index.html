@@ -3777,6 +3777,22 @@
     .sell-step h4 { font-size: 15.5px; font-weight: 800; color: var(--dark); margin: 0 0 6px; }
     .sell-step p { font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0; }
     @media (max-width: 640px) { .sell-steps { grid-template-columns: 1fr; } }
+
+    /* Accessory add-ons (repair booking upsell) */
+    .addon-list { display: flex; flex-direction: column; gap: 10px; }
+    .addon-row { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 13px 15px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--card-bg); cursor: pointer; font-family: var(--font); transition: border-color .15s, background .15s; }
+    .addon-row:hover { border-color: color-mix(in srgb, var(--brand) 40%, var(--border)); }
+    .addon-row.on { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); }
+    .addon-row:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+    .addon-ic { width: 38px; height: 38px; border-radius: 10px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); }
+    .addon-ic .msym { width: 19px; height: 19px; font-size: 19px; }
+    .addon-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .addon-name { font-weight: 700; font-size: 14px; color: var(--dark); }
+    .addon-desc { font-size: 12px; color: var(--muted); }
+    .addon-price { font-weight: 800; font-size: 14px; color: var(--dark); flex: 0 0 auto; }
+    .addon-check { width: 22px; height: 22px; flex: 0 0 auto; border-radius: 6px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; color: #fff; }
+    .addon-row.on .addon-check { background: var(--brand); border-color: var(--brand); }
+    .addon-check .msym { width: 14px; height: 14px; font-size: 14px; }
     @media (max-width: 560px) { .deals-toolbar { flex-direction: column; align-items: stretch; } .deals-sort { justify-content: space-between; } .deals-sort select { flex: 1; } .deals-facets .deals-select { flex: 1 1 42%; } .deals-count { margin-left: 0; width: 100%; } }
 
     /* ── Listing detail overlay ── */
@@ -4409,7 +4425,7 @@
     .hero-trust .msym { font-size: 19px; color: var(--cta-text); }
 
     /* ── Feature cards row ── */
-    .feature-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .feature-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .feature-card {
       background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg);
       padding: 28px 24px; box-shadow: var(--shadow-card); cursor: pointer; text-align: left;
@@ -5323,11 +5339,6 @@
             <h3>Order one in</h3>
             <p>Chasing a specific model we don't have? We'll track it down.</p>
           </div>
-          <div class="feature-card" onclick="showSection('accessories')">
-            <div class="feature-ic"><i class="msym" data-lucide="headphones"></i></div>
-            <h3>Accessories</h3>
-            <p>Cases, cables, chargers and screen protection.</p>
-          </div>
         </div>
       </div>
     </div>
@@ -5558,6 +5569,10 @@
           </div>
           <div class="form-group"><label class="form-label">Notes (Optional)</label><textarea class="form-textarea"
               id="notes" placeholder="Tell us more about the issue…"></textarea></div>
+          <div class="form-group">
+            <label class="form-label" style="margin-bottom:10px;">Add accessories <span style="font-weight:400;color:#94a3b8;font-size:13px;">— tick any to add to your booking</span></label>
+            <div class="addon-list" id="repairAddons"></div>
+          </div>
           <button type="submit" class="btn">Get My Quote</button>
         </form>
       </div>
@@ -7104,7 +7119,6 @@
             <a onclick="startQuote('iPhone')" style="display:block;cursor:pointer;margin-bottom:8px;">iPhone Repairs</a>
             <a onclick="startQuote('MacBook')" style="display:block;cursor:pointer;margin-bottom:8px;">MacBook Repairs</a>
             <a onclick="startQuote('iPad')" style="display:block;cursor:pointer;margin-bottom:8px;">iPad Repairs</a>
-            <a onclick="showSection('accessories')" style="display:block;cursor:pointer;margin-bottom:8px;">Accessories</a>
             <a onclick="showSection('quote')" style="display:block;cursor:pointer;">Start a quote</a>
           </p>
         </div>
@@ -9261,6 +9275,36 @@
       document.getElementById('finalSummary').innerHTML = '<div class="summary-title"><span>📋</span> Summary</div><div class="summary-row"><span><strong>Device:</strong></span><span>' + selModel + '</span></div>' + selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span>Total</span><span>$' + tot + '</span></div>';
     }
 
+    // ── Accessory add-ons on the repair booking (upsell) ──
+    // Add-ons are stored as selRepairs line items (flagged addonKey) so every
+    // total / summary / booking-submit already includes them automatically.
+    var ACCESSORY_ADDONS = [
+      { key: 'protector', name: 'Screen Protector', desc: 'Tempered glass — fitted for you in-store', price: 25, icon: 'shield' },
+      { key: 'case', name: 'Protective Case', desc: 'Slim matte finish, raised-edge drop protection', price: 35, icon: 'smartphone' },
+      { key: 'cable', name: 'Charging Cable', desc: 'USB-C or Lightning, MFi certified', price: 29, icon: 'cable' }
+    ];
+    function _hasAddon(key) { return selRepairs.some(function (r) { return r.addonKey === key; }); }
+    function toggleRepairAddon(key) {
+      var a = ACCESSORY_ADDONS.filter(function (x) { return x.key === key; })[0]; if (!a) return;
+      if (_hasAddon(key)) selRepairs = selRepairs.filter(function (r) { return r.addonKey !== key; });
+      else selRepairs.push({ name: a.name + ' (add-on)', price: a.price, addonKey: key });
+      renderRepairAddons();
+      showFinalSummary();
+    }
+    function renderRepairAddons() {
+      var wrap = document.getElementById('repairAddons'); if (!wrap) return;
+      wrap.innerHTML = ACCESSORY_ADDONS.map(function (a) {
+        var on = _hasAddon(a.key);
+        return '<button type="button" class="addon-row' + (on ? ' on' : '') + '" onclick="toggleRepairAddon(\'' + a.key + '\')" aria-pressed="' + on + '">'
+          + '<span class="addon-ic"><i class="msym" data-lucide="' + a.icon + '"></i></span>'
+          + '<span class="addon-txt"><span class="addon-name">' + a.name + '</span><span class="addon-desc">' + a.desc + '</span></span>'
+          + '<span class="addon-price">+$' + a.price + '</span>'
+          + '<span class="addon-check">' + (on ? '<i class="msym" data-lucide="check"></i>' : '') + '</span>'
+          + '</button>';
+      }).join('');
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+    }
+
     // LOCATION
     function selectServiceType(type) {
       serviceType = type; document.getElementById('stCard').classList.toggle('selected', type === 'store'); document.getElementById('muCard').classList.toggle('selected', type === 'mobile');
@@ -9383,7 +9427,7 @@
       document.getElementById('page' + pg).classList.remove('hidden'); document.getElementById('step' + pg).classList.add('active');
       for (let i = 1; i < pg; i++)document.getElementById('step' + i).classList.add('completed');
       if (pg === 2) { selRepairs = []; renderRepairs(); }
-      if (pg === 3) { showFinalSummary(); if (!serviceType) selectServiceType('store'); }
+      if (pg === 3) { showFinalSummary(); renderRepairAddons(); if (!serviceType) selectServiceType('store'); }
       if (pg === 4) showQuoteDetails();
       if (pg === 1) renderBC();
       document.querySelector('.quote-wrap').scrollIntoView({ behavior: 'smooth' });
