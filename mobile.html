@@ -4997,78 +4997,92 @@
        Loaded last so it wins the cascade; desktop (≥768px) untouched.
        ════════════════════════════════════════════════════════════════ -->
   <style id="mobile-redesign">
+  /* ── drawer-scoped rules (hamburger shows at <=900px) ── */
+  @media (max-width: 900px) {
+    /* Collapse Repairs/Refurbs submenus until their row is tapped */
+    .nav.open .nav-dd { display: none !important; }
+    .nav.open .nav-item.open .nav-dd { display: flex !important; }
+    .nav.open .nav-item.open .nav-chev { transform: rotate(180deg) !important; }
+    /* Dark/light toggle button sitting in the top header */
+    .hdr-icon-btn.theme { border-radius: 11px; background: color-mix(in srgb, var(--dark) 8%, transparent); color: var(--dark); }
+  }
+
   @media (max-width: 767px) {
 
-    /* ── kill horizontal overflow, tighten gutters ───────────────── */
+    /* ── kill horizontal overflow, tighten gutters ── */
     html, body { max-width: 100%; overflow-x: hidden; }
-    .wrap { padding-left: 18px; padding-right: 18px; }
+    .wrap { padding-left: 16px; padding-right: 16px; }
     img, svg, video, canvas { max-width: 100%; height: auto; }
-    .section { padding-bottom: 88px; }               /* clear the sticky CTA bar */
+    .section { padding-bottom: 26px; }
 
-    /* ── HEADER: compact, everything fits ────────────────────────── */
-    .header { padding: 0 14px; gap: 10px; }
-    .logo-img { height: 30px; width: auto; }
-    .header-actions { gap: 6px; }
+    /* sticky bottom CTA bar removed per request */
+    .mobile-cta-bar { display: none !important; }
 
-    /* ── HERO: balanced — headline + CTAs first, quote tool below ── */
-    .hero-v2 { padding: 24px 0 30px; text-align: left; overflow: visible; }
-    .hero-mesh, .hero-decals, .page-decals { display: none; }   /* no stray decals expanding width */
-    .hero-split {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);          /* THE overflow fix */
-      gap: 22px;
-    }
+    /* ── HEADER: compact, sized/spaced like the reference ── */
+    .header { padding: 0 16px; height: 60px; min-height: 60px; gap: 10px; }
+    .logo-img { height: 27px; width: auto; }
+    .header-actions { gap: 8px; margin-left: auto; }
+    .hdr-icon-btn { width: 40px; height: 40px; }
+    .hdr-icon-btn .msym { font-size: 20px; }
+    .hdr-icon-btn.menu { border-radius: 11px; }
+
+    /* ── HERO: balanced + denser ── */
+    .hero-v2 { padding: 16px 0 22px; text-align: left; overflow: visible; }
+    .hero-mesh, .hero-decals, .page-decals { display: none; }
+    .hero-split { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
     .hero-copy  { order: 1; min-width: 0; max-width: 100%; }
-    .hero-quote { order: 2; min-width: 0; width: 100%; max-width: 100%; margin: 0; }
+    .hero-quote { order: 2; min-width: 0; width: 100%; max-width: 100%; margin: 0; padding: 16px; }
 
-    .hero-eyebrow { font-size: 12.5px; margin-bottom: 14px; }
-    .hero-v2 h1 { font-size: clamp(30px, 8.6vw, 42px); line-height: 1.08; letter-spacing: -.8px; margin-bottom: 12px; }
-    .hero-v2 .hero-sub { font-size: 15.5px; line-height: 1.55; margin: 0 0 20px; max-width: 100%; }
+    .hero-eyebrow { font-size: 11.5px; margin-bottom: 10px; }
+    .hero-v2 h1 { font-size: clamp(26px, 7.6vw, 34px); line-height: 1.1; letter-spacing: -.6px; margin-bottom: 10px; }
+    .hero-v2 .hero-sub { font-size: 14px; line-height: 1.5; margin: 0 0 16px; max-width: 100%; }
 
-    .hero-cta-row { flex-direction: column; gap: 10px; align-items: stretch; }
+    .hero-cta-row { flex-direction: column; gap: 8px; align-items: stretch; }
     .hero-cta-row .btn-cta,
-    .hero-cta-row .btn-outline { width: 100%; justify-content: center; font-size: 15.5px; padding: 15px 20px; }
-
-    .hero-trust { gap: 10px 18px; margin-top: 20px; font-size: 12.5px; justify-content: flex-start; }
-
-    /* quote card fits its width */
-    .hero-quote { padding: 18px; }
-    .hq-head { font-size: 15px; }
+    .hero-cta-row .btn-outline { width: 100%; justify-content: center; font-size: 14.5px; padding: 12px 18px; }
+    .hero-trust { gap: 8px 16px; margin-top: 14px; font-size: 12px; justify-content: flex-start; }
+    .hq-head { font-size: 14.5px; }
     .hq-row  { min-width: 0; max-width: 100%; }
     .hq-select { width: 100%; min-width: 0; max-width: 100%; }
 
-    /* ── WHY STRIP → clean 2×2 ───────────────────────────────────── */
+    /* ── WHY STRIP → 2×2, tighter ── */
     .why-strip { grid-template-columns: 1fr 1fr; }
-    .why-item { padding: 16px 15px; border-right: 1px solid var(--border) !important; border-bottom: 1px solid var(--border) !important; }
+    .why-item { padding: 13px 12px; border-right: 1px solid var(--border) !important; border-bottom: 1px solid var(--border) !important; }
     .why-item:nth-child(2n) { border-right: none !important; }
     .why-item:nth-child(n+3) { border-bottom: none !important; }
-    .why-item h4 { font-size: 13.5px; }
-    .why-item p  { font-size: 11.5px; line-height: 1.45; }
+    .why-item h4 { font-size: 13px; }
+    .why-item p  { font-size: 11px; line-height: 1.4; }
 
-    /* ── SECTION HEADS: consistent mobile hierarchy ──────────────── */
+    /* ── SECTION rhythm + heads (denser) ── */
+    .home-section, .home-section.alt { padding-top: 34px; padding-bottom: 34px; }
     .home-head { flex-direction: column; align-items: flex-start; gap: 6px; }
     .home-head .head-link { margin-top: 2px; }
-    .home-section h2, .section-head h2 { font-size: 26px; line-height: 1.15; letter-spacing: -.5px; }
-    .home-section .home-head-tx p, .section-head p { font-size: 14.5px; }
+    .home-section h2, .section-head h2 { font-size: 22px; line-height: 1.15; letter-spacing: -.4px; }
+    .home-section .home-head-tx p, .section-head p { font-size: 13.5px; }
 
-    /* ── CARD GRIDS → single column, comfy tap targets ───────────── */
-    .feature-row, .svc-grid, .home-deals-grid, .svc-bento { grid-template-columns: 1fr !important; gap: 14px; }
-    .rw-steps { grid-template-columns: 1fr 1fr; gap: 12px; }
-    .ws-grid  { grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    /* ── REFURB DEALS: 1-up cards, stacked toolbar ───────────────── */
+    /* ── CARD GRIDS ── */
+    .feature-row, .svc-grid, .home-deals-grid, .svc-bento { grid-template-columns: 1fr !important; gap: 12px; }
+    .rw-steps { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ws-grid  { grid-template-columns: 1fr 1fr; gap: 10px; }
     .deals-grid { grid-template-columns: 1fr !important; }
     .deals-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
-
-    /* ── REVIEWS: single-file, swipeable ─────────────────────────── */
     .hr-track .hr-card { flex-basis: 84vw; min-width: 84vw; }
 
-    /* ── FORMS: full width, no side overflow ─────────────────────── */
+    /* ── REPAIRS PAGE: 3 across (device types + models + repairs) ── */
+    #sec-quote .cat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 10px; }
+    #sec-quote .grid     { grid-template-columns: repeat(3, 1fr) !important; gap: 10px; }
+    #sec-quote .cat-grid .cat-card { padding: 14px 9px; }
+    #sec-quote .cat-grid .cat-name { font-size: 15.5px; letter-spacing: -.3px; }
+    #sec-quote .cat-grid .cat-sub  { font-size: 11px; }
+    #sec-quote .cat-grid .cat-icon { margin-bottom: 8px; }
+
+    /* ── REFURBS PAGE: remove the big gap above the heading ── */
+    #sec-deals { padding-top: 14px !important; }
+
+    /* ── FORMS + FOOTER ── */
     form, .quote-wrap, .area-wrap { max-width: 100%; }
     input, select, textarea, .btn, .btn-cta { max-width: 100%; }
-
-    /* ── FOOTER: stack ───────────────────────────────────────────── */
-    .footer-grid, .foot-grid { grid-template-columns: 1fr 1fr; gap: 22px 18px; }
+    .footer-grid, .foot-grid { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
   }
   </style>
 </head>
@@ -5086,7 +5100,7 @@
       <button class="nav-link active" data-section="home" onclick="showSection('home', true)">Home</button>
 
       <div class="nav-item">
-        <button class="nav-link nav-dd-toggle" data-section="quote" onclick="showSection('quote', true)">Repairs <i class="msym nav-chev" data-lucide="chevron-down"></i></button>
+        <button class="nav-link nav-dd-toggle" data-section="quote" onclick="navDropToggle(event, this, 'quote')">Repairs <i class="msym nav-chev" data-lucide="chevron-down"></i></button>
         <div class="nav-dd">
           <button onclick="startQuote('iPhone')"><i class="msym" data-lucide="smartphone"></i> iPhone Repairs</button>
           <button onclick="startQuote('MacBook')"><i class="msym" data-lucide="laptop"></i> MacBook Repairs</button>
@@ -5095,7 +5109,7 @@
       </div>
 
       <div class="nav-item">
-        <button class="nav-link nav-dd-toggle" data-section="deals" onclick="showSection('deals', true)">Refurbs <i class="msym nav-chev" data-lucide="chevron-down"></i></button>
+        <button class="nav-link nav-dd-toggle" data-section="deals" onclick="navDropToggle(event, this, 'deals')">Refurbs <i class="msym nav-chev" data-lucide="chevron-down"></i></button>
         <div class="nav-dd">
           <button onclick="showSection('deals', true)"><i class="msym" data-lucide="package"></i> In Stock</button>
           <button onclick="showSection('order', true)"><i class="msym" data-lucide="truck"></i> Order In</button>
@@ -5131,6 +5145,7 @@
     </div>
 
     <div class="header-actions">
+      <button class="hdr-icon-btn theme" onclick="toggleTheme()" aria-label="Toggle dark and light mode"><i class="msym" data-lucide="sun-moon"></i></button>
       <a class="hdr-icon-btn phone" href="tel:0467748433" aria-label="Call us"><i class="msym" data-lucide="phone"></i></a>
       <button class="hdr-icon-btn cart" onclick="openAccCart()" aria-label="Cart">
         <i class="msym" data-lucide="shopping-cart"></i>
@@ -7496,7 +7511,23 @@
     function toggleNav(btn) {
       var n = document.querySelector('.nav'); if (!n) return;
       var open = n.classList.toggle('open');
+      // start with all submenus collapsed each time the drawer opens
+      if (open) n.querySelectorAll('.nav-item.open').forEach(function (i) { i.classList.remove('open'); });
       syncMenuExpanded(open);
+    }
+    // In the mobile drawer, tapping Repairs/Refurbs expands its submenu
+    // (accordion) instead of navigating. On desktop it navigates as usual.
+    function navDropToggle(ev, btn, section) {
+      var inDrawer = window.matchMedia('(max-width: 900px)').matches;
+      if (inDrawer) {
+        if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+        var item = btn.closest('.nav-item'); if (!item) return;
+        var opening = !item.classList.contains('open');
+        document.querySelectorAll('.nav .nav-item.open').forEach(function (o) { if (o !== item) o.classList.remove('open'); });
+        item.classList.toggle('open', opening);
+      } else {
+        showSection(section, true);
+      }
     }
     function syncMenuExpanded(open) {
       document.querySelectorAll('[data-nav-toggle]').forEach(function (b) { b.setAttribute('aria-expanded', open ? 'true' : 'false'); });
