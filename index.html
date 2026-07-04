@@ -1865,7 +1865,7 @@
 
     /* Write-a-review form polish */
     #reviewFormWrap { position: relative; }
-    .rv-form-accent { position: absolute; top: -36px; left: -36px; right: -36px; height: 90px; background: linear-gradient(135deg, rgba(37,99,235,.16), rgba(109,40,217,.04)); border-radius: 18px 18px 60% 60%; pointer-events: none; }
+    .rv-form-accent { position: absolute; top: -52px; left: -36px; right: -36px; height: 90px; background: linear-gradient(135deg, rgba(37,99,235,.16), rgba(109,40,217,.04)); border-radius: 18px 18px 60% 60%; pointer-events: none; }
     .rv-form-badge { width: 48px; height: 48px; border-radius: 14px; background: var(--grad); display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 6px 18px rgba(37,99,235,.4); flex: none; }
     .star-pick { transition: transform .12s, opacity .12s; }
     .star-pick:hover { transform: scale(1.18); }
@@ -3930,16 +3930,12 @@
     .rd-pay { margin-top: 20px; }
     .rd-pay-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; display: block; margin-bottom: 9px; }
     .rd-pay-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .rd-pay-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--dark); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; line-height: 1; }
-    .rd-pay-badge .msym { width: 15px; height: 15px; font-size: 15px; color: var(--muted); }
-    .rd-pay-badge.rd-pp b { font-style: italic; letter-spacing: -.02em; }
-    .rd-pay-badge.rd-pp b:first-child { color: #003087; } .rd-pay-badge.rd-pp b:last-child { color: #0090da; }
-    body.light .rd-pay-badge.rd-pp b:first-child { color: #002b7a; }
-    .rd-mc { position: relative; width: 27px; height: 16px; display: inline-block; flex: 0 0 auto; }
-    .rd-mc span { position: absolute; top: 0; width: 16px; height: 16px; border-radius: 50%; }
-    .rd-mc span:first-child { left: 0; background: #eb001b; }
-    .rd-mc span:last-child { right: 0; background: #f79e1b; opacity: .92; }
-    .rd-mc::after { content: ""; position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 6px; height: 16px; background: #ff5f00; border-radius: 40%; }
+    .rd-pay-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #1f2937; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 7px 10px; line-height: 1; }
+    .rd-pay-badge .msym { width: 15px; height: 15px; font-size: 15px; color: #6b7280; }
+    .rd-pay-logo { width: auto; display: block; flex: 0 0 auto; }
+    .rd-pay-logo-pp { height: 16px; }
+    .rd-pay-logo-mc { height: 20px; }
+    body.light .rd-pay-badge { background: #fff; }
 
     /* about, inside the buy panel */
     .rd-panel-about { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
@@ -4937,6 +4933,7 @@
         </div>
       </div>
 
+      <button class="nav-link" data-section="order" onclick="showSection('order', true)">Order In</button>
       <button class="nav-link" data-section="sell" onclick="showSection('sell', true)">Sell Your Device</button>
       <button class="nav-link" data-section="reviews" onclick="showSection('reviews', true)">Reviews</button>
       <button class="nav-link" data-section="contact" onclick="showSection('contact', true)">Contact</button>
@@ -8453,9 +8450,9 @@
       h += '</div>';
       h += '<ul class="rd-checklist"><li class="rd-check"><i class="msym" data-lucide="check"></i> Fully tested &amp; sanitised before sale</li><li class="rd-check"><i class="msym" data-lucide="check"></i> IMEI checked — no activation lock</li><li class="rd-check"><i class="msym" data-lucide="check"></i> Genuine local warranty — Buderim, QLD</li></ul>';
       h += '<div class="rd-pay"><span class="rd-pay-label">We accept</span><div class="rd-pay-list">'
-        + '<span class="rd-pay-badge rd-pp"><b>Pay</b><b>Pal</b></span>'
+        + '<span class="rd-pay-badge"><img src="Images/pay-paypal.svg" alt="PayPal" class="rd-pay-logo rd-pay-logo-pp"></span>'
+        + '<span class="rd-pay-badge"><img src="Images/pay-mastercard.svg" alt="Mastercard" class="rd-pay-logo rd-pay-logo-mc"> Mastercard</span>'
         + '<span class="rd-pay-badge"><i class="msym" data-lucide="credit-card"></i> Card</span>'
-        + '<span class="rd-pay-badge"><span class="rd-mc"><span></span><span></span></span> Mastercard</span>'
         + '<span class="rd-pay-badge"><i class="msym" data-lucide="banknote"></i> Cash</span>'
         + '</div></div>';
       if (aboutHtml) { h += '<div class="rd-panel-about"><div class="rd-panel-about-h">About this device</div>' + aboutHtml + '<p class="rd-about-process">Every device is opened up, cleaned, function-tested across every major component and fully data-wiped before it\'s listed.</p></div>'; }
@@ -10482,6 +10479,26 @@
       };
       window.chatGo = function (sec) { if (typeof showSection === 'function') showSection(sec, true); window.chatToggle(); };
       window.addEventListener('load', function () { if (window.lucide && lucide.createIcons) lucide.createIcons(); });
+    })();
+  </script>
+  <!-- ═══ Tawk.to live chat ═══
+       Reply to website chats from your phone or computer (free apps: iOS / Android / Mac / Windows).
+       SET UP (one-time):
+         1. Create a free account at https://tawk.to
+         2. Dashboard → Administration → Channels → Chat Widget
+         3. Copy the "src" URL from the widget code — it looks like:
+              https://embed.tawk.to/XXXXXXXXXXXXXXXXXXXXXXXX/1abcdefgh
+         4. Paste it below in place of the PROPERTY_ID/WIDGET_ID line.
+       Until it's filled in, the built-in chat assistant stays active. -->
+  <script>
+    (function () {
+      var TAWK_EMBED_SRC = 'https://embed.tawk.to/PROPERTY_ID/WIDGET_ID';   // ← paste your tawk.to widget src here
+      if (TAWK_EMBED_SRC.indexOf('PROPERTY_ID') !== -1) return;             // not configured yet — keep the built-in chat
+      var w = document.getElementById('chatWidget'); if (w) w.style.display = 'none';   // hide the built-in widget
+      window.Tawk_API = window.Tawk_API || {};
+      var s1 = document.createElement('script'), s0 = document.getElementsByTagName('script')[0];
+      s1.async = true; s1.src = TAWK_EMBED_SRC; s1.charset = 'UTF-8'; s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
     })();
   </script>
 </body>

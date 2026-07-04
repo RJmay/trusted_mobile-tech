@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 30" role="img" aria-label="Mastercard">
+  <defs><clipPath id="mcClip"><circle cx="18" cy="15" r="13"/></clipPath></defs>
+  <circle cx="18" cy="15" r="13" fill="#EB001B"/>
+  <circle cx="30" cy="15" r="13" fill="#F79E1B"/>
+  <circle cx="30" cy="15" r="13" fill="#FF5F00" clip-path="url(#mcClip)"/>
+</svg>
