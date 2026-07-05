@@ -1292,6 +1292,15 @@
       resize: vertical;
     }
 
+    /* Missing-required-field highlight (quote details validation) */
+    .form-input.field-error,
+    .form-select.field-error,
+    .form-textarea.field-error {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, .06);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, .12);
+    }
+
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -5824,7 +5833,7 @@
             <div class="address-ok" id="addressOk">✅ Your address is within our service area!</div>
           </div>
         </div>
-        <form onsubmit="submitForm(event)" style="max-width:680px;margin:0 auto;">
+        <form onsubmit="submitForm(event)" novalidate style="max-width:680px;margin:0 auto;">
           <div class="two-col">
             <div class="form-group"><label class="form-label">Full Name *</label><input type="text" class="form-input"
                 id="name" required placeholder="John Smith"></div>
@@ -7499,16 +7508,13 @@
       });
       if (window.lucide && lucide.createIcons) lucide.createIcons();
       // Continuous, never-stopping scroll — JS-driven so nothing (incl. reduced-motion) halts it
-      var offset = 0, paused = false, last = null, speed = 42;
-      var carousel = t.closest('.hr-carousel');
-      if (carousel) {
-        carousel.addEventListener('mouseenter', function () { paused = true; });
-        carousel.addEventListener('mouseleave', function () { paused = false; });
-      }
+      // Never-stopping, seamless loop — no hover/touch pause, replays reviews forever
+      var offset = 0, last = null, speed = 42;
       function hrFrame(ts) {
         if (last === null) last = ts;
         var dt = (ts - last) / 1000; last = ts;
-        if (!paused && !document.hidden) {
+        if (dt > 0.1) dt = 0.1;                 // clamp jumps after the tab was backgrounded
+        if (!document.hidden) {
           var half = t.scrollWidth / 2;
           if (half > 0) {
             offset -= speed * dt;
@@ -9747,8 +9753,25 @@
       document.getElementById('quoteRepairsList').innerHTML = selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span><strong>Total</strong></span><span><strong>$' + tot + '</strong></span></div>';
     }
 
+    // Clear the red required-field highlight the moment a field is corrected
+    document.addEventListener('input', function (e) { if (e.target && e.target.classList) e.target.classList.remove('field-error'); }, true);
+    document.addEventListener('change', function (e) { if (e.target && e.target.classList) e.target.classList.remove('field-error'); }, true);
     function submitForm(e) {
       e.preventDefault();
+      // Required-field check: highlight any missing/invalid fields red and scroll to the first
+      var _reqIds = ['name', 'phone', 'email', 'date', 'time'];
+      var _firstBad = null;
+      _reqIds.forEach(function (id) {
+        var el = document.getElementById(id); if (!el) return;
+        var bad = el.checkValidity ? !el.checkValidity() : !(el.value && el.value.trim());
+        el.classList.toggle('field-error', bad);
+        if (bad && !_firstBad) _firstBad = el;
+      });
+      if (_firstBad) {
+        _firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        try { _firstBad.focus({ preventScroll: true }); } catch (err) { _firstBad.focus(); }
+        return;
+      }
       if (serviceType === 'mobile' && !addressValid) { const ls = document.querySelector('.location-section'); ls.style.borderColor = '#ef4444'; document.getElementById('addressError').style.display = 'block'; ls.scrollIntoView({ behavior: 'smooth' }); setTimeout(() => ls.style.borderColor = '', 3000); return; }
       const qn = generateQN();
       currentQuoteNumber = qn;
