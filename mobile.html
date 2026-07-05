@@ -5156,11 +5156,16 @@
     #sec-reviews .review-text { font-size: 10.5px !important; line-height: 1.35 !important; }
 
     /* ── FOOTER: brand full-width, then Get in Touch / Services / Company 3-across ── */
-    .footer-grid { grid-template-columns: 1fr 1fr 1fr !important; text-align: left !important; gap: 22px 10px !important; margin-bottom: 20px !important; }
+    .footer-grid { grid-template-columns: 1.5fr 1fr 1fr !important; text-align: left !important; gap: 22px 8px !important; margin-bottom: 20px !important; }
     .footer-grid > div:first-child { grid-column: 1 / -1; }
     .footer-grid > div > div[style*="flex-direction:column"] { align-items: flex-start !important; }
     .footer-grid h3 { font-size: 13.5px; }
-    .footer-grid p, .footer-grid a, .footer-grid span { font-size: 11.5px; word-break: break-word; }
+    .footer-grid p, .footer-grid a, .footer-grid span { font-size: 11px; }
+    /* Get in Touch: keep every entry (phone, email, socials) on a single line */
+    .footer-grid > div:nth-child(2) p,
+    .footer-grid > div:nth-child(2) a,
+    .footer-grid > div:nth-child(2) a span { white-space: nowrap !important; font-size: 9.5px !important; }
+    .footer-grid > div:nth-child(2) a svg { width: 14px !important; height: 14px !important; }
     .foot-grid { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
   }
   </style>
@@ -5573,7 +5578,7 @@
             <span class="rb-rating"><span class="rb-top"><span class="rb-name">Google</span><span class="rb-stars">★★★★★</span></span><span class="rb-line"><span class="rb-num">4.6</span> from 100+ reviews</span></span>
           </a>
           <a class="rating-badge" href="https://www.facebook.com/profile.php?id=61581030196523" target="_blank" rel="noopener" aria-label="Trusted Mobile Tech on Facebook">
-            <span class="rb-logo"><svg class="rb-brand" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></span>
+            <span class="rb-logo"><svg class="rb-brand" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></span>
             <span class="rb-rating"><span class="rb-top"><span class="rb-name">Facebook</span><span class="rb-stars">★★★★★</span></span><span class="rb-line">Recommended locally</span></span>
           </a>
           <a class="rating-badge" onclick="showSection('reviews')" style="cursor:pointer;">
