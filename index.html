@@ -5039,7 +5039,9 @@
     .hero-cta-row { flex-direction: column; gap: 8px; align-items: stretch; }
     .hero-cta-row .btn-cta,
     .hero-cta-row .btn-outline { width: 100%; justify-content: center; font-size: 14.5px; padding: 12px 18px; }
-    .hero-trust { gap: 8px 16px; margin-top: 14px; font-size: 12px; justify-content: flex-start; }
+    .hero-trust { gap: 9px; margin-top: 14px; font-size: 10.5px; justify-content: center; flex-wrap: nowrap; }
+    .hero-trust span { white-space: nowrap; }
+    .hero-trust .msym { font-size: 14px; }
     .hq-head { font-size: 14.5px; }
     .hq-row  { min-width: 0; max-width: 100%; }
     .hq-select { width: 100%; min-width: 0; max-width: 100%; }
@@ -9571,9 +9573,9 @@
     // Add-ons are stored as selRepairs line items (flagged addonKey) so every
     // total / summary / booking-submit already includes them automatically.
     var ACCESSORY_ADDONS = [
-      { key: 'protector', name: 'Screen Protector', desc: 'Tempered glass — fitted for you in-store', price: 25, icon: 'shield' },
-      { key: 'case', name: 'Protective Case', desc: 'Slim matte finish, raised-edge drop protection', price: 35, icon: 'smartphone' },
-      { key: 'cable', name: 'Charging Cable', desc: 'USB-C or Lightning, MFi certified', price: 29, icon: 'cable' }
+      { key: 'protector', name: 'Screen Protector', desc: 'Tempered glass — fitted for you in-store', price: 15, icon: 'shield' },
+      { key: 'case', name: 'Protective Case', desc: 'Slim matte finish, raised-edge drop protection', price: 10, icon: 'smartphone' },
+      { key: 'cable', name: 'Charger', desc: 'Fast-charge wall charger', price: 5, icon: 'plug-zap' }
     ];
     function _hasAddon(key) { return selRepairs.some(function (r) { return r.addonKey === key; }); }
     function toggleRepairAddon(key) {
@@ -10228,20 +10230,20 @@
         <div style="margin-bottom:24px;">
           <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;">🛍️ Add-Ons</div>
           <div style="display:flex;flex-direction:column;gap:10px;">
-            <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('cable',29,this)">
+            <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('cable',5,this)">
               <input type="checkbox" id="up-cable" style="accent-color:var(--brand);">
-              <div style="flex:1;"><div style="font-weight:700;">⚡ Charging Cable</div><div style="font-size:12px;color:#94a3b8;">USB-C or Lightning — MFi certified</div></div>
-              <div style="font-weight:800;color:#e2e8f0;">+$29</div>
+              <div style="flex:1;"><div style="font-weight:700;">⚡ Charger</div><div style="font-size:12px;color:#94a3b8;">Fast-charge wall charger</div></div>
+              <div style="font-weight:800;color:#e2e8f0;">+$5</div>
             </label>
-            <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('protector',25,this)">
+            <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('protector',15,this)">
               <input type="checkbox" id="up-protector" style="accent-color:var(--brand);">
               <div style="flex:1;"><div style="font-weight:700;">🛡️ Screen Protector</div><div style="font-size:12px;color:#94a3b8;">Tempered glass — includes installation</div></div>
-              <div style="font-weight:800;color:#e2e8f0;">+$25</div>
+              <div style="font-weight:800;color:#e2e8f0;">+$15</div>
             </label>
-            <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('case',35,this)">
+            <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('case',10,this)">
               <input type="checkbox" id="up-case" style="accent-color:var(--brand);">
               <div style="flex:1;"><div style="font-weight:700;">📦 Protective Case</div><div style="font-size:12px;color:#94a3b8;">Slim matte finish — drop protection</div></div>
-              <div style="font-weight:800;color:#e2e8f0;">+$35</div>
+              <div style="font-weight:800;color:#e2e8f0;">+$10</div>
             </label>
           </div>
         </div>
@@ -10410,7 +10412,7 @@
     // ── Checkout Modal ──
     var _coDevicePrice = 0, _coShippingCost = 0, _coShippingType = null;
     var _coUpsells = { cable: false, protector: false, case: false };
-    var _coUpsellPrices = { cable: 29, protector: 25, case: 35 };
+    var _coUpsellPrices = { cable: 5, protector: 15, case: 10 };
 
     function openCheckout(name, spec, price) {
       _coDevicePrice = price; _coShippingCost = 0; _coShippingType = null;
@@ -10450,7 +10452,7 @@
       var lines = '<div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;"><span>Device</span><span>$' + _coDevicePrice + '</span></div>';
       if (_coShippingCost > 0) lines += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;"><span>Shipping</span><span>$' + _coShippingCost + '</span></div>';
       if (_coShippingType === 'pickup') lines += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;"><span>Store Pickup</span><span style="color:var(--green);">Free</span></div>';
-      Object.entries(_coUpsells).forEach(function (e) { if (e[1]) { var labels = { cable: 'Charging Cable', protector: 'Screen Protector', case: 'Protective Case' }; lines += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;"><span>' + labels[e[0]] + '</span><span>$' + _coUpsellPrices[e[0]] + '</span></div>'; } });
+      Object.entries(_coUpsells).forEach(function (e) { if (e[1]) { var labels = { cable: 'Charger', protector: 'Screen Protector', case: 'Protective Case' }; lines += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px;"><span>' + labels[e[0]] + '</span><span>$' + _coUpsellPrices[e[0]] + '</span></div>'; } });
       document.getElementById('coSummaryLines').innerHTML = lines;
       document.getElementById('coTotal').textContent = '$' + total;
     }
@@ -10508,10 +10510,10 @@
     // To use real CJ Dropshipping product photos, replace each `img` path
     // with the product image URL from your CJ listing.
     var ACCESSORIES = [
-      { id: 'case-clear',   name: 'Clear Protective Case',    blurb: 'Slim shock-absorbing TPU, crystal clear.',        price: 24, img: 'accessories/case-clear.svg',   cjSku: '' },
-      { id: 'case-rugged',  name: 'Rugged Armor Case',        blurb: 'Heavy-duty drop protection with raised edges.',   price: 34, img: 'accessories/case-rugged.svg',  cjSku: '' },
-      { id: 'screen-glass', name: 'Tempered Glass Protector', blurb: '9H hardness, bubble-free, 2-pack.',                price: 19, img: 'accessories/screen-glass.svg', cjSku: '' },
-      { id: 'charger-20w',  name: '20W USB-C Fast Charger',   blurb: 'Wall adapter for rapid charging.',                price: 29, img: 'accessories/charger-20w.svg',  cjSku: '' },
+      { id: 'case-clear',   name: 'Clear Protective Case',    blurb: 'Slim shock-absorbing TPU, crystal clear.',        price: 10, img: 'accessories/case-clear.svg',   cjSku: '' },
+      { id: 'case-rugged',  name: 'Rugged Armor Case',        blurb: 'Heavy-duty drop protection with raised edges.',   price: 10, img: 'accessories/case-rugged.svg',  cjSku: '' },
+      { id: 'screen-glass', name: 'Tempered Glass Protector', blurb: '9H hardness, bubble-free, 2-pack.',                price: 15, img: 'accessories/screen-glass.svg', cjSku: '' },
+      { id: 'charger-20w',  name: '20W USB-C Fast Charger',   blurb: 'Wall adapter for rapid charging.',                price: 5,  img: 'accessories/charger-20w.svg',  cjSku: '' },
       { id: 'cable-usbc',   name: 'USB-C to Lightning Cable', blurb: 'Braided 1m cable, fast-charge ready.',            price: 18, img: 'accessories/cable-usbc.svg',   cjSku: '' },
       { id: 'powerbank',    name: '10,000mAh Power Bank',     blurb: 'Pocket-size dual-port portable charger.',         price: 45, img: 'accessories/powerbank.svg',    cjSku: '' },
       { id: 'earbuds',      name: 'Wireless Earbuds',         blurb: 'Bluetooth 5.3 with charging case.',               price: 59, img: 'accessories/earbuds.svg',      cjSku: '' },

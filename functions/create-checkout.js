@@ -64,9 +64,9 @@ exports.handler = async (event) => {
 
   // Upsells
   const upsellMeta = {
-    cable:     ['Charging Cable (MFi certified)', 2900],
-    protector: ['Screen Protector + Installation', 2500],
-    case:      ['Protective Case',                 3500],
+    cable:     ['Charger',                          500],
+    protector: ['Screen Protector + Installation', 1500],
+    case:      ['Protective Case',                 1000],
   };
   for (const [key, active] of Object.entries(upsells)) {
     if (active && upsellMeta[key]) {
