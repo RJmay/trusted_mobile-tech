@@ -5019,10 +5019,10 @@
 
     /* ── HEADER: compact, sized/spaced like the reference ── */
     .header { padding: 0 16px; height: 60px; min-height: 60px; gap: 10px; }
-    .logo-img { height: 27px; width: auto; }
-    .header-actions { gap: 8px; margin-left: auto; }
-    .hdr-icon-btn { width: 40px; height: 40px; }
-    .hdr-icon-btn .msym { font-size: 20px; }
+    .logo-img { height: 34px; width: auto; }
+    .header-actions { gap: 7px; margin-left: auto; }
+    .hdr-icon-btn { width: 35px; height: 35px; }
+    .hdr-icon-btn .msym { font-size: 18px; }
     .hdr-icon-btn.menu { border-radius: 11px; }
 
     /* ── HERO: balanced + denser ── */
@@ -5060,28 +5060,96 @@
     .home-section .home-head-tx p, .section-head p { font-size: 13.5px; }
 
     /* ── CARD GRIDS ── */
-    .feature-row, .svc-grid, .home-deals-grid, .svc-bento { grid-template-columns: 1fr !important; gap: 12px; }
+    .svc-grid { grid-template-columns: 1fr !important; gap: 12px; }
+    .home-deals-grid { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+    /* More ways we can help: 2 side by side, "Order one in" full-width below */
+    .feature-row { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+    .feature-row .feature-card:nth-child(3) { grid-column: 1 / -1; }
+    /* What we fix: 4 cards in a 2×2, "Not sure?" tile full-width on the bottom */
+    .svc-bento { grid-template-columns: 1fr 1fr !important; gap: 12px; }
+    .svc-bento > * { grid-column: span 1 !important; }
+    .svc-bento .svc-cta-tile { grid-column: 1 / -1 !important; }
+    .svc-bento .svc-card { padding: 16px 14px; }
+    .svc-bento .svc-card h3 { font-size: 15px; }
+    .svc-bento .svc-card p { font-size: 12px; line-height: 1.45; }
     .rw-steps { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rw-step { padding: 15px 13px; }
+    .rw-step-ic { width: 38px; height: 38px; border-radius: 11px; margin-bottom: 9px; }
+    .rw-step-ic .msym { width: 19px; height: 19px; font-size: 19px; }
+    .rw-step-n { font-size: 15px; top: 12px; right: 13px; }
+    .rw-step h3 { font-size: 13.5px; margin-bottom: 4px; }
+    .rw-step p { font-size: 11.5px; line-height: 1.4; }
     .ws-grid  { grid-template-columns: 1fr 1fr; gap: 10px; }
     .deals-grid { grid-template-columns: 1fr !important; }
     .deals-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
     .hr-track .hr-card { flex-basis: 84vw; min-width: 84vw; }
+    /* Reviews: Google + Facebook side by side under the carousel, Share full-width below */
+    .rating-badges { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+    .rating-badges .rating-badge { justify-content: center; padding: 11px 10px; gap: 8px; }
+    .rating-badges .rating-badge:nth-child(3) { grid-column: 1 / -1; }
 
     /* ── REPAIRS PAGE: 3 across (device types + models + repairs) ── */
     #sec-quote .cat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 10px; }
     #sec-quote .grid     { grid-template-columns: repeat(3, 1fr) !important; gap: 10px; }
-    #sec-quote .cat-grid .cat-card { padding: 14px 9px; }
-    #sec-quote .cat-grid .cat-name { font-size: 15.5px; letter-spacing: -.3px; }
-    #sec-quote .cat-grid .cat-sub  { font-size: 11px; }
-    #sec-quote .cat-grid .cat-icon { margin-bottom: 8px; }
+    #sec-quote .cat-grid .cat-card { padding: 12px 8px; }
+    #sec-quote .cat-grid .cat-img  { height: 62px; margin-bottom: 6px; }
+    #sec-quote .cat-grid .cat-name { font-size: 15px; letter-spacing: -.3px; margin-bottom: 1px; }
+    #sec-quote .cat-grid .cat-sub  { font-size: 10.5px; margin-bottom: 8px; }
+    #sec-quote .cat-grid .cat-badge { margin-top: 2px; }
+    /* Repair-type cards: no selection tick (all behave like Screen), more squared */
+    #sec-quote #repairsGrid .repair-card { padding: 12px 8px !important; }
+    #sec-quote #repairsGrid .repair-card .checkbox { display: none !important; }
+    #sec-quote #repairsGrid .repair-icon { margin-bottom: 4px; }
+    #sec-quote #repairsGrid .repair-name { font-size: 12px; line-height: 1.2; }
+    #sec-quote #repairsGrid .repair-price { font-size: 11.5px; }
+    #sec-quote #repairsGrid .repair-time { font-size: 10px; }
 
     /* ── REFURBS PAGE: remove the big gap above the heading ── */
     #sec-deals { padding-top: 14px !important; }
 
-    /* ── FORMS + FOOTER ── */
+    /* ── FORMS ── */
     form, .quote-wrap, .area-wrap { max-width: 100%; }
     input, select, textarea, .btn, .btn-cta { max-width: 100%; }
-    .footer-grid, .foot-grid { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
+
+    /* ── Come say hello: 3 info items + 2 buttons side by side ── */
+    .store-solo h2 { font-size: 22px !important; margin-bottom: 8px; }
+    .store-solo .store-info-list { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 10px !important; margin: 18px 0 20px !important; }
+    .store-solo .store-info-item { flex: initial !important; gap: 7px; }
+    .store-info-item .sii-ic { width: 38px !important; height: 38px !important; }
+    .store-info-item .sii-ic .msym { font-size: 19px !important; }
+    .sii-label { font-size: 12px; }
+    .sii-val, .sii-val a { font-size: 11px; line-height: 1.35; }
+    .store-btns { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .store-btns .btn-cta, .store-btns .btn-outline { width: 100%; justify-content: center; font-size: 12.5px; padding: 12px 6px; }
+
+    /* ── Mobile menu: everything left aligned, no theme toggle (it's in the header) ── */
+    .nav.open .nav-link { text-align: left !important; justify-content: flex-start !important; }
+    .nav.open .nav-theme { display: none !important; }
+
+    /* ── Contact page: the two cards side by side, resized to fit ── */
+    #sec-contact .contact-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; align-items: start; }
+    #sec-contact .contact-info-card, #sec-contact .contact-form-card { padding: 16px 12px !important; }
+    #sec-contact .contact-item { gap: 9px; margin-bottom: 12px; }
+    #sec-contact .contact-icon { font-size: 17px; }
+    #sec-contact .contact-label { font-size: 11px; }
+    #sec-contact .contact-value, #sec-contact .contact-value a { font-size: 11px; word-break: break-word; }
+    #sec-contact .contact-form-title { font-size: 15px; }
+    #sec-contact .contact-form-sub { font-size: 11px; }
+    #sec-contact input, #sec-contact textarea, #sec-contact select { font-size: 12px; padding: 9px 10px; }
+
+    /* ── Reviews page: spacing above heading + 3-across cards ── */
+    #sec-reviews { padding-top: 30px !important; }
+    #sec-reviews .reviews-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; }
+    #sec-reviews .review-card { padding: 12px 10px !important; }
+    #sec-reviews .review-text { font-size: 10.5px !important; line-height: 1.35 !important; }
+
+    /* ── FOOTER: brand full-width, then Get in Touch / Services / Company 3-across ── */
+    .footer-grid { grid-template-columns: 1fr 1fr 1fr !important; text-align: left !important; gap: 22px 10px !important; margin-bottom: 20px !important; }
+    .footer-grid > div:first-child { grid-column: 1 / -1; }
+    .footer-grid > div > div[style*="flex-direction:column"] { align-items: flex-start !important; }
+    .footer-grid h3 { font-size: 13.5px; }
+    .footer-grid p, .footer-grid a, .footer-grid span { font-size: 11.5px; word-break: break-word; }
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
   }
   </style>
 </head>
