@@ -5091,7 +5091,12 @@
     .rw-step h3 { font-size: 13.5px; margin-bottom: 4px; }
     .rw-step p { font-size: 11.5px; line-height: 1.4; }
     .ws-grid  { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .deals-grid { grid-template-columns: 1fr !important; }
+    #dealsGrid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+    #dealsGrid .deal-card-body { padding: 10px 9px 12px !important; }
+    #dealsGrid .deal-card-title { font-size: 12px !important; line-height: 1.2 !important; }
+    #dealsGrid .deal-card-meta { font-size: 9px !important; margin-bottom: 6px !important; }
+    #dealsGrid .deal-card-price { font-size: 15px !important; }
+    #dealsGrid .deal-card-rrp { font-size: 10px !important; }
     .deals-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
     .hr-track .hr-card { flex-basis: 84vw; min-width: 84vw; }
     /* Reviews: Google + Facebook side by side under the carousel, Share full-width below */
@@ -5148,11 +5153,20 @@
     #sec-contact .contact-form-sub { font-size: 11px; }
     #sec-contact input, #sec-contact textarea, #sec-contact select { font-size: 12px; padding: 9px 10px; }
 
-    /* ── Reviews page: spacing above heading + 3-across cards ── */
+    /* ── Reviews page: spacing above heading + clean 3-across cards ── */
     #sec-reviews { padding-top: 30px !important; }
-    #sec-reviews .reviews-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; }
-    #sec-reviews .review-card { padding: 12px 10px !important; }
-    #sec-reviews .review-text { font-size: 10.5px !important; line-height: 1.35 !important; }
+    #sec-reviews .reviews-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; align-items: stretch; }
+    #sec-reviews .review-card { padding: 12px 9px !important; overflow: hidden; }
+    #sec-reviews .review-card img { display: none !important; }        /* drop the corner device image that overlapped the text */
+    #sec-reviews .review-stars { font-size: 12px; margin-bottom: 6px; }
+    #sec-reviews .review-text {
+      font-size: 10px !important; line-height: 1.35 !important; margin-bottom: 8px;
+      display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    #sec-reviews .review-author { gap: 6px; }
+    #sec-reviews .review-avatar { width: 26px !important; height: 26px !important; font-size: 10px !important; flex-shrink: 0; }
+    #sec-reviews .review-name { font-size: 10.5px; line-height: 1.2; }
+    #sec-reviews .review-date { font-size: 9px; }
 
     /* ── FOOTER: brand full-width, then Get in Touch / Services / Company 3-across ── */
     .footer-grid { grid-template-columns: 1.5fr 1fr 1fr !important; text-align: left !important; gap: 22px 8px !important; margin-bottom: 20px !important; }
