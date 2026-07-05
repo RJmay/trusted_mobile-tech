@@ -2062,6 +2062,11 @@
       line-height: 1.5;
     }
 
+    /* Mobile-only quick-contact bar is hidden on desktop; the social wrapper is
+       layout-transparent (display:contents) so desktop keeps its original rows. */
+    .contact-quick { display: none; }
+    .contact-socials { display: contents; }
+
     .contact-form-card {
       background: var(--card-bg2);
       border: 1px solid var(--border);
@@ -5147,17 +5152,38 @@
     .nav.open .nav-theme { display: none !important; }
 
     /* ── Contact page: two cards side by side, restyled cleaner ── */
-    #sec-contact .contact-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; align-items: stretch; }
-    #sec-contact .contact-info-card, #sec-contact .contact-form-card { padding: 16px 13px !important; border-radius: 16px !important; }
-    #sec-contact .contact-item { gap: 9px; margin-bottom: 13px; align-items: center; }
-    #sec-contact .contact-icon { font-size: 16px; }
-    #sec-contact .contact-label { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; opacity: .7; }
-    #sec-contact .contact-value, #sec-contact .contact-value a { font-size: 11px; word-break: break-word; }
-    #sec-contact .contact-form-title { font-size: 15px; margin-bottom: 3px; }
-    #sec-contact .contact-form-sub { font-size: 10.5px; margin-bottom: 12px; }
-    #sec-contact .form-group { margin-bottom: 12px; }
-    #sec-contact input, #sec-contact textarea, #sec-contact select { font-size: 12px; padding: 9px 10px; }
-    #sec-contact button[type=submit], #sec-contact .btn { font-size: 13px; padding: 11px; }
+    /* ── CONTACT PAGE: single-column mobile redesign ── */
+    #sec-contact { padding-top: 26px !important; }
+    #sec-contact .contact-grid { grid-template-columns: 1fr !important; gap: 16px !important; margin-top: 18px !important; }
+
+    /* Tap-to-contact buttons (Call / Text / Email) */
+    .contact-quick { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 22px 0 4px; }
+    .cq-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 14px 6px; border-radius: 14px; background: var(--card-bg2); border: 1px solid var(--border); color: var(--dark); text-decoration: none; font-weight: 700; font-size: 12.5px; box-shadow: var(--shadow-card); }
+    .cq-btn .msym { width: 22px; height: 22px; color: var(--brand); }
+    .cq-btn:active { transform: scale(.96); }
+
+    /* Cards full width and roomy */
+    #sec-contact .contact-info-card, #sec-contact .contact-form-card { padding: 20px 16px !important; border-radius: 18px !important; }
+    #sec-contact .contact-item { gap: 13px; padding: 13px 0; align-items: center; }
+    #sec-contact .contact-icon { width: 42px; height: 42px; font-size: 20px; border-radius: 11px; }
+    #sec-contact .contact-icon svg { width: 20px; height: 20px; }
+    #sec-contact .contact-label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; opacity: .65; margin-bottom: 2px; }
+    #sec-contact .contact-value, #sec-contact .contact-value a { font-size: 13.5px; word-break: break-word; }
+
+    /* Socials as a compact 3-chip row */
+    #sec-contact .contact-socials { display: flex !important; gap: 9px; padding: 6px 0 4px; }
+    #sec-contact .contact-socials .contact-item { flex: 1; flex-direction: column; text-align: center; gap: 7px; padding: 13px 4px; border: 1px solid var(--border); border-radius: 13px; margin: 0; }
+    #sec-contact .contact-socials .contact-icon { width: 38px; height: 38px; }
+    #sec-contact .contact-socials .contact-value { display: none; }
+    #sec-contact .contact-socials .contact-label { font-size: 11px; opacity: .9; letter-spacing: 0; text-transform: none; margin: 0; }
+
+    /* Trading hours + form */
+    #sec-contact .contact-hours { margin-top: 8px; }
+    #sec-contact .contact-form-title { font-size: 18px; margin-bottom: 4px; }
+    #sec-contact .contact-form-sub { font-size: 12px; margin-bottom: 16px; }
+    #sec-contact .form-group { margin-bottom: 14px; }
+    #sec-contact input, #sec-contact textarea, #sec-contact select { font-size: 14px; padding: 12px 13px; }
+    #sec-contact button[type=submit], #sec-contact .btn { font-size: 15px; padding: 14px; }
 
     /* ── Reviews page: spacing above heading + roomy 2-across cards (names on one line) ── */
     #sec-reviews { padding-top: 30px !important; }
@@ -6874,6 +6900,11 @@
         <h2>Get in Touch</h2>
         <p>We'd love to hear from you — drop by, call, or send us a message</p>
       </div>
+      <div class="contact-quick" aria-label="Quick contact">
+        <a class="cq-btn" href="tel:0467748433"><i class="msym" data-lucide="phone"></i><span>Call</span></a>
+        <a class="cq-btn" href="sms:0467748433"><i class="msym" data-lucide="message-square-text"></i><span>Text</span></a>
+        <a class="cq-btn" href="mailto:info@trustedmobiletech.org"><i class="msym" data-lucide="mail"></i><span>Email</span></a>
+      </div>
       <div class="contact-grid">
         <div class="contact-info-card">
           <div class="contact-item">
@@ -6890,6 +6921,7 @@
               <div class="contact-value"><a href="mailto:info@trustedmobiletech.org" style="color:inherit;text-decoration:none;">info@trustedmobiletech.org</a></div>
             </div>
           </div>
+          <div class="contact-socials">
           <div class="contact-item">
             <div class="contact-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -6916,6 +6948,7 @@
               <div class="contact-label">Facebook</div>
               <div class="contact-value"><a href="https://www.facebook.com/profile.php?id=61581030196523" target="_blank" style="color:inherit;text-decoration:none;">@trustmobiletechsolutions</a></div>
             </div>
+          </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">📍</div>
