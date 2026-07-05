@@ -5107,11 +5107,11 @@
     /* ── REPAIRS PAGE: 3 across (device types + models + repairs) ── */
     #sec-quote .cat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 10px; }
     #sec-quote .grid     { grid-template-columns: repeat(3, 1fr) !important; gap: 10px; }
-    #sec-quote .cat-grid .cat-card { padding: 12px 8px; }
-    #sec-quote .cat-grid .cat-img  { height: 80px; margin-bottom: 6px; }
-    #sec-quote .cat-grid .cat-name { font-size: 15px; letter-spacing: -.3px; margin-bottom: 1px; }
-    #sec-quote .cat-grid .cat-sub  { font-size: 10.5px; margin-bottom: 8px; }
-    #sec-quote .cat-grid .cat-badge { margin-top: 2px; }
+    #sec-quote .cat-grid .cat-card { padding: 8px 6px; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #sec-quote .cat-grid .cat-img  { height: 58px; margin-bottom: 6px; }
+    #sec-quote .cat-grid .cat-name { font-size: 13.5px; letter-spacing: -.3px; margin-bottom: 2px; }
+    #sec-quote .cat-grid .cat-sub  { display: none; }        /* hide desc so the card sits as a clean square */
+    #sec-quote .cat-grid .cat-badge { margin-top: 3px; font-size: 9.5px; padding: 3px 9px; }
     /* Model-selection cards: bigger images, squarer rectangle */
     #sec-quote .grid .card { padding: 12px 8px !important; }
     #sec-quote .grid .model-img { height: 68px !important; margin-bottom: 6px; }
@@ -5159,20 +5159,20 @@
     #sec-contact input, #sec-contact textarea, #sec-contact select { font-size: 12px; padding: 9px 10px; }
     #sec-contact button[type=submit], #sec-contact .btn { font-size: 13px; padding: 11px; }
 
-    /* ── Reviews page: spacing above heading + clean 3-across cards ── */
+    /* ── Reviews page: spacing above heading + roomy 2-across cards (names on one line) ── */
     #sec-reviews { padding-top: 30px !important; }
-    #sec-reviews .reviews-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; align-items: stretch; }
-    #sec-reviews .review-card { padding: 12px 9px !important; overflow: hidden; }
+    #sec-reviews .reviews-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px; align-items: stretch; }
+    #sec-reviews .review-card { padding: 16px 14px !important; overflow: hidden; }
     #sec-reviews .review-card img { display: none !important; }        /* drop the corner device image that overlapped the text */
-    #sec-reviews .review-stars { font-size: 12px; margin-bottom: 6px; }
+    #sec-reviews .review-stars { font-size: 13px; margin-bottom: 8px; }
     #sec-reviews .review-text {
-      font-size: 10px !important; line-height: 1.35 !important; margin-bottom: 8px;
-      display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden;
+      font-size: 12px !important; line-height: 1.5 !important; margin-bottom: 12px;
+      display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
     }
-    #sec-reviews .review-author { gap: 6px; }
-    #sec-reviews .review-avatar { width: 26px !important; height: 26px !important; font-size: 10px !important; flex-shrink: 0; }
-    #sec-reviews .review-name { font-size: 10.5px; line-height: 1.2; }
-    #sec-reviews .review-date { font-size: 9px; }
+    #sec-reviews .review-author { gap: 9px; }
+    #sec-reviews .review-avatar { width: 34px !important; height: 34px !important; font-size: 13px !important; flex-shrink: 0; }
+    #sec-reviews .review-name { font-size: 13px; line-height: 1.2; white-space: nowrap; }
+    #sec-reviews .review-date { font-size: 10.5px; white-space: nowrap; }
 
     /* ── FOOTER: brand full-width, then Get in Touch / Services / Company 3-across ── */
     .footer-grid { grid-template-columns: 1.5fr 1fr 1fr !important; text-align: left !important; gap: 22px 8px !important; margin-bottom: 20px !important; }
@@ -5597,7 +5597,7 @@
             <span class="rb-rating"><span class="rb-top"><span class="rb-name">Google</span><span class="rb-stars">★★★★★</span></span><span class="rb-line"><span class="rb-num">4.6</span> from 100+ reviews</span></span>
           </a>
           <a class="rating-badge" href="https://www.facebook.com/profile.php?id=61581030196523" target="_blank" rel="noopener" aria-label="Trusted Mobile Tech on Facebook">
-            <span class="rb-logo"><svg class="rb-brand" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></span>
+            <span class="rb-logo"><svg class="rb-brand" viewBox="0 0 24 24" width="38" height="38" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></span>
             <span class="rb-rating"><span class="rb-top"><span class="rb-name">Facebook</span><span class="rb-stars">★★★★★</span></span><span class="rb-line">Recommended locally</span></span>
           </a>
           <a class="rating-badge" onclick="showSection('reviews')" style="cursor:pointer;">
@@ -9563,9 +9563,9 @@
           if (existing) existing.remove();
           var lbl = document.createElement('div');
           lbl.className = 'tier-label';
-          lbl.style.cssText = 'margin-top:8px;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(37,99,235,.1);color:var(--brand);border:1px solid rgba(37,99,235,.2);display:inline-block;';
+          lbl.style.cssText = 'margin:0 0 10px;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(37,99,235,.1);color:var(--brand);border:1px solid rgba(37,99,235,.2);display:inline-block;';
           lbl.textContent = cls.toUpperCase() + ' — $' + price;
-          c.appendChild(lbl);
+          c.insertBefore(lbl, c.firstChild);
         }
       });
       updateSummary();
@@ -9602,9 +9602,9 @@
           if (m) {
             var lbl = document.createElement('div');
             lbl.className = 'tier-label';
-            lbl.textContent = m[1];
-            lbl.style.cssText = 'margin-top:8px;padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:700;background:rgba(37,99,235,.1);color:var(--brand);border:1px solid rgba(37,99,235,.2);display:inline-block;';
-            c.appendChild(lbl);
+            lbl.textContent = m[1] + ' — $' + sel.price;
+            lbl.style.cssText = 'margin:0 0 10px;padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:700;background:rgba(37,99,235,.1);color:var(--brand);border:1px solid rgba(37,99,235,.2);display:inline-block;';
+            c.insertBefore(lbl, c.firstChild);
           }
         }
       });
@@ -10016,9 +10016,9 @@
           if (existing) existing.remove();
           var label = document.createElement('div');
           label.className = 'tier-label';
-          label.style.cssText = 'margin-top:8px;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(37,99,235,.1);color:var(--brand);border:1px solid rgba(37,99,235,.2);display:inline-block;';
+          label.style.cssText = 'margin:0 0 10px;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(37,99,235,.1);color:var(--brand);border:1px solid rgba(37,99,235,.2);display:inline-block;';
           label.textContent = (type === 'oem' ? 'OEM' : 'AFT') + ' — $' + price;
-          c.appendChild(label);
+          c.insertBefore(label, c.firstChild);
         }
       });
       updateSummary();
