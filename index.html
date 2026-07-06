@@ -5201,6 +5201,7 @@
     /* ── Contact page: two cards side by side, restyled cleaner ── */
     /* ── CONTACT PAGE: single-column mobile redesign (compact — fits more per screen) ── */
     #sec-contact { padding-top: 14px !important; }
+    #sec-contact > .wrap { padding-left: 22px !important; padding-right: 22px !important; }   /* more breathing room from screen edges */
     #sec-contact .section-head { margin-bottom: 4px !important; }
     #sec-contact .section-head h2 { font-size: 23px !important; }
     #sec-contact .section-head p { font-size: 12.5px !important; margin-top: 4px !important; }
@@ -5250,15 +5251,12 @@
     #sec-contact .form-textarea { min-height: 84px; }
     #sec-contact button[type=submit], #sec-contact .btn { font-size: 15px; padding: 12px; min-height: 46px; }
 
-    /* Lazy Google Maps embed + Get Directions */
+    /* Lazy Google Maps embed */
     .contact-map { display: block !important; margin-top: 14px; }
     .contact-map-frame { position: relative; height: 175px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--card-bg2); }
     .contact-map-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
     .contact-map-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 600; }
     .contact-map-ph .msym { width: 20px; height: 20px; }
-    .contact-directions { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; min-height: 46px; padding: 11px; border-radius: 13px; border: 1.5px solid var(--brand); background: transparent; color: var(--brand); font-weight: 700; font-size: 15px; text-decoration: none; }
-    .contact-directions .msym { width: 19px; height: 19px; }
-    .contact-directions:active { background: color-mix(in srgb, var(--brand) 10%, transparent); }
 
     /* ── Reviews page: spacing above heading + roomy 2-across cards (names on one line) ── */
     #sec-reviews { padding-top: 30px !important; }
@@ -7094,7 +7092,6 @@
         <div class="contact-map-frame" id="contactMapFrame" data-src="https://maps.google.com/maps?q=Buderim%20QLD%204556&z=13&output=embed">
           <span class="contact-map-ph"><i class="msym" data-lucide="map-pinned"></i> Loading map…</span>
         </div>
-        <a class="contact-directions" href="https://www.google.com/maps/dir/?api=1&destination=Trusted%20Mobile%20Tech%20Buderim%20QLD%204556" target="_blank" rel="noopener"><i class="msym" data-lucide="navigation"></i> Get Directions</a>
       </div>
     </div>
   </section>
