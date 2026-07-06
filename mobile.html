@@ -9047,10 +9047,27 @@
       var bar = document.getElementById('mobileCtaBar');
       if (bar) bar.style.display = (id === 'quote' || id === 'contact' || id === 'refurb-detail') ? 'none' : '';
       renderIcons();
+      updateBackBtn();
+    }
+    // Is there anywhere to go "back" to — a quote-wizard step, a browse level, or a previous section?
+    function _canGoBack() {
+      if (_currentSection === 'quote') {
+        if (typeof currentPage !== 'undefined' && currentPage >= 2) return true;   // on repairs/details/complete
+        if (browseLevel >= 1) return true;                                          // on series or model picker
+      }
+      return _sectionHistory.length > 0;
+    }
+    function updateBackBtn() {
       var btn = document.getElementById('globalBackBtn');
-      if (btn) btn.style.display = _sectionHistory.length > 0 ? 'block' : 'none';
+      if (btn) btn.style.display = _canGoBack() ? 'block' : 'none';
     }
     function goBack() {
+      // Inside the quote flow, walk back one page/level at a time before leaving the section
+      if (_currentSection === 'quote') {
+        if (currentPage >= 2) { goToPage(currentPage - 1); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+        if (browseLevel === 2) { selectCategory(selCat); return; }   // model picker -> series
+        if (browseLevel === 1) { renderCategories(); return; }        // series -> device types
+      }
       if (_sectionHistory.length === 0) return;
       var prev = _sectionHistory.pop();
       if (prev !== 'refurb-detail' && typeof _rdLeaveDetail === 'function') _rdLeaveDetail();
@@ -9062,8 +9079,7 @@
       if (prev === 'quote') { renderCategories(); goToPage(1); }
       if (prev === 'deals' && !dealsLoaded) { loadDeals(); }
       if (prev === 'reviews') { initReviews(); }
-      var btn = document.getElementById('globalBackBtn');
-      if (btn) btn.style.display = _sectionHistory.length > 0 ? 'block' : 'none';
+      updateBackBtn();
     }
     function startQuote(cat) { showSection('quote'); setTimeout(() => selectCategory(cat), 50); }
 
@@ -9617,6 +9633,7 @@
         var img = CAT_IMGS[k] ? '<img src="' + CAT_IMGS[k] + '" class="cat-img" alt="' + c.label + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'">' + '<span class="cat-icon" style="display:none;">' + c.icon + '</span>' : '<span class="cat-icon">' + c.icon + '</span>';
         return '<div class="cat-card ' + c.cls + '" data-cat="' + k + '" onclick="selectCategory(this.dataset.cat)">' + img + '<div class="cat-name">' + c.label + '</div><div class="cat-sub">' + c.desc + '</div><span class="cat-badge">' + Object.keys(c.series).length + ' lines</span></div>';
       }).join('');
+      updateBackBtn();
     }
     function selectCategory(k) {
       selCat = k;
@@ -9624,6 +9641,7 @@
       document.getElementById('seriesFeaturePanel').innerHTML = '';
       document.getElementById('l1Title').innerHTML = 'Choose your <span class="hl">' + c.label + '</span>';
       document.getElementById('l1Sub').textContent = 'Select the series, then pick your exact model';
+      updateBackBtn();
       document.getElementById('seriesGrid').innerHTML = Object.entries(c.series).map(([sn, s]) => {
         const clr = s.color || '#1d4ed8';
         const eff = s.effect || 'none';
@@ -9638,7 +9656,7 @@
     var PHILOSOPHY = { 'iPhone SE': 'The SE delivers modern performance in a classic, compact form.', 'iPhone 11': 'Night Mode photography brought professional low-light to everyone. The ultra-wide camera transformed how we capture the world.', 'iPhone 12': 'A return to iconic flat-edge design with aerospace-grade aluminum. First 5G iPhone with Ceramic Shield, the toughest glass ever on a smartphone.', 'iPhone 13': 'Designed for storytellers. Cinematic Mode brought depth-of-field video, while ProMotion 120Hz made every interaction feel impossibly fluid.', 'iPhone 14': 'Dynamic Island reimagined phone interaction, turning the camera cutout into a living interface. Satellite SOS proved a phone can save your life.', 'iPhone 15': 'Grade 5 titanium, the same alloy used in spacecraft. The lightest Pro ever, with a customisable Action Button and the most powerful mobile chip ever made.', 'iPhone 16': 'Camera Control gives you a dedicated button that changes how you capture. With Apple Intelligence built in, iPhone 16 Pro thinks alongside you.', 'iPhone 17': 'Engineered around how you actually hold and use your phone. The refined aluminum frame is lighter and more ergonomic than ever, with contoured edges that feel natural in the hand. Cosmic Orange makes a bold statement.', 'MacBook Air 13"': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge. The M4 Air brings even more speed and a Centre Stage camera to the most popular Mac ever made.', 'MacBook Air 15"': 'The biggest Air ever made — a stunning 15.3-inch Liquid Retina display and six-speaker sound system, still impossibly thin, silent, and light enough to take anywhere.', 'MacBook Air': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge.', 'MacBook Pro 13in': 'Professional power in the most portable Pro form. The Touch Bar brought context-sensitive controls to your fingertips.', 'MacBook Pro 14in': 'Built for boundary-pushers. Liquid Retina XDR brings reference-grade colour accuracy to a laptop for the first time.', 'MacBook Pro 16in': 'Maximum canvas, maximum power. The 16-inch display gives creators room to work while M-series chips handle anything.', 'iPad': 'The essential iPad. Versatile, affordable, and powerful enough for everything from notes to Netflix to creative work.', 'iPad mini': 'Small enough for anywhere, powerful enough for everything. The mini proves screen size has nothing to do with capability.', 'iPad Air': 'The sweet spot. Colourful, powerful, and ready for anything with M-series performance and Apple Pencil Pro.', 'iPad Pro': 'The ultimate iPad. Tandem OLED delivers the most stunning display Apple has ever made, in the thinnest product ever created.' };
     function selectSeries(el) {
       var sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2;
-      var cat = T[selCat]; var s = cat.series[sn]; showLevel(2); renderBC();
+      var cat = T[selCat]; var s = cat.series[sn]; showLevel(2); renderBC(); updateBackBtn();
       document.getElementById('modelFeaturePanel').innerHTML = '';
       var qc = document.querySelector('#page1');
       // gen themes removed
@@ -9656,7 +9674,7 @@
       document.getElementById('modelGrid').innerHTML = s.models.map(function (m) {
         var clr = m.color || s.color || '#3b82f6';
         var cn = m.colorName || '';
-        return '<div class="model-card" style="--card-color:' + clr + '" data-n="' + encodeURIComponent(m.name) + '" onclick="showModelDetail(this,event)">'
+        return '<div class="model-card" style="--card-color:' + clr + '" data-n="' + encodeURIComponent(m.name) + '" onclick="selectModel(this)">'
           + '<div class="corner-tl" style="background:' + clr + '"></div>'
           + '<div class="corner-br" style="background:' + clr + '"></div>'
           + '<img src="' + m.img + '" class="model-img" loading="lazy">'
@@ -10028,6 +10046,7 @@
       if (pg === 4) showQuoteDetails();
       if (pg === 1) renderBC();
       document.querySelector('.quote-wrap').scrollIntoView({ behavior: 'smooth' });
+      updateBackBtn();
     }
     function setMinDate() { var d = new Date(); var today = d.toISOString().split('T')[0]; var el = document.getElementById('date'); if (el) { el.min = today; el.value = today; } }
     function generateQN() { const d = new Date(); return 'QT' + d.getFullYear().toString().slice(-2) + (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0') + '-' + (Math.floor(Math.random() * 9000) + 1000); }
