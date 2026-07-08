@@ -2069,7 +2069,7 @@
 
     /* Mobile-only contact pieces (quick-cards, map, open-status) are hidden on desktop;
        the social wrapper is layout-transparent (display:contents) so desktop keeps its rows. */
-    .contact-quick, .contact-map, .open-status { display: none; }
+    .contact-quick, .contact-map, .open-status, .contact-convo { display: none; }
     .contact-socials { display: contents; }
     /* Honeypot: off-screen, never shown to real users (spam trap) */
     .hp-field { position: absolute !important; left: -9999px !important; top: auto; width: 1px; height: 1px; overflow: hidden; }
@@ -5276,6 +5276,50 @@
     #sec-contact .form-textarea { min-height: 84px; }
     #sec-contact button[type=submit], #sec-contact .btn { font-size: 15px; padding: 12px; min-height: 46px; }
 
+    /* ── Conversational contact flow — MOBILE ONLY (replaces the plain form) ── */
+    #sec-contact .contact-form-card > .contact-form-title,
+    #sec-contact .contact-form-card > .contact-form-sub,
+    #sec-contact #contactForm { display: none !important; }        /* hide the all-at-once form on phones */
+    .contact-convo { display: block !important; }
+    .cq-head { margin-bottom: 14px; }
+    .cq-title { font-size: 19px; font-weight: 800; color: var(--dark); letter-spacing: -.3px; }
+    .cq-sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+    .cq-progress { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--brand) 13%, transparent); overflow: hidden; margin-top: 4px; }
+    .cq-progress-fill { display: block; height: 100%; width: 20%; background: var(--cta-fill); border-radius: 3px; transition: width .3s ease; }
+    .cq-meta { display: flex; align-items: center; justify-content: space-between; margin: 9px 0 16px; min-height: 20px; }
+    .cq-back { background: none; border: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; padding: 4px 2px; visibility: hidden; }
+    .cq-back.show { visibility: visible; }
+    .cq-count { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .cq-step { display: none; }
+    .cq-step.active { display: block; animation: cqIn .25s ease; }
+    @keyframes cqIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+    .cq-q { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 14px; line-height: 1.25; letter-spacing: -.3px; }
+    .cq-sub2 { font-size: 13px; color: var(--muted); margin: -8px 0 14px; line-height: 1.45; }
+    .cq-options { display: flex; flex-direction: column; gap: 10px; }
+    .cq-option { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--card-bg2); color: var(--dark); font-size: 15px; font-weight: 700; text-align: left; cursor: pointer; transition: border-color .15s, background .15s, transform .1s; }
+    .cq-option .msym { width: 22px; height: 22px; color: var(--brand); flex-shrink: 0; }
+    .cq-option span { flex: 1; }
+    .cq-option:hover, .cq-option.selected { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); }
+    .cq-option:active { transform: scale(.985); }
+    .cq-input { width: 100%; font-size: 16px !important; }
+    textarea.cq-input { min-height: 96px; }
+    .cq-err { color: #ef4444; font-size: 12.5px; font-weight: 600; margin-top: 8px; display: none; }
+    .cq-err.show { display: block; }
+    .cq-actions { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
+    .cq-actions .btn { flex: 1; min-height: 48px; font-size: 16px; }
+    .cq-skip { font-size: 13px; color: var(--muted); font-weight: 700; cursor: pointer; text-decoration: underline; white-space: nowrap; }
+    .cq-email-label { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin: 14px 0 6px; }
+    .cq-submit-err { display: none; color: #ef4444; font-size: 13px; font-weight: 600; margin-top: 12px; line-height: 1.45; }
+    .cq-submit-err.show { display: block; }
+    .cq-success { text-align: center; padding: 14px 4px 8px; }
+    .cq-success .cqs-ic { width: 66px; height: 66px; margin: 0 auto 16px; border-radius: 50%; background: rgba(16,185,129,.12); color: var(--green); display: flex; align-items: center; justify-content: center; animation: cqPop .45s cubic-bezier(.2,.8,.3,1.25); }
+    .cq-success .cqs-ic .msym { width: 34px; height: 34px; }
+    @keyframes cqPop { 0% { transform: scale(0); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+    .cq-success h3 { font-size: 21px; font-weight: 800; color: var(--dark); margin: 0 0 8px; }
+    .cq-success p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0 0 10px; }
+    .cq-success .cqs-call { display: inline-flex; align-items: center; gap: 7px; margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--cta-fill); text-decoration: none; }
+    .cq-success .cqs-call .msym { width: 17px; height: 17px; }
+
     /* Lazy Google Maps embed */
     .contact-map { display: block !important; margin-top: 14px; }
     .contact-map-frame { position: relative; height: 175px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--card-bg2); }
@@ -7111,6 +7155,62 @@
                 id="contact-message" placeholder="How can we help?"></textarea></div>
             <button type="submit" class="btn" id="contactSubmitBtn">Send Message</button>
           </form>
+
+          <!-- Mobile-only conversational contact flow (one question at a time) -->
+          <div class="contact-convo" id="contactConvo">
+            <div class="cq-head">
+              <div class="cq-title">Let's sort your phone out</div>
+              <div class="cq-sub">A few quick questions and we'll text you back — usually within a few hours during business hours.</div>
+            </div>
+            <div class="cq-progress" aria-hidden="true"><span class="cq-progress-fill" id="cqFill"></span></div>
+            <div class="cq-meta">
+              <button type="button" class="cq-back" id="cqBack" onclick="cqPrev()">&#8592; Back</button>
+              <span class="cq-count" id="cqCount">Step 1 of 5</span>
+            </div>
+            <div class="hp-field" aria-hidden="true"><label>Company<input type="text" id="cq-hp" tabindex="-1" autocomplete="off"></label></div>
+
+            <div class="cq-step active" data-step="1">
+              <div class="cq-q">What can we help with?</div>
+              <div class="cq-options">
+                <button type="button" class="cq-option" onclick="cqPickService(this,'Screen repair')"><i class="msym" data-lucide="smartphone"></i><span>Screen repair</span></button>
+                <button type="button" class="cq-option" onclick="cqPickService(this,'Battery replacement')"><i class="msym" data-lucide="battery-charging"></i><span>Battery replacement</span></button>
+                <button type="button" class="cq-option" onclick="cqPickService(this,'Buying a phone')"><i class="msym" data-lucide="shopping-bag"></i><span>Buying a phone</span></button>
+                <button type="button" class="cq-option" onclick="cqPickService(this,'Selling a phone')"><i class="msym" data-lucide="hand-coins"></i><span>Selling a phone</span></button>
+                <button type="button" class="cq-option" onclick="cqPickService(this,'Something else')"><i class="msym" data-lucide="messages-square"></i><span>Something else</span></button>
+              </div>
+            </div>
+
+            <div class="cq-step" data-step="2">
+              <div class="cq-q">What device is it?</div>
+              <input type="text" class="form-input cq-input" id="cq-device" placeholder="e.g. iPhone 14 Pro" autocomplete="off" inputmode="text" onkeydown="cqKey(event,2)">
+              <div class="cq-err" id="cq-err-2"></div>
+              <div class="cq-actions"><button type="button" class="btn cq-next" onclick="cqNext(2)">Next</button></div>
+            </div>
+
+            <div class="cq-step" data-step="3">
+              <div class="cq-q">Tell us a bit more</div>
+              <textarea class="form-textarea cq-input" id="cq-details" placeholder="What's going on with it? Any details help."></textarea>
+              <div class="cq-actions"><a class="cq-skip" onclick="cqNext(3,true)">Skip</a><button type="button" class="btn cq-next" onclick="cqNext(3)">Next</button></div>
+            </div>
+
+            <div class="cq-step" data-step="4">
+              <div class="cq-q">What's your name?</div>
+              <input type="text" class="form-input cq-input" id="cq-name" placeholder="Your name" autocomplete="name" inputmode="text" onkeydown="cqKey(event,4)">
+              <div class="cq-err" id="cq-err-4"></div>
+              <div class="cq-actions"><button type="button" class="btn cq-next" onclick="cqNext(4)">Next</button></div>
+            </div>
+
+            <div class="cq-step" data-step="5">
+              <div class="cq-q">Where should we text you?</div>
+              <div class="cq-sub2">Pop in your mobile and we'll text you back — usually within a few hours.</div>
+              <input type="tel" class="form-input cq-input" id="cq-phone" placeholder="04XX XXX XXX" autocomplete="tel" inputmode="tel" oninput="cqFormatPhone(this)" onkeydown="cqKey(event,5)">
+              <div class="cq-err" id="cq-err-5"></div>
+              <label class="cq-email-label" for="cq-email">Prefer email instead? (optional)</label>
+              <input type="email" class="form-input cq-input" id="cq-email" placeholder="your@email.com" autocomplete="email" inputmode="email">
+              <div class="cq-actions"><button type="button" class="btn cq-next" id="cqSubmitBtn" onclick="cqSubmit()">Send it through</button></div>
+              <div class="cq-submit-err" id="cqSubmitErr" role="alert"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="contact-map" aria-label="Find us on the map">
@@ -9398,6 +9498,93 @@
           '<h3>Thanks — message received</h3>' +
           '<p>We\'ll get back to you within one business day. Need us sooner?</p>' +
           '<a class="cs-call" href="tel:0467748433"><i class="msym" data-lucide="phone"></i> Call 0467 748 433</a>' +
+        '</div>';
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
+    }
+
+    // ── Conversational contact flow (mobile) — one question at a time, submits via the same Web3Forms path ──
+    var cqState = { service: '', device: '', details: '', name: '', phone: '', email: '' };
+    var cqStep = 1, CQ_TOTAL = 5;
+    function cqGoTo(step) {
+      cqStep = step;
+      document.querySelectorAll('#contactConvo .cq-step').forEach(function (s) { s.classList.toggle('active', +s.dataset.step === step); });
+      var fill = document.getElementById('cqFill'); if (fill) fill.style.width = (step / CQ_TOTAL * 100) + '%';
+      var cnt = document.getElementById('cqCount'); if (cnt) cnt.textContent = 'Step ' + step + ' of ' + CQ_TOTAL;
+      var back = document.getElementById('cqBack'); if (back) back.classList.toggle('show', step > 1);
+      var active = document.querySelector('#contactConvo .cq-step[data-step="' + step + '"]');
+      var inp = active ? active.querySelector('input:not([type=hidden]), textarea') : null;
+      if (inp) setTimeout(function () { try { inp.focus(); } catch (e) {} }, 80);
+    }
+    function cqPrev() { if (cqStep > 1) cqGoTo(cqStep - 1); }
+    function cqErr(step, msg) { var e = document.getElementById('cq-err-' + step); if (e) { e.textContent = msg || ''; e.classList.toggle('show', !!msg); } }
+    function cqPickService(btn, val) {
+      cqState.service = val;
+      document.querySelectorAll('#contactConvo .cq-option').forEach(function (o) { o.classList.remove('selected'); });
+      btn.classList.add('selected');
+      setTimeout(function () { cqGoTo(2); }, 180);   // auto-advance
+    }
+    function cqNext(step, skip) {
+      if (step === 2) {
+        var d = document.getElementById('cq-device').value.trim();
+        if (!d) { cqErr(2, 'Let us know which device it is.'); return; }
+        cqState.device = d; cqErr(2, ''); cqGoTo(3);
+      } else if (step === 3) {
+        cqState.details = skip ? '' : document.getElementById('cq-details').value.trim();
+        cqGoTo(4);
+      } else if (step === 4) {
+        var n = document.getElementById('cq-name').value.trim();
+        if (!n) { cqErr(4, 'What should we call you?'); return; }
+        cqState.name = n; cqErr(4, ''); cqGoTo(5);
+      }
+    }
+    function cqKey(e, step) { if (e.key === 'Enter') { e.preventDefault(); if (step === 5) cqSubmit(); else cqNext(step); } }
+    function cqFormatPhone(el) {
+      var d = el.value.replace(/[^\d]/g, '');
+      if (d.slice(0, 2) === '61') d = '0' + d.slice(2);   // +61 4… → 04…
+      d = d.slice(0, 10);
+      var out = d;
+      if (d.length > 7) out = d.slice(0, 4) + ' ' + d.slice(4, 7) + ' ' + d.slice(7);
+      else if (d.length > 4) out = d.slice(0, 4) + ' ' + d.slice(4);
+      el.value = out;
+    }
+    function cqValidPhone(v) { return /^04\d{8}$/.test((v || '').replace(/[^\d]/g, '')); }
+    function cqSubmit() {
+      var phoneRaw = document.getElementById('cq-phone').value.trim();
+      var email = document.getElementById('cq-email').value.trim();
+      if (!cqValidPhone(phoneRaw)) { cqErr(5, 'Pop in a valid Aussie mobile (04XX XXX XXX).'); return; }
+      cqErr(5, '');
+      cqState.phone = phoneRaw; cqState.email = email;
+      var errBanner = document.getElementById('cqSubmitErr'); if (errBanner) errBanner.classList.remove('show');
+      var hp = document.getElementById('cq-hp');
+      if (hp && hp.value) { cqShowSuccess(cqState.name); return; }   // silent bot drop
+      var btn = document.getElementById('cqSubmitBtn');
+      btn.innerHTML = '<span class="cbtn-spin" aria-hidden="true"></span> Sending…'; btn.disabled = true;
+      var message = cqState.service + ' — ' + (cqState.device || 'device not specified') + '.' + (cqState.details ? ' ' + cqState.details : '');
+      Promise.resolve(sendEmail('contact_notify', {
+        customer_name: cqState.name,
+        customer_email: email || '(not provided)',
+        customer_phone: phoneRaw,
+        message: message,
+        submitted_at: new Date().toLocaleString('en-AU')
+      })).then(function (res) {
+        if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR_WEB3FORMS_KEY') cqSubmitError();
+        else if (res && res.success === false) cqSubmitError();
+        else cqShowSuccess(cqState.name);
+      }).catch(function () { cqSubmitError(); })
+        .then(function () { btn.innerHTML = 'Send it through'; btn.disabled = false; });
+    }
+    function cqSubmitError() {
+      var e = document.getElementById('cqSubmitErr');
+      if (e) { e.innerHTML = 'Sorry — that didn\'t go through. Please try again, or call us on <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">0467 748 433</a>.'; e.classList.add('show'); }
+    }
+    function cqShowSuccess(name) {
+      var convo = document.getElementById('contactConvo'); if (!convo) return;
+      convo.innerHTML =
+        '<div class="cq-success">' +
+          '<div class="cqs-ic"><i class="msym" data-lucide="check"></i></div>' +
+          '<h3>Got it, ' + (name || 'thanks') + '! 👍</h3>' +
+          '<p>We\'ll text you back shortly during business hours.</p>' +
+          '<a class="cqs-call" href="tel:+61467748433"><i class="msym" data-lucide="phone"></i> Prefer to call? +61 467 748 433</a>' +
         '</div>';
       if (window.lucide && lucide.createIcons) lucide.createIcons();
     }
