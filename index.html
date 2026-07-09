@@ -2068,8 +2068,56 @@
 
     /* Mobile-only contact pieces (quick-cards, map, open-status) are hidden on desktop;
        the social wrapper is layout-transparent (display:contents) so desktop keeps its rows. */
-    .contact-quick, .contact-map, .open-status, .contact-convo { display: none; }
+    .contact-quick, .contact-map, .open-status { display: none; }
     .contact-socials { display: contents; }
+
+    /* ── Conversational contact flow (Typeform-style) — a centred card below the two
+       contact cards on desktop; on mobile it replaces the plain form entirely. ── */
+    .contact-convo {
+      max-width: 560px; margin: 36px auto 0;
+      background: var(--card-bg2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 32px 36px; box-shadow: var(--shadow);
+    }
+    .cq-head { margin-bottom: 14px; }
+    .cq-title { font-size: 20px; font-weight: 800; color: var(--dark); letter-spacing: -.3px; }
+    .cq-sub { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+    .cq-progress { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--brand) 13%, transparent); overflow: hidden; margin-top: 4px; }
+    .cq-progress-fill { display: block; height: 100%; width: 20%; background: var(--cta-fill); border-radius: 3px; transition: width .3s ease; }
+    .cq-meta { display: flex; align-items: center; justify-content: space-between; margin: 9px 0 16px; min-height: 20px; }
+    .cq-back { background: none; border: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; padding: 4px 2px; visibility: hidden; }
+    .cq-back.show { visibility: visible; }
+    .cq-back:hover { color: var(--dark); }
+    .cq-count { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .cq-step { display: none; }
+    .cq-step.active { display: block; animation: cqIn .25s ease; }
+    @keyframes cqIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+    .cq-q { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 14px; line-height: 1.25; letter-spacing: -.3px; }
+    .cq-sub2 { font-size: 13px; color: var(--muted); margin: -8px 0 14px; line-height: 1.45; }
+    .cq-options { display: flex; flex-direction: column; gap: 10px; }
+    .cq-option { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--card-bg2); color: var(--dark); font-size: 15px; font-weight: 700; text-align: left; cursor: pointer; font-family: var(--font); transition: border-color .15s, background .15s, transform .1s; }
+    .cq-option .msym { width: 22px; height: 22px; color: var(--brand); flex-shrink: 0; }
+    .cq-option span { flex: 1; }
+    .cq-option:hover, .cq-option.selected { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); }
+    .cq-option:active { transform: scale(.985); }
+    .cq-input { width: 100%; font-size: 16px !important; }
+    textarea.cq-input { min-height: 96px; }
+    .cq-err { color: #ef4444; font-size: 12.5px; font-weight: 600; margin-top: 8px; display: none; }
+    .cq-err.show { display: block; }
+    .cq-actions { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
+    .cq-actions .btn { flex: 1; min-height: 48px; font-size: 16px; }
+    .cq-skip { font-size: 13px; color: var(--muted); font-weight: 700; cursor: pointer; text-decoration: underline; white-space: nowrap; }
+    .cq-skip:hover { color: var(--dark); }
+    .cq-email-label { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin: 14px 0 6px; }
+    .cq-submit-err { display: none; color: #ef4444; font-size: 13px; font-weight: 600; margin-top: 12px; line-height: 1.45; }
+    .cq-submit-err.show { display: block; }
+    .cq-success { text-align: center; padding: 14px 4px 8px; }
+    .cq-success .cqs-ic { width: 66px; height: 66px; margin: 0 auto 16px; border-radius: 50%; background: rgba(16,185,129,.12); color: var(--green); display: flex; align-items: center; justify-content: center; animation: cqPop .45s cubic-bezier(.2,.8,.3,1.25); }
+    .cq-success .cqs-ic .msym { width: 34px; height: 34px; }
+    @keyframes cqPop { 0% { transform: scale(0); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+    .cq-success h3 { font-size: 21px; font-weight: 800; color: var(--dark); margin: 0 0 8px; }
+    .cq-success p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0 0 10px; }
+    .cq-success .cqs-call { display: inline-flex; align-items: center; gap: 7px; margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--cta-fill); text-decoration: none; }
+    .cq-success .cqs-call .msym { width: 17px; height: 17px; }
     /* Honeypot: off-screen, never shown to real users (spam trap) */
     .hp-field { position: absolute !important; left: -9999px !important; top: auto; width: 1px; height: 1px; overflow: hidden; }
     /* Form status summary (success/error) — shared desktop + mobile, shown only when populated */
@@ -5275,49 +5323,11 @@
     #sec-contact .form-textarea { min-height: 84px; }
     #sec-contact button[type=submit], #sec-contact .btn { font-size: 15px; padding: 12px; min-height: 46px; }
 
-    /* ── Conversational contact flow — MOBILE ONLY (replaces the plain form) ── */
-    #sec-contact .contact-form-card > .contact-form-title,
-    #sec-contact .contact-form-card > .contact-form-sub,
-    #sec-contact #contactForm { display: none !important; }        /* hide the all-at-once form on phones */
-    .contact-convo { display: block !important; }
-    .cq-head { margin-bottom: 14px; }
-    .cq-title { font-size: 19px; font-weight: 800; color: var(--dark); letter-spacing: -.3px; }
-    .cq-sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
-    .cq-progress { height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--brand) 13%, transparent); overflow: hidden; margin-top: 4px; }
-    .cq-progress-fill { display: block; height: 100%; width: 20%; background: var(--cta-fill); border-radius: 3px; transition: width .3s ease; }
-    .cq-meta { display: flex; align-items: center; justify-content: space-between; margin: 9px 0 16px; min-height: 20px; }
-    .cq-back { background: none; border: none; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; padding: 4px 2px; visibility: hidden; }
-    .cq-back.show { visibility: visible; }
-    .cq-count { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-    .cq-step { display: none; }
-    .cq-step.active { display: block; animation: cqIn .25s ease; }
-    @keyframes cqIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
-    .cq-q { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 14px; line-height: 1.25; letter-spacing: -.3px; }
-    .cq-sub2 { font-size: 13px; color: var(--muted); margin: -8px 0 14px; line-height: 1.45; }
-    .cq-options { display: flex; flex-direction: column; gap: 10px; }
-    .cq-option { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 12px 14px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--card-bg2); color: var(--dark); font-size: 15px; font-weight: 700; text-align: left; cursor: pointer; transition: border-color .15s, background .15s, transform .1s; }
-    .cq-option .msym { width: 22px; height: 22px; color: var(--brand); flex-shrink: 0; }
-    .cq-option span { flex: 1; }
-    .cq-option:hover, .cq-option.selected { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); }
-    .cq-option:active { transform: scale(.985); }
-    .cq-input { width: 100%; font-size: 16px !important; }
-    textarea.cq-input { min-height: 96px; }
-    .cq-err { color: #ef4444; font-size: 12.5px; font-weight: 600; margin-top: 8px; display: none; }
-    .cq-err.show { display: block; }
-    .cq-actions { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
-    .cq-actions .btn { flex: 1; min-height: 48px; font-size: 16px; }
-    .cq-skip { font-size: 13px; color: var(--muted); font-weight: 700; cursor: pointer; text-decoration: underline; white-space: nowrap; }
-    .cq-email-label { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; margin: 14px 0 6px; }
-    .cq-submit-err { display: none; color: #ef4444; font-size: 13px; font-weight: 600; margin-top: 12px; line-height: 1.45; }
-    .cq-submit-err.show { display: block; }
-    .cq-success { text-align: center; padding: 14px 4px 8px; }
-    .cq-success .cqs-ic { width: 66px; height: 66px; margin: 0 auto 16px; border-radius: 50%; background: rgba(16,185,129,.12); color: var(--green); display: flex; align-items: center; justify-content: center; animation: cqPop .45s cubic-bezier(.2,.8,.3,1.25); }
-    .cq-success .cqs-ic .msym { width: 34px; height: 34px; }
-    @keyframes cqPop { 0% { transform: scale(0); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
-    .cq-success h3 { font-size: 21px; font-weight: 800; color: var(--dark); margin: 0 0 8px; }
-    .cq-success p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0 0 10px; }
-    .cq-success .cqs-call { display: inline-flex; align-items: center; gap: 7px; margin-top: 6px; font-size: 14px; font-weight: 700; color: var(--cta-fill); text-decoration: none; }
-    .cq-success .cqs-call .msym { width: 17px; height: 17px; }
+    /* ── Conversational contact flow on mobile: it IS the form — hide the desktop form card ── */
+    #sec-contact .contact-form-card { display: none !important; }
+    #sec-contact .contact-convo { max-width: none; margin: 12px 0 0; padding: 16px 14px; border-radius: 16px; }
+    .cq-title { font-size: 19px; }
+    .cq-sub { font-size: 12.5px; }
 
     /* Lazy Google Maps embed */
     .contact-map { display: block !important; margin-top: 14px; }
@@ -7154,9 +7164,11 @@
                 id="contact-message" placeholder="How can we help?"></textarea></div>
             <button type="submit" class="btn" id="contactSubmitBtn">Send Message</button>
           </form>
+        </div>
+      </div>
 
-          <!-- Mobile-only conversational contact flow (one question at a time) -->
-          <div class="contact-convo" id="contactConvo">
+      <!-- Conversational contact flow — its own centred card (below the two cards on desktop; the only form on mobile) -->
+      <div class="contact-convo" id="contactConvo">
             <div class="cq-head">
               <div class="cq-title">Let's sort your phone out</div>
               <div class="cq-sub">A few quick questions and we'll text you back — usually within a few hours during business hours.</div>
@@ -7209,8 +7221,6 @@
               <div class="cq-actions"><button type="button" class="btn cq-next" id="cqSubmitBtn" onclick="cqSubmit()">Send it through</button></div>
               <div class="cq-submit-err" id="cqSubmitErr" role="alert"></div>
             </div>
-          </div>
-        </div>
       </div>
       <div class="contact-map" aria-label="Find us on the map">
         <div class="contact-map-frame" id="contactMapFrame" data-src="https://maps.google.com/maps?q=Buderim%20QLD%204556&z=13&output=embed">
