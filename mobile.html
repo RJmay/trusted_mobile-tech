@@ -15,6 +15,7 @@
      so this same router lives in both — the path check prevents any loop. */
   (function () {
     try {
+      if (/bot|crawler|spider|slurp|bingpreview/i.test(navigator.userAgent)) return;   // never redirect crawlers
       var loc = window.location;
       var onMobile = /\/mobile\.html$/i.test(loc.pathname) || /\/mobile\/?$/i.test(loc.pathname);
       var qs = loc.search;
@@ -45,14 +46,14 @@
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Trusted Mobile Tech">
-  <meta property="og:title" content="Trusted Mobile Tech — Apple Repairs, Sunshine Coast &amp; Brisbane">
+  <meta property="og:title" content="Trusted Mobile Tech | Apple Repairs, Sunshine Coast &amp; Brisbane">
   <meta property="og:description" content="Instant online quotes for iPhone, MacBook &amp; iPad repairs. Most done same day. 90-day warranty. No fix, no fee.">
   <meta property="og:url" content="https://trustedmobiletech.org/">
-  <meta property="og:image" content="https://trustedmobiletech.org/favicon.png?v=6">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Trusted Mobile Tech — Apple Repairs, Sunshine Coast &amp; Brisbane">
+  <meta property="og:image" content="https://trustedmobiletech.org/Images/workshop-screen-repair.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Trusted Mobile Tech | Apple Repairs, Sunshine Coast &amp; Brisbane">
   <meta name="twitter:description" content="Instant online quotes for iPhone, MacBook &amp; iPad repairs. Most done same day. 90-day warranty. No fix, no fee.">
-  <meta name="twitter:image" content="https://trustedmobiletech.org/favicon.png?v=6">
+  <meta name="twitter:image" content="https://trustedmobiletech.org/Images/workshop-screen-repair.jpg">
   <link rel="icon" href="favicon.ico?v=6" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=6">
   <link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=6">
@@ -75,7 +76,6 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuxrFSYi53kFZXyPtoB7uUG5GAvBz7KdY&libraries=places&v=weekly&callback=initGoogleMaps"
     async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -110,8 +110,7 @@
       "https://instagram.com/trustmobiletech",
       "https://tiktok.com/@trustmobiletech",
       "https://www.facebook.com/profile.php?id=61581030196523"
-    ],
-    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.6", "reviewCount": "100", "bestRating": "5" }
+    ]
   }
   </script>
   <script type="application/ld+json">
@@ -119,10 +118,10 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "How long does a repair take?", "acceptedAnswer": { "@type": "Answer", "text": "Most common repairs — screens, batteries and charging ports — are done the same day, often within a couple of hours. You'll get a realistic turnaround with your quote before any work starts." } },
+      { "@type": "Question", "name": "How long does a repair take?", "acceptedAnswer": { "@type": "Answer", "text": "Most common repairs like screens, batteries and charging ports are done the same day, often within a couple of hours. You'll get a realistic turnaround with your quote before any work starts." } },
       { "@type": "Question", "name": "What warranty do you offer?", "acceptedAnswer": { "@type": "Answer", "text": "Every repair is backed by a 90-day warranty covering the parts we fit and our workmanship. If something isn't right, bring it back and we'll sort it." } },
       { "@type": "Question", "name": "Do I need a booking, or can I walk in?", "acceptedAnswer": { "@type": "Answer", "text": "Both work. Grab an instant online quote and drop in, or book a mobile visit and we'll come to you across the Sunshine Coast and Brisbane." } },
-      { "@type": "Question", "name": "What if you can't fix my device?", "acceptedAnswer": { "@type": "Answer", "text": "No fix, no fee. If we can't repair it, you don't pay for the attempt — simple as that." } },
+      { "@type": "Question", "name": "What if you can't fix my device?", "acceptedAnswer": { "@type": "Answer", "text": "No fix, no fee. If we can't repair it, you don't pay for the attempt. Simple as that." } },
       { "@type": "Question", "name": "How do payments work?", "acceptedAnswer": { "@type": "Answer", "text": "We take card and cash in store, and online payments for refurbished devices and accessories are handled securely through Stripe." } }
     ]
   }
@@ -2069,8 +2068,12 @@
 
     /* Mobile-only contact pieces (quick-cards, map, open-status) are hidden on desktop;
        the social wrapper is layout-transparent (display:contents) so desktop keeps its rows. */
-    .contact-quick, .contact-map, .open-status { display: none; }
+    .contact-quick, .open-status { display: none; }
     .contact-socials { display: contents; }
+    /* Lucide icons inside the contact info tiles + hours heading */
+    .contact-icon .msym { width: 23px; height: 23px; }
+    .contact-hours h4 { display: flex; align-items: center; gap: 8px; }
+    .contact-hours h4 .msym { width: 17px; height: 17px; color: var(--brand); flex-shrink: 0; }
 
     /* ── Conversational contact flow (Typeform-style) — a centred card below the two
        contact cards on desktop; on mobile it replaces the plain form entirely. ── */
@@ -3910,32 +3913,21 @@
     .addon-row.on .addon-check { background: var(--brand); border-color: var(--brand); }
     .addon-check .msym { width: 14px; height: 14px; font-size: 14px; }
 
-    /* Home: "How your repair works" step strip */
-    .rw-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
-    .rw-step { position: relative; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 24px 20px; transition: transform .18s ease, border-color .18s ease; }
-    .rw-step:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--brand) 40%, var(--border)); }
-    .rw-step-ic { width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); margin-bottom: 14px; }
-    .rw-step-ic .msym { width: 24px; height: 24px; font-size: 24px; }
-    .rw-step-n { position: absolute; top: 16px; right: 18px; font-family: var(--font-head); font-size: 20px; font-weight: 800; color: color-mix(in srgb, var(--brand) 32%, transparent); line-height: 1; }
-    .rw-step h3 { font-size: 16px; font-weight: 800; color: var(--dark); margin: 0 0 6px; }
-    .rw-step p { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin: 0; }
-    @media (max-width: 900px) { .rw-steps { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 520px) { .rw-steps { grid-template-columns: 1fr; } }
-    @media (prefers-reduced-motion: reduce) { .rw-step { transition: none; } }
-
-    /* Home: "Inside our workshop" real-photo band */
-    .ws-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
-    .ws-tile { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4 / 3; background: var(--surface); margin: 0; }
-    .ws-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: transform .5s ease; }
-    .ws-tile:hover img { transform: scale(1.04); }
-    .ws-ph { position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 16%, var(--surface)), var(--surface)); color: color-mix(in srgb, var(--brand) 55%, var(--muted)); }
-    .ws-ph .msym { width: 32px; height: 32px; font-size: 32px; opacity: .5; }
-    .ws-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 26px 14px 12px; display: flex; flex-direction: column; gap: 1px; background: linear-gradient(to top, rgba(0,0,0,.76), rgba(0,0,0,.3) 55%, rgba(0,0,0,0)); }
-    .ws-cap b { color: #fff; font-family: var(--font-head); font-size: 14px; font-weight: 800; line-height: 1.25; }
-    .ws-cap span { color: rgba(255,255,255,.85); font-size: 11.5px; }
-    @media (max-width: 900px) { .ws-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 480px) { .ws-grid { grid-template-columns: 1fr; } }
-    @media (prefers-reduced-motion: reduce) { .ws-tile img { transition: none; } .ws-tile:hover img { transform: none; } }
+    /* Home: "How your repair works" — step blurbs paired with real workshop photos */
+    .rws-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+    .rws-card { display: flex; flex-direction: column; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin: 0; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .rws-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--brand) 40%, var(--border)); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+    .rws-blurb { display: flex; align-items: flex-start; gap: 11px; padding: 16px 16px 14px; flex: 1; }
+    .rws-n { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-size: 13px; font-weight: 800; color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, transparent); border: 1px solid color-mix(in srgb, var(--brand) 25%, transparent); margin-top: 1px; }
+    .rws-blurb h3 { font-size: 15px; font-weight: 800; color: var(--dark); margin: 0 0 4px; line-height: 1.25; }
+    .rws-blurb p { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0; }
+    .rws-img { position: relative; aspect-ratio: 4 / 3; background: var(--surface); }
+    .rws-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transition: transform .5s ease; }
+    .rws-card:hover .rws-img img { transform: scale(1.04); }
+    .rws-ph { position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 16%, var(--surface)), var(--surface)); color: color-mix(in srgb, var(--brand) 55%, var(--muted)); }
+    .rws-ph .msym { width: 32px; height: 32px; font-size: 32px; opacity: .5; }
+    @media (max-width: 900px) { .rws-grid { grid-template-columns: 1fr 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .rws-card, .rws-img img { transition: none; } .rws-card:hover { transform: none; } .rws-card:hover .rws-img img { transform: none; } }
 
     @media (max-width: 560px) { .deals-toolbar { flex-direction: column; align-items: stretch; } .deals-sort { justify-content: space-between; } .deals-sort select { flex: 1; } .deals-facets .deals-select { flex: 1 1 42%; } .deals-count { margin-left: 0; width: 100%; } }
 
@@ -4645,6 +4637,7 @@
     .rating-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
     .rb-logo { font-weight: 800; font-size: 15px; color: var(--dark); display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
     .rb-brand { flex-shrink: 0; }
+    .rb-brand-fb { width: 52px !important; height: 52px !important; }
     .rb-rating { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; line-height: 1.15; }
     .rb-top { display: inline-flex; align-items: center; gap: 8px; }
     .rb-name { font-weight: 800; font-size: 15px; color: var(--dark); }
@@ -5184,14 +5177,11 @@
     .svc-bento .svc-card { padding: 16px 14px; }
     .svc-bento .svc-card h3 { font-size: 15px; }
     .svc-bento .svc-card p { font-size: 12px; line-height: 1.45; }
-    .rw-steps { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .rw-step { padding: 15px 13px; }
-    .rw-step-ic { width: 38px; height: 38px; border-radius: 11px; margin-bottom: 9px; }
-    .rw-step-ic .msym { width: 19px; height: 19px; font-size: 19px; }
-    .rw-step-n { font-size: 15px; top: 12px; right: 13px; }
-    .rw-step h3 { font-size: 13.5px; margin-bottom: 4px; }
-    .rw-step p { font-size: 11.5px; line-height: 1.4; }
-    .ws-grid  { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rws-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rws-blurb { gap: 8px; padding: 11px 11px 10px; }
+    .rws-n { width: 21px; height: 21px; font-size: 11px; }
+    .rws-blurb h3 { font-size: 12.5px; margin-bottom: 3px; }
+    .rws-blurb p { font-size: 10.5px; line-height: 1.4; }
     #dealsGrid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
     #dealsGrid .deal-card-body { padding: 10px 9px 12px !important; }
     #dealsGrid .deal-card-title { font-size: 12px !important; line-height: 1.2 !important; }
@@ -5202,7 +5192,10 @@
     .hr-track .hr-card { flex-basis: 84vw; min-width: 84vw; }
     /* Reviews: Google + Facebook side by side under the carousel, Share full-width below */
     .rating-badges { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
-    .rating-badges .rating-badge { justify-content: center; padding: 11px 10px; gap: 8px; }
+    .rating-badges .rating-badge { justify-content: center; padding: 10px 8px; gap: 8px; min-width: 0; }
+    .rating-badges .rb-rating { min-width: 0; }
+    .rating-badges .rb-line { white-space: normal; }
+    .rb-brand-fb { width: 44px !important; height: 44px !important; }
     .rating-badges .rating-badge:nth-child(3) { grid-column: 1 / -1; }
 
     /* ── REPAIRS PAGE: 3 across (device types + models + repairs) ── */
@@ -5330,12 +5323,6 @@
     .cq-title { font-size: 19px; }
     .cq-sub { font-size: 12.5px; }
 
-    /* Lazy Google Maps embed */
-    .contact-map { display: block !important; margin-top: 14px; }
-    .contact-map-frame { position: relative; height: 175px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--card-bg2); }
-    .contact-map-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
-    .contact-map-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 600; }
-    .contact-map-ph .msym { width: 20px; height: 20px; }
 
     /* ── Reviews page: spacing above heading + roomy 2-across cards (names on one line) ── */
     #sec-reviews { padding-top: 30px !important; }
@@ -5474,7 +5461,7 @@
           <div class="hero-copy">
             <div class="hero-eyebrow"><i class="msym" data-lucide="map-pin"></i> Independent · Sunshine Coast &amp; Brisbane</div>
             <h1>Apple repairs done right, <span class="hero-accent">close to home.</span></h1>
-            <p class="hero-sub">Cracked screen, dead battery or a spilled coffee? Get a real price online in about a minute. Most repairs are finished the same day — and every one is backed by our 90-day warranty and no-fix-no-fee promise.</p>
+            <p class="hero-sub">Cracked screen, dead battery or a spilled coffee? Get a real price online in about a minute. Most repairs are finished the same day, and every one is backed by our 90-day warranty and no-fix-no-fee promise.</p>
             <div class="hero-cta-row">
               <button class="btn-cta" onclick="showSection('quote')"><i class="msym" data-lucide="zap"></i> Get my instant price</button>
               <button class="btn-outline" onclick="showSection('deals')"><i class="msym" data-lucide="package"></i> Browse refurbished</button>
@@ -5586,14 +5573,14 @@
         <div class="why-item"><i class="msym" data-lucide="clock"></i><div><h4>Mostly same-day</h4><p>Screens, batteries and ports are usually done within a couple of hours.</p></div></div>
         <div class="why-item"><i class="msym" data-lucide="shield-check"></i><div><h4>90-day warranty</h4><p>Every repair covers both the parts we fit and our workmanship.</p></div></div>
         <div class="why-item"><i class="msym" data-lucide="hand-coins"></i><div><h4>No fix, no fee</h4><p>If we can't repair it, you don't pay for the attempt. Simple.</p></div></div>
-        <div class="why-item"><i class="msym" data-lucide="cpu"></i><div><h4>Quality-grade parts</h4><p>Tested components chosen to match your device — no mystery bargain bins.</p></div></div>
+        <div class="why-item"><i class="msym" data-lucide="cpu"></i><div><h4>Quality-grade parts</h4><p>Tested components chosen to match your device. No mystery bargain bins.</p></div></div>
       </div>
     </div>
 
     <!-- Device lineup — brand trust -->
     <div class="wrap reveal">
       <div class="fix-devices-band">
-        <p class="fix-devices-cap">From the latest Pro Max to the trusty SE — we repair <strong>every</strong> Apple device.</p>
+        <p class="fix-devices-cap">From the latest Pro Max to the trusty SE, we repair <strong>every</strong> Apple device.</p>
         <div class="fix-devices">
           <button class="fix-dev" type="button" onclick="startQuote('iPhone')" title="iPhone repairs" aria-label="See iPhone repairs"><img src="Images/iphone-16-pro-max.png" alt="iPhone" loading="lazy"></button>
           <button class="fix-dev" type="button" onclick="startQuote('iPhone')" title="iPhone repairs" aria-label="See iPhone repairs"><img src="Images/iphone-15-pro.png" alt="iPhone" loading="lazy"></button>
@@ -5613,7 +5600,7 @@
         <div class="home-head">
           <div class="home-head-tx">
             <h2>What we fix</h2>
-            <p>The everyday stuff that goes wrong — priced honestly, sorted quickly.</p>
+            <p>The everyday stuff that goes wrong, priced honestly and sorted quickly.</p>
           </div>
           <a class="head-link" onclick="showSection('quote')">Price a repair <i class="msym" data-lucide="arrow-right"></i></a>
         </div>
@@ -5621,7 +5608,7 @@
           <div class="svc-card" onclick="showSection('quote')">
             <div class="svc-ic"><i class="msym" data-lucide="smartphone"></i></div>
             <h3>Screen repairs</h3>
-            <p>Cracked, black or ghost-touching displays swapped with quality-grade panels — colour-matched and tested before you get it back.</p>
+            <p>Cracked, black or ghost-touching displays swapped with quality-grade panels, colour-matched and tested before you get it back.</p>
             <span class="svc-link">Price this repair <i class="msym" data-lucide="arrow-right"></i></span>
           </div>
           <div class="svc-card" onclick="showSection('quote')">
@@ -5651,62 +5638,51 @@
               <span class="ctad ctad-plus">+</span>
             </span>
             <h3>Not sure what's wrong?</h3>
-            <p>Tell us the symptoms and we'll pin it down — with a price in about a minute.</p>
+            <p>Tell us the symptoms and we'll pin it down, with a price in about a minute.</p>
             <span class="svc-link">Start my quote <i class="msym" data-lucide="arrow-right"></i></span>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- HOW YOUR REPAIR WORKS -->
+    <!-- HOW YOUR REPAIR WORKS — step blurbs paired with real photos from our bench -->
     <div class="home-section reveal">
       <div class="wrap">
         <div class="home-head">
           <div class="home-head-tx">
             <h2>How your repair works</h2>
-            <p>From quote to fixed — four simple steps, no surprises along the way.</p>
+            <p>Four simple steps, straight from our Buderim bench. No surprises along the way.</p>
           </div>
           <a class="head-link" onclick="showSection('quote', true)">Get a quote <i class="msym" data-lucide="arrow-right"></i></a>
         </div>
-        <div class="rw-steps">
-          <div class="rw-step"><span class="rw-step-n">1</span><div class="rw-step-ic"><i class="msym" data-lucide="calculator"></i></div><h3>Get your quote</h3><p>Pick your device and repair for an instant, itemised price online — or give us a call. No obligation.</p></div>
-          <div class="rw-step"><span class="rw-step-n">2</span><div class="rw-step-ic"><i class="msym" data-lucide="calendar-check"></i></div><h3>Book it in</h3><p>Drop into our Buderim workshop, or book a mobile visit across the Sunshine Coast &amp; Brisbane.</p></div>
-          <div class="rw-step"><span class="rw-step-n">3</span><div class="rw-step-ic"><i class="msym" data-lucide="wrench"></i></div><h3>We fix it</h3><p>Quality parts and experienced techs — and every device is fully tested before it goes back.</p></div>
-          <div class="rw-step"><span class="rw-step-n">4</span><div class="rw-step-ic"><i class="msym" data-lucide="badge-check"></i></div><h3>Back in your hands</h3><p>Most repairs are done the same day, backed by our 90-day warranty and no-fix-no-fee promise.</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- INSIDE OUR WORKSHOP (real repair photos) -->
-    <div class="home-section reveal">
-      <div class="wrap">
-        <div class="home-head">
-          <div class="home-head-tx">
-            <h2>Inside our workshop</h2>
-            <p>Real repairs on real benches — from delicate board-level work to fresh glass.</p>
-          </div>
-          <a class="head-link" onclick="showSection('quote', true)">Book a repair <i class="msym" data-lucide="arrow-right"></i></a>
-        </div>
-        <div class="ws-grid">
-          <figure class="ws-tile">
-            <div class="ws-ph"><i class="msym" data-lucide="cpu"></i></div>
-            <img src="Images/workshop-board-repair.jpg" alt="Technician performing a board-level micro-repair on an Apple logic board" loading="lazy" onerror="this.style.display='none'">
-            <figcaption class="ws-cap"><b>Board-level micro-repairs</b><span>Down to the component when it counts</span></figcaption>
+        <div class="rws-grid">
+          <figure class="rws-card">
+            <div class="rws-blurb"><span class="rws-n">1</span><div><h3>Get your quote</h3><p>Pick your device and repair for an instant, itemised price online. No obligation.</p></div></div>
+            <div class="rws-img">
+              <div class="rws-ph"><i class="msym" data-lucide="smartphone"></i></div>
+              <img src="Images/workshop-screen-repair.jpg" alt="Cracked iPhone Pro mounted on a repair clamp, ready for screen and back-glass replacement" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </figure>
-          <figure class="ws-tile">
-            <div class="ws-ph"><i class="msym" data-lucide="smartphone"></i></div>
-            <img src="Images/workshop-screen-repair.jpg" alt="Cracked iPhone Pro mounted on a repair clamp, ready for screen and back-glass replacement" loading="lazy" onerror="this.style.display='none'">
-            <figcaption class="ws-cap"><b>Screen &amp; back-glass replacement</b><span>Precision-fitted, then fully tested</span></figcaption>
+          <figure class="rws-card">
+            <div class="rws-blurb"><span class="rws-n">2</span><div><h3>Book it in</h3><p>Drop into our Buderim workshop, or book a mobile visit across the Sunshine Coast &amp; Brisbane.</p></div></div>
+            <div class="rws-img">
+              <div class="rws-ph"><i class="msym" data-lucide="laptop"></i></div>
+              <img src="Images/workshop-macbook.jpg" alt="MacBook opened up for repair on the workbench" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </figure>
-          <figure class="ws-tile">
-            <div class="ws-ph"><i class="msym" data-lucide="battery-charging"></i></div>
-            <img src="Images/workshop-battery.jpg" alt="Battery replacement on an Apple device at the repair bench" loading="lazy" onerror="this.style.display='none'">
-            <figcaption class="ws-cap"><b>Battery replacements</b><span>Fresh cell, health back to 100%</span></figcaption>
+          <figure class="rws-card">
+            <div class="rws-blurb"><span class="rws-n">3</span><div><h3>We fix it</h3><p>Quality parts, experienced techs, and delicate board-level work when it counts.</p></div></div>
+            <div class="rws-img">
+              <div class="rws-ph"><i class="msym" data-lucide="cpu"></i></div>
+              <img src="Images/workshop-board-repair.jpg" alt="Technician performing a board-level micro-repair on an Apple logic board" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </figure>
-          <figure class="ws-tile">
-            <div class="ws-ph"><i class="msym" data-lucide="laptop"></i></div>
-            <img src="Images/workshop-macbook.jpg" alt="MacBook opened up for repair on the workbench" loading="lazy" onerror="this.style.display='none'">
-            <figcaption class="ws-cap"><b>Mac &amp; laptop repairs</b><span>Screens, batteries, logic boards &amp; more</span></figcaption>
+          <figure class="rws-card">
+            <div class="rws-blurb"><span class="rws-n">4</span><div><h3>Back in your hands</h3><p>Fully tested, most done the same day, backed by our 90-day warranty and no-fix-no-fee promise.</p></div></div>
+            <div class="rws-img">
+              <div class="rws-ph"><i class="msym" data-lucide="battery-charging"></i></div>
+              <img src="Images/workshop-battery.jpg" alt="Battery replacement on an Apple device at the repair bench" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </figure>
         </div>
       </div>
@@ -5746,14 +5722,14 @@
             <div class="hr-card">
               <i class="hr-quote-ic msym" data-lucide="quote"></i>
               <div class="hr-stars-sm">★★★★★</div>
-              <div class="hr-text">Cracked my 13 Pro at 9pm and they still sorted it — being open around the clock is a lifesaver. Friendly, fast and fairly priced.</div>
+              <div class="hr-text">Cracked my 13 Pro at 9pm and they still sorted it. Being open around the clock is a lifesaver. Friendly, fast and fairly priced.</div>
               <div class="hr-author"><div class="hr-avatar" style="background:linear-gradient(135deg,#34d399,#059669);">AT</div><div><div class="hr-name">Aisha Tran</div><div class="hr-meta">Sippy Downs</div></div></div>
               <div class="hr-device"><img src="Images/iphone-13-pro.png" alt="iPhone 13 Pro screen repair" loading="lazy"><span><b>iPhone 13 Pro</b> · screen</span></div>
             </div>
             <div class="hr-card">
               <i class="hr-quote-ic msym" data-lucide="quote"></i>
               <div class="hr-stars-sm">★★★★★</div>
-              <div class="hr-text">Bought a refurbished iPhone for my son — looked and ran like new, and the 90-day warranty gave me real peace of mind. Would buy again.</div>
+              <div class="hr-text">Bought a refurbished iPhone for my son. It looked and ran like new, and the 90-day warranty gave me real peace of mind. Would buy again.</div>
               <div class="hr-author"><div class="hr-avatar" style="background:linear-gradient(135deg,#f472b6,#db2777);">RB</div><div><div class="hr-name">Rachel Brooks</div><div class="hr-meta">Chermside</div></div></div>
               <div class="hr-device"><img src="Images/iphone-14.png" alt="Refurbished iPhone 14" loading="lazy"><span><b>iPhone 14</b> · refurbished</span></div>
             </div>
@@ -5776,7 +5752,7 @@
             <span class="rb-rating"><span class="rb-top"><span class="rb-name">Google</span><span class="rb-stars">★★★★★</span></span><span class="rb-line"><span class="rb-num">4.6</span> from 100+ reviews</span></span>
           </a>
           <a class="rating-badge" href="https://www.facebook.com/profile.php?id=61581030196523" target="_blank" rel="noopener" aria-label="Trusted Mobile Tech on Facebook">
-            <span class="rb-logo"><svg class="rb-brand" viewBox="0 0 24 24" width="52" height="52" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></span>
+            <span class="rb-logo"><svg class="rb-brand rb-brand-fb" viewBox="0 0 24 24" width="52" height="52" style="width:52px;height:52px;flex-shrink:0;" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></span>
             <span class="rb-rating"><span class="rb-top"><span class="rb-name">Facebook</span><span class="rb-stars">★★★★★</span></span><span class="rb-line">Recommended locally</span></span>
           </a>
           <a class="rating-badge" onclick="showSection('reviews')" style="cursor:pointer;">
@@ -5793,7 +5769,7 @@
         <div class="home-head">
           <div class="home-head-tx">
             <h2>In stock now</h2>
-            <p>Refurbished Apple devices we've checked over and stand behind — each with a 90-day warranty.</p>
+            <p>Refurbished Apple devices we've checked over and stand behind, each with a 90-day warranty.</p>
           </div>
           <a class="head-link" onclick="showSection('deals')">See all refurbished <i class="msym" data-lucide="arrow-right"></i></a>
         </div>
@@ -5811,7 +5787,7 @@
         <div class="home-head">
           <div class="home-head-tx">
             <h2>More ways we can help</h2>
-            <p>Beyond repairs — buy, sell, order in, or kit out your device.</p>
+            <p>Beyond repairs: buy, sell, order in, or kit out your device.</p>
           </div>
         </div>
         <div class="feature-row">
@@ -5823,7 +5799,7 @@
           <div class="feature-card" onclick="showSection('sell')">
             <div class="feature-ic"><i class="msym" data-lucide="hand-coins"></i></div>
             <h3>Sell or trade in</h3>
-            <p>Turn an old or broken device into cash — get a quick offer.</p>
+            <p>Turn an old or broken device into cash. Get a quick offer.</p>
           </div>
           <div class="feature-card" onclick="showSection('order')">
             <div class="feature-ic"><i class="msym" data-lucide="truck"></i></div>
@@ -5839,7 +5815,7 @@
       <div class="wrap area-wrap">
         <div class="home-head-tx" style="text-align:center;">
           <h2>Where we work</h2>
-          <p style="max-width:600px;margin:8px auto 0;">Pop into Buderim, or book a mobile visit — we cover the Sunshine Coast and greater Brisbane.</p>
+          <p style="max-width:600px;margin:8px auto 0;">Pop into Buderim, or book a mobile visit. We cover the Sunshine Coast and greater Brisbane.</p>
         </div>
         <div class="area-cols">
           <div class="area-col">
@@ -5868,7 +5844,7 @@
         <div class="faq-list">
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>How long does a repair take?</span><i class="msym" data-lucide="chevron-down"></i></button>
-            <div class="faq-a"><p>Most common repairs — screens, batteries and charging ports — are done the same day, often within a couple of hours. You'll get a realistic turnaround with your quote before any work starts.</p></div>
+            <div class="faq-a"><p>Most common repairs like screens, batteries and charging ports are done the same day, often within a couple of hours. You'll get a realistic turnaround with your quote before any work starts.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>What warranty do you offer?</span><i class="msym" data-lucide="chevron-down"></i></button>
@@ -5880,7 +5856,7 @@
           </div>
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>What if you can't fix my device?</span><i class="msym" data-lucide="chevron-down"></i></button>
-            <div class="faq-a"><p>No fix, no fee. If we can't repair it, you don't pay for the attempt — simple as that.</p></div>
+            <div class="faq-a"><p>No fix, no fee. If we can't repair it, you don't pay for the attempt. Simple as that.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>How do payments work?</span><i class="msym" data-lucide="chevron-down"></i></button>
@@ -6003,13 +5979,13 @@
             <div class="service-type-card" id="stCard" onclick="selectServiceType('store')">
               <div class="service-type-icon">🏪</div>
               <div class="service-type-name">Drop Off at Store</div>
-              <div class="service-type-desc">Visit our Sunshine Coast store — same-day available.</div><span
+              <div class="service-type-desc">Visit our Sunshine Coast store, same-day available.</div><span
                 class="service-type-badge green">Same-day</span>
             </div>
             <div class="service-type-card" id="muCard" onclick="selectServiceType('mobile')">
               <div class="service-type-icon">🚗</div>
               <div class="service-type-name">Mobile Pickup</div>
-              <div class="service-type-desc">We come to you — SC &amp; Brisbane suburbs.</div><span
+              <div class="service-type-desc">We come to you, SC &amp; Brisbane suburbs.</div><span
                 class="service-type-badge">We come to you</span>
             </div>
           </div>
@@ -6061,7 +6037,7 @@
           <div class="form-group"><label class="form-label">Notes (Optional)</label><textarea class="form-textarea"
               id="notes" placeholder="Tell us more about the issue…"></textarea></div>
           <div class="form-group">
-            <label class="form-label" style="margin-bottom:10px;">Add accessories <span style="font-weight:400;color:#94a3b8;font-size:13px;">— tick any to add to your booking</span></label>
+            <label class="form-label" style="margin-bottom:10px;">Add accessories <span style="font-weight:400;color:#94a3b8;font-size:13px;">tick any to add to your booking</span></label>
             <div class="addon-list" id="repairAddons"></div>
           </div>
           <button type="submit" class="btn">Get My Quote</button>
@@ -6238,7 +6214,7 @@
         <div class="review-card" style="position:relative;">
           <img src="Images/iphone-14.png" alt="iPhone 14" loading="lazy" style="position:absolute;top:18px;right:18px;height:46px;width:auto;object-fit:contain;">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Dropped my iPhone 14 in the pool. Brought it in expecting the worst — they had it
+          <div class="review-text">"Dropped my iPhone 14 in the pool. Brought it in expecting the worst, but they had it
             working perfectly within 2 hours. Absolute legends!"</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">BH</div>
@@ -6330,7 +6306,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"They were upfront about everything — costs, timeline, parts used. No nasty surprises. Refreshing compared to other repair shops."</div>
+          <div class="review-text">"They were upfront about everything: costs, timeline, parts used. No nasty surprises. Refreshing compared to other repair shops."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#93c5fd,#2563eb)">JO</div>
             <div><div class="review-name">James O'Brien</div><div class="review-date">Noosaville · 2 months ago</div></div>
@@ -6338,7 +6314,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPhone 15 Plus screen replaced perfectly. The colour accuracy and brightness are spot on — you can tell they used quality parts."</div>
+          <div class="review-text">"iPhone 15 Plus screen replaced perfectly. The colour accuracy and brightness are spot on. You can tell they used quality parts."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#f87171,#dc2626)">MN</div>
             <div><div class="review-name">Mia Nguyen</div><div class="review-date">Mooloolaba · 1 week ago</div></div>
@@ -6370,7 +6346,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"MacBook Pro keyboard was skipping letters — super annoying for work. They replaced the problematic keys at a fair price and it's perfect again."</div>
+          <div class="review-text">"MacBook Pro keyboard was skipping letters, super annoying for work. They replaced the problematic keys at a fair price and it's perfect again."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fdba74,#ea580c)">HW</div>
             <div><div class="review-name">Henry Walsh</div><div class="review-date">Brisbane CBD · 1 month ago</div></div>
@@ -6378,7 +6354,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Dropped my phone at the beach — sand and water damage. Brought it in and they worked miracles. Phone is running like new. Amazing team."</div>
+          <div class="review-text">"Dropped my phone at the beach. Sand and water damage. Brought it in and they worked miracles. Phone is running like new. Amazing team."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">AL</div>
             <div><div class="review-name">Ava Lane</div><div class="review-date">Noosa Heads · 2 weeks ago</div></div>
@@ -6394,7 +6370,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPad mini 6 screen gone from a fall. Fixed beautifully and back the same day. My kids were devastated — now they're happy again!"</div>
+          <div class="review-text">"iPad mini 6 screen gone from a fall. Fixed beautifully and back the same day. My kids were devastated, now they're happy again!"</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fca5a5,#dc2626)">KR</div>
             <div><div class="review-name">Karen Roberts</div><div class="review-date">Palmview · 4 days ago</div></div>
@@ -6426,7 +6402,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"These guys diagnosed a software issue Apple wanted $400 for and fixed it in 30 minutes for $49. Honest and skilled — can't ask for more."</div>
+          <div class="review-text">"These guys diagnosed a software issue Apple wanted $400 for and fixed it in 30 minutes for $49. Honest and skilled. Can't ask for more."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#bfdbfe,#1d4ed8)">GF</div>
             <div><div class="review-name">Grace Foster</div><div class="review-date">Caloundra · 2 weeks ago</div></div>
@@ -6434,7 +6410,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPhone 14 Plus took a dive from a balcony. Screen smashed, back glass cracked. Thought it was gone — fully repaired and back in my hands."</div>
+          <div class="review-text">"iPhone 14 Plus took a dive from a balcony. Screen smashed, back glass cracked. Thought it was gone, but it was fully repaired and back in my hands."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#f97316,#9a3412)">BM</div>
             <div><div class="review-name">Blake Morrison</div><div class="review-date">Bokarina · 1 week ago</div></div>
@@ -6466,7 +6442,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Fixed the face ID on my iPhone 13 Pro — something most places won't touch. Took the job on, sorted it, and it works perfectly."</div>
+          <div class="review-text">"Fixed the face ID on my iPhone 13 Pro, something most places won't touch. Took the job on, sorted it, and it works perfectly."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fde68a,#d97706)">AK</div>
             <div><div class="review-name">Aaron King</div><div class="review-date">Noosa · 2 weeks ago</div></div>
@@ -6490,7 +6466,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPad Air 5 completely dead after a power surge. They brought it back to life. Couldn't believe it actually worked — total legends."</div>
+          <div class="review-text">"iPad Air 5 completely dead after a power surge. They brought it back to life. Couldn't believe it actually worked. Total legends."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#f472b6,#be185d)">JD</div>
             <div><div class="review-name">Jessica Dunn</div><div class="review-date">Kawana · 1 week ago</div></div>
@@ -6498,7 +6474,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"My work iPhone 16 took a tumble on a building site. Back glass shattered. Repaired in under an hour — I was back on site before lunch."</div>
+          <div class="review-text">"My work iPhone 16 took a tumble on a building site. Back glass shattered. Repaired in under an hour and I was back on site before lunch."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fdba74,#c2410c)">WJ</div>
             <div><div class="review-name">William James</div><div class="review-date">Nambour · 2 weeks ago</div></div>
@@ -6506,7 +6482,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Very impressed — gave me an honest assessment that the logic board repair wasn't worth it on my old model and helped me find a good replacement instead."</div>
+          <div class="review-text">"Very impressed. They gave me an honest assessment that the logic board repair wasn't worth it on my old model and helped me find a good replacement instead."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#93c5fd,#1d4ed8)">LF</div>
             <div><div class="review-name">Louise Flynn</div><div class="review-date">Buderim · 3 months ago</div></div>
@@ -6514,7 +6490,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Screen on my iPhone SE 3 cracked badly. Replaced perfectly and now protected with a new tempered glass — included at no extra cost. Top service."</div>
+          <div class="review-text">"Screen on my iPhone SE 3 cracked badly. Replaced perfectly and now protected with a new tempered glass, included at no extra cost. Top service."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#6ee7b7,#047857)">XP</div>
             <div><div class="review-name">Xavier Price</div><div class="review-date">Marcoola · 1 week ago</div></div>
@@ -6522,7 +6498,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Dropped my MacBook Pro 14" M3 from my desk — display gone. Thought it was write-off territory. They had the parts, fixed it in 2 days. Incredible."</div>
+          <div class="review-text">"Dropped my MacBook Pro 14" M3 from my desk and the display was gone. Thought it was write-off territory. They had the parts, fixed it in 2 days. Incredible."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#94a3b8,#334155)">DS</div>
             <div><div class="review-name">Dylan Shaw</div><div class="review-date">Alexandra Headland · 5 weeks ago</div></div>
@@ -6538,7 +6514,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Home button stopped working on my iPad 9. Sorted it while I waited. Such a simple fix but most places couldn't do it — these guys could."</div>
+          <div class="review-text">"Home button stopped working on my iPad 9. Sorted it while I waited. Such a simple fix but most places couldn't do it, but these guys could."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#bfdbfe,#1d4ed8)">GS</div>
             <div><div class="review-name">George Sullivan</div><div class="review-date">Montville · 2 weeks ago</div></div>
@@ -6578,7 +6554,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"MacBook Air M3 SSD failing — told me my data might be unrecoverable. They got everything back. Genuinely above and beyond."</div>
+          <div class="review-text">"MacBook Air M3 SSD failing. I was told my data might be unrecoverable. They got everything back. Genuinely above and beyond."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#5eead4,#0f766e)">SP</div>
             <div><div class="review-name">Sophie Park</div><div class="review-date">Noosa Heads · 4 weeks ago</div></div>
@@ -6602,7 +6578,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"They fixed my MacBook Pro 16" M2 fan — it was making a grinding noise. Sourced and fitted the replacement quickly. Laptop runs silent again."</div>
+          <div class="review-text">"They fixed my MacBook Pro 16" M2 fan that was making a grinding noise. Sourced and fitted the replacement quickly. Laptop runs silent again."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#34d399,#064e3b)">JA</div>
             <div><div class="review-name">Joel Anderson</div><div class="review-date">Warana · 2 months ago</div></div>
@@ -6618,7 +6594,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPhone 13 mini with a swollen battery — dangerous situation. They replaced it quickly and safely, and explained exactly what had happened. Great service."</div>
+          <div class="review-text">"iPhone 13 mini with a swollen battery, a dangerous situation. They replaced it quickly and safely, and explained exactly what had happened. Great service."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#d8b4fe,#2563eb)">IT</div>
             <div><div class="review-name">Isabella Torres</div><div class="review-date">Mooloolah Valley · 3 weeks ago</div></div>
@@ -6682,7 +6658,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Brought in my iPhone 11 Pro — thought the screen was dead but it turned out to be a connector. Fixed in 15 minutes at no charge. Honest people."</div>
+          <div class="review-text">"Brought in my iPhone 11 Pro thinking the screen was dead, but it turned out to be a connector. Fixed in 15 minutes at no charge. Honest people."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#d8b4fe,#4c1d95)">FM</div>
             <div><div class="review-name">Felix Moore</div><div class="review-date">Noosaville · 3 weeks ago</div></div>
@@ -6690,7 +6666,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPhone 14 dropped down the stairs — screen totally gone. These guys had it sorted before I even finished lunch. Seriously impressive turnaround."</div>
+          <div class="review-text">"iPhone 14 dropped down the stairs and the screen was totally gone. These guys had it sorted before I even finished lunch. Seriously impressive turnaround."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fbbf24,#451a03)">SI</div>
             <div><div class="review-name">Sara Ibrahim</div><div class="review-date">Wurtulla · 1 week ago</div></div>
@@ -6698,7 +6674,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPad 10 front camera broken — video calls were a nightmare. Replaced and working perfectly. Fast, professional, and great value."</div>
+          <div class="review-text">"iPad 10 front camera broken, so video calls were a nightmare. Replaced and working perfectly. Fast, professional, and great value."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#4ade80,#166534)">EV</div>
             <div><div class="review-name">Ethan Vance</div><div class="review-date">Buderim · 2 weeks ago</div></div>
@@ -6722,7 +6698,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPhone SE 3 charging port dead. They had it back working in 25 minutes. Super convenient mobile pickup service too — came straight to my office."</div>
+          <div class="review-text">"iPhone SE 3 charging port dead. They had it back working in 25 minutes. Super convenient mobile pickup service too. They came straight to my office."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#93c5fd,#312e81)">JC</div>
             <div><div class="review-name">Julian Cross</div><div class="review-date">Brisbane · 2 weeks ago</div></div>
@@ -6730,7 +6706,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Microphone on my iPhone 13 stopped working — calls were terrible. Fixed the same day. Haven't had a single complaint about audio since."</div>
+          <div class="review-text">"Microphone on my iPhone 13 stopped working and calls were terrible. Fixed the same day. Haven't had a single complaint about audio since."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#99f6e4,#0f766e)">MH</div>
             <div><div class="review-name">Molly Hughes</div><div class="review-date">Peregian Springs · 1 week ago</div></div>
@@ -6746,7 +6722,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Excellent diagnostics — told me exactly what was wrong with my MacBook Pro before touching it. Repair was done on time and on budget."</div>
+          <div class="review-text">"Excellent diagnostics. They told me exactly what was wrong with my MacBook Pro before touching it. Repair was done on time and on budget."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fbbf24,#155e75)">RS</div>
             <div><div class="review-name">Russell Stone</div><div class="review-date">Mudjimba · 2 months ago</div></div>
@@ -6754,7 +6730,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPhone 15 pro screen replaced after only having it 2 weeks — was gutted. These guys made it right for a fair price and incredibly fast."</div>
+          <div class="review-text">"iPhone 15 pro screen replaced after only having it 2 weeks. I was gutted. These guys made it right for a fair price and incredibly fast."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#bef264,#3f6212)">ZH</div>
             <div><div class="review-name">Zac Hill</div><div class="review-date">Bokarina · 1 week ago</div></div>
@@ -6762,7 +6738,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"MacBook Pro M1 with a popped key — super annoying. Keycap replaced in 10 minutes. Charged a very fair price. These guys know what they're doing."</div>
+          <div class="review-text">"MacBook Pro M1 with a popped key, super annoying. Keycap replaced in 10 minutes. Charged a very fair price. These guys know what they're doing."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fdba74,#9a3412)">VP</div>
             <div><div class="review-name">Vanessa Price</div><div class="review-date">Marcoola · 3 weeks ago</div></div>
@@ -6770,7 +6746,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Broke my iPhone 14 Pro Max at the footy. Screen was destroyed. Fixed it while I was at a café next door. Perfect service — back for Round 2 of footy."</div>
+          <div class="review-text">"Broke my iPhone 14 Pro Max at the footy. Screen was destroyed. Fixed it while I was at a café next door. Perfect service. Back for Round 2 of footy."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#60a5fa,#1d4ed8)">LL</div>
             <div><div class="review-name">Logan Lee</div><div class="review-date">Maroochydore · 4 days ago</div></div>
@@ -6802,7 +6778,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"I've been ripped off by dodgy repair shops before. These guys are the real deal — honest, skilled, and fair. First time I've left a repair shop feeling great."</div>
+          <div class="review-text">"I've been ripped off by dodgy repair shops before. These guys are the real deal: honest, skilled, and fair. First time I've left a repair shop feeling great."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#94a3b8,#1e293b)">MR</div>
             <div><div class="review-name">Mark Reynolds</div><div class="review-date">Buderim · 6 weeks ago</div></div>
@@ -6810,7 +6786,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPhone 12 Pro Max dropped on concrete — no chance of surviving? Wrong. Screen replaced perfectly and back in service within the hour."</div>
+          <div class="review-text">"iPhone 12 Pro Max dropped on concrete. No chance of surviving? Wrong. Screen replaced perfectly and back in service within the hour."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#fdba74,#b45309)">BT</div>
             <div><div class="review-name">Bailey Turner</div><div class="review-date">Coolum Beach · 3 weeks ago</div></div>
@@ -6818,7 +6794,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"Bought a refurb MacBook Air M2 — looks brand new and runs fast. 90-day warranty included. Can't fault the value for money."</div>
+          <div class="review-text">"Bought a refurb MacBook Air M2 and it looks brand new and runs fast. 90-day warranty included. Can't fault the value for money."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#2563eb,#1e1b4b)">EP</div>
             <div><div class="review-name">Eliza Pope</div><div class="review-date">Sippy Downs · 5 weeks ago</div></div>
@@ -6850,7 +6826,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"iPad Pro 13" M4 with a cracked screen — thought the repair bill would be huge. Very reasonable and done without a fuss. Really happy."</div>
+          <div class="review-text">"iPad Pro 13" M4 with a cracked screen. I thought the repair bill would be huge. Very reasonable and done without a fuss. Really happy."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#60a5fa,#3b0764)">CE</div>
             <div><div class="review-name">Carmen Ellis</div><div class="review-date">Noosa Heads · 3 weeks ago</div></div>
@@ -6866,7 +6842,7 @@
         </div>
         <div class="review-card">
           <div class="review-stars">★★★★★</div>
-          <div class="review-text">"My MacBook Air M4 had a fault with the trackpad — brand new machine! They sorted it without drama under warranty-adjacent care. Brilliant."</div>
+          <div class="review-text">"My MacBook Air M4 had a fault with the trackpad, on a brand new machine! They sorted it without drama under warranty-adjacent care. Brilliant."</div>
           <div class="review-author">
             <div class="review-avatar" style="background:linear-gradient(135deg,#60a5fa,#0c4a6e)">AB</div>
             <div><div class="review-name">Alexia Bell</div><div class="review-date">Alexandra Headland · 1 week ago</div></div>
@@ -6934,7 +6910,7 @@
         <h2>Refurbished Devices</h2>
         <p>Quality-checked, repaired, and ready to go. All devices come with a 90-day warranty.</p>
         <div class="deals-blurb">
-          <span class="deals-blurb-chip"><i class="msym" data-lucide="store"></i> Free pickup in Buderim — often ready within the hour</span>
+          <span class="deals-blurb-chip"><i class="msym" data-lucide="store"></i> Free pickup in Buderim, often ready within the hour</span>
           <span class="deals-blurb-chip"><i class="msym" data-lucide="truck"></i> Or shipped Australia-wide, straight to your door</span>
         </div>
       </div>
@@ -7014,7 +6990,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Accessories</h2>
-        <p>Cases, chargers, cables and more — shipped straight to your door. Quality picks to keep your device protected and powered.</p>
+        <p>Cases, chargers, cables and more, shipped straight to your door. Quality picks to keep your device protected and powered.</p>
       </div>
       <div id="accGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-top:36px;"></div>
       <div style="text-align:center;margin-top:28px;font-size:14px;color:#94a3b8;">Free local pickup available, or flat-rate shipping Australia-wide. Most accessories ship within 5–12 business days.</div>
@@ -7061,7 +7037,7 @@
     <div class="wrap contact-section">
       <div class="section-head">
         <h2>Get in Touch</h2>
-        <p>We'd love to hear from you — drop by, call, or send us a message</p>
+        <p>We'd love to hear from you. Drop by, call, or send us a message</p>
       </div>
       <div class="contact-quick" aria-label="Quick ways to reach us">
         <a class="cq-card" href="tel:0467748433" aria-label="Call us on 0467 748 433">
@@ -7083,14 +7059,14 @@
       <div class="contact-grid">
         <div class="contact-info-card">
           <div class="contact-item">
-            <div class="contact-icon">📞</div>
+            <div class="contact-icon"><i class="msym" data-lucide="phone"></i></div>
             <div>
               <div class="contact-label">Phone</div>
               <div class="contact-value">0467 748 433</div>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">✉️</div>
+            <div class="contact-icon"><i class="msym" data-lucide="mail"></i></div>
             <div>
               <div class="contact-label">Email</div>
               <div class="contact-value"><a href="mailto:info@trustedmobiletech.org" style="color:inherit;text-decoration:none;">info@trustedmobiletech.org</a></div>
@@ -7126,26 +7102,24 @@
           </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">📍</div>
+            <div class="contact-icon"><i class="msym" data-lucide="map-pin"></i></div>
             <div>
               <div class="contact-label">Store Location</div>
               <div class="contact-value">Buderim QLD, 4556</div>
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon">🚗</div>
+            <div class="contact-icon"><i class="msym" data-lucide="car"></i></div>
             <div>
               <div class="contact-label">Service Area</div>
               <div class="contact-value">Sunshine Coast &amp; Brisbane Metro<br>Mobile pickup available</div>
             </div>
           </div>
           <div class="contact-hours">
-            <h4>🕐 Trading Hours <span class="open-status" id="openStatus" aria-live="polite"></span></h4>
+            <h4><i class="msym" data-lucide="clock"></i> Trading Hours <span class="open-status" id="openStatus" aria-live="polite"></span></h4>
             <div class="contact-hours-row"><span>Monday – Friday</span><span
                 style="font-weight:700;color:var(--dark)">6:00am – 11:30pm</span></div>
-            <div class="contact-hours-row"><span>Saturday</span><span style="font-weight:700;color:var(--dark)">5:00am –
-                11:30pm</span></div>
-            <div class="contact-hours-row"><span>Sunday</span><span style="font-weight:700;color:var(--dark)">5:00am –
+            <div class="contact-hours-row"><span>Saturday – Sunday</span><span style="font-weight:700;color:var(--dark)">5:00am –
                 11:30pm</span></div>
           </div>
         </div>
@@ -7172,7 +7146,7 @@
       <div class="contact-convo" id="contactConvo">
             <div class="cq-head">
               <div class="cq-title">Let's sort your phone out</div>
-              <div class="cq-sub">A few quick questions and we'll text you back — usually within a few hours during business hours.</div>
+              <div class="cq-sub">A few quick questions and we'll text you back, usually within a few hours during business hours.</div>
             </div>
             <div class="cq-progress" aria-hidden="true"><span class="cq-progress-fill" id="cqFill"></span></div>
             <div class="cq-meta">
@@ -7214,7 +7188,7 @@
 
             <div class="cq-step" data-step="5">
               <div class="cq-q">Where should we text you?</div>
-              <div class="cq-sub2">Pop in your mobile and we'll text you back — usually within a few hours.</div>
+              <div class="cq-sub2">Pop in your mobile and we'll text you back, usually within a few hours.</div>
               <input type="tel" class="form-input cq-input" id="cq-phone" placeholder="04XX XXX XXX" autocomplete="tel" inputmode="tel" oninput="cqFormatPhone(this)" onkeydown="cqKey(event,5)">
               <div class="cq-err" id="cq-err-5"></div>
               <label class="cq-email-label" for="cq-email">Prefer email instead? (optional)</label>
@@ -7222,11 +7196,6 @@
               <div class="cq-actions"><button type="button" class="btn cq-next" id="cqSubmitBtn" onclick="cqSubmit()">Send it through</button></div>
               <div class="cq-submit-err" id="cqSubmitErr" role="alert"></div>
             </div>
-      </div>
-      <div class="contact-map" aria-label="Find us on the map">
-        <div class="contact-map-frame" id="contactMapFrame" data-src="https://maps.google.com/maps?q=Buderim%20QLD%204556&z=13&output=embed">
-          <span class="contact-map-ph"><i class="msym" data-lucide="map-pinned"></i> Loading map…</span>
-        </div>
       </div>
     </div>
   </section>
@@ -7236,7 +7205,7 @@
     <div class="wrap" style="padding-top:56px;">
       <div class="section-head">
         <h2>Sell Your Device</h2>
-        <p>Get cash for your old iPhone, MacBook, or iPad — fill in the details below and we'll send you a quote.</p>
+        <p>Get cash for your old iPhone, MacBook, or iPad. Fill in the details below and we'll send you a quote.</p>
       </div>
 
       <div class="sell-perks">
@@ -7246,9 +7215,9 @@
         <span class="sell-perk"><i class="msym" data-lucide="shield-check"></i> Any condition considered</span>
       </div>
       <div class="sell-steps">
-        <div class="sell-step"><span class="sell-step-n">1</span><div class="sell-step-ic"><i class="msym" data-lucide="clipboard-list"></i></div><h4>Tell us about it</h4><p>Fill in the details below and add a few photos — it takes about a minute.</p></div>
+        <div class="sell-step"><span class="sell-step-n">1</span><div class="sell-step-ic"><i class="msym" data-lucide="clipboard-list"></i></div><h4>Tell us about it</h4><p>Fill in the details below and add a few photos. It takes about a minute.</p></div>
         <div class="sell-step"><span class="sell-step-n">2</span><div class="sell-step-ic"><i class="msym" data-lucide="badge-dollar-sign"></i></div><h4>Get your offer</h4><p>We check it over and send a fair, no-obligation quote by email or text.</p></div>
-        <div class="sell-step"><span class="sell-step-n">3</span><div class="sell-step-ic"><i class="msym" data-lucide="banknote"></i></div><h4>Get paid</h4><p>Drop it into Buderim or arrange a pickup — paid on the spot, cash or transfer.</p></div>
+        <div class="sell-step"><span class="sell-step-n">3</span><div class="sell-step-ic"><i class="msym" data-lucide="banknote"></i></div><h4>Get paid</h4><p>Drop it into Buderim or arrange a pickup. Paid on the spot, cash or transfer.</p></div>
       </div>
 
       <!-- How to find your device info -->
@@ -7336,7 +7305,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">IMEI Number <span style="font-weight:400;color:#94a3b8;font-size:13px;">(Optional — recommended)</span></label>
+            <label class="form-label">IMEI Number <span style="font-weight:400;color:#94a3b8;font-size:13px;">(Optional, recommended)</span></label>
             <input type="text" class="form-input" id="sell-imei" placeholder="e.g. 354 651 114 526 763" maxlength="20">
             <p style="font-size:12px;color:#94a3b8;margin-top:6px;">Dial *#06# or go to Settings → General → About → IMEI. Helps us verify the device and give a more accurate quote.</p>
           </div>
@@ -7361,7 +7330,7 @@
                  ondragleave="this.classList.remove('drag-over')"
                  ondrop="handleSellPhotoDrop(event)">
               📷 Click or drag &amp; drop photos here<br>
-              <span style="font-size:12px;opacity:.6;">Front, back, and any damage — helps us give an accurate quote</span>
+              <span style="font-size:12px;opacity:.6;">Front, back, and any damage, so we can give an accurate quote</span>
               <input type="file" id="sellPhotoInput" accept="image/*" multiple style="display:none" onchange="handleSellPhotoFiles(event)">
             </div>
             <div class="sell-photo-strip" id="sellPhotoStrip"></div>
@@ -7418,7 +7387,7 @@
         <div class="order-step">
           <div class="order-step-num">1</div>
           <div class="order-step-title">Tell us what you want</div>
-          <div class="order-step-text">Pick the device, storage, colour and condition — set your budget.</div>
+          <div class="order-step-text">Pick the device, storage, colour and condition, and set your budget.</div>
         </div>
         <div class="order-step">
           <div class="order-step-num">2</div>
@@ -7428,14 +7397,14 @@
         <div class="order-step">
           <div class="order-step-num">3</div>
           <div class="order-step-title">Approve &amp; collect</div>
-          <div class="order-step-text">Happy with it? Pay and pick up, or we deliver — backed by a 90-day warranty.</div>
+          <div class="order-step-text">Happy with it? Pay and pick up, or we deliver, backed by a 90-day warranty.</div>
         </div>
       </div>
 
       <!-- What we can source -->
       <div class="order-extra">
         <h3 class="order-extra-title">What we can track down</h3>
-        <p class="order-extra-sub">New, open-box or quality-checked refurbished — if it's Apple, chances are we can get it at a fair price.</p>
+        <p class="order-extra-sub">New, open-box or quality-checked refurbished. If it's Apple, chances are we can get it at a fair price.</p>
         <div class="order-source-grid">
           <button type="button" class="order-source" onclick="orderPick('iPhone')"><i class="msym" data-lucide="smartphone"></i><span>iPhone</span><small>SE through to the latest Pro Max</small></button>
           <button type="button" class="order-source" onclick="orderPick('iPad')"><i class="msym" data-lucide="tablet"></i><span>iPad</span><small>Air, Mini, Pro &amp; standard</small></button>
@@ -7448,7 +7417,7 @@
 
       <!-- Why order in with us -->
       <div class="order-why">
-        <div class="order-why-item"><i class="msym" data-lucide="badge-check"></i><div><strong>Quality-checked first</strong><span>Every device is fully tested before you commit — no nasty surprises.</span></div></div>
+        <div class="order-why-item"><i class="msym" data-lucide="badge-check"></i><div><strong>Quality-checked first</strong><span>Every device is fully tested before you commit. No nasty surprises.</span></div></div>
         <div class="order-why-item"><i class="msym" data-lucide="tag"></i><div><strong>Fair, upfront pricing</strong><span>A no-obligation quote lands in your inbox before you pay a cent.</span></div></div>
         <div class="order-why-item"><i class="msym" data-lucide="shield-check"></i><div><strong>90-day warranty</strong><span>Sourced devices are backed just like every repair we do.</span></div></div>
         <div class="order-why-item"><i class="msym" data-lucide="truck"></i><div><strong>Pickup or delivery</strong><span>Collect from the Buderim workshop or we'll bring it to you.</span></div></div>
@@ -7486,7 +7455,7 @@
             <div class="form-group">
               <label class="form-label">Preferred Condition</label>
               <select class="form-select" id="order-condition">
-                <option value="Any">Any — best value</option>
+                <option value="Any">Any (best value)</option>
                 <option value="Brand New">Brand new</option>
                 <option value="As New">As new / open box</option>
                 <option value="Excellent">Excellent (refurbished)</option>
@@ -7517,7 +7486,7 @@
             <textarea class="form-input" id="order-notes" rows="3" placeholder="Accessories, timeframe, trade-in, etc."></textarea>
           </div>
           <button type="submit" class="btn" id="orderSubmitBtn">Request This Device →</button>
-          <p style="text-align:center;font-size:12px;color:#94a3b8;margin:14px 0 0;">No payment now — we'll send a quote first. Provide at least an email or phone so we can reach you.</p>
+          <p style="text-align:center;font-size:12px;color:#94a3b8;margin:14px 0 0;">No payment now. We'll send a quote first. Provide at least an email or phone so we can reach you.</p>
         </form>
       </div>
 
@@ -7541,7 +7510,7 @@
       <div style="text-align:center;margin-bottom:56px;">
         <div class="hero-badge">Our Story</div>
         <h2 style="font-size:40px;font-weight:800;color:var(--dark);margin:16px 0 14px;letter-spacing:-.5px;">Built on Trust,<br><span class="hl">Backed by Experience</span></h2>
-        <p style="font-size:17px;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.7;">A Sunshine Coast–born repair business with one goal — honest, fast, and affordable service you can actually rely on.</p>
+        <p style="font-size:17px;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.7;">A Sunshine Coast-born repair business with one goal: honest, fast, and affordable service you can actually rely on.</p>
       </div>
 
       <!-- Main story -->
@@ -7549,8 +7518,8 @@
         <div class="about-story-text">
           <h2>How It All Started</h2>
           <p>Trusted Mobile Tech was founded in 2022 on the Sunshine Coast with a clear mission: deliver professional-grade device repairs at fair prices, without the corporate runaround. What began as a local operation quickly earned a reputation for reliability, transparency, and quality workmanship.</p>
-          <p>Word spread fast across the Coast because we do things differently — honest pricing, genuine warranties, and technicians who actually stand behind their work. Three years and hundreds of satisfied customers later, we're proud to be the repair service locals recommend to their families.</p>
-          <p>We're an independent, Australian-owned business. We know what it's like to hand over your device and hope for the best — so we've built the kind of repair service we'd trust ourselves. No hidden fees, no unnecessary parts, no excuses.</p>
+          <p>Word spread fast across the Coast because we do things differently: honest pricing, genuine warranties, and technicians who actually stand behind their work. Three years and hundreds of satisfied customers later, we're proud to be the repair service locals recommend to their families.</p>
+          <p>We're an independent, Australian-owned business. We know what it's like to hand over your device and hope for the best, so we've built the kind of repair service we'd trust ourselves. No hidden fees, no unnecessary parts, no excuses.</p>
         </div>
         <div class="about-highlight-card">
           <img src="Images/iphone-15-pro.png" alt="Apple device repair" loading="lazy" style="height:130px;width:auto;display:block;margin:0 auto 16px;object-fit:contain;filter:drop-shadow(0 12px 24px rgba(0,0,0,.18));">
@@ -7585,15 +7554,15 @@
         <div>
           <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">What's Next</div>
           <h2 style="font-size:26px;font-weight:800;color:var(--dark);margin-bottom:14px;letter-spacing:-.3px;">Now Expanding to Brisbane</h2>
-          <p style="color:var(--muted);line-height:1.8;font-size:15px;">After three years of building a reputation on the Sunshine Coast, we're taking it south. Brisbane locals can now book the same fast, reliable, no-BS repair service that Coasters have come to rely on — with the same 90-day warranty and no-fix-no-fee guarantee.</p>
-          <p style="color:var(--muted);line-height:1.8;font-size:15px;margin-top:12px;">Whether you're in Buderim or Brisbane, we've got you covered. Drop in or book a mobile visit — we come to you.</p>
+          <p style="color:var(--muted);line-height:1.8;font-size:15px;">After three years of building a reputation on the Sunshine Coast, we're taking it south. Brisbane locals can now book the same fast, reliable, no-BS repair service that Coasters have come to rely on, with the same 90-day warranty and no-fix-no-fee guarantee.</p>
+          <p style="color:var(--muted);line-height:1.8;font-size:15px;margin-top:12px;">Whether you're in Buderim or Brisbane, we've got you covered. Drop in or book a mobile visit. We come to you.</p>
           <button class="hero-btn primary" style="margin-top:20px;" onclick="showSection('quote')">Get a Quote →</button>
         </div>
         <div style="text-align:center;">
           <div style="font-size:120px;margin-bottom:16px;line-height:1;">🗺️</div>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--dark);">Sunshine Coast</strong> — Est. 2022</div>
-            <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.2);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--brand);">Brisbane</strong> — Now open!</div>
+            <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--dark);">Sunshine Coast</strong> · Est. 2022</div>
+            <div style="background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.2);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--muted);">📍 <strong style="color:var(--brand);">Brisbane</strong> · Now open!</div>
           </div>
         </div>
       </div>
@@ -7605,17 +7574,17 @@
           <div class="about-value-card">
             <div class="about-value-icon"><i class="msym" data-lucide="handshake" style="color:var(--brand);"></i></div>
             <div class="about-value-title">Honesty First</div>
-            <div class="about-value-text">No hidden fees, no unnecessary upsells. If we can't fix it, you don't pay — simple as that.</div>
+            <div class="about-value-text">No hidden fees, no unnecessary upsells. If we can't fix it, you don't pay. Simple as that.</div>
           </div>
           <div class="about-value-card">
             <div class="about-value-icon"><i class="msym" data-lucide="zap" style="color:var(--brand);"></i></div>
             <div class="about-value-title">Fast Turnaround</div>
-            <div class="about-value-text">Most repairs done in 1–2 hours. We know your phone is your lifeline — we don't sit on it.</div>
+            <div class="about-value-text">Most repairs done in 1–2 hours. We know your phone is your lifeline, so we don't sit on it.</div>
           </div>
           <div class="about-value-card">
             <div class="about-value-icon"><i class="msym" data-lucide="store" style="color:var(--brand);"></i></div>
             <div class="about-value-title">Local & Independent</div>
-            <div class="about-value-text">We're not a franchise. We're an Aussie-owned business operating in the same communities we serve — proudly local.</div>
+            <div class="about-value-text">We're not a franchise. We're an Aussie-owned business operating in the same communities we serve. Proudly local.</div>
           </div>
           <div class="about-value-card">
             <div class="about-value-icon"><i class="msym" data-lucide="shield-check" style="color:var(--brand);"></i></div>
@@ -7628,7 +7597,7 @@
       <!-- What to Expect -->
       <div style="margin-bottom:56px;">
         <h2 style="font-size:26px;font-weight:800;color:var(--dark);text-align:center;margin-bottom:8px;letter-spacing:-.3px;">What to Expect</h2>
-        <p style="text-align:center;color:var(--muted);font-size:15px;margin-bottom:32px;">A professional, straightforward repair experience — every time.</p>
+        <p style="text-align:center;color:var(--muted);font-size:15px;margin-bottom:32px;">A professional, straightforward repair experience, every time.</p>
         <div class="about-expect-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
           <div class="about-value-card" style="text-align:center;">
             <div style="font-size:42px;margin-bottom:12px;color:var(--brand);display:flex;justify-content:center;"><i class="msym" data-lucide="clipboard-list"></i></div>
@@ -7643,7 +7612,7 @@
           <div class="about-value-card" style="text-align:center;">
             <div style="font-size:42px;margin-bottom:12px;color:var(--brand);display:flex;justify-content:center;"><i class="msym" data-lucide="badge-check"></i></div>
             <div class="about-value-title">Tested & Guaranteed</div>
-            <div class="about-value-text">Every device is fully tested before return. Backed by our 90-day warranty — no questions asked.</div>
+            <div class="about-value-text">Every device is fully tested before return. Backed by our 90-day warranty, no questions asked.</div>
           </div>
         </div>
       </div>
@@ -7654,7 +7623,7 @@
         <div>
           <div style="font-size:13px;font-weight:600;color:var(--brand);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Quality Assurance</div>
           <h2 style="font-size:22px;font-weight:800;color:var(--dark);margin-bottom:12px;letter-spacing:-.2px;">Premium Parts, Professional Results</h2>
-          <p style="color:var(--muted);line-height:1.8;font-size:15px;">We use quality aftermarket parts and OEM parts — sourced from trusted suppliers and rigorously tested before installation. Whether you choose aftermarket or genuine OEM, every repair is performed using professional-grade tools and techniques. When you choose Trusted Mobile Tech, you're choosing a repair that lasts.</p>
+          <p style="color:var(--muted);line-height:1.8;font-size:15px;">We use quality aftermarket parts and OEM parts, sourced from trusted suppliers and rigorously tested before installation. Whether you choose aftermarket or genuine OEM, every repair is performed using professional-grade tools and techniques. When you choose Trusted Mobile Tech, you're choosing a repair that lasts.</p>
         </div>
       </div>
 
@@ -7674,7 +7643,7 @@
             <span class="oem-badge">🔧</span>
             <div>
               <strong>Quality Aftermarket &amp; OEM Parts</strong>
-              <p>We use quality aftermarket parts and genuine OEM parts — both rigorously tested and selected to match your repair needs.</p>
+              <p>We use quality aftermarket parts and genuine OEM parts, both rigorously tested and selected to match your repair needs.</p>
             </div>
           </div>
         </div>
@@ -8512,7 +8481,7 @@
         grid.innerHTML = '<div class="card" style="padding:40px;text-align:center;grid-column:1/-1;">'
           + '<div style="font-size:40px;margin-bottom:12px;">🔎</div>'
           + '<div style="font-size:18px;font-weight:700;color:var(--dark);margin-bottom:8px;">No Listings Right Now</div>'
-          + '<div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Stock changes regularly — send us a request and we\'ll find it for you.</div>'
+          + '<div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Stock changes regularly. Send us a request and we\'ll find it for you.</div>'
           + '<button class="btn" onclick="showSection(\'contact\')">Send Us a Request</button>'
           + '</div>';
         if (countEl) countEl.textContent = '';
@@ -8561,7 +8530,7 @@
       await fetchDeals();
       if (!_dealItems.length) {
         grid.innerHTML = '<div class="card" style="padding:28px;text-align:center;grid-column:1/-1;">'
-          + '<div style="font-size:15px;color:var(--muted);margin-bottom:14px;">No stock listed right now — check back soon or send us a request.</div>'
+          + '<div style="font-size:15px;color:var(--muted);margin-bottom:14px;">No stock listed right now. Check back soon or send us a request.</div>'
           + '<button class="btn-cta" onclick="showSection(\'contact\')"><i class="msym" data-lucide="mail"></i> Send a Request</button>'
           + '</div>';
         renderIcons();
@@ -8790,11 +8759,11 @@
     // Our own grading tiers (plain-English, original wording)
     var RD_GRADES = [
       { key: 'Excellent', match: ['excellent', 'grade a', 'a', 'a+', 'mint', 'pristine', 'as new'], color: '#10b981',
-        desc: "Looks close to brand new. Under normal light you'd struggle to find a mark — at most a faint hairline you'd have to hunt for. Screen and glass are clean, with no chips or visible scratches, and it works flawlessly." },
+        desc: "Looks close to brand new. Under normal light you'd struggle to find a mark, at most a faint hairline you'd have to hunt for. Screen and glass are clean, with no chips or visible scratches, and it works flawlessly." },
       { key: 'Good', match: ['good', 'grade b', 'b', 'very good'], color: '#3b82f6',
-        desc: "Light, honest signs of everyday use — the odd fine scratch or a small scuff on the frame you'll spot up close but not from arm's length. The screen is fully clear with no cracks, and everything works perfectly." },
+        desc: "Light, honest signs of everyday use: the odd fine scratch or a small scuff on the frame you'll spot up close but not from arm's length. The screen is fully clear with no cracks, and everything works perfectly." },
       { key: 'Fair', match: ['fair', 'grade c', 'c', 'acceptable', 'well used', 'well-used'], color: '#f59e0b',
-        desc: "A well-loved unit with more obvious marks — scratches, scuffs or minor edge dings you'll notice at a glance, and possibly light screen marks that don't affect use. Still fully tested and 100% functional — the best value on the shelf." },
+        desc: "A well-loved unit with more obvious marks: scratches, scuffs or minor edge dings you'll notice at a glance, and possibly light screen marks that don't affect use. Still fully tested and 100% functional, and the best value on the shelf." },
     ];
     function rdGradeInfo(g) {
       var n = _rdNorm(g); if (!n) return null;
@@ -8814,18 +8783,18 @@
     // Why-buy-from-us points (our voice; last one cross-sells repairs)
     var RD_WHY = [
       { icon: 'clipboard-check', title: 'Multi-point tested', desc: 'Battery, screen, cameras, speakers, buttons, Face/Touch ID and connectivity are all checked before anything reaches the shelf.' },
-      { icon: 'shield-check', title: '90-day local warranty', desc: "Warranty claims are handled right here in Buderim — no posting your device interstate and waiting weeks to hear back." },
+      { icon: 'shield-check', title: '90-day local warranty', desc: "Warranty claims are handled right here in Buderim, no posting your device interstate and waiting weeks to hear back." },
       { icon: 'leaf', title: 'Kinder to the planet', desc: 'Choosing refurbished keeps a perfectly good device out of landfill and skips the e-waste and carbon of building brand new.' },
-      { icon: 'wrench', title: 'Repairs if you ever need them', desc: 'If something goes wrong down the track, grab an instant online quote — we fix Apple devices in-house.', cta: 'Get an instant repair quote', ctaAction: "showSection('quote', true)" },
+      { icon: 'wrench', title: 'Repairs if you ever need them', desc: 'If something goes wrong down the track, grab an instant online quote. We fix Apple devices in-house.', cta: 'Get an instant repair quote', ctaAction: "showSection('quote', true)" },
     ];
 
     // FAQ (original copy — no payment-plan / Afterpay claims)
     var RD_FAQ = [
-      { q: 'What does the 90-day warranty actually cover?', a: "It covers hardware faults that aren't down to accidental damage — a battery that suddenly drops off, a speaker that stops working, a button that fails. Bring the device back to us in Buderim and we'll repair or replace it. Accidental damage like drops or liquid isn't covered, but we can always quote you for that repair." },
+      { q: 'What does the 90-day warranty actually cover?', a: "It covers hardware faults that aren't down to accidental damage: a battery that suddenly drops off, a speaker that stops working, a button that fails. Bring the device back to us in Buderim and we'll repair or replace it. Accidental damage like drops or liquid isn't covered, but we can always quote you for that repair." },
       { q: 'What does the battery health percentage mean?', a: "It's how much charge the battery holds compared to when it was new. A device at 90% lasts noticeably longer between charges than one at 80%. We list the real figure for every device so there are no surprises, and if it ever dips too low we can fit a fresh battery for you." },
-      { q: "Can I return it if it's not right for me?", a: "Yes. If you change your mind, get in touch within 14 days and — as long as it comes back in the same condition — we'll sort out a refund or a swap. Faulty items are always looked after separately under the warranty." },
+      { q: "Can I return it if it's not right for me?", a: "Yes. If you change your mind, get in touch within 14 days and, as long as it comes back in the same condition, we'll sort out a refund or a swap. Faulty items are always looked after separately under the warranty." },
       { q: 'How long does delivery take?', a: 'Local pickup in Buderim is free and usually ready the same or next day. For posted orders we ship Australia-wide, with most parcels arriving within a few business days depending on where you are.' },
-      { q: 'How can I pay?', a: "You can pay securely by card at checkout, or settle up in person if you're collecting locally. Your card details are handled by our payment provider — we never see or store them." },
+      { q: 'How can I pay?', a: "You can pay securely by card at checkout, or settle up in person if you're collecting locally. Your card details are handled by our payment provider, and we never see or store them." },
     ];
 
     var _rdCurrent = null, _rdDefaultTitle = null, _rdDefaultDesc = null, _rdStickyObs = null;
@@ -8983,7 +8952,7 @@
     function _rdSetMeta(l) {
       if (_rdDefaultTitle == null) { _rdDefaultTitle = document.title; var me0 = _rdMetaEl(); _rdDefaultDesc = me0 ? me0.getAttribute('content') : ''; }
       var name = rdDisplayName(l) + (l.storage ? ' ' + l.storage : '');
-      document.title = name + ' — Certified Refurbished | Trusted Mobile Tech';
+      document.title = name + ' - Certified Refurbished | Trusted Mobile Tech';
       var me = _rdMetaEl();
       if (me) me.setAttribute('content', 'Certified pre-owned ' + name + (l.grade ? ' in ' + l.grade + ' condition' : '') + '. Tested in Buderim with a 90-day local warranty. Free local pickup or shipping Australia-wide.');
     }
@@ -9064,7 +9033,7 @@
       h += '<div class="rd-buy" id="rdBuyPanel">';
       h += '<h1 class="rd-title">' + _rdEsc(titleShort) + '</h1>';
       h += '<div class="rd-sku">SKU ' + _rdEsc(sku) + (l.color ? ' · ' + _rdEsc(l.color) : '') + '</div>';
-      h += '<div class="rd-trustline"><i class="msym" data-lucide="badge-check"></i> Certified Pre-Owned — Tested in Buderim</div>';
+      h += '<div class="rd-trustline"><i class="msym" data-lucide="badge-check"></i> Certified Pre-Owned · Tested in Buderim</div>';
       h += '<div class="rd-price-row"><span class="rd-price">$' + price.toLocaleString() + '</span>' + (newP > price ? '<span class="rd-rrp">$' + newP.toLocaleString() + ' new</span>' : '') + '</div>';
       if (save > 0) h += '<div class="rd-save">Save ~$' + save.toLocaleString() + ' vs new</div>';
       h += '<div class="rd-fulfil"><span class="rd-chip"><i class="msym" data-lucide="store"></i> Free local pickup</span><span class="rd-chip"><i class="msym" data-lucide="truck"></i> Ships Australia-wide</span></div>';
@@ -9084,7 +9053,7 @@
         h += '<button class="rd-ask" type="button" onclick="rdAsk()"><i class="msym" data-lucide="message-circle-question"></i> Ask a question</button>';
       }
       h += '</div>';
-      h += '<ul class="rd-checklist"><li class="rd-check"><i class="msym" data-lucide="check"></i> Fully tested &amp; sanitised before sale</li><li class="rd-check"><i class="msym" data-lucide="check"></i> IMEI checked — no activation lock</li><li class="rd-check"><i class="msym" data-lucide="check"></i> Genuine local warranty — Buderim, QLD</li></ul>';
+      h += '<ul class="rd-checklist"><li class="rd-check"><i class="msym" data-lucide="check"></i> Fully tested &amp; sanitised before sale</li><li class="rd-check"><i class="msym" data-lucide="check"></i> IMEI checked, no activation lock</li><li class="rd-check"><i class="msym" data-lucide="check"></i> Genuine local warranty (Buderim QLD)</li></ul>';
       h += '<div class="rd-pay"><span class="rd-pay-label">We accept</span><div class="rd-pay-list">'
         + '<span class="rd-pay-badge"><img src="Images/pay-paypal.svg" alt="PayPal" class="rd-pay-logo rd-pay-logo-pp"></span>'
         + '<span class="rd-pay-badge"><img src="Images/pay-mastercard.svg" alt="Mastercard" class="rd-pay-logo rd-pay-logo-mc"> Mastercard</span>'
@@ -9413,20 +9382,20 @@
       var canReply = reply && /@/.test(reply);
       if (canReply) {
         lines.push('———————————————');
-        lines.push('▶ RESPOND TO THIS QUOTE\nJust hit Reply — it goes straight to the customer.\nOr tap to respond now: mailto:' + reply + '?subject=' + encodeURIComponent('Re: Your Trusted Mobile Tech quote'));
+        lines.push('▶ RESPOND TO THIS QUOTE\nJust hit Reply and it goes straight to the customer.\nOr tap to respond now: mailto:' + reply + '?subject=' + encodeURIComponent('Re: Your Trusted Mobile Tech quote'));
       }
       var subjects = {
-        quote_notify:   'New Repair Quote — Trusted Mobile Tech',
-        sell_notify:    'New Device Sale Enquiry — Trusted Mobile Tech',
-        sell_confirm:   'Your Quote Request — Trusted Mobile Tech',
-        contact_notify: 'New Contact Message — Trusted Mobile Tech',
-        order_notify:   'New "Order In" Request — Trusted Mobile Tech',
-        order_confirm:  'We Got Your Order-In Request — Trusted Mobile Tech'
+        quote_notify:   'New Repair Quote | Trusted Mobile Tech',
+        sell_notify:    'New Device Sale Enquiry | Trusted Mobile Tech',
+        sell_confirm:   'Your Quote Request | Trusted Mobile Tech',
+        contact_notify: 'New Contact Message | Trusted Mobile Tech',
+        order_notify:   'New "Order In" Request | Trusted Mobile Tech',
+        order_confirm:  'We Got Your Order-In Request | Trusted Mobile Tech'
       };
       var body = {
         access_key: WEB3FORMS_KEY,
         from_name: 'Trusted Mobile Tech Website',
-        subject: subjects[type] || 'Trusted Mobile Tech — Notification',
+        subject: subjects[type] || 'Trusted Mobile Tech notification',
         message: lines.join('\n\n')
       };
       // so you can hit "Reply" and reach the customer directly
@@ -9487,14 +9456,14 @@
           submitted_at:   new Date().toLocaleString('en-AU')
         });
         if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR_WEB3FORMS_KEY') {
-          _cStatus('err', 'Messaging isn\'t configured yet — please <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">call 0467 748 433</a> or <a href="mailto:info@trustedmobiletech.org" style="color:inherit;text-decoration:underline;">email us</a>.');
+          _cStatus('err', 'Messaging isn\'t configured yet. Please <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">call 0467 748 433</a> or <a href="mailto:info@trustedmobiletech.org" style="color:inherit;text-decoration:underline;">email us</a>.');
         } else if (res && res.success === false) {
           _cStatus('err', 'Something went wrong sending your message. Please <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">call 0467 748 433</a> or <a href="mailto:info@trustedmobiletech.org" style="color:inherit;text-decoration:underline;">email us</a>.');
         } else {
           form.reset(); _cShowSuccess();
         }
       } catch (err) {
-        _cStatus('err', 'Connection error — please try again, or <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">call 0467 748 433</a>.');
+        _cStatus('err', 'Connection error. Please try again, or <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">call 0467 748 433</a>.');
       } finally {
         btn.innerHTML = 'Send Message'; btn.disabled = false;
       }
@@ -9505,7 +9474,7 @@
       card.innerHTML =
         '<div class="contact-success">' +
           '<div class="cs-ic"><i class="msym" data-lucide="check-check"></i></div>' +
-          '<h3>Thanks — message received</h3>' +
+          '<h3>Thanks! Message received</h3>' +
           '<p>We\'ll get back to you within one business day. Need us sooner?</p>' +
           '<a class="cs-call" href="tel:0467748433"><i class="msym" data-lucide="phone"></i> Call 0467 748 433</a>' +
         '</div>';
@@ -9569,7 +9538,7 @@
       if (hp && hp.value) { cqShowSuccess(cqState.name); return; }   // silent bot drop
       var btn = document.getElementById('cqSubmitBtn');
       btn.innerHTML = '<span class="cbtn-spin" aria-hidden="true"></span> Sending…'; btn.disabled = true;
-      var message = cqState.service + ' — ' + (cqState.device || 'device not specified') + '.' + (cqState.details ? ' ' + cqState.details : '');
+      var message = cqState.service + ' - ' + (cqState.device || 'device not specified') + '.' + (cqState.details ? ' ' + cqState.details : '');
       Promise.resolve(sendEmail('contact_notify', {
         customer_name: cqState.name,
         customer_email: email || '(not provided)',
@@ -9585,7 +9554,7 @@
     }
     function cqSubmitError() {
       var e = document.getElementById('cqSubmitErr');
-      if (e) { e.innerHTML = 'Sorry — that didn\'t go through. Please try again, or call us on <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">0467 748 433</a>.'; e.classList.add('show'); }
+      if (e) { e.innerHTML = 'Sorry, that didn\'t go through. Please try again, or call us on <a href="tel:0467748433" style="color:inherit;text-decoration:underline;">0467 748 433</a>.'; e.classList.add('show'); }
     }
     function cqShowSuccess(name) {
       var convo = document.getElementById('contactConvo'); if (!convo) return;
@@ -9616,30 +9585,11 @@
       } catch (err) { el.style.display = 'none'; }
     }
 
-    // ── Lazy-load the Google Maps embed only when it nears the viewport ──
-    function initContactMap() {
-      var frame = document.getElementById('contactMapFrame'); if (!frame || frame.dataset.loaded) return;
-      var load = function () {
-        if (frame.dataset.loaded) return; frame.dataset.loaded = '1';
-        var ifr = document.createElement('iframe');
-        ifr.src = frame.dataset.src; ifr.loading = 'lazy'; ifr.title = 'Map of our Buderim location';
-        ifr.setAttribute('referrerpolicy', 'no-referrer-when-downgrade'); ifr.allowFullscreen = true;
-        frame.innerHTML = ''; frame.appendChild(ifr);
-      };
-      if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) { if (en.isIntersecting) { load(); io.disconnect(); } });
-        }, { rootMargin: '250px' });
-        io.observe(frame);
-      } else { load(); }
-    }
-
     // ── Wire up contact page once DOM is ready ──
     (function initContactPage() {
       function ready() {
         updateOpenStatus();
         setInterval(updateOpenStatus, 60000);
-        initContactMap();
         var form = document.getElementById('contactForm');
         if (form) {
           form.addEventListener('focusin', function () { if (!_contactFirstFocus) _contactFirstFocus = Date.now(); });
@@ -9676,7 +9626,7 @@
       var email = document.getElementById('order-email').value.trim();
       var phone = document.getElementById('order-phone').value.trim();
       if (!email && !phone) {
-        alert('Please provide at least one contact method — email or phone number.');
+        alert('Please provide at least one contact method, email or phone number.');
         return;
       }
       var btn = document.getElementById('orderSubmitBtn');
@@ -9714,7 +9664,7 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       } catch (err) {
-        alert('Connection error — please try again or call 0467 748 433.');
+        alert('Connection error. Please try again or call 0467 748 433.');
       } finally {
         btn.textContent = 'Request This Device →'; btn.disabled = false;
       }
@@ -9781,7 +9731,7 @@
       var email = document.getElementById('sell-email').value.trim();
       var phone = document.getElementById('sell-phone').value.trim();
       if (!email && !phone) {
-        alert('Please provide at least one contact method — email or phone number.');
+        alert('Please provide at least one contact method, email or phone number.');
         return;
       }
       if (sellPhotos.length === 0) {
@@ -9874,7 +9824,7 @@
           + '</div>';
       }).join('');
     }
-    var PHILOSOPHY = { 'iPhone SE': 'The SE delivers modern performance in a classic, compact form.', 'iPhone 11': 'Night Mode photography brought professional low-light to everyone. The ultra-wide camera transformed how we capture the world.', 'iPhone 12': 'A return to iconic flat-edge design with aerospace-grade aluminum. First 5G iPhone with Ceramic Shield, the toughest glass ever on a smartphone.', 'iPhone 13': 'Designed for storytellers. Cinematic Mode brought depth-of-field video, while ProMotion 120Hz made every interaction feel impossibly fluid.', 'iPhone 14': 'Dynamic Island reimagined phone interaction, turning the camera cutout into a living interface. Satellite SOS proved a phone can save your life.', 'iPhone 15': 'Grade 5 titanium, the same alloy used in spacecraft. The lightest Pro ever, with a customisable Action Button and the most powerful mobile chip ever made.', 'iPhone 16': 'Camera Control gives you a dedicated button that changes how you capture. With Apple Intelligence built in, iPhone 16 Pro thinks alongside you.', 'iPhone 17': 'Engineered around how you actually hold and use your phone. The refined aluminum frame is lighter and more ergonomic than ever, with contoured edges that feel natural in the hand. Cosmic Orange makes a bold statement.', 'MacBook Air 13"': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge. The M4 Air brings even more speed and a Centre Stage camera to the most popular Mac ever made.', 'MacBook Air 15"': 'The biggest Air ever made — a stunning 15.3-inch Liquid Retina display and six-speaker sound system, still impossibly thin, silent, and light enough to take anywhere.', 'MacBook Air': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge.', 'MacBook Pro 13in': 'Professional power in the most portable Pro form. The Touch Bar brought context-sensitive controls to your fingertips.', 'MacBook Pro 14in': 'Built for boundary-pushers. Liquid Retina XDR brings reference-grade colour accuracy to a laptop for the first time.', 'MacBook Pro 16in': 'Maximum canvas, maximum power. The 16-inch display gives creators room to work while M-series chips handle anything.', 'iPad': 'The essential iPad. Versatile, affordable, and powerful enough for everything from notes to Netflix to creative work.', 'iPad mini': 'Small enough for anywhere, powerful enough for everything. The mini proves screen size has nothing to do with capability.', 'iPad Air': 'The sweet spot. Colourful, powerful, and ready for anything with M-series performance and Apple Pencil Pro.', 'iPad Pro': 'The ultimate iPad. Tandem OLED delivers the most stunning display Apple has ever made, in the thinnest product ever created.' };
+    var PHILOSOPHY = { 'iPhone SE': 'The SE delivers modern performance in a classic, compact form.', 'iPhone 11': 'Night Mode photography brought professional low-light to everyone. The ultra-wide camera transformed how we capture the world.', 'iPhone 12': 'A return to iconic flat-edge design with aerospace-grade aluminum. First 5G iPhone with Ceramic Shield, the toughest glass ever on a smartphone.', 'iPhone 13': 'Designed for storytellers. Cinematic Mode brought depth-of-field video, while ProMotion 120Hz made every interaction feel impossibly fluid.', 'iPhone 14': 'Dynamic Island reimagined phone interaction, turning the camera cutout into a living interface. Satellite SOS proved a phone can save your life.', 'iPhone 15': 'Grade 5 titanium, the same alloy used in spacecraft. The lightest Pro ever, with a customisable Action Button and the most powerful mobile chip ever made.', 'iPhone 16': 'Camera Control gives you a dedicated button that changes how you capture. With Apple Intelligence built in, iPhone 16 Pro thinks alongside you.', 'iPhone 17': 'Engineered around how you actually hold and use your phone. The refined aluminum frame is lighter and more ergonomic than ever, with contoured edges that feel natural in the hand. Cosmic Orange makes a bold statement.', 'MacBook Air 13"': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge. The M4 Air brings even more speed and a Centre Stage camera to the most popular Mac ever made.', 'MacBook Air 15"': 'The biggest Air ever made, with a stunning 15.3-inch Liquid Retina display and six-speaker sound system, still impossibly thin, silent, and light enough to take anywhere.', 'MacBook Air': 'Impossibly thin, completely silent. No fan, no noise, just pure performance that lasts all day on a single charge.', 'MacBook Pro 13in': 'Professional power in the most portable Pro form. The Touch Bar brought context-sensitive controls to your fingertips.', 'MacBook Pro 14in': 'Built for boundary-pushers. Liquid Retina XDR brings reference-grade colour accuracy to a laptop for the first time.', 'MacBook Pro 16in': 'Maximum canvas, maximum power. The 16-inch display gives creators room to work while M-series chips handle anything.', 'iPad': 'The essential iPad. Versatile, affordable, and powerful enough for everything from notes to Netflix to creative work.', 'iPad mini': 'Small enough for anywhere, powerful enough for everything. The mini proves screen size has nothing to do with capability.', 'iPad Air': 'The sweet spot. Colourful, powerful, and ready for anything with M-series performance and Apple Pencil Pro.', 'iPad Pro': 'The ultimate iPad. Tandem OLED delivers the most stunning display Apple has ever made, in the thinnest product ever created.' };
     function selectSeries(el) {
       var sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2;
       var cat = T[selCat]; var s = cat.series[sn]; showLevel(2); renderBC(); updateBackBtn();
@@ -10055,7 +10005,7 @@
           var lbl = document.createElement('div');
           lbl.className = 'tier-label';
           lbl.style.cssText = 'margin:0 0 10px;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.3);display:inline-block;';
-          lbl.textContent = cls.toUpperCase() + ' — $' + price;
+          lbl.textContent = cls.toUpperCase() + ' - $' + price;
           c.insertBefore(lbl, c.firstChild);
         }
       });
@@ -10093,7 +10043,7 @@
           if (m) {
             var lbl = document.createElement('div');
             lbl.className = 'tier-label';
-            lbl.textContent = m[1] + ' — $' + sel.price;
+            lbl.textContent = m[1] + ' - $' + sel.price;
             lbl.style.cssText = 'margin:0 0 10px;padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:700;background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.3);display:inline-block;';
             c.insertBefore(lbl, c.firstChild);
           }
@@ -10115,7 +10065,7 @@
     // Add-ons are stored as selRepairs line items (flagged addonKey) so every
     // total / summary / booking-submit already includes them automatically.
     var ACCESSORY_ADDONS = [
-      { key: 'protector', name: 'Screen Protector', desc: 'Tempered glass — fitted for you in-store', price: 15, icon: 'shield' },
+      { key: 'protector', name: 'Screen Protector', desc: 'Tempered glass, fitted for you in-store', price: 15, icon: 'shield' },
       { key: 'case', name: 'Protective Case', desc: 'Slim matte finish, raised-edge drop protection', price: 10, icon: 'smartphone' },
       { key: 'cable', name: 'Charger', desc: 'Fast-charge wall charger', price: 5, icon: 'plug-zap' }
     ];
@@ -10251,7 +10201,7 @@
         var cf = calcCalloutFee(lat, lng);
         currentCalloutFee = cf.fee;
         var cfEl = document.getElementById('calloutFee');
-        if (cfEl) { cfEl.style.display = 'block'; cfEl.innerHTML = '<strong>Mobile Pickup:</strong> ' + cf.label + ' (approx. ' + cf.dist + 'km from ' + cf.base + ')' + (cf.fee > 0 ? ' — This fee covers travel time and fuel.' : ''); } wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid'); err.style.display = 'none'; okEl.style.display = 'block';
+        if (cfEl) { cfEl.style.display = 'block'; cfEl.innerHTML = '<strong>Mobile Pickup:</strong> ' + cf.label + ' (approx. ' + cf.dist + 'km from ' + cf.base + ')' + (cf.fee > 0 ? '. This fee covers travel time and fuel.' : ''); } wrap.classList.add('pac-valid'); wrap.classList.remove('pac-invalid'); err.style.display = 'none'; okEl.style.display = 'block';
       }
       else { pickupAddress = ''; addressValid = false; wrap.classList.add('pac-invalid'); wrap.classList.remove('pac-valid'); err.style.display = 'block'; okEl.style.display = 'none'; }
     }
@@ -10284,8 +10234,8 @@
       const d = new Date(document.getElementById('date').value);
       document.getElementById('quoteDateTime').textContent = d.toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + document.getElementById('time').value;
       const loc = document.getElementById('quoteLocation');
-      if (serviceType === 'store') { loc.textContent = '🏪 Drop Off – address sent once approved'; document.getElementById('step3title').textContent = 'Drop Off Your Device'; document.getElementById('step3desc').textContent = "We'll send you our exact drop-off address once your booking has been approved."; }
-      else { loc.textContent = '🚗 Pickup – ' + pickupAddress; document.getElementById('step3title').textContent = 'We Come to You'; document.getElementById('step3desc').textContent = 'Technician arrives at ' + pickupAddress; }
+      if (serviceType === 'store') { loc.textContent = '🏪 Drop Off: address sent once approved'; document.getElementById('step3title').textContent = 'Drop Off Your Device'; document.getElementById('step3desc').textContent = "We'll send you our exact drop-off address once your booking has been approved."; }
+      else { loc.textContent = '🚗 Pickup: ' + pickupAddress; document.getElementById('step3title').textContent = 'We Come to You'; document.getElementById('step3desc').textContent = 'Technician arrives at ' + pickupAddress; }
       const tot = selRepairs.reduce((s, r) => s + r.price, 0);
       document.getElementById('quoteRepairsList').innerHTML = selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span><strong>Total</strong></span><span><strong>$' + tot + '</strong></span></div>';
     }
@@ -10335,7 +10285,7 @@
         if (data && data[0]) {
           currentQuoteId = data[0].id; console.log('Quote saved:', data[0].id);
           // Log activity
-          if (db) db.from('activity_log').insert({ message: 'New quote ' + qn + ' from ' + quoteRow.customer_name + ' — $' + quoteRow.total, type: 'info' }).then(() => { });
+          if (db) db.from('activity_log').insert({ message: 'New quote ' + qn + ' from ' + quoteRow.customer_name + ' - $' + quoteRow.total, type: 'info' }).then(() => { });
           // Send SMS notification
           sendSmsNotification(quoteRow);
           // Send email notification to business
@@ -10348,7 +10298,7 @@
             device:        quoteRow.device,
             repairs:       quoteRow.repairs.map(function(r) { return r.name + ' $' + r.price; }).join(', '),
             total:         '$' + quoteRow.total,
-            service:       quoteRow.service_type === 'mobile' ? 'Mobile Pickup — ' + (quoteRow.pickup_address || '') : 'Store Drop-off',
+            service:       quoteRow.service_type === 'mobile' ? 'Mobile Pickup: ' + (quoteRow.pickup_address || '') : 'Store Drop-off',
             date:          quoteRow.appointment_date,
             time:          quoteRow.appointment_time,
             submitted_at:  new Date().toLocaleString('en-AU')
@@ -10384,7 +10334,7 @@
           if (error) console.error('Payment update error:', error);
           else {
             console.log('Quote marked as paid in database');
-            db.from('activity_log').insert({ message: 'Payment received: ' + document.getElementById('quoteNumber').textContent + ' — $' + selRepairs.reduce((s, r) => s + r.price, 0), type: 'payment' }).then(() => { });
+            db.from('activity_log').insert({ message: 'Payment received: ' + document.getElementById('quoteNumber').textContent + ' - $' + selRepairs.reduce((s, r) => s + r.price, 0), type: 'payment' }).then(() => { });
             // Deduct stock
             deductStock();
           }
@@ -10471,7 +10421,7 @@
       var h = '';
       var encN = encodeURIComponent(n), encT = encodeURIComponent(t || '');
       h += '<div class="quality-option" data-n="' + encN + '" data-p="' + basePrice + '" data-t="' + encT + '" data-type="aftermarket" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong class="oem-opt-title">Aftermarket Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(37,99,235,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.7;">High-quality aftermarket component rigorously tested before fitting. Performs to original device specifications in everyday use. Includes <strong style="color:#94a3b8;">6-month parts &amp; labour warranty</strong>. Ideal for budget-conscious repairs without sacrificing reliability.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">inc. fitting</div></div></div>';
-      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + oemPrice + '" data-t="' + encT + '" data-type="oem" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong class="oem-opt-title">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.7;">OEM-specification part sourced from certified suppliers — identical in material, tolerances, and performance to the original manufacturer component. Maintains device resale value and works seamlessly with iOS/macOS. Includes <strong style="color:#94a3b8;">12-month parts &amp; labour warranty</strong>.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">inc. fitting</div></div></div>';
+      h += '<div class="quality-option" data-n="' + encN + '" data-p="' + oemPrice + '" data-t="' + encT + '" data-type="oem" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong class="oem-opt-title">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.7;">OEM-specification part sourced from certified suppliers, identical in material, tolerances, and performance to the original manufacturer component. Maintains device resale value and works seamlessly with iOS/macOS. Includes <strong style="color:#94a3b8;">12-month parts &amp; labour warranty</strong>.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">inc. fitting</div></div></div>';
       document.getElementById('oemOptions').innerHTML = h;
       document.getElementById('oemModal').classList.add('show');
     }
@@ -10509,7 +10459,7 @@
           var label = document.createElement('div');
           label.className = 'tier-label';
           label.style.cssText = 'margin:0 0 10px;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.3);display:inline-block;';
-          label.textContent = (type === 'oem' ? 'OEM' : 'AFT') + ' — $' + price;
+          label.textContent = (type === 'oem' ? 'OEM' : 'AFT') + ' - $' + price;
           c.insertBefore(label, c.firstChild);
         }
       });
@@ -10677,7 +10627,7 @@
             </div>
           </div>
         </div>
-        <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">We appreciate your feedback — it helps other customers and helps us improve.</p>
+        <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">We appreciate your feedback. It helps other customers and helps us improve.</p>
         <form onsubmit="submitReview(event)">
           <div class="form-group" style="margin-bottom:18px;">
             <label class="form-label">Your Name *</label>
@@ -10724,7 +10674,7 @@
             <input type="text" class="form-input" id="rv-suburb" placeholder="e.g. Buderim">
           </div>
           <div class="form-group" style="margin-bottom:24px;">
-            <label class="form-label">Photos <span style="font-weight:400;color:#94a3b8;font-size:12px;">Optional — show off your repaired device!</span></label>
+            <label class="form-label">Photos <span style="font-weight:400;color:#94a3b8;font-size:12px;">Optional. Show off your repaired device!</span></label>
             <div class="sell-photo-zone" id="rvPhotoZone"
                  onclick="document.getElementById('rvPhotoInput').click()"
                  ondragover="event.preventDefault();this.classList.add('drag-over')"
@@ -10797,12 +10747,12 @@
             </label>
             <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('protector',15,this)">
               <input type="checkbox" id="up-protector" style="accent-color:var(--brand);">
-              <div style="flex:1;"><div style="font-weight:700;">🛡️ Screen Protector</div><div style="font-size:12px;color:#94a3b8;">Tempered glass — includes installation</div></div>
+              <div style="flex:1;"><div style="font-weight:700;">🛡️ Screen Protector</div><div style="font-size:12px;color:#94a3b8;">Tempered glass, includes installation</div></div>
               <div style="font-weight:800;color:#e2e8f0;">+$15</div>
             </label>
             <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('case',10,this)">
               <input type="checkbox" id="up-case" style="accent-color:var(--brand);">
-              <div style="flex:1;"><div style="font-weight:700;">📦 Protective Case</div><div style="font-size:12px;color:#94a3b8;">Slim matte finish — drop protection</div></div>
+              <div style="flex:1;"><div style="font-weight:700;">📦 Protective Case</div><div style="font-size:12px;color:#94a3b8;">Slim matte finish with drop protection</div></div>
               <div style="font-weight:800;color:#e2e8f0;">+$10</div>
             </label>
           </div>
@@ -10825,7 +10775,7 @@
           </div>
         </div>
 
-        <button class="btn" onclick="submitCheckout()" style="width:100%;">🔒 Pay Now — Powered by Stripe</button>
+        <button class="btn" onclick="submitCheckout()" style="width:100%;">🔒 Pay Now · Powered by Stripe</button>
       </div>
       <div id="checkoutThanksWrap" style="display:none;text-align:center;padding:24px 0;">
         <div style="font-size:56px;margin-bottom:16px;">✅</div>
@@ -11055,7 +11005,7 @@
           payBtn.textContent = 'Pay Now'; payBtn.disabled = false;
         }
       } catch (err) {
-        alert('Connection error — please try again.');
+        alert('Connection error. Please try again.');
         payBtn.textContent = 'Pay Now'; payBtn.disabled = false;
       }
     }
@@ -11089,7 +11039,7 @@
     var DELIVERY = {
       regular: { label: 'Regular Shipping', cost: 15, note: '3–7 business days' },
       express: { label: 'Express Shipping', cost: 25, note: '1–2 business days' },
-      pickup:  { label: 'Local Pickup',     cost: 0,  note: 'Free — collect in-store' }
+      pickup:  { label: 'Local Pickup',     cost: 0,  note: 'Free, collect in-store' }
     };
     var accDelivery = 'regular';
 
@@ -11214,7 +11164,7 @@
       document.getElementById('accCartTotal').textContent = accCartTotal().toLocaleString();
       var note = document.getElementById('accCheckoutNote');
       if (note) note.textContent = accDelivery === 'pickup'
-        ? 'No address needed — we\'ll email you when your order is ready to collect in-store. Payments handled by Stripe.'
+        ? 'No address needed. We\'ll email you when your order is ready to collect in-store. Payments handled by Stripe.'
         : 'You\'ll enter your delivery address securely at checkout. Payments handled by Stripe.';
     }
     function openAccCart() { renderAccCart(); document.getElementById('accCartModal').classList.add('show'); }
@@ -11248,7 +11198,7 @@
           btn.textContent = 'Proceed to Checkout →'; btn.disabled = false;
         }
       } catch (err) {
-        alert('Connection error — please try again.');
+        alert('Connection error. Please try again.');
         btn.textContent = 'Proceed to Checkout →'; btn.disabled = false;
       }
     }
@@ -11365,12 +11315,12 @@
       }
       function botReply(key) {
         switch (key) {
-          case 'quote': addMsg('Easy — our instant quote takes about a minute. <a href="#" onclick="chatGo(\'quote\');return false;">Start your quote →</a>'); break;
+          case 'quote': addMsg('Easy! Our instant quote takes about a minute. <a href="#" onclick="chatGo(\'quote\');return false;">Start your quote →</a>'); break;
           case 'hours': addMsg("We're open <strong>Mon–Fri 6am–11:30pm</strong> and <strong>Sat–Sun 5am–11:30pm</strong>."); break;
           case 'location': addMsg("We're based in <strong>Buderim</strong>, and we also do <strong>mobile pickup</strong> across the Sunshine Coast &amp; Brisbane. <a href=\"#\" onclick=\"chatGo('contact');return false;\">Contact us →</a>"); break;
           case 'warranty': addMsg("Every repair is backed by a <strong>90-day parts &amp; labour warranty</strong>, plus our no-fix-no-fee promise."); break;
           case 'human': addMsg('Happy to help! Call or text <a href="tel:0467748433">0467 748 433</a>, or <a href="#" onclick="chatGo(\'contact\');return false;">send us a message →</a>'); break;
-          default: addMsg('I can help with <strong>quotes</strong>, <strong>opening hours</strong>, <strong>location</strong>, or <strong>warranty</strong> — or put you through to a human. Try a button below, or call <a href="tel:0467748433">0467 748 433</a>.');
+          default: addMsg('I can help with <strong>quotes</strong>, <strong>opening hours</strong>, <strong>location</strong>, or <strong>warranty</strong>, or put you through to a human. Try a button below, or call <a href="tel:0467748433">0467 748 433</a>.');
         }
       }
       function classify(t) {
