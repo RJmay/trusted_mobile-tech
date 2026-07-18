@@ -2085,6 +2085,10 @@
 
     /* ── Conversational contact flow (Typeform-style) — a centred card below the two
        contact cards on desktop; on mobile it replaces the plain form entirely. ── */
+    .contact-chat-btn { display: flex; align-items: center; justify-content: center; gap: 9px; width: fit-content; margin: 16px auto 0; min-height: 48px; padding: 13px 28px; border-radius: 14px; border: 1.5px solid var(--brand); background: transparent; color: var(--brand); font-weight: 700; font-size: 15px; font-family: var(--font); cursor: pointer; transition: background .15s, transform .12s; }
+    .contact-chat-btn:hover { background: color-mix(in srgb, var(--brand) 8%, transparent); }
+    .contact-chat-btn:active { transform: scale(.97); }
+    .contact-chat-btn .msym { width: 20px; height: 20px; }
     .contact-convo {
       max-width: 560px; margin: 36px auto 0;
       background: var(--card-bg2); border: 1px solid var(--border);
@@ -5330,6 +5334,7 @@
 
     /* ── Conversational contact flow on mobile: it IS the form — hide the desktop form card ── */
     #sec-contact .contact-form-card { display: none !important; }
+    #sec-contact .contact-chat-btn { width: 100%; font-size: 16px; margin-top: 12px; }
     #sec-contact .contact-convo { max-width: none; margin: 12px 0 0; padding: 16px 14px; border-radius: 16px; }
     .cq-title { font-size: 19px; }
     .cq-sub { font-size: 12.5px; }
@@ -6148,12 +6153,13 @@
           <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
           <span style="font-weight:700;color:#3c4043;font-size:14px;letter-spacing:.2px;">Google Certified</span>
           <span style="color:#fbbc04;font-size:13px;letter-spacing:1px;">★★★★★</span>
-          <span style="color:#5f6368;font-size:13px;font-weight:700;">4.6</span>
+          <span style="color:#5f6368;font-size:13px;font-weight:700;">4.6+</span>
         </div>
         <div style="display:flex;width:fit-content;margin:10px auto 0;align-items:center;gap:10px;padding:9px 18px;background:#fff;border-radius:30px;box-shadow:0 2px 14px rgba(0,0,0,.18);">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
           <span style="font-weight:700;color:#3c4043;font-size:14px;letter-spacing:.2px;">Facebook Recommended</span>
           <span style="color:#fbbc04;font-size:13px;letter-spacing:1px;">★★★★★</span>
+          <span style="color:#5f6368;font-size:13px;font-weight:700;">5+</span>
         </div>
       </div>
       <div class="reviews-overview">
@@ -7213,6 +7219,7 @@
               <div class="cq-submit-err" id="cqSubmitErr" role="alert"></div>
             </div>
       </div>
+      <button type="button" class="contact-chat-btn" onclick="openLiveChat()"><i class="msym" data-lucide="message-circle"></i> Chat with us now</button>
     </div>
   </section>
 
@@ -9645,6 +9652,18 @@
         '</div>';
       if (window.lucide && lucide.createIcons) lucide.createIcons();
     }
+
+    // ── "Chat with us now": open Tawk if ready, queue it if still loading, else the built-in chat ──
+    window.openLiveChat = function () {
+      try {
+        if (window.Tawk_API && typeof window.Tawk_API.maximize === 'function') { window.Tawk_API.maximize(); return; }
+      } catch (e) {}
+      var w = document.getElementById('chatWidget');
+      if (w && w.style.display !== 'none' && typeof window.chatToggle === 'function') { window.chatToggle(); return; }
+      // Tawk is configured but its script hasn't injected yet (it loads on idle): open as soon as it's ready
+      window.Tawk_API = window.Tawk_API || {};
+      window.Tawk_API.onLoad = function () { try { window.Tawk_API.maximize(); } catch (e) {} };
+    };
 
     // ── Trading-hours "Open now / Closed" badge (Australia/Brisbane) ──
     function updateOpenStatus() {
