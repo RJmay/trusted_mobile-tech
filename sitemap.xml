@@ -4,4 +4,9 @@
   <url><loc>https://trustedmobiletech.org/iphone-repairs</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://trustedmobiletech.org/macbook-repairs</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://trustedmobiletech.org/ipad-repairs</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://trustedmobiletech.org/refurbished-devices</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://trustedmobiletech.org/sell-your-device</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://trustedmobiletech.org/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://trustedmobiletech.org/contact</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://trustedmobiletech.org/reviews</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
