@@ -2347,7 +2347,7 @@
       margin-bottom: 64px;
     }
 
-    .ahc-logo { height: 46px; width: auto; margin: 0 auto 14px; }
+    .ahc-logo { display: block; width: calc(100% + 12px); max-width: none; height: auto; margin: 0 -6px 16px; }   /* ~30px air from the bubble edge (card pad 36) */
     .about-highlight-card .logo-dark-only { display: block; }
     .about-highlight-card .logo-light-only { display: none; }
     body.light .about-highlight-card .logo-dark-only { display: none; }
@@ -5192,7 +5192,17 @@
     .hero-mesh, .hero-decals, .page-decals { display: none; }
     .hero-split { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
     .hero-copy  { order: 1; min-width: 0; max-width: 100%; }
-    .hero-quote { order: 2; min-width: 0; width: 100%; max-width: 100%; margin: 0; padding: 16px; }
+    .hero-quote { order: 2; min-width: 0; width: 100%; max-width: 100%; margin: 0; padding: 12px 12px 13px; }
+    .hq-head { font-size: 13px; margin-bottom: 8px; }
+    .hq-row { padding: 8px 11px; margin-bottom: 7px; gap: 9px; border-radius: 10px; }
+    .hq-row .msym { font-size: 17px; }
+    .hq-label { font-size: 10px; }
+    .hq-select, .hq-val { font-size: 13.5px; }
+    .hq-row:has(.hq-val) { display: none; }          /* static "Turnaround: Same day" row: info already in the hero copy */
+    .hq-price { margin: 8px 2px 8px; }
+    .hq-price .hp-lab { font-size: 11.5px; }
+    .hq-price .hp-amt { font-size: 22px; }
+    .hero-quote .btn-cta { padding: 12px; font-size: 14.5px; min-height: 44px; }
 
     .hero-eyebrow { font-size: 11.5px; margin-bottom: 10px; }
     .hero-v2 h1 { font-size: clamp(26px, 7.6vw, 34px); line-height: 1.1; letter-spacing: -.6px; margin-bottom: 10px; }
@@ -5417,7 +5427,7 @@
     .about-story-text h2 { font-size: 19px !important; margin-bottom: 8px !important; }
     .about-story-text p { font-size: 12.5px !important; line-height: 1.55 !important; margin-bottom: 9px !important; }
     .about-highlight-card { padding: 16px !important; }
-    .ahc-logo { height: 34px !important; margin-bottom: 10px !important; }
+    .ahc-logo { width: calc(100% - 28px) !important; height: auto !important; margin: 0 auto 12px !important; }   /* card pad 16 + 14 = 30px gap each side */
     .ahc-devices { margin-bottom: 10px !important; }
     .ahc-devices img:nth-child(1) { height: 52px !important; }
     .ahc-devices img:nth-child(2) { height: 74px !important; }
