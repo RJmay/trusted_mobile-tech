@@ -2358,6 +2358,39 @@
     .ahc-devices img:nth-child(2) { height: 104px; z-index: 1; }
     .ahc-devices img:nth-child(3) { height: 82px; }
 
+    .flow-step-h { display: flex; align-items: center; gap: 10px; margin: 26px 0 12px; }
+    .fs-n { width: 26px; height: 26px; border-radius: 50%; background: var(--cta-fill); color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .fs-t { font-weight: 800; font-size: 16px; color: var(--dark); letter-spacing: -.2px; }
+    .time-chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 196px; overflow-y: auto; padding: 4px 2px; }
+    .tc-empty { grid-column: 1 / -1; font-size: 13px; color: var(--muted); padding: 10px 2px; }
+    .time-chip { padding: 10px 4px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--card-bg2); font-family: var(--font); font-size: 12.5px; font-weight: 700; color: var(--dark); cursor: pointer; transition: border-color .12s, background .12s; }
+    .time-chip:hover { border-color: var(--brand); }
+    .time-chip.selected { background: var(--cta-fill); border-color: var(--cta-fill); color: #fff; }
+    .time-chip.off { opacity: .32; cursor: not-allowed; text-decoration: line-through; }
+    #time.field-error ~ .time-chips { outline: 2px solid #ef4444; outline-offset: 2px; border-radius: 12px; }
+
+    /* Premium part-quality modal system */
+    .qm-eyebrow { font-size: 11.5px; font-weight: 700; color: var(--brand); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+    .qm-title { font-size: 23px; font-weight: 800; color: var(--dark); letter-spacing: -.3px; margin: 0 0 4px; }
+    .qm-sub { color: var(--muted); font-size: 13.5px; line-height: 1.5; margin: 0 0 20px; }
+    .qm-option { display: flex; align-items: stretch; gap: 14px; width: 100%; text-align: left; padding: 17px 18px; border: 1.5px solid var(--border); border-radius: 16px; background: var(--card-bg2); cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .1s; margin-bottom: 12px; }
+    .qm-option:hover { border-color: var(--brand); box-shadow: 0 6px 18px rgba(37,99,235,.12); }
+    .qm-option:active { transform: scale(.99); }
+    .qm-radio { flex-shrink: 0; width: 21px; height: 21px; margin-top: 2px; border-radius: 50%; border: 2px solid var(--border); transition: border-color .15s, box-shadow .15s; }
+    .qm-option:hover .qm-radio { border-color: var(--brand); box-shadow: inset 0 0 0 4px color-mix(in srgb, var(--brand) 22%, transparent); }
+    .qm-body { flex: 1; min-width: 0; }
+    .qm-top { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 8px; }
+    .qm-name { font-weight: 800; font-size: 15.5px; color: var(--dark); letter-spacing: -.2px; }
+    .qm-flag { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; }
+    .qm-specs { display: flex; flex-direction: column; gap: 5px; }
+    .qm-spec { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); }
+    .qm-spec .msym { width: 14px; height: 14px; font-size: 14px; color: var(--green); flex-shrink: 0; }
+    .qm-price { flex-shrink: 0; text-align: right; display: flex; flex-direction: column; justify-content: center; gap: 2px; margin-left: 4px; }
+    .qm-amount { font-family: var(--font-head); font-size: 23px; font-weight: 800; color: var(--dark); }
+    .qm-per { font-size: 10.5px; color: var(--muted); }
+    .qm-foot { display: flex; align-items: center; gap: 8px; margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+    .qm-foot .msym { width: 15px; height: 15px; font-size: 15px; color: var(--brand); flex-shrink: 0; }
+
     .qa-panel { position: relative; overflow: hidden; border-radius: 20px; padding: 34px 36px; margin-bottom: 16px; border: 1px solid color-mix(in srgb, var(--brand) 25%, var(--border)); background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 10%, var(--card-bg)), var(--card-bg) 65%); }
     .qa-panel::after { content: ""; position: absolute; top: -70px; right: -70px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--brand) 20%, transparent), transparent 70%); pointer-events: none; }
     .qa-panel > * { position: relative; z-index: 1; }
@@ -5412,6 +5445,14 @@
     #sec-reviews .review-date { font-size: 10.5px; line-height: 1.3; }
     #sec-reviews .review-date .rv-loc, #sec-reviews .review-date .rv-when { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 
+    /* ── Booking flow + quality modals on phones ── */
+    .time-chips { grid-template-columns: repeat(3, 1fr); }
+    .qm-option { padding: 13px 12px; gap: 10px; }
+    .qm-name { font-size: 14px; }
+    .qm-amount { font-size: 19px; }
+    .qm-spec { font-size: 11.5px; }
+    .fs-t { font-size: 15px; }
+
     /* ── Reviews page: certified pills sized to fit small screens ── */
     .cert-pill { gap: 8px !important; padding: 8px 13px !important; }
     .cert-pill span { font-size: 12.5px !important; }
@@ -6089,7 +6130,7 @@
         <p class="qsub">Enter your details to receive your quote</p>
         <div class="summary-box" id="finalSummary"></div>
         <div class="location-section">
-          <div class="location-section-title"><i class="msym" data-lucide="map-pin" style="width:17px;height:17px;vertical-align:-3px;color:var(--brand);"></i> Service Option</div>
+          <div class="flow-step-h" style="margin-top:0;"><span class="fs-n">1</span><span class="fs-t">How would you like it repaired?</span></div>
           <div class="location-section-sub">We service <strong>Sunshine Coast</strong> &amp; <strong>Brisbane</strong>.
           </div>
           <div class="service-type-grid">
@@ -6130,6 +6171,20 @@
           </div>
         </div>
         <form onsubmit="submitForm(event)" novalidate style="max-width:680px;margin:0 auto;">
+          <div class="flow-step-h"><span class="fs-n">2</span><span class="fs-t">Pick a day &amp; time</span></div>
+          <div class="form-group"><label class="form-label" for="date">Preferred Date *</label>
+            <div style="display:flex;gap:8px;align-items:center;"><input type="date" class="form-input" id="date"
+                required style="flex:1;"><button type="button" onclick="document.getElementById('date').value=''"
+                style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap;">Clear</button>
+            </div>
+          </div>
+          <div class="form-group" style="position:relative;"><label class="form-label" for="time">Preferred Time *</label>
+            <select class="form-select" id="time" required style="position:absolute;opacity:0;height:0;width:0;margin:0;padding:0;border:0;pointer-events:none;">
+              <option value="">Select a date first</option>
+            </select>
+            <div class="time-chips" id="timeChips"><div class="tc-empty">Pick a date to see available times</div></div>
+          </div>
+          <div class="flow-step-h"><span class="fs-n">3</span><span class="fs-t">Your details</span></div>
           <div class="two-col">
             <div class="form-group"><label class="form-label" for="name">Full Name *</label><input type="text" class="form-input"
                 id="name" required placeholder="John Smith"></div>
@@ -6138,18 +6193,6 @@
           </div>
           <div class="form-group"><label class="form-label" for="email">Email *</label><input type="email" class="form-input"
               id="email" required placeholder="john@example.com"></div>
-          <div class="two-col">
-            <div class="form-group"><label class="form-label" for="date">Preferred Date *</label>
-              <div style="display:flex;gap:8px;align-items:center;"><input type="date" class="form-input" id="date"
-                  required style="flex:1;"><button type="button" onclick="document.getElementById('date').value=''"
-                  style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;white-space:nowrap;">Clear</button>
-              </div>
-            </div>
-            <div class="form-group"><label class="form-label" for="time">Preferred Time *</label><select class="form-select"
-                id="time" required>
-                <option value="">Select a date first</option>
-              </select></div>
-          </div>
           <div class="form-group"><label class="form-label" for="notes">Notes (Optional)</label><textarea class="form-textarea"
               id="notes" placeholder="Tell us more about the issue…"></textarea></div>
           <div class="form-group">
@@ -7841,8 +7884,9 @@
   <div class="modal-overlay" id="qualityModal" role="dialog" aria-modal="true" aria-label="Choose screen quality" onclick="if(event.target===this)closeModal('qualityModal')">
     <div class="modal" style="max-width:600px;"><button class="modal-close"
         onclick="closeModal('qualityModal')">&times;</button>
-      <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:6px;">Screen Quality</h2>
-      <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose the right screen for your needs and budget.</p>
+      <div class="qm-eyebrow">Screen Replacement</div>
+      <h2 class="qm-title">Choose your screen quality</h2>
+      <p class="qm-sub">Every screen is precision-fitted, fully tested, and covered by our no-fix-no-fee promise.</p>
       <div id="qualityOptions"></div>
     </div>
   </div>
@@ -9340,7 +9384,7 @@
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       var t = e.target;
-      if (t && t.matches && t.matches('.cat-card, .series-card, .model-card, .repair-card, .quality-option, #searchGrid .card, .bc-item')) {
+      if (t && t.matches && t.matches('.cat-card, .series-card, .model-card, .repair-card, .quality-option, .qm-option, #searchGrid .card, .bc-item')) {
         e.preventDefault(); t.click();
       }
     });
@@ -10183,16 +10227,26 @@
     function openQualityModal() {
       var sp = SP[selModel]; if (!sp) return;
       var tiers = [
-        { name: 'C Quality (Aftermarket LCD)', price: sp[0], cls: 'c', desc: 'Budget-friendly aftermarket display. Slightly lower brightness and colour accuracy than original. Functional and reliable with a 3-month warranty.', badge: 'Best Value', badgeBg: 'rgba(37,99,235,.1)', badgeColor: 'var(--brand)' },
-        { name: 'A+ Quality (Premium Aftermarket)', price: sp[0] + sp[1], cls: 'aplus', desc: 'High-grade aftermarket OLED with excellent colour reproduction. Virtually indistinguishable from original in daily use. 6-month warranty.', badge: 'Most Popular', badgeBg: 'rgba(16,185,129,.1)', badgeColor: 'var(--green)' },
-        { name: 'Genuine Apple Display', price: sp[0] + sp[1] + sp[2], cls: 'splus', desc: 'Authentic Apple display with original colour accuracy, True Tone, and full haptic touch. Identical to factory-installed screen performance. 12-month warranty.', badge: 'Genuine', badgeBg: 'rgba(245,158,11,.1)', badgeColor: '#f59e0b' }
+        { name: 'C Quality', sub: 'Aftermarket LCD', price: sp[0], cls: 'c', badge: 'Best Value', badgeBg: 'rgba(37,99,235,.1)', badgeColor: 'var(--brand)',
+          specs: ['Budget-friendly aftermarket panel', 'Reliable everyday performance', '3-month warranty'] },
+        { name: 'A+ Quality', sub: 'Premium Aftermarket', price: sp[0] + sp[1], cls: 'aplus', badge: 'Most Popular', badgeBg: 'rgba(16,185,129,.1)', badgeColor: 'var(--green)',
+          specs: ['High-grade OLED, colour-accurate', 'Virtually indistinguishable from original', '6-month warranty'] },
+        { name: 'Genuine Apple Display', sub: 'Original Part', price: sp[0] + sp[1] + sp[2], cls: 'splus', badge: 'Genuine', badgeBg: 'rgba(245,158,11,.1)', badgeColor: '#f59e0b',
+          specs: ['Original Apple display', 'True Tone and full haptic touch', '12-month warranty'] }
       ];
       var h = '';
       tiers.forEach(function (t) {
-        h += '<div class="quality-option" tabindex="0" role="button" onclick="selectQuality(this,\'' + t.cls + '\',' + t.price + ',\'' + t.name.replace(/'/g, '') + '\')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">' + t.name + '</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:' + t.badgeBg + ';color:' + t.badgeColor + ';font-weight:700;">' + t.badge + '</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">' + t.desc + '</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + t.price + '</div></div></div>';
+        h += '<div class="qm-option" tabindex="0" role="button" onclick="selectQuality(this,\'' + t.cls + '\',' + t.price + ',\'' + t.name.replace(/'/g, '') + '\')">'
+          + '<span class="qm-radio"></span>'
+          + '<div class="qm-body"><div class="qm-top"><span class="qm-name">' + t.name + '</span><span class="qm-flag" style="background:' + t.badgeBg + ';color:' + t.badgeColor + ';">' + t.badge + '</span></div>'
+          + '<div class="qm-specs">' + t.specs.map(function (sp2) { return '<span class="qm-spec"><i class="msym" data-lucide="check"></i>' + sp2 + '</span>'; }).join('') + '</div></div>'
+          + '<div class="qm-price"><span class="qm-amount">$' + t.price + '</span><span class="qm-per">inc. fitting</span></div>'
+          + '</div>';
       });
+      h += '<div class="qm-foot"><i class="msym" data-lucide="shield-check"></i> No fix, no fee. Warranty handled locally in Buderim.</div>';
       document.getElementById('qualityOptions').innerHTML = h;
       document.getElementById('qualityModal').classList.add('show');
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
     }
     function closeModal(id) { if (!id) id = 'qualityModal'; var el = document.getElementById(id); if (el) { el.classList.remove('show'); el.classList.remove('active'); el.style.display = 'none'; setTimeout(function () { el.style.display = ''; }, 50); } }
     function selectQuality(el, cls, price, name) {
@@ -10418,7 +10472,7 @@
       document.getElementById('page' + pg).classList.remove('hidden'); document.getElementById('step' + pg).classList.add('active');
       for (let i = 1; i < pg; i++)document.getElementById('step' + i).classList.add('completed');
       if (pg === 2) { selRepairs = []; renderRepairs(); }
-      if (pg === 3) { if (typeof loadGoogleMaps === 'function') loadGoogleMaps(); showFinalSummary(); renderRepairAddons(); if (!serviceType) selectServiceType('store'); }
+      if (pg === 3) { if (typeof loadGoogleMaps === 'function') loadGoogleMaps(); showFinalSummary(); renderRepairAddons(); if (!serviceType) selectServiceType('store'); renderTimeChips(); }
       if (pg === 4) showQuoteDetails();
       if (pg === 1) renderBC();
       document.querySelector('.quote-wrap').scrollIntoView({ behavior: 'smooth' });
@@ -10620,16 +10674,28 @@
 
 
     function openOEMModal(n, basePrice, t) {
-      var alreadyIn = selRepairs.findIndex(function (r) { return r.name === n || r.name === n + ' (Aftermarket)' || r.name === n + ' (OEM)'; });
-      if (alreadyIn > -1) { selRepairs.splice(alreadyIn, 1); updateCards(); updateSummary(); return; }
-      var oemPrice = basePrice + 75;
-      document.getElementById('oemModalTitle').textContent = n;
-      var h = '';
+      var oemPrice = Math.round(basePrice * 1.35);
       var encN = encodeURIComponent(n), encT = encodeURIComponent(t || '');
-      h += '<div class="quality-option" tabindex="0" role="button" data-n="' + encN + '" data-p="' + basePrice + '" data-t="' + encT + '" data-type="aftermarket" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong class="oem-opt-title">Aftermarket Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(37,99,235,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.7;">High-quality aftermarket component rigorously tested before fitting. Performs to original device specifications in everyday use. Includes <strong style="color:#94a3b8;">6-month parts &amp; labour warranty</strong>. Ideal for budget-conscious repairs without sacrificing reliability.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">inc. fitting</div></div></div>';
-      h += '<div class="quality-option" tabindex="0" role="button" data-n="' + encN + '" data-p="' + oemPrice + '" data-t="' + encT + '" data-type="oem" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong class="oem-opt-title">OEM Part</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Genuine Spec</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.7;">OEM-specification part sourced from certified suppliers, identical in material, tolerances, and performance to the original manufacturer component. Maintains device resale value and works seamlessly with iOS/macOS. Includes <strong style="color:#94a3b8;">12-month parts &amp; labour warranty</strong>.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div><div style="font-size:11px;color:#94a3b8;margin-top:2px;">inc. fitting</div></div></div>';
+      var el = document.getElementById('oemModalTitle'); if (el) el.textContent = n;
+      var opts = [
+        { type: 'aftermarket', price: basePrice, name: 'Aftermarket Part', badge: 'Best Value', badgeBg: 'rgba(37,99,235,.1)', badgeColor: 'var(--brand)',
+          specs: ['Quality-tested component', 'Performs to original spec', '6-month parts &amp; labour warranty'] },
+        { type: 'oem', price: oemPrice, name: 'OEM Part', badge: 'Genuine Spec', badgeBg: 'rgba(16,185,129,.1)', badgeColor: 'var(--green)',
+          specs: ['Certified-supplier OEM component', 'Maintains device resale value', '12-month parts &amp; labour warranty'] }
+      ];
+      var h = '';
+      opts.forEach(function (o) {
+        h += '<div class="qm-option" tabindex="0" role="button" data-n="' + encN + '" data-p="' + o.price + '" data-t="' + encT + '" data-type="' + o.type + '" onclick="selectOEMRepair(decodeURIComponent(this.dataset.n),+this.dataset.p,decodeURIComponent(this.dataset.t),this.dataset.type)">'
+          + '<span class="qm-radio"></span>'
+          + '<div class="qm-body"><div class="qm-top"><span class="qm-name">' + o.name + '</span><span class="qm-flag" style="background:' + o.badgeBg + ';color:' + o.badgeColor + ';">' + o.badge + '</span></div>'
+          + '<div class="qm-specs">' + o.specs.map(function (sp2) { return '<span class="qm-spec"><i class="msym" data-lucide="check"></i>' + sp2 + '</span>'; }).join('') + '</div></div>'
+          + '<div class="qm-price"><span class="qm-amount">$' + o.price + '</span><span class="qm-per">inc. fitting</span></div>'
+          + '</div>';
+      });
+      h += '<div class="qm-foot"><i class="msym" data-lucide="shield-check"></i> No fix, no fee. Warranty handled locally in Buderim.</div>';
       document.getElementById('oemOptions').innerHTML = h;
       document.getElementById('oemModal').classList.add('show');
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
     }
     function selectOEMRepair(n, price, t, type) {
       selRepairs = selRepairs.filter(function (r) { return r.name !== n && r.name !== n + ' (Aftermarket)' && r.name !== n + ' (OEM)'; });
@@ -10644,11 +10710,25 @@
       if (!prices) return;
       var basePrice = prices.battery;
       var oemPrice = Math.round(basePrice * 1.6);
+      var opts = [
+        { type: 'aftermarket', price: basePrice, name: 'Aftermarket Battery', badge: 'Best Value', badgeBg: 'rgba(37,99,235,.1)', badgeColor: 'var(--brand)',
+          specs: ['Rated for 500+ charge cycles', '80% health after 18 months', '6-month warranty'] },
+        { type: 'oem', price: oemPrice, name: 'OEM-Grade Battery', badge: 'Premium', badgeBg: 'rgba(16,185,129,.1)', badgeColor: 'var(--green)',
+          specs: ['Rated for 800+ charge cycles', 'Matches original Apple performance', '12-month warranty'] }
+      ];
       var h = '';
-      h += '<div class="quality-option" tabindex="0" role="button" onclick="selectBattery(\'aftermarket\',' + basePrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">Aftermarket Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(37,99,235,.1);color:var(--brand);font-weight:700;">Best Value</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Quality third-party cell rated for 500+ charge cycles and 80% health retention after 18 months. 6-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + basePrice + '</div></div></div>';
-      h += '<div class="quality-option" tabindex="0" role="button" onclick="selectBattery(\'oem\',' + oemPrice + ')"><div style="flex:1;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><strong style="color:#e2e8f0;font-size:16px;">OEM-Grade Battery</strong><span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(16,185,129,.1);color:var(--green);font-weight:700;">Premium</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.6;">Genuine-spec cell rated for 800+ charge cycles and 80% health retention after 2+ years. Matches original Apple performance. 12-month warranty.</div></div><div style="text-align:right;flex-shrink:0;margin-left:24px;"><div style="font-size:24px;font-weight:800;color:#e2e8f0;">$' + oemPrice + '</div></div></div>';
+      opts.forEach(function (o) {
+        h += '<div class="qm-option" tabindex="0" role="button" onclick="selectBattery(\'' + o.type + '\',' + o.price + ')">'
+          + '<span class="qm-radio"></span>'
+          + '<div class="qm-body"><div class="qm-top"><span class="qm-name">' + o.name + '</span><span class="qm-flag" style="background:' + o.badgeBg + ';color:' + o.badgeColor + ';">' + o.badge + '</span></div>'
+          + '<div class="qm-specs">' + o.specs.map(function (sp2) { return '<span class="qm-spec"><i class="msym" data-lucide="check"></i>' + sp2 + '</span>'; }).join('') + '</div></div>'
+          + '<div class="qm-price"><span class="qm-amount">$' + o.price + '</span><span class="qm-per">inc. fitting</span></div>'
+          + '</div>';
+      });
+      h += '<div class="qm-foot"><i class="msym" data-lucide="shield-check"></i> No fix, no fee. Warranty handled locally in Buderim.</div>';
       document.getElementById('batteryOptions').innerHTML = h;
       document.getElementById('batteryModal').classList.add('show');
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
     }
     function selectBattery(type, price) {
       var name = 'Battery Replacement (' + (type === 'oem' ? 'OEM' : 'Aftermarket') + ')';
@@ -10757,8 +10837,27 @@
         } catch (e) { console.log('Could not check bookings:', e); }
       }
       select.value = '';
+      renderTimeChips();
     });
 
+    // Time-slot chips (mirrors the hidden #time select)
+    function renderTimeChips() {
+      var select = document.getElementById('time'), wrap = document.getElementById('timeChips');
+      if (!select || !wrap) return;
+      var opts = Array.prototype.slice.call(select.options).filter(function (o) { return o.value; });
+      if (!opts.length) { wrap.innerHTML = '<div class="tc-empty">Pick a date to see available times</div>'; return; }
+      wrap.innerHTML = opts.map(function (o) {
+        var cls = 'time-chip' + (o.disabled ? ' off' : '') + (!o.disabled && select.value === o.value ? ' selected' : '');
+        return '<button type="button" class="' + cls + '"' + (o.disabled ? ' disabled' : '') + ' data-v="' + o.value + '" onclick="pickTimeChip(this)">' + o.value + '</button>';
+      }).join('');
+    }
+    function pickTimeChip(btn) {
+      if (btn.disabled) return;
+      var select = document.getElementById('time');
+      select.value = btn.dataset.v;
+      select.classList.remove('field-error');
+      document.querySelectorAll('#timeChips .time-chip').forEach(function (c) { c.classList.toggle('selected', c === btn); });
+    }
 
     // Theme toggle
     function toggleTheme() {
@@ -10801,9 +10900,9 @@
   <div id="batteryModal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Choose battery type" onclick="if(event.target===this)closeModal('batteryModal')">
     <div class="modal" style="max-width:600px;">
       <button class="modal-close" onclick="closeModal('batteryModal')">&times;</button>
-      <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:6px;">Battery Options</h2>
-      <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose between aftermarket or OEM-grade battery
-        replacement.</p>
+      <div class="qm-eyebrow">Battery Replacement</div>
+      <h2 class="qm-title">Choose your battery</h2>
+      <p class="qm-sub">Both options are health-tested before fitting and covered by our local warranty.</p>
       <div id="batteryOptions"></div>
     </div>
   </div>
@@ -10811,8 +10910,9 @@
   <div id="oemModal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Choose part quality" onclick="if(event.target===this)closeModal('oemModal')">
     <div class="modal" style="max-width:600px;">
       <button class="modal-close" onclick="closeModal('oemModal')">&times;</button>
-      <h2 style="font-size:24px;font-weight:800;color:var(--dark);margin-bottom:6px;" id="oemModalTitle">Part Options</h2>
-      <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;">Choose aftermarket (quality tested) or OEM (genuine-spec part).</p>
+      <div class="qm-eyebrow" id="oemModalTitle">Part Quality</div>
+      <h2 class="qm-title">Choose your part</h2>
+      <p class="qm-sub">Both parts are quality-tested before fitting and covered by our local warranty.</p>
       <div id="oemOptions"></div>
     </div>
   </div>
