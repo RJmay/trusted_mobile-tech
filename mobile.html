@@ -5272,11 +5272,11 @@
     /* ── REPAIRS PAGE: 3 across (device types + models + repairs) ── */
     #sec-quote .cat-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; margin-left: -6px; margin-right: -6px; }   /* tighter gutters → slightly bigger squares */
     #sec-quote .grid     { grid-template-columns: repeat(3, 1fr) !important; gap: 8px; margin-left: -6px; margin-right: -6px; }
-    #sec-quote .cat-grid .cat-card { padding: 8px 6px; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    #sec-quote .cat-grid .cat-img  { height: 58px; margin-bottom: 6px; }
-    #sec-quote .cat-grid .cat-name { font-size: 13.5px; letter-spacing: -.3px; margin-bottom: 2px; }
+    #sec-quote .cat-grid .cat-card { padding: 10px 6px; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border-radius: 16px; }
+    #sec-quote .cat-grid .cat-img  { height: 68px; margin: 0; filter: drop-shadow(0 8px 14px rgba(0,0,0,.16)); }
+    #sec-quote .cat-grid .cat-name { font-size: 14px; letter-spacing: -.3px; margin: 0; }
     #sec-quote .cat-grid .cat-sub  { display: none; }        /* hide desc so the card sits as a clean square */
-    #sec-quote .cat-grid .cat-badge { margin-top: 3px; font-size: 9.5px; padding: 3px 9px; }
+    #sec-quote .cat-grid .cat-badge { display: none; }       /* drop the "8 lines" pill: cleaner square */
     /* Series + model cards: clean uniform SQUARES (were tall rectangles) */
     #sec-quote .grid .series-card,
     #sec-quote .grid .model-card {
@@ -6076,7 +6076,7 @@
         <p class="qsub">Select all the services you need</p>
         <div class="grid" id="repairsGrid"></div>
         <div id="repairsSummary" class="summary-box hidden">
-          <div class="summary-title"><span>📋</span> Selected Services</div>
+          <div class="summary-title"><i class="msym" data-lucide="clipboard-list" style="width:18px;height:18px;vertical-align:-3px;color:var(--brand);"></i> Selected Services</div>
           <div id="repairsList"></div>
         </div>
         <button class="btn" id="continueBtn" onclick="goToPage(3)" disabled>Continue to Your Details</button>
@@ -6089,18 +6089,18 @@
         <p class="qsub">Enter your details to receive your quote</p>
         <div class="summary-box" id="finalSummary"></div>
         <div class="location-section">
-          <div class="location-section-title">📍 Service Option</div>
+          <div class="location-section-title"><i class="msym" data-lucide="map-pin" style="width:17px;height:17px;vertical-align:-3px;color:var(--brand);"></i> Service Option</div>
           <div class="location-section-sub">We service <strong>Sunshine Coast</strong> &amp; <strong>Brisbane</strong>.
           </div>
           <div class="service-type-grid">
             <div class="service-type-card" id="stCard" onclick="selectServiceType('store')">
-              <div class="service-type-icon">🏪</div>
+              <div class="service-type-icon"><i class="msym" data-lucide="store"></i></div>
               <div class="service-type-name">Drop Off at Store</div>
               <div class="service-type-desc">Visit our Sunshine Coast store, same-day available.</div><span
                 class="service-type-badge green">Same-day</span>
             </div>
             <div class="service-type-card" id="muCard" onclick="selectServiceType('mobile')">
-              <div class="service-type-icon">🚗</div>
+              <div class="service-type-icon"><i class="msym" data-lucide="car"></i></div>
               <div class="service-type-name">Mobile Pickup</div>
               <div class="service-type-desc">We come to you, SC &amp; Brisbane suburbs.</div><span
                 class="service-type-badge">We come to you</span>
@@ -6108,26 +6108,25 @@
           </div>
           <div class="store-details" id="storeDetails">
             <div class="store-detail-row">
-              <div class="store-detail-icon">🗺️</div>
+              <div class="store-detail-icon"><i class="msym" data-lucide="map" style="color:var(--brand);"></i></div>
               <div>Buderim QLD, 4556</div>
             </div>
             <div class="store-detail-row">
-              <div class="store-detail-icon">🕐</div>
+              <div class="store-detail-icon"><i class="msym" data-lucide="clock" style="color:var(--brand);"></i></div>
               <div>Mon–Fri 6am–11:30pm | Sat–Sun 5am–11:30pm</div>
             </div>
           </div>
           <div id="pickupAddressBlock">
             <div class="form-label" style="margin-bottom:8px">Pickup Address *</div>
-            <div class="zone-pills"><span class="zone-pill sc">📍 Sunshine Coast</span><span class="zone-pill bne">📍
-                Brisbane</span></div>
+            <div class="zone-pills"><span class="zone-pill sc"><i class="msym" data-lucide="map-pin" style="width:13px;height:13px;vertical-align:-2px;"></i> Sunshine Coast</span><span class="zone-pill bne"><i class="msym" data-lucide="map-pin" style="width:13px;height:13px;vertical-align:-2px;"></i> Brisbane</span></div>
             <div class="address-wrapper" style="margin-top:10px" id="pickupAddressContainer"></div>
-            <div class="address-error" id="addressError">⚠️ Sorry, we only service <strong>Sunshine Coast</strong> &amp;
+            <div class="address-error" id="addressError"><i class="msym" data-lucide="triangle-alert" style="width:15px;height:15px;vertical-align:-2px;"></i> Sorry, we only service <strong>Sunshine Coast</strong> &amp;
               <strong>Brisbane</strong>.
             </div>
             <div class="callout-fee" id="calloutFee"
               style="display:none;margin-top:12px;padding:14px 18px;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.12);border-radius:10px;font-size:14px;color:#e2e8f0;">
             </div>
-            <div class="address-ok" id="addressOk">✅ Your address is within our service area!</div>
+            <div class="address-ok" id="addressOk"><i class="msym" data-lucide="circle-check" style="width:15px;height:15px;vertical-align:-2px;"></i> Your address is within our service area!</div>
           </div>
         </div>
         <form onsubmit="submitForm(event)" novalidate style="max-width:680px;margin:0 auto;">
@@ -6169,14 +6168,14 @@
           <h3 class="success-subtitle">Your Quote is Confirmed</h3>
           <div class="quote-number"><strong>Quote #</strong><span id="quoteNumber"></span></div>
           <div class="thankyou-banner">
-            <div class="thankyou-banner-icon">🎉</div>
+            <div class="thankyou-banner-icon"><i class="msym" data-lucide="party-popper" style="color:var(--brand);"></i></div>
             <div>
               <h3>We've received your quote, <span id="bannerName"></span>!</h3>
               <p>Confirmation email heading to <span id="bannerEmail"></span>. We'll call shortly.</p>
             </div>
           </div>
           <div class="summary-box" style="text-align:left;margin-bottom:28px;">
-            <div class="summary-title"><span>📄</span> Quote Details</div>
+            <div class="summary-title"><i class="msym" data-lucide="file-text" style="width:18px;height:18px;vertical-align:-3px;color:var(--brand);"></i> Quote Details</div>
             <div class="summary-row"><span><strong>Customer:</strong></span><span id="customerName"></span></div>
             <div class="summary-row"><span><strong>Device:</strong></span><span id="quoteDevice"></span></div>
             <div class="summary-row"><span><strong>Appointment:</strong></span><span id="quoteDateTime"></span></div>
@@ -6184,7 +6183,7 @@
             <div id="quoteRepairsList"></div>
           </div>
           <div class="next-steps">
-            <div class="next-steps-title">🗓️ What Happens Next?</div>
+            <div class="next-steps-title"><i class="msym" data-lucide="calendar-days" style="width:18px;height:18px;vertical-align:-3px;color:var(--brand);"></i> What Happens Next?</div>
             <div class="timeline">
               <div class="timeline-item">
                 <div class="timeline-dot">1</div>
@@ -10045,17 +10044,7 @@
       var sn = decodeURIComponent(el.dataset.s); selSeries = sn; browseLevel = 2;
       var cat = T[selCat]; var s = cat.series[sn]; showLevel(2); renderBC(); updateBackBtn();
       document.getElementById('modelFeaturePanel').innerHTML = '';
-      var qc = document.querySelector('#page1');
-      // gen themes removed
-      var phil = PHILOSOPHY[sn] || '';
-      var fp = '<div class="feature-panel" style="--panel-color:' + (s.color || '#3b82f6') + '">'
-        + '<button class="feature-panel-close" onclick="this.parentElement.remove()">&times;</button>'
-        + '<div class="feature-panel-title">' + sn + '</div>'
-        + '<div class="feature-panel-tagline">' + (s.tagline || '') + '</div>'
-        + '<div class="feature-list">' + (s.features || []).map(function (f) { return '<div class="feature-item">' + f + '</div>'; }).join('') + '</div>'
-        + (phil ? '<div class="design-philosophy">' + phil + '</div>' : '')
-        + '</div>';
-      document.getElementById('modelFeaturePanel').innerHTML = fp;
+      // (device-features info panel removed: straight to the model grid)
       document.getElementById('l2Title').innerHTML = 'Select your <span class="hl">' + sn + '</span>';
       document.getElementById('l2Sub').textContent = 'Pick your exact model for an accurate quote';
       document.getElementById('modelGrid').innerHTML = s.models.map(function (m) {
@@ -10162,10 +10151,10 @@
         if (r.n === 'Diagnostic Service') { price = 49; }
         if (price === 0) return;
         var priceText = '$' + price;
-        var noOEM = ['Battery Replacement', 'Screen Replacement', 'Software Issues', 'Software/macOS Issues', 'Diagnostic Service'];
-        var onclick = noOEM.includes(r.n)
-          ? 'toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)'
-          : 'openOEMModal(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)';
+        var oemOnly = ['Camera Repair', 'Back Glass'];   // only these offer the OEM/Aftermarket choice (screen & battery keep their own modals)
+        var onclick = oemOnly.includes(r.n)
+          ? 'openOEMModal(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)'
+          : 'toggleRepair(decodeURIComponent(this.dataset.rn),+this.dataset.rp,this.dataset.rt)';
         var showCheckbox = true;
         if (r.n === 'Battery Replacement') { onclick = 'openBatteryModal()'; priceText = 'From $' + price; showCheckbox = false; }
         h += '<div class="card repair-card" tabindex="0" role="button" data-rn="' + encodeURIComponent(r.n) + '" data-rp="' + price + '" data-rt="' + (r.t || '') + '" onclick="' + onclick + '">' + (showCheckbox ? '<div class="checkbox"></div>' : '') + '<div class="repair-icon">' + repairIcon(r.i) + '</div><div class="repair-name">' + r.n + '</div><div class="repair-price">' + priceText + '</div><div class="repair-time">' + r.t + '</div></div>';
@@ -10274,7 +10263,7 @@
     }
     function showFinalSummary() {
       const tot = selRepairs.reduce((s, r) => s + r.price, 0);
-      document.getElementById('finalSummary').innerHTML = '<div class="summary-title"><span>📋</span> Summary</div><div class="summary-row"><span><strong>Device:</strong></span><span>' + selModel + '</span></div>' + selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span>Total</span><span>$' + tot + '</span></div>';
+      document.getElementById('finalSummary').innerHTML = '<div class="summary-title"><i class="msym" data-lucide="clipboard-list" style="width:18px;height:18px;vertical-align:-3px;color:var(--brand);"></i> Summary</div><div class="summary-row"><span><strong>Device:</strong></span><span>' + selModel + '</span></div>' + selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span>Total</span><span>$' + tot + '</span></div>';
     }
 
     // ── Accessory add-ons on the repair booking (upsell) ──
@@ -10434,6 +10423,7 @@
       if (pg === 1) renderBC();
       document.querySelector('.quote-wrap').scrollIntoView({ behavior: 'smooth' });
       updateBackBtn();
+      if (window.lucide && lucide.createIcons) lucide.createIcons();
     }
     function setMinDate() { var d = new Date(); var today = d.toISOString().split('T')[0]; var el = document.getElementById('date'); if (el) { el.min = today; el.value = today; } }
     function generateQN() { const d = new Date(); return 'QT' + d.getFullYear().toString().slice(-2) + (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0') + '-' + (Math.floor(Math.random() * 9000) + 1000); }
@@ -10450,8 +10440,8 @@
       const d = new Date(document.getElementById('date').value);
       document.getElementById('quoteDateTime').textContent = d.toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ' at ' + document.getElementById('time').value;
       const loc = document.getElementById('quoteLocation');
-      if (serviceType === 'store') { loc.textContent = '🏪 Drop Off: address sent once approved'; document.getElementById('step3title').textContent = 'Drop Off Your Device'; document.getElementById('step3desc').textContent = "We'll send you our exact drop-off address once your booking has been approved."; }
-      else { loc.textContent = '🚗 Pickup: ' + pickupAddress; document.getElementById('step3title').textContent = 'We Come to You'; document.getElementById('step3desc').textContent = 'Technician arrives at ' + pickupAddress; }
+      if (serviceType === 'store') { loc.textContent = 'Drop Off: address sent once approved'; document.getElementById('step3title').textContent = 'Drop Off Your Device'; document.getElementById('step3desc').textContent = "We'll send you our exact drop-off address once your booking has been approved."; }
+      else { loc.textContent = 'Pickup: ' + pickupAddress; document.getElementById('step3title').textContent = 'We Come to You'; document.getElementById('step3desc').textContent = 'Technician arrives at ' + pickupAddress; }
       const tot = selRepairs.reduce((s, r) => s + r.price, 0);
       document.getElementById('quoteRepairsList').innerHTML = selRepairs.map(r => '<div class="summary-row"><span>' + r.name + '</span><span>$' + r.price + '</span></div>').join('') + '<div class="summary-row"><span><strong>Total</strong></span><span><strong>$' + tot + '</strong></span></div>';
     }
@@ -10542,7 +10532,7 @@
     }
 
     function markAsPaid() {
-      const btn = document.getElementById('payBtn'); if (btn) { if (btn.disabled) return; btn.disabled = true; btn.textContent = '✅ Paid'; btn.style.opacity = '.7'; }
+      const btn = document.getElementById('payBtn'); if (btn) { if (btn.disabled) return; btn.disabled = true; btn.textContent = 'Paid'; btn.style.opacity = '.7'; }
       const paidAt = new Date().toISOString();
       // Update in Supabase
       if (currentQuoteId && db) {
@@ -10594,7 +10584,7 @@
       document.getElementById('addressError').style.display = 'none';
       document.getElementById('addressOk').style.display = 'none';
       const pb3 = document.getElementById('paidBanner'); if (pb3) pb3.style.display = 'none';
-      const pb = document.getElementById('payBtn'); if (pb) { pb.disabled = false; pb.textContent = '💳 Mark as Paid'; pb.style.opacity = '1'; }
+      const pb = document.getElementById('payBtn'); if (pb) { pb.disabled = false; pb.textContent = 'Mark as Paid'; pb.style.opacity = '1'; }
       renderCategories(); goToPage(1);
     }
 
@@ -10905,7 +10895,7 @@
         </form>
       </div>
       <div id="reviewThanksWrap" style="display:none;text-align:center;padding:24px 0;">
-        <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+        <div style="margin-bottom:16px;color:var(--green);"><i class="msym" data-lucide="circle-check" style="width:56px;height:56px;"></i></div>
         <h2 style="margin-bottom:12px;">Thanks for your review!</h2>
         <p style="color:#94a3b8;margin-bottom:28px;">Your feedback helps our community. We'll review it and publish it shortly.</p>
         <button class="btn" style="width:auto;padding:14px 32px;" onclick="closeReviewModal()">Close</button>
@@ -10945,7 +10935,7 @@
 
         <!-- Shipping address (shown for non-pickup) -->
         <div id="coAddressBlock" style="margin-bottom:24px;display:none;">
-          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;">📍 Delivery Address</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;"><i class="msym" data-lucide="map-pin" style="width:16px;height:16px;vertical-align:-3px;color:var(--brand);"></i> Delivery Address</div>
           <div style="position:relative;">
             <input type="text" id="coAddressInput" class="form-input" placeholder="Start typing your address..." autocomplete="off" oninput="coAddressSuggest(this.value)" style="width:100%;box-sizing:border-box;">
             <div id="coAddressDrop" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:9999;margin-top:4px;background:var(--card-bg);border:1px solid rgba(255,255,255,.1);border-radius:10px;max-height:220px;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.5);"></div>
@@ -10954,21 +10944,21 @@
 
         <!-- Upsells -->
         <div style="margin-bottom:24px;">
-          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;">🛍️ Add-Ons</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;"><i class="msym" data-lucide="shopping-bag" style="width:16px;height:16px;vertical-align:-3px;color:var(--brand);"></i> Add-Ons</div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('cable',5,this)">
               <input type="checkbox" id="up-cable" style="accent-color:var(--brand);">
-              <div style="flex:1;"><div style="font-weight:700;">⚡ Charger</div><div style="font-size:12px;color:#94a3b8;">Fast-charge wall charger</div></div>
+              <div style="flex:1;"><div style="font-weight:700;"><i class="msym" data-lucide="zap" style="width:14px;height:14px;vertical-align:-2px;color:var(--brand);"></i> Charger</div><div style="font-size:12px;color:#94a3b8;">Fast-charge wall charger</div></div>
               <div style="font-weight:800;color:#e2e8f0;">+$5</div>
             </label>
             <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('protector',15,this)">
               <input type="checkbox" id="up-protector" style="accent-color:var(--brand);">
-              <div style="flex:1;"><div style="font-weight:700;">🛡️ Screen Protector</div><div style="font-size:12px;color:#94a3b8;">Tempered glass, includes installation</div></div>
+              <div style="flex:1;"><div style="font-weight:700;"><i class="msym" data-lucide="shield" style="width:14px;height:14px;vertical-align:-2px;color:var(--brand);"></i> Screen Protector</div><div style="font-size:12px;color:#94a3b8;">Tempered glass, includes installation</div></div>
               <div style="font-weight:800;color:#e2e8f0;">+$15</div>
             </label>
             <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid rgba(255,255,255,.1);border-radius:12px;cursor:pointer;" onclick="toggleUpsell('case',10,this)">
               <input type="checkbox" id="up-case" style="accent-color:var(--brand);">
-              <div style="flex:1;"><div style="font-weight:700;">📦 Protective Case</div><div style="font-size:12px;color:#94a3b8;">Slim matte finish with drop protection</div></div>
+              <div style="flex:1;"><div style="font-weight:700;"><i class="msym" data-lucide="package" style="width:14px;height:14px;vertical-align:-2px;color:var(--brand);"></i> Protective Case</div><div style="font-size:12px;color:#94a3b8;">Slim matte finish with drop protection</div></div>
               <div style="font-weight:800;color:#e2e8f0;">+$10</div>
             </label>
           </div>
@@ -10976,7 +10966,7 @@
 
         <!-- Contact -->
         <div style="margin-bottom:24px;">
-          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;">👤 Your Details</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;"><i class="msym" data-lucide="user" style="width:16px;height:16px;vertical-align:-3px;color:var(--brand);"></i> Your Details</div>
           <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Full Name *</label><input type="text" class="form-input" id="co-name" required placeholder="John Smith"></div>
           <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Email *</label><input type="email" class="form-input" id="co-email" required placeholder="john@example.com"></div>
           <div class="form-group"><label class="form-label">Phone *</label><input type="tel" class="form-input" id="co-phone" required placeholder="04XX XXX XXX"></div>
@@ -10984,14 +10974,14 @@
 
         <!-- Order total -->
         <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px 20px;margin-bottom:24px;">
-          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;">🧾 Order Summary</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:12px;color:#e2e8f0;"><i class="msym" data-lucide="receipt" style="width:16px;height:16px;vertical-align:-3px;color:var(--brand);"></i> Order Summary</div>
           <div id="coSummaryLines"></div>
           <div style="display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);">
             <span>Total</span><span id="coTotal" style="color:var(--green);">$0</span>
           </div>
         </div>
 
-        <button class="btn" onclick="submitCheckout()" style="width:100%;">🔒 Pay Now · Powered by Stripe</button>
+        <button class="btn" onclick="submitCheckout()" style="width:100%;"><i class="msym" data-lucide="lock" style="width:15px;height:15px;vertical-align:-2px;"></i> Pay Now · Powered by Stripe</button>
       </div>
       <div id="checkoutThanksWrap" style="display:none;text-align:center;padding:24px 0;">
         <div style="font-size:56px;margin-bottom:16px;">✅</div>
