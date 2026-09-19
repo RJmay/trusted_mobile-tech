@@ -1314,6 +1314,30 @@
       gap: 18px;
     }
 
+    /* Selectable pills (quote preferred-contact / device reserve funnel) */
+    .de-pill {
+      flex: 1 1 0;
+      min-width: 96px;
+      padding: 12px 14px;
+      border: 1.5px solid rgba(255, 255, 255, .12);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .03);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .de-pill:hover { border-color: rgba(255, 255, 255, .28); }
+    .de-pill.active {
+      border-color: var(--brand);
+      background: rgba(37, 99, 235, .1);
+      color: var(--brand);
+    }
+    body.light .de-pill { color: #1e293b; background: #f1f5f9; border-color: #e2e8f0; }
+    body.light .de-pill.active { color: var(--brand); background: rgba(37, 99, 235, .08); border-color: var(--brand); }
+
     /* Location */
     .location-section {
       background: linear-gradient(135deg, rgba(37, 99, 235, .06), rgba(37, 99, 235, .03));
@@ -6192,6 +6216,14 @@
           </div>
           <div class="form-group"><label class="form-label" for="email">Email *</label><input type="email" class="form-input"
               id="email" required placeholder="john@example.com"></div>
+          <div class="form-group">
+            <label class="form-label">Preferred Contact Method *</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="qContactPills">
+              <button type="button" class="de-pill active" data-val="call"  onclick="qSelectContact('call',this)">📞 Call me</button>
+              <button type="button" class="de-pill" data-val="text"  onclick="qSelectContact('text',this)">💬 Text me</button>
+              <button type="button" class="de-pill" data-val="email" onclick="qSelectContact('email',this)">✉️ Email me</button>
+            </div>
+          </div>
           <div class="form-group"><label class="form-label" for="notes">Notes (Optional)</label><textarea class="form-textarea"
               id="notes" placeholder="Tell us more about the issue…"></textarea></div>
           <div class="form-group">
@@ -7133,9 +7165,10 @@
           <div class="ld-rrp" id="ldRrp" style="display:none;"></div>
         </div>
         <div style="display:flex;gap:10px;">
-          <button style="flex:1 1 0;width:auto;margin:0;box-sizing:border-box;padding:14px;font-size:15px;font-weight:700;border-radius:14px;background:transparent;border:1.5px solid var(--brand);color:var(--brand);cursor:pointer;" id="ldAddCartBtn">Add to Cart</button>
-          <button class="btn" style="flex:1 1 0;width:auto;margin:0;box-sizing:border-box;padding:14px;font-size:15px;font-weight:700;border-radius:14px;border:1.5px solid transparent;" id="ldBuyBtn">Buy Now</button>
+          <a href="tel:0467748433" style="flex:1 1 0;width:auto;margin:0;box-sizing:border-box;padding:14px;font-size:15px;font-weight:700;border-radius:14px;background:transparent;border:1.5px solid var(--brand);color:var(--brand);cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">📞 Call to Buy</a>
+          <button class="btn" style="flex:1 1 0;width:auto;margin:0;box-sizing:border-box;padding:14px;font-size:15px;font-weight:700;border-radius:14px;border:1.5px solid transparent;" id="ldBuyBtn">Reserve this device →</button>
         </div>
+        <p style="text-align:center;font-size:12px;color:var(--muted);margin:12px 0 0;">No online payment — reserve it and our team confirms availability, condition &amp; payment with you directly.</p>
       </div>
     </div>
   </div>
@@ -7148,7 +7181,7 @@
   </section>
   <div class="rd-sticky" id="rdSticky" aria-hidden="true">
     <div><div class="rd-sticky-price" id="rdStickyPrice"></div><div class="rd-sticky-sub">Certified Refurbished · Buderim</div></div>
-    <button class="rd-add" id="rdStickyAdd" type="button">Add to Cart</button>
+    <button class="rd-add" id="rdStickyAdd" type="button">Reserve</button>
   </div>
 
   <section class="section" id="sec-accessories" style="padding:80px 0;">
@@ -8760,16 +8793,10 @@
       if (l.rrp) { rrp.textContent = 'RRP $' + l.rrp.toLocaleString(); rrp.style.display = 'block'; }
       else { rrp.style.display = 'none'; }
 
-      // buy button
+      // reserve button — hands the sale to the team (no online checkout)
       document.getElementById('ldBuyBtn').onclick = function() {
         closeListingOverlay(null);
-        openCheckout(title, meta.join(' · '), l.price);
-      };
-
-      // add to cart button
-      document.getElementById('ldAddCartBtn').onclick = function() {
-        addDeviceToCart(l.id, title, l.price);
-        closeListingOverlay(null);
+        openDeviceEnquiry(title, meta.join(' · '), l.price, l.id);
       };
 
       document.getElementById('listingOverlay').classList.add('open');
@@ -9083,20 +9110,20 @@
       acc.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // ── Cart / ask ──
+    // ── Reserve / ask ──
+    // Devices are reserved (sale handed to the team), not bought online.
     function rdAddToCart() {
       var l = _rdCurrent; if (!l) return;
-      if (typeof addDeviceToCart === 'function') {
-        var title = rdDisplayName(l) + (l.storage ? ' · ' + l.storage : '');
-        addDeviceToCart(l.id, title, Number(l.price) || 0);
-      }
-      _rdReflectCart(!!(typeof accCart !== 'undefined' && accCart['dev:' + l.id]));
+      var title = rdDisplayName(l) + (l.storage ? ' · ' + l.storage : '');
+      var spec = [l.color, (l.battery ? 'Battery ' + l.battery : ''), l.grade].filter(Boolean).join(' · ');
+      openDeviceEnquiry(title, spec, Number(l.price) || 0, l.id);
     }
     function _rdReflectCart(inCart) {
+      var label = '<i class="msym" data-lucide="badge-check"></i> Reserve this device';
       var b = document.getElementById('rdAddBtn');
-      if (b) { b.classList.toggle('in-cart', inCart); b.innerHTML = inCart ? '<i class="msym" data-lucide="check"></i> In your cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart'; }
+      if (b) { b.classList.remove('in-cart'); b.innerHTML = label; }
       var sb = document.getElementById('rdStickyAdd');
-      if (sb) { sb.classList.toggle('in-cart', inCart); sb.innerHTML = inCart ? '<i class="msym" data-lucide="check"></i> In cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart'; }
+      if (sb) { sb.classList.remove('in-cart'); sb.innerHTML = '<i class="msym" data-lucide="badge-check"></i> Reserve'; }
       if (window.lucide && lucide.createIcons) lucide.createIcons();
     }
     function rdAsk() {
@@ -9116,7 +9143,7 @@
       var addBtn = document.getElementById('rdStickyAdd');
       if (addBtn) {
         if (sold) { addBtn.textContent = 'See similar'; addBtn.classList.remove('in-cart'); addBtn.onclick = function () { showSection('deals', true); }; }
-        else { addBtn.onclick = function () { rdAddToCart(); }; addBtn.classList.toggle('in-cart', inCart); addBtn.innerHTML = inCart ? '<i class="msym" data-lucide="check"></i> In cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart'; if (window.lucide && lucide.createIcons) lucide.createIcons(); }
+        else { addBtn.onclick = function () { rdAddToCart(); }; addBtn.classList.remove('in-cart'); addBtn.innerHTML = '<i class="msym" data-lucide="badge-check"></i> Reserve'; if (window.lucide && lucide.createIcons) lucide.createIcons(); }
       }
       if (_rdStickyObs) { try { _rdStickyObs.disconnect(); } catch (e) {} _rdStickyObs = null; }
       bar.classList.remove('visible');
@@ -9233,7 +9260,7 @@
         h += '<button class="rd-ask" type="button" onclick="showSection(\'deals\', true)"><i class="msym" data-lucide="grid-2x2"></i> See similar devices</button>';
         h += '<button class="rd-ask" type="button" onclick="rdAsk()"><i class="msym" data-lucide="mail"></i> Ask us to find another</button>';
       } else {
-        h += '<button class="rd-add" id="rdAddBtn" type="button" onclick="rdAddToCart()">' + (inCart ? '<i class="msym" data-lucide="check"></i> In your cart' : '<i class="msym" data-lucide="shopping-cart"></i> Add to Cart') + '</button>';
+        h += '<button class="rd-add" id="rdAddBtn" type="button" onclick="rdAddToCart()"><i class="msym" data-lucide="badge-check"></i> Reserve this device</button>';
         h += '<button class="rd-ask" type="button" onclick="rdAsk()"><i class="msym" data-lucide="message-circle-question"></i> Ask a question</button>';
       }
       h += '</div>';
@@ -9618,21 +9645,40 @@
     // ═══════════════════════════════════════════════════
     var WEB3FORMS_KEY = 'a1890417-bdfd-4895-992b-a27e134df96f';
 
+    // Builds a tap-to-reply block for staff notification emails so they can
+    // respond via the customer's preferred method straight from the inbox.
+    function buildReplyBlock(params) {
+      var email = String(params.customer_email || params.email || '').trim();
+      var phoneRaw = String(params.customer_phone || params.phone || '').trim();
+      var tel = phoneRaw.replace(/[^0-9+]/g, '');
+      var validEmail = email.indexOf('@') > 0;
+      var validPhone = tel.replace(/\D/g, '').length >= 6;
+      var prefRaw = String(params.preferred_contact || '').toLowerCase();
+      var pref = /email/.test(prefRaw) ? 'email' : /(text|sms)/.test(prefRaw) ? 'text' : /(call|phone)/.test(prefRaw) ? 'call' : '';
+      var actions = [];
+      if (validEmail) actions.push({ k: 'email', label: '✉️ Reply by email', link: 'mailto:' + email + '?subject=' + encodeURIComponent('Re: Your Trusted Mobile Tech enquiry') });
+      if (validPhone) actions.push({ k: 'call',  label: '📞 Call back',      link: 'tel:' + tel });
+      if (validPhone) actions.push({ k: 'text',  label: '💬 Send a text',    link: 'sms:' + tel });
+      if (!actions.length) return '';
+      actions.sort(function (a, b) { return (b.k === pref) - (a.k === pref); });
+      var rows = actions.map(function (a) { return (a.k === pref ? '★ ' : '   ') + a.label + ':  ' + a.link; });
+      return '———— REPLY TO CUSTOMER ————' + (pref ? '\n(Customer prefers: ' + pref + ')' : '') + '\n' + rows.join('\n');
+    }
+
     function sendEmail(type, params) {
       if (!WEB3FORMS_KEY || WEB3FORMS_KEY === 'YOUR_WEB3FORMS_KEY') return Promise.resolve();
       var lines = Object.entries(params).map(function(e) {
         return e[0].replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); }) + ': ' + e[1];
       });
-      // Add a one-tap "Respond" link so the shop can reply to the customer instantly
-      var reply = params.customer_email || params.email || params.to_email;
+      // Tap-to-reply actions (call / text / email), preferred method starred.
+      var reply = params.customer_email || params.email;
       var canReply = reply && /@/.test(reply);
-      if (canReply) {
-        lines.push('———————————————');
-        lines.push('▶ RESPOND TO THIS QUOTE\nJust hit Reply and it goes straight to the customer.\nOr tap to respond now: mailto:' + reply + '?subject=' + encodeURIComponent('Re: Your Trusted Mobile Tech quote'));
-      }
+      var replyBlock = buildReplyBlock(params);
+      if (replyBlock) lines.push(replyBlock);
       var subjects = {
         quote_notify:   'New Repair Quote | Trusted Mobile Tech',
         sell_notify:    'New Device Sale Enquiry | Trusted Mobile Tech',
+        sale_notify:    'New Device Reservation | Trusted Mobile Tech',
         sell_confirm:   'Your Quote Request | Trusted Mobile Tech',
         contact_notify: 'New Contact Message | Trusted Mobile Tech',
         order_notify:   'New "Order In" Request | Trusted Mobile Tech',
@@ -10535,25 +10581,25 @@
         appointment_date: document.getElementById('date').value,
         appointment_time: document.getElementById('time').value,
         notes: document.getElementById('notes').value || null,
+        preferred_contact: _quotePref || 'call',
         status: 'pending'
       };
-      // Save to Supabase
-      if (!db) { console.log('DB offline — quote saved locally'); goToPage(4); return; }
-      db.from('quotes').insert(quoteRow).select().then(({ data, error }) => {
-        if (error) { console.error('Supabase error:', error); }
+
+      const onSaved = (data) => {
         if (data && data[0]) {
           currentQuoteId = data[0].id; console.log('Quote saved:', data[0].id);
           // Log activity
           if (db) db.from('activity_log').insert({ message: 'New quote ' + qn + ' from ' + quoteRow.customer_name + ' - $' + quoteRow.total, type: 'info' }).then(() => { });
           // Send SMS notification
           sendSmsNotification(quoteRow);
-          // Send email notification to business
+          // Send email notification to business (includes tap-to-reply links)
           sendEmail('quote_notify', {
             to_email:      'info@trustedmobiletech.org',
             quote_number:  qn,
             customer_name: quoteRow.customer_name,
             customer_email: quoteRow.customer_email || '(not provided)',
             customer_phone: quoteRow.customer_phone,
+            preferred_contact: prefLabel(quoteRow.preferred_contact),
             device:        quoteRow.device,
             repairs:       quoteRow.repairs.map(function(r) { return r.name + ' $' + r.price; }).join(', '),
             total:         '$' + quoteRow.total,
@@ -10564,10 +10610,36 @@
           });
         }
         goToPage(4);
+      };
+
+      // Save to Supabase
+      if (!db) { console.log('DB offline — quote saved locally'); goToPage(4); return; }
+      db.from('quotes').insert(quoteRow).select().then(({ data, error }) => {
+        // If the preferred_contact column isn't migrated yet, retry without it
+        // so quote submission never breaks on an un-migrated database.
+        if (error && /preferred_contact/.test(error.message || '')) {
+          const fallback = Object.assign({}, quoteRow); delete fallback.preferred_contact;
+          db.from('quotes').insert(fallback).select().then((res) => {
+            if (res.error) console.error('Supabase error:', res.error);
+            onSaved(res.data);
+          });
+          return;
+        }
+        if (error) { console.error('Supabase error:', error); }
+        onSaved(data);
       });
       // Also keep localStorage as fallback
       try { localStorage.setItem('lastQuote', JSON.stringify(quoteRow)); } catch (ex) { }
     }
+
+    // Preferred contact method for the repair quote (defaults to phone call).
+    var _quotePref = 'call';
+    function qSelectContact(val, el) {
+      _quotePref = val;
+      document.querySelectorAll('#qContactPills .de-pill').forEach(function (b) { b.classList.remove('active'); });
+      if (el) el.classList.add('active');
+    }
+    function prefLabel(v) { return ({ call: 'Phone call', text: 'Text / SMS', email: 'Email' })[v] || 'Phone call'; }
 
     // SMS via Supabase Edge Function (set up separately)
     async function sendSmsNotification(q) {
@@ -10638,6 +10710,8 @@
       document.getElementById('addressOk').style.display = 'none';
       const pb3 = document.getElementById('paidBanner'); if (pb3) pb3.style.display = 'none';
       const pb = document.getElementById('payBtn'); if (pb) { pb.disabled = false; pb.textContent = 'Mark as Paid'; pb.style.opacity = '1'; }
+      _quotePref = 'call';
+      document.querySelectorAll('#qContactPills .de-pill').forEach(function (b) { b.classList.toggle('active', b.dataset.val === 'call'); });
       renderCategories(); goToPage(1);
     }
 
@@ -11002,6 +11076,69 @@
     </div>
   </div>
 
+  <!-- ═══ DEVICE ENQUIRY (RESERVE) MODAL ═══ -->
+  <!-- Replaces online checkout for refurbished devices: hands the sale to the team. -->
+  <div id="deviceEnquiryModal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Reserve device" onclick="if(event.target===this)closeDeviceEnquiry()">
+    <div class="modal" style="max-width:600px;max-height:90vh;overflow-y:auto;">
+      <button class="modal-close" onclick="closeDeviceEnquiry()">&times;</button>
+
+      <div id="deEnquiryFormWrap">
+        <div style="font-size:13px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Reserve Your Device</div>
+        <h2 style="font-size:24px;font-weight:800;margin-bottom:4px;" id="deDeviceName"></h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:6px;" id="deDeviceSpec"></p>
+        <div style="font-size:26px;font-weight:800;color:var(--green);margin-bottom:18px;" id="dePrice"></div>
+
+        <div style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:14px 16px;margin-bottom:22px;font-size:13.5px;color:var(--text);line-height:1.6;">
+          🤝 <strong>No online payment.</strong> Reserve this device and our team will contact you to confirm availability, condition and arrange payment &amp; handover — in-store or by delivery. Every device includes a 90-day local warranty.
+        </div>
+
+        <!-- Instant contact -->
+        <div style="display:flex;gap:10px;margin-bottom:24px;">
+          <a href="tel:0467748433" style="flex:1;padding:13px;border-radius:12px;background:transparent;border:1.5px solid var(--brand);color:var(--brand);font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">📞 Call Now</a>
+          <a href="mailto:info@trustedmobiletech.org" style="flex:1;padding:13px;border-radius:12px;background:transparent;border:1.5px solid rgba(148,163,184,.4);color:var(--text);font-weight:700;font-size:14px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">✉️ Email Us</a>
+        </div>
+        <div style="text-align:center;font-size:12px;color:var(--muted);margin:-14px 0 22px;">— or send your details and we'll come to you —</div>
+
+        <!-- Your details -->
+        <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Full Name *</label><input type="text" class="form-input" id="de-name" required placeholder="John Smith" style="width:100%;box-sizing:border-box;"></div>
+        <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Phone *</label><input type="tel" class="form-input" id="de-phone" required placeholder="04XX XXX XXX" style="width:100%;box-sizing:border-box;"></div>
+        <div class="form-group" style="margin-bottom:18px;"><label class="form-label">Email <span style="color:var(--muted);font-weight:400;">(optional)</span></label><input type="email" class="form-input" id="de-email" placeholder="john@example.com" style="width:100%;box-sizing:border-box;"></div>
+
+        <!-- Preferred contact method -->
+        <div style="margin-bottom:18px;">
+          <div style="font-weight:700;font-size:14px;margin-bottom:10px;color:var(--text);">How should we reach you? *</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="deContactPills">
+            <button type="button" class="de-pill" data-val="call"  onclick="deSelectContact('call',this)">📞 Call me</button>
+            <button type="button" class="de-pill" data-val="text"  onclick="deSelectContact('text',this)">💬 Text me</button>
+            <button type="button" class="de-pill" data-val="email" onclick="deSelectContact('email',this)">✉️ Email me</button>
+          </div>
+        </div>
+
+        <!-- Fulfilment preference -->
+        <div style="margin-bottom:18px;">
+          <div style="font-weight:700;font-size:14px;margin-bottom:10px;color:var(--text);">Pickup or delivery?</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="deFulfilPills">
+            <button type="button" class="de-pill" data-val="pickup"   onclick="deSelectFulfil('pickup',this)">🏪 Store pickup</button>
+            <button type="button" class="de-pill" data-val="delivery" onclick="deSelectFulfil('delivery',this)">🚚 Delivery</button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:22px;"><label class="form-label">Message <span style="color:var(--muted);font-weight:400;">(optional)</span></label><textarea class="form-textarea" id="de-message" placeholder="Any questions, or a good time to reach you?" style="width:100%;box-sizing:border-box;min-height:80px;"></textarea></div>
+
+        <button class="btn" onclick="submitDeviceEnquiry()" style="width:100%;" id="deSubmitBtn">Reserve — Send to Team</button>
+        <p style="text-align:center;font-size:12px;color:var(--muted);margin:12px 0 0;">We'll be in touch fast — usually within business hours the same day.</p>
+      </div>
+
+      <div id="deThanksWrap" style="display:none;text-align:center;padding:24px 0;">
+        <div style="font-size:56px;margin-bottom:16px;">🎉</div>
+        <h2 style="margin-bottom:12px;">You're on the list!</h2>
+        <p style="color:var(--muted);margin-bottom:8px;" id="deThanksMsg">Your reservation request has been sent to our team.</p>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:28px;">Need it sooner? Call us on <a href="tel:0467748433" style="color:var(--brand);">0467 748 433</a>.</p>
+        <button class="btn" style="width:auto;padding:14px 32px;" onclick="closeDeviceEnquiry()">Close</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ CHECKOUT MODAL ═══ -->
   <div id="checkoutModal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Checkout" onclick="if(event.target===this)closeCheckout()">
     <div class="modal" style="max-width:640px;max-height:90vh;overflow-y:auto;" id="checkoutModalInner">
@@ -11237,21 +11374,9 @@
     var _coUpsells = { cable: false, protector: false, case: false };
     var _coUpsellPrices = { cable: 5, protector: 15, case: 10 };
 
+    // Devices no longer check out online — hand the sale to the team instead.
     function openCheckout(name, spec, price) {
-      _coDevicePrice = price; _coShippingCost = 0; _coShippingType = null;
-      _coUpsells = { cable: false, protector: false, case: false };
-      document.getElementById('coDeviceName').textContent = name;
-      document.getElementById('coDeviceSpec').textContent = spec;
-      ['cable','protector','case'].forEach(function (k) { var el = document.getElementById('up-' + k); if (el) el.checked = false; });
-      ['coShipStd','coShipExp','coShipPick'].forEach(function (id) { var el = document.getElementById(id); if (el) el.style.borderColor = 'rgba(255,255,255,.1)'; });
-      document.querySelectorAll('input[name="coShipping"]').forEach(function (r) { r.checked = false; });
-      document.getElementById('coAddressBlock').style.display = 'none';
-      document.getElementById('coAddressInput') && (document.getElementById('coAddressInput').value = '');
-      ['co-name','co-email','co-phone'].forEach(function (id) { var el = document.getElementById(id); if (el) el.value = ''; });
-      document.getElementById('checkoutFormWrap').style.display = 'block';
-      document.getElementById('checkoutThanksWrap').style.display = 'none';
-      updateCoTotal();
-      document.getElementById('checkoutModal').classList.add('show');
+      openDeviceEnquiry(name, spec, price);
     }
     function closeCheckout() { document.getElementById('checkoutModal').classList.remove('show'); }
 
@@ -11321,6 +11446,93 @@
         alert('Connection error. Please try again.');
         payBtn.textContent = 'Pay Now'; payBtn.disabled = false;
       }
+    }
+
+    // ═══════════════════════════════════════════════════
+    //  DEVICE ENQUIRY (RESERVE) — hands the sale to the team
+    //  No online payment: emails the team + saves a lead, and
+    //  gives the customer instant call/email options.
+    // ═══════════════════════════════════════════════════
+    var _deDevice = '', _deSpec = '', _dePrice = 0, _deDeviceId = null;
+    var _deContact = null, _deFulfil = null;
+
+    function openDeviceEnquiry(name, spec, price, id) {
+      _deDevice = name; _deSpec = spec || ''; _dePrice = price || 0; _deDeviceId = (id === undefined ? null : id);
+      _deContact = null; _deFulfil = null;
+      document.getElementById('deDeviceName').textContent = name;
+      document.getElementById('deDeviceSpec').textContent = spec || '';
+      document.getElementById('dePrice').textContent = '$' + Number(price || 0).toLocaleString();
+      ['de-name', 'de-phone', 'de-email', 'de-message'].forEach(function (i) { var el = document.getElementById(i); if (el) el.value = ''; });
+      document.querySelectorAll('#deContactPills .de-pill, #deFulfilPills .de-pill').forEach(function (b) { b.classList.remove('active'); });
+      var btn = document.getElementById('deSubmitBtn');
+      btn.textContent = 'Reserve — Send to Team'; btn.disabled = false;
+      document.getElementById('deEnquiryFormWrap').style.display = 'block';
+      document.getElementById('deThanksWrap').style.display = 'none';
+      document.getElementById('deviceEnquiryModal').classList.add('show');
+    }
+    function closeDeviceEnquiry() { document.getElementById('deviceEnquiryModal').classList.remove('show'); }
+
+    function deSelectContact(val, el) {
+      _deContact = val;
+      document.querySelectorAll('#deContactPills .de-pill').forEach(function (b) { b.classList.remove('active'); });
+      if (el) el.classList.add('active');
+    }
+    function deSelectFulfil(val, el) {
+      _deFulfil = val;
+      document.querySelectorAll('#deFulfilPills .de-pill').forEach(function (b) { b.classList.remove('active'); });
+      if (el) el.classList.add('active');
+    }
+
+    async function submitDeviceEnquiry() {
+      var name  = document.getElementById('de-name').value.trim();
+      var phone = document.getElementById('de-phone').value.trim();
+      var email = document.getElementById('de-email').value.trim();
+      var message = document.getElementById('de-message').value.trim();
+
+      if (!name || !phone) { alert('Please enter your name and phone number so the team can reach you.'); return; }
+      if (!_deContact) { alert('Please choose how you\'d like us to contact you.'); return; }
+      if (_deContact === 'email' && !email) { alert('You chose email as your contact method — please add your email address.'); return; }
+
+      var contactLabels = { call: 'Phone call', text: 'Text / SMS', email: 'Email' };
+      var fulfilLabels  = { pickup: 'Store pickup', delivery: 'Delivery' };
+
+      var btn = document.getElementById('deSubmitBtn');
+      btn.textContent = '⏳ Sending to the team…'; btn.disabled = true;
+
+      // 1) Email the team (primary hand-off).
+      try {
+        await sendEmail('sale_notify', {
+          device:            _deDevice + (_deSpec ? ' (' + _deSpec + ')' : ''),
+          listed_price:      '$' + Number(_dePrice).toLocaleString(),
+          customer_name:     name,
+          customer_phone:    phone,
+          customer_email:    email || '(not provided)',
+          preferred_contact: contactLabels[_deContact] || _deContact,
+          fulfilment:        _deFulfil ? fulfilLabels[_deFulfil] : 'Not specified',
+          message:           message || '(none)',
+          submitted_at:      new Date().toLocaleString('en-AU')
+        });
+      } catch (e) { console.warn('sale_notify email error:', e); }
+
+      // 2) Save the lead so it shows up for the team (graceful if table/DB absent).
+      try {
+        if (db) {
+          await db.from('sale_enquiries').insert({
+            device: _deDevice, device_spec: _deSpec || null, listing_id: _deDeviceId != null ? String(_deDeviceId) : null,
+            listed_price: _dePrice, customer_name: name, customer_phone: phone,
+            customer_email: email || null, preferred_contact: _deContact,
+            fulfilment: _deFulfil || null, message: message || null, status: 'new'
+          });
+          db.from('activity_log').insert({ message: '📱 Device reservation: ' + _deDevice + ' - ' + name + ' ($' + Number(_dePrice).toLocaleString() + ') · ' + phone + ' · prefers ' + (contactLabels[_deContact] || _deContact), type: 'info' }).then(function () {}, function () {});
+        }
+      } catch (e) { console.warn('sale_enquiries save skipped:', e && e.message); }
+
+      // 3) Confirm to the customer.
+      var via = _deContact === 'call' ? 'give you a call' : _deContact === 'text' ? 'text you' : 'email you';
+      document.getElementById('deThanksMsg').textContent =
+        'Thanks ' + name + '! Your reservation for the ' + _deDevice + ' is with our team — we\'ll ' + via + ' shortly to confirm availability and sort out payment.';
+      document.getElementById('deEnquiryFormWrap').style.display = 'none';
+      document.getElementById('deThanksWrap').style.display = 'block';
     }
 
     // ═══════════════════════════════════════════════════

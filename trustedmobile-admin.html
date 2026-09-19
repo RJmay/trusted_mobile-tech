@@ -1522,6 +1522,44 @@
     @media(max-width:380px) {
       .stat-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── iPhone fit & polish ─────────────────────────────── */
+    @media(max-width:600px) {
+      /* Guarantee nothing scrolls/zooms sideways. Safe here because the
+         sidebar is a fixed off-canvas drawer at this breakpoint. */
+      html, body { max-width: 100%; overflow-x: hidden; }
+
+      /* iOS zooms the page when a focused field is <16px — pin to 16px. */
+      .filter-input, .filter-select,
+      .modal-form input, .modal-form select { font-size: 16px; }
+
+      /* Filter bars: search takes its own full-width row, the rest wrap. */
+      .filter-bar { gap: 8px; }
+      .filter-input { flex: 1 1 100%; width: 100%; min-width: 0; }
+      .filter-select { flex: 1 1 auto; }
+      .filter-bar > div[style*="margin-left"] { margin-left: 0 !important; }
+
+      /* Modals fit the screen and scroll when tall. */
+      .modal { width: 92%; max-width: 460px; max-height: 88vh; overflow-y: auto;
+        -webkit-overflow-scrolling: touch; padding: 22px 18px; }
+      .modal-actions .btn { flex: 1; }
+
+      /* Toasts never exceed the viewport. */
+      .toast { min-width: 0; max-width: calc(100vw - 24px); }
+
+      /* Listing form: one field per row. */
+      .lf-row2 { grid-template-columns: 1fr; }
+
+      /* Section headers wrap rather than overflow. */
+      .section-header { flex-wrap: wrap; gap: 8px; }
+    }
+
+    @media(max-width:400px) {
+      .content { padding: 14px 12px; }
+      .topbar { padding: 0 12px; }
+      .refresh-btn { padding: 8px 10px; font-size: 12px; }
+      .modal { padding: 20px 16px; }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
@@ -1746,6 +1784,7 @@
                 <th>Total</th>
                 <th>Paid At</th>
                 <th>Stock Deducted</th>
+                <th>Reply</th>
               </tr>
             </thead>
             <tbody id="paymentBody"></tbody>
@@ -2105,6 +2144,17 @@
     </div>
   </div>
 
+  <!-- Reply to customer -->
+  <div class="modal-overlay" id="replyModal">
+    <div class="modal">
+      <div class="modal-title" id="replyTitle">Reply to customer</div>
+      <div id="replyBody" style="margin:8px 0 4px;"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeReply()">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ═══════════════════════════════════════════════════
     //  DEFAULT PARTS CATALOG
@@ -2252,7 +2302,7 @@
 
         // Load payments (paid quotes)
         const { data: payData } = await db.from('quotes').select('*').order('created_at', { ascending: false });
-        if (payData) payments = payData.map(q => ({ quoteNumber: q.quote_number, customer: q.customer_name, email: q.customer_email, phone: q.customer_phone, device: q.device, repairs: q.repairs || [], serviceType: q.service_type, total: q.total, paidAt: q.paid_at, createdAt: q.created_at, status: q.status, dbId: q.id }));
+        if (payData) payments = payData.map(q => ({ quoteNumber: q.quote_number, customer: q.customer_name, email: q.customer_email, phone: q.customer_phone, preferredContact: q.preferred_contact || null, device: q.device, repairs: q.repairs || [], serviceType: q.service_type, total: q.total, paidAt: q.paid_at, createdAt: q.created_at, status: q.status, dbId: q.id }));
 
         // Load listings
         const { data: lstData } = await db.from('listings').select('*').order('sort_order', { ascending: true }).order('created_at', { ascending: false });
@@ -2703,10 +2753,10 @@
       });
       const body = document.getElementById('paymentBody');
       if (!filtered.length) {
-        body.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted);">No quotes found in database.</td></tr>';
+        body.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);">No quotes found in database.</td></tr>';
         return;
       }
-      body.innerHTML = filtered.map(p => `
+      body.innerHTML = filtered.map((p, i) => `
     <tr>
       <td><strong>${p.quoteNumber || '—'}</strong></td>
       <td>${p.customer || '—'}</td>
@@ -2716,8 +2766,74 @@
       <td style="font-weight:700;color:var(--green)">$${p.total || 0}</td>
       <td style="font-size:12px;color:var(--muted)">${fmtTime(p.paidAt)}</td>
       <td><span class="badge badge-green">✓ Deducted</span></td>
+      <td><button class="btn btn-primary btn-sm" onclick="openReply(${i})">↩ Reply</button></td>
     </tr>`).join('');
     }
+
+    // ═══════════════════════════════════════════════════
+    //  REPLY TO CUSTOMER — contact via their preferred method
+    // ═══════════════════════════════════════════════════
+    // Mirrors renderPayments' filter so the index matches the row clicked.
+    function currentPaymentRows() {
+      const q = (document.getElementById('paySearch').value || '').toLowerCase();
+      return payments.filter(p => {
+        if (!q) return true;
+        return (p.quoteNumber || '').toLowerCase().includes(q) || (p.customer || '').toLowerCase().includes(q) || (p.device || '').toLowerCase().includes(q);
+      });
+    }
+    function normPref(v) {
+      v = String(v || '').toLowerCase();
+      if (/email/.test(v)) return 'email';
+      if (/text|sms/.test(v)) return 'text';
+      if (/call|phone/.test(v)) return 'call';
+      return '';
+    }
+    function openReply(idx) {
+      const p = currentPaymentRows()[idx];
+      if (!p) return;
+      const email = (p.email || '').trim();
+      const phone = (p.phone || '').trim();
+      const tel = phone.replace(/[^0-9+]/g, '');
+      const hasEmail = email.indexOf('@') > 0;
+      const hasPhone = tel.replace(/\D/g, '').length >= 6;
+      const pref = normPref(p.preferredContact);
+
+      const firstName = (p.customer || 'there').split(' ')[0];
+      const subject = encodeURIComponent('Your Trusted Mobile Tech quote ' + (p.quoteNumber || ''));
+      const bodyTxt = encodeURIComponent(
+        'Hi ' + firstName + ',\n\nThanks for your enquiry with Trusted Mobile Tech regarding your ' +
+        (p.device || 'device') + '. ' +
+        (p.total ? 'Your quote total is $' + p.total + '. ' : '') +
+        '\n\n[Write your reply here]\n\nKind regards,\nTrusted Mobile Tech\n0467 748 433'
+      );
+      const smsBody = encodeURIComponent('Hi ' + firstName + ', it\'s Trusted Mobile Tech about your ' + (p.device || 'device') + ' quote' + (p.quoteNumber ? ' (' + p.quoteNumber + ')' : '') + '. ');
+
+      const options = [];
+      if (hasPhone) options.push({ k: 'call', label: '📞 Call', sub: phone, href: 'tel:' + tel });
+      if (hasPhone) options.push({ k: 'text', label: '💬 Text / SMS', sub: phone, href: 'sms:' + tel + '?&body=' + smsBody });
+      if (hasEmail) options.push({ k: 'email', label: '✉️ Email', sub: email, href: 'mailto:' + email + '?subject=' + subject + '&body=' + bodyTxt });
+
+      const bodyEl = document.getElementById('replyBody');
+      document.getElementById('replyTitle').textContent = 'Reply to ' + (p.customer || 'customer');
+
+      if (!options.length) {
+        bodyEl.innerHTML = '<p style="color:var(--muted);margin:0;">No contact details on file for this quote.</p>';
+      } else {
+        options.sort((a, b) => (b.k === pref) - (a.k === pref));
+        bodyEl.innerHTML =
+          '<p style="color:var(--muted);font-size:13px;margin:0 0 16px;">Choose how to reach ' + (p.customer || 'the customer') + '.' +
+            (pref ? ' They asked to be contacted by <strong style="color:var(--text)">' + pref + '</strong>.' : '') + '</p>' +
+          options.map(o =>
+            '<a href="' + o.href + '" style="display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px;border:1.5px solid ' + (o.k === pref ? 'var(--brand)' : 'var(--border)') + ';border-radius:12px;text-decoration:none;color:var(--text);background:' + (o.k === pref ? 'rgba(0,150,199,.08)' : 'transparent') + ';">' +
+              '<span style="font-size:20px;flex:none;">' + o.label.split(' ')[0] + '</span>' +
+              '<span style="flex:1;min-width:0;"><span style="font-weight:700;font-size:14px;">' + o.label.replace(/^\S+\s/, '') + '</span><br><span style="font-size:12px;color:var(--muted);word-break:break-word;">' + o.sub + '</span></span>' +
+              (o.k === pref ? '<span class="badge badge-green" style="flex:none;">Preferred</span>' : '') +
+            '</a>'
+          ).join('');
+      }
+      document.getElementById('replyModal').classList.add('active');
+    }
+    function closeReply() { closeModal('replyModal'); }
 
     // ═══════════════════════════════════════════════════
     //  CHECK FOR NEW PAYMENTS (from quote system)
@@ -3155,7 +3271,7 @@
     }
 
     // Close modals on backdrop click
-    ['addPartModal', 'manualOrderModal', 'adjustModal'].forEach(id => {
+    ['addPartModal', 'manualOrderModal', 'adjustModal', 'replyModal'].forEach(id => {
       document.getElementById(id).addEventListener('click', function (e) { if (e.target === this) closeModal(id); });
     });
   </script>
